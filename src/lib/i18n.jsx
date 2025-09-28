@@ -1,5 +1,5 @@
 import React from 'react';
-import { translations, DEFAULT_LANG } from './translations/index.js';
+import { translations, DEFAULT_LANG } from './translations/index.jsx';
 
 export const LanguageContext = React.createContext(null);
 
