@@ -1,20 +1,34 @@
 import React from 'react';
 import { translations, DEFAULT_LANG } from './translations/index.js';
 
-export const LanguageContext = React.createContext({
-  language: DEFAULT_LANG,
-  setLanguage: () => {},
-});
+export const LanguageContext = React.createContext(null);
+
+export const LanguageProvider = ({ children, initial = DEFAULT_LANG }) => {
+  const [language, setLanguage] = React.useState(initial);
+  const value = React.useMemo(() => ({ language, setLanguage }), [language]);
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+};
 
 export const useTranslation = () => {
   const ctx = React.useContext(LanguageContext);
-  if (!ctx) throw new Error('useTranslation must be used within a LanguageProvider');
+  // Fallback seguro si no hay Provider (evita pantalla en blanco)
+  if (!ctx) {
+    const t = (k) => {
+      const parts = k.split('.');
+      let node = translations[DEFAULT_LANG];
+      for (const p of parts) {
+        node = node?.[p];
+        if (node == null) return k;
+      }
+      return typeof node === 'string' ? node : k;
+    };
+    return { language: DEFAULT_LANG, setLanguage: () => {}, t };
+  }
 
-  const lang = ctx.language || DEFAULT_LANG;
-
+  const { language } = ctx;
   const t = (key) => {
     const parts = key.split('.');
-    let node = translations[lang];
+    let node = translations[language] ?? translations[DEFAULT_LANG];
     for (const p of parts) {
       node = node?.[p];
       if (node == null) return key;
