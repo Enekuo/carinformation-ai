@@ -2,7 +2,7 @@ import React from 'react';
 import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18njsx';
 
 const Hero = () => {
   const { t } = useTranslation();
