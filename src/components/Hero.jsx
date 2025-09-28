@@ -27,19 +27,7 @@ const Hero = () => {
             animate="visible"
           >
             <div className="text-left">
-              <motion.h1
-                className="text-slate-900 tracking-tight font-extrabold leading-[1.06] text-4xl md:text-5xl lg:text-[44px] max-w-xl"
-                variants={item}
-              >
-                {t('hero.title')}
-              </motion.h1>
-
-              <motion.p
-                className="mt-4 text-slate-600 text-base md:text-lg leading-relaxed max-w-md"
-                variants={item}
-              >
-                {t('hero.subtitle')}: {t('hero.description')}
-              </motion.p>
+              {/* Título y párrafo eliminados */}
 
               <motion.div
                 className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-5"
