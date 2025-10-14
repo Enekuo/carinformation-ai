@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Globe, ChevronDown, LifeBuoy, MessageSquare } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useTranslation } from "@/lib/i18n";
+import { useTranslation } from "@/lib/translation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,7 @@ import {
 // SOLO ES / EU
 const languages = [
   { code: "ES", name: "Español" },
-  { code: "EU", name: "Euskara" },
+  { code: "EUS", name: "Euskara" },
 ];
 
 export default function Header() {
