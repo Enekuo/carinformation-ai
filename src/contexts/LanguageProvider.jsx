@@ -1,62 +1,44 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { LanguageContext } from '@/lib/i18n';
+import React, { useState, useMemo, useCallback } from "react";
+import { LanguageContext, translations } from "@/lib/translations";
 
-const loadTranslation = (language) => {
-  return import(`@/lib/translations/${language.toLowerCase()}.json`)
-    .then(module => module.default);
-};
+const LanguageProvider = ({ children, defaultLang = "ES" }) => {
+  const [language, setLanguage] = useState(defaultLang);
 
-const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('ES');
-  const [translations, setTranslations] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let active = true;
-    setIsLoading(true);
-    loadTranslation(language)
-      .then(data => {
-        if (active) {
-          setTranslations(data);
-          setIsLoading(false);
-        }
-      })
-      .catch(() => {
-        loadTranslation('es').then(data => {
-          if (active) {
-            setTranslations(data);
-            setIsLoading(false);
-          }
-        });
-      });
-    return () => {
-      active = false;
-    };
-  }, [language]);
-
-  const t = useCallback((key) => {
-    if (isLoading) return '';
-    const keys = key.split('.');
-    let result = translations;
-    for (const k of keys) {
-      result = result?.[k];
-      if (result === undefined) {
-        return key;
+  const t = useCallback(
+    (key, fallback) => {
+      const parts = String(key).split(".");
+      let node = translations;
+      for (const p of parts) {
+        node = node?.[p];
+        if (node === undefined) return fallback ?? key;
       }
-    }
-    return result;
-  }, [translations, isLoading]);
+      if (node && typeof node === "object") {
+        return (
+          node[language] ??
+          node.ES ??
+          node.EU ??
+          Object.values(node)[0] ??
+          (fallback ?? key)
+        );
+      }
+      return node ?? (fallback ?? key);
+    },
+    [language]
+  );
 
-  const value = {
-    language,
-    setLanguage,
-    t,
-    isLoading,
-  };
+  const value = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      t,
+      isLoading: false,
+    }),
+    [language, t]
+  );
 
   return (
     <LanguageContext.Provider value={value}>
-      {!isLoading && children}
+      {children}
     </LanguageContext.Provider>
   );
 };

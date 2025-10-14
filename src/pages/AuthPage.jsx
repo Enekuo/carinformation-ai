@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Mail, Key, Eye, EyeOff, Globe, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
-import { useTranslation } from '@/lib/i18n';
+import { useTranslation } from '@/lib/translations';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";

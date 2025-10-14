@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { useTranslation } from "@/lib/i18n";
+import { useTranslation } from "@/lib/translations";
 
 const SupportPage = () => {
   const { t } = useTranslation();
