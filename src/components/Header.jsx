@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Globe, ChevronDown, LifeBuoy, MessageSquare } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useTranslation } from "@/lib/translation";
+import { useTranslation } from "@/lib/translations";
 import {
   DropdownMenu,
   DropdownMenuContent,

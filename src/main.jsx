@@ -5,7 +5,7 @@ import App from "@/App";
 import "@/index.css";
 
 // ⬇️ importa del archivo único
-import { LanguageProvider } from "@/lib/translation";
+import { LanguageProvider } from "@/lib/translations";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
