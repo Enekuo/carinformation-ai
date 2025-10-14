@@ -1,4 +1,3 @@
-// src/lib/translations.js
 export const translations = {
   header: {
     brand:      { ES: "Meditation.AI", EU: "Meditation.AI" },
@@ -8,7 +7,6 @@ export const translations = {
     signIn:     { ES: "Iniciar sesión",EU: "Saioa hasi" },
     startFree:  { ES: "Comienza Gratis", EU: "Doan hasi" }
   },
-
   toolsMenu: {
     users: {
       title:       { ES: "Usuarios", EU: "Erabiltzaileak" },
@@ -26,7 +24,6 @@ export const translations = {
                      EU: "Meditazio pertsonalizatuak eduki-sortzaileentzat." }
     }
   },
-
   resourcesMenu: {
     support: { ES: "Soporte", EU: "Laguntza" },
     aiChat:  { ES: "Chat de IA", EU: "IA txata" }
