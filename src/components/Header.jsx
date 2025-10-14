@@ -47,37 +47,29 @@ const Header = () => {
 
   const handleLanguageChange = (code) => setLanguage(code);
 
-  // usar claves de navbar.* (con fallback) para que funcione con ES/EU
+  // items superiores (usa header.*)
   const navItems = [
-    { name: t("navbar.pricing", "Precios"), action: () => handleFeatureClick() },
+    { name: t("header.pricing", "Precios"), action: () => handleFeatureClick() },
   ];
 
+  // menús (usa toolsMenu.* y resourcesMenu.* con fallback)
   const tools = [
     {
       emoji: "🧘‍♂️",
       title: t("toolsMenu.users.title", "Usuarios"),
-      description: t(
-        "toolsMenu.users.description",
-        "Meditación personalizada para usuarios particulares."
-      ),
+      description: t("toolsMenu.users.description", "Meditación personalizada para usuarios particulares."),
       link: "/usuarios",
     },
     {
       emoji: "💼",
       title: t("toolsMenu.companies.title", "Empresas"),
-      description: t(
-        "toolsMenu.companies.description",
-        "Meditaciones personalizadas para empresas."
-      ),
+      description: t("toolsMenu.companies.description", "Meditaciones personalizadas para empresas."),
       link: "/empresas",
     },
     {
       emoji: "💻",
       title: t("toolsMenu.creators.title", "Creadores de contenido"),
-      description: t(
-        "toolsMenu.creators.description",
-        "Meditaciones personalizadas para creadores de contenido."
-      ),
+      description: t("toolsMenu.creators.description", "Meditaciones personalizadas para creadores de contenido."),
       link: "/creadores",
     },
   ];
@@ -155,7 +147,7 @@ const Header = () => {
     </div>
   );
 
-  const currentLangName = languages.find((l) => l.code === language)?.name || language;
+  const currentLangLabel = languages.find((l) => l.code === language)?.code || language;
 
   return (
     <header
@@ -170,7 +162,7 @@ const Header = () => {
             style={{ fontFamily: "'Quicksand', sans-serif" }}
             className="text-xl font-bold text-slate-900 tracking-tight mr-8"
           >
-            {t("navbar.brand", "Meditation.AI")}
+            {t("header.brand", "Meditation.AI")}
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
@@ -180,7 +172,7 @@ const Header = () => {
                   onPointerEnter={() => setIsToolsMenuOpen(true)}
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors h-10 px-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
                 >
-                  {t("navbar.tools", "Herramientas")}
+                  {t("header.tools", "Herramientas")}
                   <ChevronDown
                     size={16}
                     className={`transition-transform duration-200 ${isToolsMenuOpen ? "rotate-180" : ""}`}
@@ -204,7 +196,7 @@ const Header = () => {
                   onPointerEnter={() => setIsResourcesMenuOpen(true)}
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors h-10 px-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
                 >
-                  {t("navbar.resources", "Recursos")}
+                  {t("header.resources", "Recursos")}
                   <ChevronDown
                     size={16}
                     className={`transition-transform duration-200 ${isResourcesMenuOpen ? "rotate-180" : ""}`}
@@ -239,7 +231,7 @@ const Header = () => {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">
                 <Globe size={16} />
-                {language} {/* ES / EU */}
+                {currentLangLabel}
                 <ChevronDown size={16} className="opacity-70" />
               </button>
             </DropdownMenuTrigger>
@@ -260,7 +252,7 @@ const Header = () => {
           </DropdownMenu>
 
           <Link to="/iniciar-sesion" className="text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">
-            {t("navbar.signIn", "Iniciar sesión")}
+            {t("header.signIn", "Iniciar sesión")}
           </Link>
 
           <motion.button
@@ -269,7 +261,7 @@ const Header = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
           >
-            {t("navbar.startFree", "Comienza Gratis")}
+            {t("header.startFree", "Comienza Gratis")}
           </motion.button>
         </div>
 
@@ -296,7 +288,7 @@ const Header = () => {
                 style={{ fontFamily: "'Quicksand', sans-serif" }}
                 className="text-lg font-bold text-slate-900 tracking-tight"
               >
-                {t("navbar.brand", "Meditation.AI")}
+                {t("header.brand", "Meditation.AI")}
               </Link>
               <button onClick={() => setIsMobileMenuOpen(false)}>
                 <X size={24} className="text-slate-800" />
@@ -306,14 +298,14 @@ const Header = () => {
             <div className="p-4 flex flex-col h-[calc(100%-64px)]">
               <div className="flex flex-col gap-1">
                 <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
-                  {t("navbar.tools", "Herramientas")}
+                  {t("header.tools", "Herramientas")}
                 </p>
                 <ToolsDropdownContent />
                 <div className="px-2 my-1">
                   <DropdownMenuSeparator />
                 </div>
                 <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
-                  {t("navbar.resources", "Recursos")}
+                  {t("header.resources", "Recursos")}
                 </p>
                 <div className="px-2">
                   <ResourcesDropdownContent inMobileMenu={true} />
@@ -335,7 +327,7 @@ const Header = () => {
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center justify-center gap-2 text-base h-12 w-full font-medium rounded-md hover:bg-slate-100 transition-colors">
                       <Globe size={18} />
-                      <span>{currentLangName}</span>
+                      <span>{languages.find((l) => l.code === language)?.name || language}</span>
                       <ChevronDown size={16} />
                     </button>
                   </DropdownMenuTrigger>
@@ -357,14 +349,14 @@ const Header = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="h-12 w-full text-base font-medium rounded-md hover:bg-slate-100 transition-colors flex items-center justify-center"
                 >
-                  {t("navbar.signIn", "Iniciar sesión")}
+                  {t("header.signIn", "Iniciar sesión")}
                 </Link>
                 <motion.button
                   onClick={() => handleFeatureClick()}
                   className="w-full h-11 bg-blue-600 text-white font-bold text-base rounded-full"
                   whileTap={{ scale: 0.98 }}
                 >
-                  {t("navbar.startFree", "Comienza Gratis")}
+                  {t("header.startFree", "Comienza Gratis")}
                 </motion.button>
               </div>
             </div>
