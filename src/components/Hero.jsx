@@ -13,20 +13,21 @@ export default function Hero() {
   const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
+
   const [leftText, setLeftText] = useState("");
   const [rightText, setRightText] = useState("");
 
-  const leftRef = useRef(null);
+  const leftRef  = useRef(null);
   const rightRef = useRef(null);
-  const leftTA = useRef(null);
-  const rightTA = useRef(null);
+  const leftTA   = useRef(null);
+  const rightTA  = useRef(null);
 
   const swap = () => { setSrc(dst); setDst(src); };
 
   // cerrar dropdowns al hacer click fuera
   useEffect(() => {
     const onDown = (e) => {
-      if (leftRef.current && !leftRef.current.contains(e.target)) setOpenLeft(false);
+      if (leftRef.current  && !leftRef.current.contains(e.target))  setOpenLeft(false);
       if (rightRef.current && !rightRef.current.contains(e.target)) setOpenRight(false);
     };
     window.addEventListener("mousedown", onDown);
@@ -40,7 +41,7 @@ export default function Hero() {
     el.style.height = `${el.scrollHeight}px`;
   };
 
-  useEffect(() => { autoResize(leftTA.current); }, [leftText]);
+  useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
   useEffect(() => { autoResize(rightTA.current); }, [rightText]);
 
   const Item = ({ active, label, onClick }) => (
@@ -82,7 +83,7 @@ export default function Hero() {
   return (
     <section className="w-full min-h-screen bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[calc(100vh-180px)]">
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[calc(100vh-180px)] flex flex-col">
           {/* barra superior */}
           <div className="relative h-12 border-b border-slate-200">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -143,9 +144,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* paneles */}
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
-            {/* IZQUIERDA */}
+          {/* dos paneles editables */}
+          <div className="grid grid-cols-1 md:grid-cols-2 w-full flex-1 min-h-[430px]">
+            {/* IZQUIERDO */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
               <textarea
                 ref={leftTA}
@@ -153,11 +154,11 @@ export default function Hero() {
                 onChange={(e) => setLeftText(e.target.value)}
                 onInput={(e) => autoResize(e.currentTarget)}
                 placeholder={t("translator.left_placeholder")}
-                className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                className="w-full min-h-[260px] resize-none bg-white outline-none focus:ring-2 focus:ring-slate-200/60 rounded-lg p-4 text-[15px] leading-7 text-slate-700 placeholder:text-slate-500 border border-slate-200"
               />
             </div>
 
-            {/* DERECHA */}
+            {/* DERECHO */}
             <div className="p-8 md:p-10">
               <textarea
                 ref={rightTA}
@@ -165,7 +166,7 @@ export default function Hero() {
                 onChange={(e) => setRightText(e.target.value)}
                 onInput={(e) => autoResize(e.currentTarget)}
                 placeholder={t("translator.right_placeholder")}
-                className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                className="w-full min-h-[260px] resize-none bg-white outline-none focus:ring-2 focus:ring-slate-200/60 rounded-lg p-4 text-[15px] leading-7 text-slate-700 placeholder:text-slate-500 border border-slate-200"
               />
             </div>
           </div>
