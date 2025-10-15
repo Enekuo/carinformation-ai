@@ -87,8 +87,20 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
-          <Link to="/" className="text-xl font-bold text-slate-900 tracking-tight mr-8">
-            {t("header.brand")}
+          {/* LOGO + TÍTULO: logo opcional (en /euskalia-logo.svg). 
+              Si no existe, se oculta el <img> y queda solo el texto. */}
+          <Link to="/" className="mr-8 flex items-center">
+            <img
+              src="/euskalia-logo.svg"
+              alt="Euskalia"
+              className="h-6 mr-2"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+            <span className="text-xl font-bold text-slate-900 tracking-tight">
+              Euskalia
+            </span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
@@ -186,7 +198,7 @@ export default function Header() {
           >
             <div className="flex justify-between items-center h-16 px-4 border-b border-slate-200">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold text-slate-900">
-                {t("header.brand")}
+                Euskalia
               </Link>
               <button onClick={() => setIsMobileMenuOpen(false)}>
                 <X size={24} className="text-slate-800" />
