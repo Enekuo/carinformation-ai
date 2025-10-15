@@ -51,12 +51,7 @@ export default function Hero() {
       >
         {/* Flecha */}
         <div className="relative">
-          <svg
-            width="20"
-            height="10"
-            viewBox="0 0 20 10"
-            className="mx-auto block"
-          >
+          <svg width="20" height="10" viewBox="0 0 20 10" className="mx-auto block">
             <path d="M0,10 L10,0 L20,10" className="fill-white" />
             <path d="M0,10 L10,0 L20,10" className="fill-none stroke-slate-200" />
           </svg>
@@ -77,7 +72,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="w-full bg-white py-10">
+    <section className="w-full bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
           {/* ===== Barra superior: grupo centrado (euskera · swap · castellano) ===== */}
@@ -155,13 +150,12 @@ export default function Hero() {
           </div>
 
           {/* ===== Dos paneles ===== */}
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h[430px] md:min-h-[430px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
             {/* Izquierdo */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
-              <h1 className="text-[32px] font-bold text-slate-900 leading-tight">
+              <h1 className="text-[20px] font-medium text-slate-500 leading-snug">
                 Escribe o pega el texto aquí.
               </h1>
-              {/* Frase eliminada */}
             </div>
             {/* Derecho */}
             <div className="p-8 md:p-10" />
