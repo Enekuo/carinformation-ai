@@ -1,6 +1,6 @@
 import React from "react";
 
-/* ====== DICCIONARIO (solo ES y EU) ====== */
+/* ====== DICCIONARIO (solo ES y EUS) ====== */
 export const translations = {
   header: {
     brand:     { ES: "Meditation.AI", EUS: "Meditation.AI" },
@@ -10,33 +10,57 @@ export const translations = {
     signIn:    { ES: "Iniciar sesión",EUS: "Saioa hasi" },
     startFree: { ES: "Comienza Gratis", EUS: "Doan hasi" },
   },
+
   toolsMenu: {
     users: {
       title:       { ES: "Usuarios", EUS: "Erabiltzaileak" },
       description: {
-        ES: "Meditación personalizada para usuarios particulares.",
-        EU: "Meditazio pertsonalizatua erabiltzaile partikularrentzat.",
+        ES:  "Meditación personalizada para usuarios particulares.",
+        EUS: "Meditazio pertsonalizatua erabiltzaile partikularrentzat.",
       },
     },
     companies: {
       title:       { ES: "Empresas", EUS: "Enpresak" },
       description: {
-        ES: "Meditaciones personalizadas para empresas.",
-        EU: "Meditazio pertsonalizatuak enpresentzat.",
+        ES:  "Meditaciones personalizadas para empresas.",
+        EUS: "Meditazio pertsonalizatuak enpresentzat.",
       },
     },
     creators: {
       title:       { ES: "Creadores de contenido", EUS: "Eduki-sortzaileak" },
       description: {
-        ES: "Meditaciones personalizadas para creadores de contenido.",
-        EU: "Meditazio pertsonalizatuak eduki-sortzaileentzat.",
+        ES:  "Meditaciones personalizadas para creadores de contenido.",
+        EUS: "Meditazio pertsonalizatuak eduki-sortzaileentzat.",
       },
     },
   },
+
   resourcesMenu: {
     support: { ES: "Soporte", EUS: "Laguntza" },
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
+
+  supportPage: {
+    title:       { ES: "Soporte", EUS: "Laguntza" },
+    subtitle:    { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },
+    kicker:      { ES: "¿Cómo podemos ayudarte?", EUS: "Nola lagun diezazukegu?" },
+    description: { ES: "Cuéntanos tu consulta y te responderemos lo antes posible.", EUS: "Esaiguzu zure kontsulta eta ahal bezain laster erantzungo dizugu." },
+    bubble:      { ES: "¿Tienes dudas? Escríbenos.", EUS: "Zalantzak al dituzu? Idatziguzu." },
+    cta:         { ES: "Contactar", EUS: "Harremanetan jarri" },
+    form: {
+      name_label:         { ES: "Nombre", EUS: "Izena" },
+      name_placeholder:   { ES: "Tu nombre", EUS: "Zure izena" },
+      email_label:        { ES: "Email", EUS: "Posta elektronikoa" },
+      email_placeholder:  { ES: "Tu email", EUS: "Zure posta elektronikoa" },
+      subject_label:      { ES: "Asunto", EUS: "Gaia" },
+      subject_placeholder:{ ES: "¿Sobre qué necesitas ayuda?", EUS: "Zerez behar duzu laguntza?" },
+      message_label:      { ES: "Mensaje", EUS: "Mezua" },
+      message_placeholder:{ ES: "Cuéntanos en qué podemos ayudarte", EUS: "Esaguzu nola lagundu diezazukegun" },
+      submit:             { ES: "Enviar", EUS: "Bidali" },
+      privacy_hint:       { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
+      privacy_link:       { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
+    }
+  }
 };
 
 /* ====== i18n runtime ====== */
@@ -51,11 +75,6 @@ export function LanguageProvider({ children, defaultLang = "ES" }) {
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
-/** Hook de traducción:
- *  t("ruta.a.clave", "fallback opcional")
- *  - Si falta la clave: devuelve fallback o la propia ruta.
- *  - Si la clave es objeto {ES, EU}: prioriza idioma → ES → EU → primer valor.
- */
 export function useTranslation() {
   const ctx = React.useContext(LanguageContext);
   if (!ctx) throw new Error("useTranslation must be used within a LanguageProvider");
@@ -68,10 +87,10 @@ export function useTranslation() {
     if (node === undefined) return fallback ?? key;
     if (typeof node === "string") return node;
     if (node && typeof node === "object") {
-      return node[ctx.language] ?? node.ES ?? node.EU ?? Object.values(node)[0] ?? (fallback ?? key);
+      return node[ctx.language] ?? node.ES ?? node.EUS ?? Object.values(node)[0] ?? (fallback ?? key);
     }
     return fallback ?? key;
   };
 
   return { ...ctx, t };
-} 
+}
