@@ -6,7 +6,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
           {/* BARRA SUPERIOR más adentro */}
-          <div className="h-12 grid grid-cols-[1fr_auto_1fr] items-center border-b border-slate-200 px-28">
+          <div className="h-12 grid grid-cols-[1fr_auto_1fr] items-center border-b border-slate-200 px-48">
             {/* Izquierda */}
             <div className="justify-self-start">
               <button
