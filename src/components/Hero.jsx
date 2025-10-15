@@ -6,47 +6,42 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-6">
         {/* CONTENEDOR PRINCIPAL */}
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
-          {/* BARRA SUPERIOR: izquierda / centro / derecha */}
-          <div className="h-12 grid grid-cols-[1fr_auto_1fr] items-center border-b border-slate-200">
+          
+          {/* BARRA SUPERIOR: izquierda/centro/derecha sin padding lateral */}
+          <div className="relative h-12 border-b border-slate-200">
             {/* Izquierda */}
-            <div className="pl-4 justify-self-start">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-slate-900"
-              >
-                <span>euskera</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </div>
+            <button
+              type="button"
+              className="absolute left-4 top-1/2 -translate-y-1/2 inline-flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-slate-900"
+            >
+              <span>euskera</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
 
-            {/* Centro: swap en un cuadrito gris claro */}
-            <div className="justify-self-center">
-              <button
-                type="button"
-                className="inline-flex items-center justify-center h-8 w-8 rounded-md bg-slate-100 hover:bg-slate-200 transition"
-                aria-label="Intercambiar idiomas"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </div>
+            {/* Centro (swap) */}
+            <button
+              type="button"
+              className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 rounded-md bg-slate-100 hover:bg-slate-200 transition"
+              aria-label="Intercambiar idiomas"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
 
             {/* Derecha */}
-            <div className="pr-4 justify-self-end">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-slate-900"
-              >
-                <span>español</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </div>
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-slate-900"
+            >
+              <span>español</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
 
           {/* DOS PANELES */}
