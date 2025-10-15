@@ -123,7 +123,7 @@ export default function Header() {
                   {t("header.resources")}
                   <ChevronDown size={16} className={`transition-transform ${isResourcesMenuOpen ? "rotate-180" : ""}`} />
                 </button>
-              </DropdownMenuTrigger>
+              </DropdownMenuTrigger> 
               <DropdownMenuContent
                 onPointerLeave={() => setIsResourcesMenuOpen(false)}
                 className="bg-white rounded-xl shadow-lg border border-slate-200 mt-2"
