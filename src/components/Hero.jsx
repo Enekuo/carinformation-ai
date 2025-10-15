@@ -136,9 +136,11 @@ export default function Hero() {
   };
 
   return (
-    <section className="w-full min-h-screen bg-[#F4F8FF] py-10">
+    // Quitado min-h-screen
+    <section className="w-full bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[calc(100vh-180px)]">
+        {/* Quitado min-h-[calc(100vh-180px)] */}
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
           {/* barra superior */}
           <div className="relative h-12 border-b border-slate-200">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -213,13 +215,13 @@ export default function Hero() {
               />
             </div>
 
-            {/* DERECHA: salida (editable pero se sobrescribe cuando no está en foco) */}
+            {/* DERECHA: salida */}
             <div className="p-8 md:p-10">
               <textarea
                 ref={rightTA}
                 value={
                   loading && document.activeElement !== rightTA.current
-                    ? t("translator.loading")  // muestra “Traduciendo…”
+                    ? t("translator.loading")
                     : rightText
                 }
                 onChange={(e) => setRightText(e.target.value)}
