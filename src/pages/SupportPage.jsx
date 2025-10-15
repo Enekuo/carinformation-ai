@@ -71,7 +71,7 @@ const SupportPage = () => {
                 <img
                   src="/olondo.mascota.png"
                   alt="Mascota de soporte de Olondo.AI"
-                  className="h-80 w-auto select-none pointer-events-none"
+                  className="h-60  w-auto select-none pointer-events-none"
                   draggable={false}
                  oading="lazy"
                 />
