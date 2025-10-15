@@ -69,10 +69,11 @@ const SupportPage = () => {
 
               <div className="relative mt-6 flex justify-center -ml-4 md:-ml-8">
                 <img
-                  src="https://horizons-cdn.hostinger.com/b165068b-ef99-4afb-83a7-dadb10c1561e/8fafc196880542f909742c77317aa98f.png"
-                  alt="Mascota de soporte de Meditation.AI"
+                  src="/olondo.mascota.png"
+                  alt="Mascota de soporte de Olondo.AI"
                   className="h-80 w-auto select-none pointer-events-none"
                   draggable={false}
+                 oading="lazy"
                 />
                 <div className="absolute left-[calc(100%-180px)] top-3 hidden md:block">
                   <div className="absolute -left-2 top-3 h-2.5 w-2.5 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)]" />
