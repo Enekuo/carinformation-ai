@@ -40,6 +40,12 @@ export const translations = {
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
 
+  /* === NUEVO: placeholders de los textareas del traductor === */
+  translator: {
+    left_placeholder:  { ES: "Escribe o pega el texto aquí.", EUS: "Idatzi edo itsatsi testua hemen." },
+    right_placeholder: { ES: "Aquí aparecerá la traducción.", EUS: "Hemen agertuko da itzulpena." },
+  },
+
   supportPage: {
     title:       { ES: "Soporte", EUS: "Laguntza" },
     subtitle:    { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },

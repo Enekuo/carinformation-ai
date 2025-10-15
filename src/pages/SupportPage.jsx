@@ -14,20 +14,18 @@ export default function Hero() {
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
 
-  const [leftText, setLeftText]   = useState("");
+  // NUEVO: estados para los dos cuadros
+  const [leftText, setLeftText] = useState("");
   const [rightText, setRightText] = useState("");
 
-  const leftRef  = useRef(null);
+  const leftRef = useRef(null);
   const rightRef = useRef(null);
-  const leftTA   = useRef(null);
-  const rightTA  = useRef(null);
+  const leftTA  = useRef(null);
+  const rightTA = useRef(null);
 
-  const swap = () => {
-    setSrc(dst);
-    setDst(src);
-  };
+  const swap = () => { setSrc(dst); setDst(src); };
 
-  // Cerrar dropdowns al click fuera
+  // cerrar dropdowns
   useEffect(() => {
     const onDown = (e) => {
       if (leftRef.current  && !leftRef.current.contains(e.target))  setOpenLeft(false);
@@ -37,7 +35,7 @@ export default function Hero() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  // Auto-resize textareas
+  // NUEVO: auto-resize de textareas
   const autoResize = (el) => {
     if (!el) return;
     el.style.height = "auto";
@@ -46,6 +44,7 @@ export default function Hero() {
   useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
   useEffect(() => { autoResize(rightTA.current); }, [rightText]);
 
+  // Item dropdown (sin icono)
   const Item = ({ active, label, onClick }) => (
     <button
       type="button"
@@ -86,7 +85,7 @@ export default function Hero() {
     <section className="w-full min-h-screen bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[calc(100vh-180px)] flex flex-col">
-          {/* Barra superior */}
+          {/* ===== Barra superior ===== */}
           <div className="relative h-12 border-b border-slate-200">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
@@ -99,7 +98,7 @@ export default function Hero() {
                   >
                     <span>{OPTIONS.find(o => o.value === src)?.label}</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
                   <Dropdown
@@ -110,7 +109,7 @@ export default function Hero() {
                   />
                 </div>
 
-                {/* Swap */}
+                {/* Botón swap */}
                 <button
                   type="button"
                   aria-label="Intercambiar idiomas"
@@ -132,7 +131,7 @@ export default function Hero() {
                   >
                     <span>{OPTIONS.find(o => o.value === dst)?.label}</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
                   <Dropdown
@@ -146,7 +145,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Dos paneles editables con auto-resize */}
+          {/* ===== Dos paneles EDITABLES ===== */}
           <div className="grid grid-cols-1 md:grid-cols-2 w-full flex-1 min-h-[430px]">
             {/* Izquierdo */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
