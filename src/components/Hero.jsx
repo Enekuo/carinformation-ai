@@ -29,21 +29,16 @@ export default function Hero() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  // Item del dropdown con icono sencillo
+  // Item del dropdown SIN icono
   const Item = ({ active, label, onClick }) => (
     <button
       type="button"
       onClick={onClick}
-      className={`w-full flex items-center gap-2 px-3 py-2.5 text-[14px] rounded-md transition ${
+      className={`w-full px-3 py-2.5 text-left text-[14px] rounded-md transition ${
         active ? "bg-slate-100" : "hover:bg-slate-100"
-      }`}
+      } text-slate-800`}
     >
-      {/* iconito minimal */}
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0">
-        <circle cx="12" cy="12" r="9" stroke="#475569" strokeWidth="1.5" />
-        <path d="M6 12h12M12 6v12" stroke="#475569" strokeWidth="1.5" />
-      </svg>
-      <span className="text-slate-800">{label}</span>
+      {label}
     </button>
   );
 
@@ -160,7 +155,7 @@ export default function Hero() {
           </div>
 
           {/* ===== Dos paneles ===== */}
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h[430px] md:min-h-[430px]">
             {/* Izquierdo */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
               <h1 className="text-[32px] font-bold text-slate-900 leading-tight">
