@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-// SOLO ES / EU
 const languages = [
   { code: "ES", name: "Español" },
   { code: "EUS", name: "Euskara" },
@@ -22,7 +21,6 @@ const languages = [
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false);
   const { toast } = useToast();
   const { language, setLanguage, t } = useTranslation();
@@ -41,27 +39,6 @@ export default function Header() {
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
-  const tools = [
-    {
-      emoji: "🧘‍♂️",
-      title: t("toolsMenu.users.title"),
-      description: t("toolsMenu.users.description"),
-      link: "/usuarios",
-    },
-    {
-      emoji: "💼",
-      title: t("toolsMenu.companies.title"),
-      description: t("toolsMenu.companies.description"),
-      link: "/empresas",
-    },
-    {
-      emoji: "💻",
-      title: t("toolsMenu.creators.title"),
-      description: t("toolsMenu.creators.description"),
-      link: "/creadores",
-    },
-  ];
-
   const resources = [
     {
       name: t("resourcesMenu.support"),
@@ -74,25 +51,6 @@ export default function Header() {
       icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
     },
   ];
-
-  const ToolsDropdownContent = () => (
-    <div className="w-full md:w-[340px] p-2 space-y-2">
-      {tools.map((tool) => (
-        <Link
-          key={tool.title}
-          to={tool.link}
-          onClick={handleFeatureClick}
-          className="group flex items-start p-2 rounded-lg hover:bg-slate-50 focus-visible:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-        >
-          <div className="text-xl mr-3 mt-0.5">{tool.emoji}</div>
-          <div>
-            <p className="font-semibold text-sm text-slate-800">{tool.title}</p>
-            <p className="text-xs text-slate-500 leading-snug">{tool.description}</p>
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
 
   const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
     <div className={`p-1 ${inMobileMenu ? "w-full" : "w-48"}`}>
@@ -128,36 +86,12 @@ export default function Header() {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-        {/* Brand + nav */}
         <div className="flex items-center">
           <Link to="/" className="text-xl font-bold text-slate-900 tracking-tight mr-8">
             {t("header.brand")}
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {/* Tools */}
-            <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
-              <DropdownMenuTrigger asChild>
-                <button
-                  onPointerEnter={() => setIsToolsMenuOpen(true)}
-                  className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
-                >
-                  {t("header.tools")}
-                  <ChevronDown size={16} className={`transition-transform ${isToolsMenuOpen ? "rotate-180" : ""}`} />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                onPointerLeave={() => setIsToolsMenuOpen(false)}
-                className="bg-white rounded-2xl shadow-lg border border-slate-200 mt-2"
-                align="start"
-                sideOffset={8}
-              >
-                <DropdownMenuArrow className="fill-white stroke-slate-200" width={16} height={8} />
-                <ToolsDropdownContent />
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Resources */}
             <DropdownMenu open={isResourcesMenuOpen} onOpenChange={setIsResourcesMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
@@ -179,7 +113,6 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Pricing (simulado) */}
             <button
               onClick={handleFeatureClick}
               className="text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
@@ -189,9 +122,7 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Right actions */}
         <div className="hidden lg:flex items-center gap-4">
-          {/* Language */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-slate-900">
@@ -227,7 +158,6 @@ export default function Header() {
           </motion.button>
         </div>
 
-        {/* Mobile button */}
         <div className="lg:hidden">
           <button onClick={() => setIsMobileMenuOpen(true)} className="text-slate-800">
             <Menu size={24} />
@@ -235,7 +165,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -256,11 +185,6 @@ export default function Header() {
 
             <div className="p-4 flex flex-col h-[calc(100%-64px)]">
               <div className="flex flex-col gap-1">
-                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">{t("header.tools")}</p>
-                <ToolsDropdownContent />
-                <div className="px-2 my-1">
-                  <DropdownMenuSeparator />
-                </div>
                 <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">{t("header.resources")}</p>
                 <div className="px-2">
                   <ResourcesDropdownContent inMobileMenu />
