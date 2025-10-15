@@ -3,30 +3,30 @@ import React from "react";
 /* ====== DICCIONARIO (solo ES y EU) ====== */
 export const translations = {
   header: {
-    brand:     { ES: "Meditation.AI", EU: "Meditation.AI" },
-    tools:     { ES: "Herramientas",  EU: "Tresnak" },
-    resources: { ES: "Recursos",      EU: "Baliabideak" },
-    pricing:   { ES: "Precios",       EU: "Prezioak" },
-    signIn:    { ES: "Iniciar sesión",EU: "Saioa hasi" },
-    startFree: { ES: "Comienza Gratis", EU: "Doan hasi" },
+    brand:     { ES: "Meditation.AI", EUS: "Meditation.AI" },
+    tools:     { ES: "Herramientas",  EUS: "Tresnak" },
+    resources: { ES: "Recursos",      EUS: "Baliabideak" },
+    pricing:   { ES: "Precios",       EUS: "Prezioak" },
+    signIn:    { ES: "Iniciar sesión",EUS: "Saioa hasi" },
+    startFree: { ES: "Comienza Gratis", EUS: "Doan hasi" },
   },
   toolsMenu: {
     users: {
-      title:       { ES: "Usuarios", EU: "Erabiltzaileak" },
+      title:       { ES: "Usuarios", EUS: "Erabiltzaileak" },
       description: {
         ES: "Meditación personalizada para usuarios particulares.",
         EU: "Meditazio pertsonalizatua erabiltzaile partikularrentzat.",
       },
     },
     companies: {
-      title:       { ES: "Empresas", EU: "Enpresak" },
+      title:       { ES: "Empresas", EUS: "Enpresak" },
       description: {
         ES: "Meditaciones personalizadas para empresas.",
         EU: "Meditazio pertsonalizatuak enpresentzat.",
       },
     },
     creators: {
-      title:       { ES: "Creadores de contenido", EU: "Eduki-sortzaileak" },
+      title:       { ES: "Creadores de contenido", EUS: "Eduki-sortzaileak" },
       description: {
         ES: "Meditaciones personalizadas para creadores de contenido.",
         EU: "Meditazio pertsonalizatuak eduki-sortzaileentzat.",
@@ -34,13 +34,13 @@ export const translations = {
     },
   },
   resourcesMenu: {
-    support: { ES: "Soporte", EU: "Laguntza" },
-    aiChat:  { ES: "Chat de IA", EU: "IA txata" },
+    support: { ES: "Soporte", EUS: "Laguntza" },
+    aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
 };
 
 /* ====== i18n runtime ====== */
-export const SUPPORTED_LANGS = ["ES", "EU"];
+export const SUPPORTED_LANGS = ["ES", "EUS"];
 export const LanguageContext = React.createContext(null);
 
 export function LanguageProvider({ children, defaultLang = "ES" }) {

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from "react";
 import { LanguageContext, translations } from "@/lib/translations";
 
 const LanguageProvider = ({ children, defaultLang = "ES" }) => {
-  const [language, setLanguage] = useState(defaultLang);
+  const [language, setLanguage] = useState(defaultLang); // usa "ES" o "EUS"
 
   const t = useCallback(
     (key, fallback) => {
@@ -15,8 +15,9 @@ const LanguageProvider = ({ children, defaultLang = "ES" }) => {
       if (node && typeof node === "object") {
         return (
           node[language] ??
-          node.ES ??
-          node.EU ??
+          node.EUS ??     // si el diccionario usa EUS
+          node.EU  ??     // si el diccionario usa EU
+          node.ES  ??     
           Object.values(node)[0] ??
           (fallback ?? key)
         );
@@ -27,20 +28,11 @@ const LanguageProvider = ({ children, defaultLang = "ES" }) => {
   );
 
   const value = useMemo(
-    () => ({
-      language,
-      setLanguage,
-      t,
-      isLoading: false,
-    }),
+    () => ({ language, setLanguage, t, isLoading: false }),
     [language, t]
   );
 
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
 
 export default LanguageProvider;
