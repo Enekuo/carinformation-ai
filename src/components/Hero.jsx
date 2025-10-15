@@ -6,6 +6,12 @@ const OPTIONS = [
   { value: "es",  label: "castellano" },
 ];
 
+// Mapeo a códigos de MyMemory
+const MM_CODES = { eus: "eu", es: "es" };
+
+// Opcional: si quieres más cuota gratuita, pon tu email:
+const MYMEMORY_EMAIL = ""; // e.g. "tucorreo@dominio.com" -> añade &de=...
+
 export default function Hero() {
   const { t } = useTranslation();
 
@@ -13,20 +19,28 @@ export default function Hero() {
   const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
-  const [leftText, setLeftText] = useState("");
+
+  const [leftText, setLeftText]   = useState("");
   const [rightText, setRightText] = useState("");
 
-  const leftRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+
+  const leftRef  = useRef(null);
   const rightRef = useRef(null);
-  const leftTA = useRef(null);
-  const rightTA = useRef(null);
+  const leftTA   = useRef(null);
+  const rightTA  = useRef(null);
 
-  const swap = () => { setSrc(dst); setDst(src); };
+  const swap = () => {
+    setSrc(dst);
+    setDst(src);
+    // no tocamos textos; solo cambia dirección
+  };
 
-  // cerrar dropdowns al hacer click fuera
+  // cerrar dropdowns
   useEffect(() => {
     const onDown = (e) => {
-      if (leftRef.current && !leftRef.current.contains(e.target)) setOpenLeft(false);
+      if (leftRef.current  && !leftRef.current.contains(e.target))  setOpenLeft(false);
       if (rightRef.current && !rightRef.current.contains(e.target)) setOpenRight(false);
     };
     window.addEventListener("mousedown", onDown);
@@ -39,9 +53,51 @@ export default function Hero() {
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   };
-
-  useEffect(() => { autoResize(leftTA.current); }, [leftText]);
+  useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
   useEffect(() => { autoResize(rightTA.current); }, [rightText]);
+
+  // ==== Traducción con MyMemory (debounced) ====
+  useEffect(() => {
+    setErr("");
+
+    // No traducir si no hay texto
+    if (!leftText.trim()) { setRightText(""); return; }
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        setLoading(true);
+        const from = MM_CODES[src];
+        const to   = MM_CODES[dst];
+        const base = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(leftText)}&langpair=${from}|${to}`;
+        const url  = MYMEMORY_EMAIL ? `${base}&de=${encodeURIComponent(MYMEMORY_EMAIL)}` : base;
+
+        const res = await fetch(url, { signal: controller.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        // Texto traducido principal
+        const translated = data?.responseData?.translatedText ?? "";
+        setRightText(translated);
+
+        // Si hay un "match" mejor en matches (quality alta), úsalo
+        const best = Array.isArray(data?.matches)
+          ? data.matches.sort((a,b) => (b.quality ?? 0) - (a.quality ?? 0))[0]
+          : null;
+        if (best && (best.quality ?? 0) > 90 && best.translation) {
+          setRightText(best.translation);
+        }
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          setErr("No se pudo traducir ahora mismo.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }, 450); // debounce 450ms
+
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [leftText, src, dst]);
 
   const Item = ({ active, label, onClick }) => (
     <button
@@ -145,7 +201,7 @@ export default function Hero() {
 
           {/* paneles */}
           <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
-            {/* IZQUIERDA */}
+            {/* IZQUIERDA: entrada */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
               <textarea
                 ref={leftTA}
@@ -157,16 +213,21 @@ export default function Hero() {
               />
             </div>
 
-            {/* DERECHA */}
+            {/* DERECHA: salida (editable pero se sobrescribe cuando no está en foco) */}
             <div className="p-8 md:p-10">
               <textarea
                 ref={rightTA}
-                value={rightText}
+                value={
+                  loading && document.activeElement !== rightTA.current
+                    ? t("translator.loading")  // muestra “Traduciendo…”
+                    : rightText
+                }
                 onChange={(e) => setRightText(e.target.value)}
                 onInput={(e) => autoResize(e.currentTarget)}
                 placeholder={t("translator.right_placeholder")}
-                className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
               />
+              {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
             </div>
           </div>
         </div>
