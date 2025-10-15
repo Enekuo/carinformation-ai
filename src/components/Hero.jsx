@@ -4,24 +4,23 @@ const Hero = () => {
   return (
     <section className="w-full bg-white py-10">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Contenedor principal */}
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
-          {/* Barra superior: más adentro */}
-          <div className="h-12 grid grid-cols-[1fr_auto_1fr] items-center border-b border-slate-200 px-10">
+          {/* BARRA SUPERIOR más adentro */}
+          <div className="h-12 grid grid-cols-[1fr_auto_1fr] items-center border-b border-slate-200 px-28">
             {/* Izquierda */}
             <div className="justify-self-start">
               <button
                 type="button"
-                className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-slate-900"
+                className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-700"
               >
                 <span>euskera</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
             </div>
 
-            {/* Centro: swap */}
+            {/* Centro */}
             <div className="justify-self-center">
               <button
                 type="button"
@@ -39,19 +38,18 @@ const Hero = () => {
             <div className="justify-self-end">
               <button
                 type="button"
-                className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-slate-900"
+                className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-700"
               >
                 <span>castellano</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
             </div>
           </div>
 
-          {/* Dos paneles */}
+          {/* DOS PANELES */}
           <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
-            {/* Izquierdo */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
               <h1 className="text-[32px] font-bold text-slate-900 mb-4 leading-tight">
                 Escribe o pega el texto aquí.
@@ -60,8 +58,6 @@ const Hero = () => {
                 Arrastra y suelta aquí archivos PDF, Word (.docx) o PowerPoint (.pptx) para traducirlos.
               </p>
             </div>
-
-            {/* Derecho (vacío) */}
             <div className="p-8 md:p-10" />
           </div>
         </div>
