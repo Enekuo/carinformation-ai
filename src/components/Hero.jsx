@@ -155,7 +155,7 @@ export default function Hero() {
           <div className="grid grid-cols-1 md:grid-cols-2 w-full flex-1 min-h-[430px]">
             {/* Izquierdo */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
-              <h1 className="text-[20px] font-medium text-slate-500 leading-snug">
+              <h1 className="text-[15px] font-medium text-slate-700 leading-snug">
                 Escribe o pega el texto aquí.
               </h1>
             </div>
