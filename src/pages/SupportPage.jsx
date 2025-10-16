@@ -1,152 +1,188 @@
 import React, { useState } from "react";
-import { useTranslation } from "@/lib/translations";
-import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
+// TODO(4): ajusta si tu botón no está aquí
+import { Button } from "@/components/ui/button";
+// TODO(5): ajusta si tu hook i18n no está aquí
+import { useLanguage } from "@/contexts/LanguageContext";
+import { motion } from "framer-motion";
 
-export default function SupportPage() {
-  const { t } = useTranslation();
-  const { toast } = useToast();
+const SupportPage = () => {
+  const { t } = useLanguage();
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
+    honey: "", // honeypot
   });
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-  };
+  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    toast({
-      title: t("supportPage.title"),
-      description: t("supportPage.cta"),
-    });
-    setForm({ name: "", email: "", subject: "", message: "" });
+    if (form.honey) return; // bot
+    // TODO(1): pon el correo real de soporte de Euskalia
+    const to = "TODO_soporte@euskalia.eus";
+    const subject = encodeURIComponent(
+      `[Euskalia] ${form.subject || t("support_form_subject_placeholder")}`
+    );
+    const body = encodeURIComponent(
+      `${t("support_form_name_label")}: ${form.name}\n${t("support_form_email_label")}: ${form.email}\n\n${t("support_form_message_label")}:\n${form.message}`
+    );
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
   };
 
   return (
-    <div className="min-h-[70vh] w-full bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-14">
-        <div className="grid gap-8 md:grid-cols-2">
-          <div className="flex flex-col">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
-              <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
-                {t("supportPage.title")}
-              </h1>
-              <p className="mt-2 text-slate-600">
-                {t("supportPage.subtitle")}
-              </p>
-              <div className="mt-4">
-                <button className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-white text-sm font-semibold shadow hover:bg-blue-700">
-                  {t("supportPage.cta")}
-                </button>
+    <div className="min-h-[70vh] bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+
+        <div className="grid gap-10 md:grid-cols-2 items-start">
+          {/* Left: bloque info + mascota */}
+          <div>
+            <section className="mb-8 rounded-2xl border border-slate-200 bg-[#F7F8FC] p-5 sm:p-6 dark:bg-slate-800 dark:border-slate-700">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
+                    {t("support_title")}
+                  </h2>
+                  <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
+                    {t("support_subtitle")}
+                  </p>
+                </div>
+                <div className="hidden md:flex items-center gap-2">
+                  <div className="rounded-xl bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm whitespace-nowrap">
+                    {t("support_cta")}
+                  </div>
+                </div>
               </div>
+            </section>
 
-              <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {t("supportPage.kicker")}
-              </p>
-              <p className="mt-1 text-slate-600">
-                {t("supportPage.description")}
-              </p>
+            <p className="text-sm font-semibold tracking-wider text-blue-600 mb-3 dark:text-blue-400">
+              {t("support_kicker")}
+            </p>
+            <p className="mt-4 text-slate-600 text-lg dark:text-slate-300">
+              {t("support_subtitle")}
+            </p>
 
-              <div className="relative mt-8 flex items-center justify-center">
-                <img
-                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/user-md.png"
-                  alt="Monk"
-                  className="h-40 w-40 object-contain opacity-90 select-none"
-                />
-                <span className="absolute -right-3 top-4 translate-x-full whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm">
-                  {t("supportPage.bubble")}
-                </span>
+            {/* Mascota + burbuja */}
+            <div className="relative mt-10 inline-block">
+              {/* TODO(3): ruta real a la imagen */}
+              <img
+                src="TODO_/euskalia-mascota.png"
+                alt="Soporte Euskalia"
+                className="h-[260px] sm:h-[320px] w-auto select-none pointer-events-none dark:brightness-95"
+                draggable={false}
+              />
+
+              {/* Burbuja */}
+              <div className="absolute left-[calc(100%+12px)] top-6 hidden md:block">
+                <div className="absolute -left-2 top-4 h-3 w-3 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
+                <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-600 dark:bg-slate-700">
+                  <span className="text-slate-700 dark:text-slate-200">
+                    {t("support_bubble_text")}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
-            <form onSubmit={onSubmit} className="space-y-4">
+          {/* Right: formulario */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl border bg-white p-6 sm:p-8 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
+          >
+            <form onSubmit={onSubmit} className="space-y-5">
+              {/* Honeypot */}
+              <input
+                type="text"
+                name="honey"
+                value={form.honey}
+                onChange={onChange}
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  {t("supportPage.form.name_label")}
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {t("support_form_name_label")}
                 </label>
                 <input
                   type="text"
                   name="name"
                   value={form.name}
                   onChange={onChange}
-                  placeholder={t("supportPage.form.name_placeholder")}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder={t("support_form_name_placeholder")}
                   required
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  {t("supportPage.form.email_label")}
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {t("support_form_email_label")}
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={form.email}
                   onChange={onChange}
-                  placeholder={t("supportPage.form.email_placeholder")}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="email@ejemplo.com"
                   required
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  {t("supportPage.form.subject_label")}
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {t("support_form_subject_label")}
                 </label>
                 <input
                   type="text"
                   name="subject"
                   value={form.subject}
                   onChange={onChange}
-                  placeholder={t("supportPage.form.subject_placeholder")}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                  required
+                  placeholder={t("support_form_subject_placeholder")}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  {t("supportPage.form.message_label")}
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {t("support_form_message_label")}
                 </label>
                 <textarea
                   name="message"
                   value={form.message}
                   onChange={onChange}
-                  placeholder={t("supportPage.form.message_placeholder")}
-                  className="w-full min-h-[140px] rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder={t("support_form_message_placeholder")}
                   required
+                  rows={6}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="mt-2 w-full rounded-full bg-blue-600 px-4 py-2.5 text-white text-sm font-semibold shadow hover:bg-blue-700"
-              >
-                {t("supportPage.form.submit")}
-              </button>
+              <div className="pt-2">
+                <Button type="submit" className="h-11 rounded-xl px-5">
+                  {t("support_form_submit")}
+                </Button>
+              </div>
 
-              <p className="mt-2 text-xs text-slate-500">
-                {t("supportPage.form.privacy_hint")}{" "}
-                <Link
-                  to="/privacidad"
-                  className="underline underline-offset-2 text-slate-700 hover:text-slate-900"
-                >
-                  {t("supportPage.form.privacy_link")}
-                </Link>.
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {t("support_form_privacy_hint")}{" "}
+                {/* TODO(2): ruta real a tu política */}
+                <a href="TODO_/privacidad" className="underline underline-offset-2">
+                  {t("support_form_privacy_link")}
+                </a>
+                .
               </p>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default SupportPage;
