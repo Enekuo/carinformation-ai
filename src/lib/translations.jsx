@@ -7,27 +7,27 @@ export const translations = {
     tools:     { ES: "Herramientas",  EUS: "Tresnak" },
     resources: { ES: "Recursos",      EUS: "Baliabideak" },
     pricing:   { ES: "Precios",       EUS: "Prezioak" },
-    signIn:    { ES: "Iniciar sesión",EUS: "Saioa hasi" },
+    signIn:    { ES: "Iniciar sesión", EUS: "Saioa hasi" },
     startFree: { ES: "Comienza Gratis", EUS: "Doan hasi" },
   },
 
   toolsMenu: {
     users: {
-      title:       { ES: "Usuarios", EUS: "Erabiltzaileak" },
+      title: { ES: "Usuarios", EUS: "Erabiltzaileak" },
       description: {
         ES:  "Meditación personalizada para usuarios particulares.",
         EUS: "Meditazio pertsonalizatua erabiltzaile partikularrentzat.",
       },
     },
     companies: {
-      title:       { ES: "Empresas", EUS: "Enpresak" },
+      title: { ES: "Empresas", EUS: "Enpresak" },
       description: {
         ES:  "Meditaciones personalizadas para empresas.",
         EUS: "Meditazio pertsonalizatuak enpresentzat.",
       },
     },
     creators: {
-      title:       { ES: "Creadores de contenido", EUS: "Eduki-sortzaileak" },
+      title: { ES: "Creadores de contenido", EUS: "Eduki-sortzaileak" },
       description: {
         ES:  "Meditaciones personalizadas para creadores de contenido.",
         EUS: "Meditazio pertsonalizatuak eduki-sortzaileentzat.",
@@ -40,37 +40,57 @@ export const translations = {
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
 
-  /* === NUEVO: placeholders de los textareas del traductor === */
+  /* === Placeholders del traductor === */
   translator: {
     left_placeholder:  { ES: "Escribe o pega el texto aquí.", EUS: "Idatzi edo itsatsi testua hemen." },
     right_placeholder: { ES: "Aquí aparecerá la traducción.", EUS: "Hemen agertuko da itzulpena." },
   },
 
-  // Añade este bloque al objeto de traducciones
-supportPage: {
-  title:       { ES: "Soporte", EUS: "Laguntza" },
-  subtitle:    { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },
-  kicker:      { ES: "¿Cómo podemos ayudarte?", EUS: "Nola lagun diezazukegu?" },
-  description: { ES: "Cuéntanos tu consulta y te responderemos lo antes posible.", EUS: "Esaiguzu zure kontsulta eta ahal bezain laster erantzungo dizugu." },
-  bubble:      { ES: "¿Tienes dudas? Escríbenos.", EUS: "Zalantzak al dituzu? Idatziguzu." },
-  cta:         { ES: "Contactar", EUS: "Harremanetan jarri" },
-  form: {
-    name_label:          { ES: "Nombre", EUS: "Izena" },
-    name_placeholder:    { ES: "Tu nombre", EUS: "Zure izena" },
-    email_label:         { ES: "Email", EUS: "Posta elektronikoa" },
-    email_placeholder:   { ES: "Tu email", EUS: "Zure posta elektronikoa" },
-    subject_label:       { ES: "Asunto", EUS: "Gaia" },
-    subject_placeholder: { ES: "¿Sobre qué necesitas ayuda?", EUS: "Zerez behar duzu laguntza?" },
-    message_label:       { ES: "Mensaje", EUS: "Mezua" },
-    message_placeholder: { ES: "Cuéntanos en qué podemos ayudarte", EUS: "Esaguzu nola lagundu diezazukegun" },
-    submit:              { ES: "Enviar", EUS: "Bidali" },
-    privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
-    privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" }
-  
+  /* === Bloque anidado (por si lo usas en otras vistas) === */
+  supportPage: {
+    title:       { ES: "Soporte", EUS: "Laguntza" },
+    subtitle:    { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },
+    kicker:      { ES: "¿Cómo podemos ayudarte?", EUS: "Nola lagun diezazukegu?" },
+    description: { ES: "Cuéntanos tu consulta y te responderemos lo antes posible.", EUS: "Esaiguzu zure kontsulta eta ahal bezain laster erantzungo dizugu." },
+    bubble:      { ES: "¿Tienes dudas? Escríbenos.", EUS: "Zalantzak al dituzu? Idatziguzu." },
+    cta:         { ES: "Contactar", EUS: "Harremanetan jarri" },
+    form: {
+      name_label:          { ES: "Nombre", EUS: "Izena" },
+      name_placeholder:    { ES: "Tu nombre", EUS: "Zure izena" },
+      email_label:         { ES: "Email", EUS: "Posta elektronikoa" },
+      email_placeholder:   { ES: "Tu email", EUS: "Zure posta elektronikoa" },
+      subject_label:       { ES: "Asunto", EUS: "Gaia" },
+      subject_placeholder: { ES: "¿Sobre qué necesitas ayuda?", EUS: "Zerez behar duzu laguntza?" },
+      message_label:       { ES: "Mensaje", EUS: "Mezua" },
+      message_placeholder: { ES: "Cuéntanos en qué podemos ayudarte", EUS: "Esaguzu nola lagundu diezazukegun" },
+      submit:              { ES: "Enviar", EUS: "Bidali" },
+      privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
+      privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
+    },
+  },
 
+  /* === Claves planas que usa la página (support_*) === */
+  support_title:        { ES: "Soporte", EUS: "Laguntza" },
+  support_subtitle:     { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },
+  support_kicker:       { ES: "¿Cómo podemos ayudarte?", EUS: "Nola lagun diezazukegu?" },
+  support_cta:          { ES: "Contactar", EUS: "Harremanetan jarri" },
+  support_bubble_text:  { ES: "¿Tienes dudas? Escríbenos.", EUS: "Zalantzak al dituzu? Idatziguzu." },
 
-    }
-  }
+  support_form_name_label:          { ES: "Nombre", EUS: "Izena" },
+  support_form_name_placeholder:    { ES: "Tu nombre", EUS: "Zure izena" },
+
+  support_form_email_label:         { ES: "Email", EUS: "Posta elektronikoa" },
+  support_form_email_placeholder:   { ES: "Tu email", EUS: "Zure posta elektronikoa" },
+
+  support_form_subject_label:       { ES: "Asunto", EUS: "Gaia" },
+  support_form_subject_placeholder: { ES: "¿Sobre qué necesitas ayuda?", EUS: "Zerez behar duzu laguntza?" },
+
+  support_form_message_label:       { ES: "Mensaje", EUS: "Mezua" },
+  support_form_message_placeholder: { ES: "Cuéntanos en qué podemos ayudarte", EUS: "Esaguzu nola lagundu diezazukegun" },
+
+  support_form_submit:              { ES: "Enviar", EUS: "Bidali" },
+  support_form_privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
+  support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
 };
 
 /* ====== i18n runtime ====== */

@@ -32,15 +32,18 @@ const SupportPage = () => {
   };
 
   return (
+    /* Altura exacta de viewport y sin scroll global */
     <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
-      <div className="mx-auto h-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-        <div className="grid h-full gap-6 md:grid-cols-2 items-stretch">
-          {/* Izquierda: info compacta */}
+      {/* Altura interna calculada: resta ~88px de navbar (ajustable) */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3 pb-4">
+        <div className="grid items-stretch gap-6 md:grid-cols-2"
+             style={{ height: "calc(100vh - 96px)" }}>
+          {/* ===== Columna izquierda (compacta) ===== */}
           <div className="flex min-h-0 flex-col">
             <section className="rounded-2xl border border-slate-200 bg-[#F7F8FC] p-4 sm:p-5 dark:bg-slate-800 dark:border-slate-700">
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0">
-                  <h2 className="truncate text-[28px] sm:text-3xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
+                  <h2 className="truncate text-[26px] sm:text-3xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
                     {t("support_title")}
                   </h2>
                   <p className="mt-1 text-sm sm:text-base text-slate-600 dark:text-slate-300">
@@ -64,15 +67,16 @@ const SupportPage = () => {
               </p>
             </div>
 
-            {/* Mascota + burbuja (compacto) */}
-            <div className="relative mt-6 inline-block">
+            {/* Mascota + bocadillo en posición compacta */}
+            <div className="relative mt-4 inline-block">
               <img
                 src="/olondo.mascota.png"
                 alt="Soporte Euskalia"
-                className="h-[18vh] sm:h-[20vh] w-auto select-none pointer-events-none dark:brightness-95"
+                className="h-[17vh] sm:h-[19vh] w-auto select-none pointer-events-none dark:brightness-95"
                 draggable={false}
               />
-              <div className="absolute left-[calc(100%+10px)] top-2 hidden md:block">
+              {/* Burbuja pegada al borde derecho de la imagen, orientada hacia la columna derecha */}
+              <div className="absolute left-[calc(100%+10px)] top-1 hidden md:block">
                 <div className="absolute -left-2 top-3 h-2.5 w-2.5 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
                 <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-600 dark:bg-slate-700">
                   <span className="text-xs text-slate-700 dark:text-slate-200">
@@ -83,13 +87,13 @@ const SupportPage = () => {
             </div>
           </div>
 
-          {/* Derecha: tarjeta formulario (compacta y sin desbordar) */}
+          {/* ===== Columna derecha (formulario compacto, sin desbordar) ===== */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border bg-white p-5 sm:p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700 flex flex-col justify-between"
+            className="rounded-2xl border bg-white p-5 sm:p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
           >
-            <form onSubmit={onSubmit} className="space-y-4">
+            <form onSubmit={onSubmit} className="space-y-3">
               {/* Honeypot */}
               <input
                 type="text"
@@ -155,7 +159,7 @@ const SupportPage = () => {
                   onChange={onChange}
                   placeholder={t("support_form_message_placeholder")}
                   required
-                  rows={5}
+                  rows={4}
                   className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 resize-none"
                 />
               </div>
