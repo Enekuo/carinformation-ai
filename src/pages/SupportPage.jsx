@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/translations";
 import { motion } from "framer-motion";
 
+const NAVBAR_H = 88; // <-- AJUSTA si tu navbar es más alto o más bajo
+
 const SupportPage = () => {
   const { t } = useTranslation();
 
@@ -32,40 +34,40 @@ const SupportPage = () => {
   };
 
   return (
-    /* Pantalla completa sin scroll. Reducimos paddings y tipografías. */
+    // Full viewport sin scroll global
     <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
-      <div className="mx-auto h-full max-w-7xl px-3 sm:px-4 lg:px-6 py-3">
-        <div className="grid h-full gap-4 md:grid-cols-2 items-start">
-          {/* ===== Columna izquierda (compacta) ===== */}
+      <div className="mx-auto max-w-7xl px-5 lg:px-8"
+           style={{ height: `calc(100vh - ${NAVBAR_H}px)` }}>
+        <div className="grid h-full gap-8 md:grid-cols-2 items-start py-5">
+          {/* ===== Columna izquierda (más grande) ===== */}
           <div className="relative min-h-0">
-            {/* Cabecera */}
-            <section className="mb-4 rounded-2xl border border-slate-200 bg-[#F7F8FC] p-3 sm:p-4 dark:bg-slate-800 dark:border-slate-700">
-              <div className="flex items-center justify-between gap-3">
+            <section className="mb-6 rounded-2xl border border-slate-200 bg-[#F7F8FC] p-6 dark:bg-slate-800 dark:border-slate-700">
+              <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <h2 className="truncate text-2xl sm:text-[26px] font-extrabold leading-tight text-slate-900 dark:text-slate-100">
+                  <h2 className="truncate text-4xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
                     {t("support_title")}
                   </h2>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  <p className="mt-2 text-base text-slate-600 dark:text-slate-300">
                     {t("support_subtitle")}
                   </p>
                 </div>
                 <div className="hidden md:flex">
-                  <div className="rounded-xl bg-violet-600 px-3 py-1 text-[11px] font-semibold text-white shadow-sm whitespace-nowrap">
+                  <div className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm whitespace-nowrap">
                     {t("support_cta")}
                   </div>
                 </div>
               </div>
             </section>
 
-            <p className="text-xs font-semibold tracking-wider text-blue-600 dark:text-blue-400">
+            <p className="text-sm font-semibold tracking-wider text-blue-600 dark:text-blue-400">
               {t("support_kicker")}
             </p>
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+            <p className="mt-1 text-base text-slate-600 dark:text-slate-300">
               {t("support_subtitle")}
             </p>
 
-            {/* Imagen — MISMOS TAMAÑOS QUE ME PASASTE */}
-            <div className="mt-4 inline-block">
+            {/* Imagen: se mantiene IGUAL que la tuya */}
+            <div className="mt-6 inline-block">
               <img
                 src="/olondo.mascota.png"
                 alt="Soporte Olondo.AI"
@@ -74,24 +76,25 @@ const SupportPage = () => {
               />
             </div>
 
-            {/* Burbuja, también compacta y dentro del área indicada */}
-            <div className="absolute right-6 top-28 hidden md:block">
-              <div className="absolute -left-2 top-3 h-2.5 w-2.5 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
-              <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-600 dark:bg-slate-700">
-                <span className="text-xs text-slate-700 dark:text-slate-200">
+            {/* Burbuja a la derecha dentro de la columna izquierda */}
+            <div className="absolute right-10 top-28 hidden md:block">
+              <div className="absolute -left-2 top-4 h-3 w-3 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
+              <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-600 dark:bg-slate-700">
+                <span className="text-sm text-slate-700 dark:text-slate-200">
                   {t("support_bubble_text")}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* ===== Columna derecha (formulario compacto) ===== */}
+          {/* ===== Columna derecha: Formulario más grande pero sin desbordar ===== */}
           <motion.div
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_10px_32px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
+            className="rounded-2xl border bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
+            style={{ height: "100%" }}
           >
-            <form onSubmit={onSubmit} className="space-y-3">
+            <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
               {/* Honeypot */}
               <input
                 type="text"
@@ -103,72 +106,75 @@ const SupportPage = () => {
                 autoComplete="off"
               />
 
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {t("support_form_name_label")}
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={onChange}
-                  placeholder={t("support_form_name_placeholder")}
-                  required
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
-                />
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {t("support_form_name_label")}
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={onChange}
+                    placeholder={t("support_form_name_placeholder")}
+                    required
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {t("support_form_email_label")}
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={onChange}
+                    placeholder={t("support_form_email_placeholder")}
+                    required
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {t("support_form_subject_label")}
+                  </label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={form.subject}
+                    onChange={onChange}
+                    placeholder={t("support_form_subject_placeholder")}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
+                  />
+                </div>
+
+                <div className="flex-1 min-h-0">
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {t("support_form_message_label")}
+                  </label>
+                  {/* Textarea más grande pero limitado para no forzar scroll */}
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={onChange}
+                    placeholder={t("support_form_message_placeholder")}
+                    required
+                    rows={5}
+                    className="h-[calc(100%-2.5rem)] min-h-[120px] max-h-[220px] w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 resize-none"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {t("support_form_email_label")}
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={onChange}
-                  placeholder={t("support_form_email_placeholder")}
-                  required
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {t("support_form_subject_label")}
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={form.subject}
-                  onChange={onChange}
-                  placeholder={t("support_form_subject_placeholder")}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {t("support_form_message_label")}
-                </label>
-                <textarea
-                  name="message"
-                  value={form.message}
-                  onChange={onChange}
-                  placeholder={t("support_form_message_placeholder")}
-                  required
-                  rows={4}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 resize-none"
-                />
-              </div>
-
-              <div>
-                <Button type="submit" className="h-9 rounded-xl px-4 text-sm">
+              <div className="pt-1">
+                <Button type="submit" className="h-11 rounded-xl px-6 text-base">
                   {t("support_form_submit")}
                 </Button>
               </div>
 
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {t("support_form_privacy_hint")}{" "}
                 <a href="/privacidad" className="underline underline-offset-2">
                   {t("support_form_privacy_link")}
