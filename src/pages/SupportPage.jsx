@@ -71,8 +71,8 @@ const SupportPage = () => {
             <div className="relative mt-4 inline-block">
               <img
                 src="/olondo.mascota.png"
-                alt="Soporte Euskalia"
-                className="h-[17vh] sm:h-[19vh] w-auto select-none pointer-events-none dark:brightness-95"
+                alt="Soporte Olondo.AI"
+                className="h-[260px] sm:h-[320px] w-auto select-none pointer-events-none dark:brightness-95"
                 draggable={false}
               />
               {/* Burbuja pegada al borde derecho de la imagen, orientada hacia la columna derecha */}
