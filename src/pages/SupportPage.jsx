@@ -1,176 +1,152 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "@/lib/translations";
+import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
-const OPTIONS = [
-  { value: "eus", label: "euskera" },
-  { value: "es",  label: "castellano" },
-];
-
-export default function Hero() {
+export default function SupportPage() {
   const { t } = useTranslation();
+  const { toast } = useToast();
 
-  const [src, setSrc] = useState("eus");
-  const [dst, setDst] = useState("es");
-  const [openLeft, setOpenLeft] = useState(false);
-  const [openRight, setOpenRight] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
-  // NUEVO: estados para los dos cuadros
-  const [leftText, setLeftText] = useState("");
-  const [rightText, setRightText] = useState("");
-
-  const leftRef = useRef(null);
-  const rightRef = useRef(null);
-  const leftTA  = useRef(null);
-  const rightTA = useRef(null);
-
-  const swap = () => { setSrc(dst); setDst(src); };
-
-  // cerrar dropdowns
-  useEffect(() => {
-    const onDown = (e) => {
-      if (leftRef.current  && !leftRef.current.contains(e.target))  setOpenLeft(false);
-      if (rightRef.current && !rightRef.current.contains(e.target)) setOpenRight(false);
-    };
-    window.addEventListener("mousedown", onDown);
-    return () => window.removeEventListener("mousedown", onDown);
-  }, []);
-
-  // NUEVO: auto-resize de textareas
-  const autoResize = (el) => {
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
   };
-  useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
-  useEffect(() => { autoResize(rightTA.current); }, [rightText]);
 
-  // Item dropdown (sin icono)
-  const Item = ({ active, label, onClick }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`w-full px-3 py-2.5 text-left text-[14px] rounded-md transition ${
-        active ? "bg-slate-100" : "hover:bg-slate-100"
-      } text-slate-800`}
-    >
-      {label}
-    </button>
-  );
-
-  const Dropdown = ({ open, selected, onSelect, align = "left" }) => {
-    if (!open) return null;
-    return (
-      <div className={`absolute top-full mt-2 z-50 ${align === "right" ? "right-0" : "left-0"}`}>
-        <div className="relative">
-          <svg width="20" height="10" viewBox="0 0 20 10" className="mx-auto block">
-            <path d="M0,10 L10,0 L20,10" className="fill-white" />
-            <path d="M0,10 L10,0 L20,10" className="fill-none stroke-slate-200" />
-          </svg>
-          <div className="w-48 bg-white rounded-xl shadow-lg border border-slate-200 p-2">
-            {OPTIONS.map((opt) => (
-              <Item
-                key={opt.value}
-                label={opt.label}
-                active={selected === opt.value}
-                onClick={() => onSelect(opt.value)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+  const onSubmit = (e) => {
+    e.preventDefault();
+    toast({
+      title: t("supportPage.title"),
+      description: t("supportPage.cta"),
+    });
+    setForm({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
-    <section className="w-full min-h-screen bg-[#F4F8FF] py-10">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[calc(100vh-180px)] flex flex-col">
-          {/* ===== Barra superior ===== */}
-          <div className="relative h-12 border-b border-slate-200">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
-                {/* Selector izquierda */}
-                <div className="relative" ref={leftRef}>
-                  <button
-                    type="button"
-                    onClick={() => { setOpenLeft(v => !v); setOpenRight(false); }}
-                    className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
-                  >
-                    <span>{OPTIONS.find(o => o.value === src)?.label}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                  <Dropdown
-                    open={openLeft}
-                    selected={src}
-                    onSelect={(val) => { setSrc(val); setOpenLeft(false); }}
-                    align="left"
-                  />
-                </div>
-
-                {/* Botón swap */}
-                <button
-                  type="button"
-                  aria-label="Intercambiar idiomas"
-                  onClick={swap}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+    <div className="min-h-[70vh] w-full bg-gradient-to-b from-slate-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-14">
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="flex flex-col">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+              <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
+                {t("supportPage.title")}
+              </h1>
+              <p className="mt-2 text-slate-600">
+                {t("supportPage.subtitle")}
+              </p>
+              <div className="mt-4">
+                <button className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-white text-sm font-semibold shadow hover:bg-blue-700">
+                  {t("supportPage.cta")}
                 </button>
+              </div>
 
-                {/* Selector derecha */}
-                <div className="relative" ref={rightRef}>
-                  <button
-                    type="button"
-                    onClick={() => { setOpenRight(v => !v); setOpenLeft(false); }}
-                    className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
-                  >
-                    <span>{OPTIONS.find(o => o.value === dst)?.label}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                  <Dropdown
-                    open={openRight}
-                    selected={dst}
-                    onSelect={(val) => { setDst(val); setOpenRight(false); }}
-                    align="right"
-                  />
-                </div>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {t("supportPage.kicker")}
+              </p>
+              <p className="mt-1 text-slate-600">
+                {t("supportPage.description")}
+              </p>
+
+              <div className="relative mt-8 flex items-center justify-center">
+                <img
+                  src="https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/64/user-md.png"
+                  alt="Monk"
+                  className="h-40 w-40 object-contain opacity-90 select-none"
+                />
+                <span className="absolute -right-3 top-4 translate-x-full whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm">
+                  {t("supportPage.bubble")}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* ===== Dos paneles EDITABLES ===== */}
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full flex-1 min-h-[430px]">
-            {/* Izquierdo */}
-            <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200">
-              <textarea
-                ref={leftTA}
-                value={leftText}
-                onChange={(e) => setLeftText(e.target.value)}
-                placeholder={t("translator.left_placeholder")}
-                className="w-full min-h-[260px] resize-none bg-white outline-none focus:ring-2 focus:ring-slate-200/60 rounded-lg p-4 text-[15px] leading-7 text-slate-700 placeholder:text-slate-500 border border-slate-200"
-              />
-            </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+            <form onSubmit={onSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {t("supportPage.form.name_label")}
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={onChange}
+                  placeholder={t("supportPage.form.name_placeholder")}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
 
-            {/* Derecho */}
-            <div className="p-8 md:p-10">
-              <textarea
-                ref={rightTA}
-                value={rightText}
-                onChange={(e) => setRightText(e.target.value)}
-                placeholder={t("translator.right_placeholder")}
-                className="w-full min-h-[260px] resize-none bg-white outline-none focus:ring-2 focus:ring-slate-200/60 rounded-lg p-4 text-[15px] leading-7 text-slate-700 placeholder:text-slate-500 border border-slate-200"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {t("supportPage.form.email_label")}
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={onChange}
+                  placeholder={t("supportPage.form.email_placeholder")}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {t("supportPage.form.subject_label")}
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={form.subject}
+                  onChange={onChange}
+                  placeholder={t("supportPage.form.subject_placeholder")}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {t("supportPage.form.message_label")}
+                </label>
+                <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={onChange}
+                  placeholder={t("supportPage.form.message_placeholder")}
+                  className="w-full min-h-[140px] rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="mt-2 w-full rounded-full bg-blue-600 px-4 py-2.5 text-white text-sm font-semibold shadow hover:bg-blue-700"
+              >
+                {t("supportPage.form.submit")}
+              </button>
+
+              <p className="mt-2 text-xs text-slate-500">
+                {t("supportPage.form.privacy_hint")}{" "}
+                <Link
+                  to="/privacidad"
+                  className="underline underline-offset-2 text-slate-700 hover:text-slate-900"
+                >
+                  {t("supportPage.form.privacy_link")}
+                </Link>.
+              </p>
+            </form>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
