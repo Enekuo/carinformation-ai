@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/translations";
 import { motion } from "framer-motion";
 
-const NAVBAR_H = 88; // ajusta si tu navbar tiene otra altura
+const NAVBAR_H = 88; // ajusta si tu navbar tiene otra altura real
 
 const SupportPage = () => {
   const { t } = useTranslation();
@@ -67,7 +67,7 @@ const SupportPage = () => {
               {t("support_subtitle")}
             </p>
 
-            {/* Mascota — MISMO TAMAÑO */}
+            {/* Imagen — MISMO TAMAÑO QUE INDICASTE */}
             <div className="mt-6 inline-block">
               <img
                 src="/olondo.mascota.png"
@@ -77,15 +77,12 @@ const SupportPage = () => {
               />
             </div>
 
-            {/* ===== Burbuja en la zona marcada (a la derecha de la mascota, zona media) ===== */}
+            {/* ===== Burbuja sin piquito, más a la izquierda ===== */}
             <div
-              className="absolute hidden md:block"
-              // Colócala más o menos donde marcaste: derecha/media
-              // Si quieres afinar, toca estos dos porcentajes.
-              style={{ left: "58%", top: "62%", transform: "translateY(-50%)" }}
+              className="absolute hidden md:block -translate-y-1/2"
+              // ajusta estos porcentajes si quieres afinar posición
+              style={{ left: "40%", top: "62%" }}
             >
-              {/* piquito orientado hacia la izquierda */}
-              <div className="absolute -left-2 top-4 h-3 w-3 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
               <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-600 dark:bg-slate-700">
                 <span className="text-sm text-slate-700 dark:text-slate-200">
                   {t("support_bubble_text")}
