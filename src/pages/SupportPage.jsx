@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/translations";
 import { motion } from "framer-motion";
 
-const NAVBAR_H = 88; // <-- AJUSTA si tu navbar es más alto o más bajo
+const NAVBAR_H = 88; // ajusta si tu navbar tiene otra altura
 
 const SupportPage = () => {
   const { t } = useTranslation();
@@ -34,12 +34,13 @@ const SupportPage = () => {
   };
 
   return (
-    // Full viewport sin scroll global
     <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8"
-           style={{ height: `calc(100vh - ${NAVBAR_H}px)` }}>
+      <div
+        className="mx-auto max-w-7xl px-5 lg:px-8"
+        style={{ height: `calc(100vh - ${NAVBAR_H}px)` }}
+      >
         <div className="grid h-full gap-8 md:grid-cols-2 items-start py-5">
-          {/* ===== Columna izquierda (más grande) ===== */}
+          {/* ===== Columna izquierda ===== */}
           <div className="relative min-h-0">
             <section className="mb-6 rounded-2xl border border-slate-200 bg-[#F7F8FC] p-6 dark:bg-slate-800 dark:border-slate-700">
               <div className="flex items-center justify-between gap-4">
@@ -66,7 +67,7 @@ const SupportPage = () => {
               {t("support_subtitle")}
             </p>
 
-            {/* Imagen: se mantiene IGUAL que la tuya */}
+            {/* Mascota — MISMO TAMAÑO */}
             <div className="mt-6 inline-block">
               <img
                 src="/olondo.mascota.png"
@@ -76,8 +77,14 @@ const SupportPage = () => {
               />
             </div>
 
-            {/* Burbuja a la derecha dentro de la columna izquierda */}
-            <div className="absolute right-10 top-28 hidden md:block">
+            {/* ===== Burbuja en la zona marcada (a la derecha de la mascota, zona media) ===== */}
+            <div
+              className="absolute hidden md:block"
+              // Colócala más o menos donde marcaste: derecha/media
+              // Si quieres afinar, toca estos dos porcentajes.
+              style={{ left: "58%", top: "62%", transform: "translateY(-50%)" }}
+            >
+              {/* piquito orientado hacia la izquierda */}
               <div className="absolute -left-2 top-4 h-3 w-3 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
               <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-600 dark:bg-slate-700">
                 <span className="text-sm text-slate-700 dark:text-slate-200">
@@ -87,7 +94,7 @@ const SupportPage = () => {
             </div>
           </div>
 
-          {/* ===== Columna derecha: Formulario más grande pero sin desbordar ===== */}
+          {/* ===== Columna derecha: Formulario ===== */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -155,7 +162,6 @@ const SupportPage = () => {
                   <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
                     {t("support_form_message_label")}
                   </label>
-                  {/* Textarea más grande pero limitado para no forzar scroll */}
                   <textarea
                     name="message"
                     value={form.message}
