@@ -32,25 +32,23 @@ const SupportPage = () => {
   };
 
   return (
-    /* Altura exacta de viewport y sin scroll global */
-    <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
-      {/* Altura interna calculada: resta ~88px de navbar (ajustable) */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3 pb-4">
-        <div className="grid items-stretch gap-6 md:grid-cols-2"
-             style={{ height: "calc(100vh - 96px)" }}>
-          {/* ===== Columna izquierda (compacta) ===== */}
-          <div className="flex min-h-0 flex-col">
-            <section className="rounded-2xl border border-slate-200 bg-[#F7F8FC] p-4 sm:p-5 dark:bg-slate-800 dark:border-slate-700">
-              <div className="flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <h2 className="truncate text-[26px] sm:text-3xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
+    <div className="min-h-[70vh] bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid gap-10 md:grid-cols-2 items-start">
+          {/* ===== Columna izquierda ===== */}
+          <div className="relative">
+            {/* Cabecera compacta */}
+            <section className="mb-8 rounded-2xl border border-slate-200 bg-[#F7F8FC] p-5 sm:p-6 dark:bg-slate-800 dark:border-slate-700">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
                     {t("support_title")}
                   </h2>
-                  <p className="mt-1 text-sm sm:text-base text-slate-600 dark:text-slate-300">
+                  <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
                     {t("support_subtitle")}
                   </p>
                 </div>
-                <div className="hidden md:flex items-center">
+                <div className="hidden md:flex items-center gap-2">
                   <div className="rounded-xl bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm whitespace-nowrap">
                     {t("support_cta")}
                   </div>
@@ -58,42 +56,42 @@ const SupportPage = () => {
               </div>
             </section>
 
-            <div className="mt-3">
-              <p className="text-xs sm:text-sm font-semibold tracking-wider text-blue-600 dark:text-blue-400">
-                {t("support_kicker")}
-              </p>
-              <p className="mt-1 text-slate-600 text-sm sm:text-base dark:text-slate-300">
-                {t("support_subtitle")}
-              </p>
-            </div>
+            <p className="text-sm font-semibold tracking-wider text-blue-600 mb-3 dark:text-blue-400">
+              {t("support_kicker")}
+            </p>
+            <p className="mt-4 text-slate-600 text-lg dark:text-slate-300">
+              {t("support_subtitle")}
+            </p>
 
-            {/* Mascota + bocadillo en posición compacta */}
-            <div className="relative mt-4 inline-block">
+            {/* Mascota */}
+            <div className="mt-6 inline-block">
               <img
                 src="/olondo.mascota.png"
-                alt="Soporte Olondo.AI"
+                alt="Soporte Euskalia"
                 className="h-[260px] sm:h-[320px] w-auto select-none pointer-events-none dark:brightness-95"
                 draggable={false}
               />
-              {/* Burbuja pegada al borde derecho de la imagen, orientada hacia la columna derecha */}
-              <div className="absolute left-[calc(100%+10px)] top-1 hidden md:block">
-                <div className="absolute -left-2 top-3 h-2.5 w-2.5 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
-                <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-600 dark:bg-slate-700">
-                  <span className="text-xs text-slate-700 dark:text-slate-200">
-                    {t("support_bubble_text")}
-                  </span>
-                </div>
+            </div>
+
+            {/* ===== Burbuja reposicionada en el área marcada ===== */}
+            <div className="absolute right-10 top-32 hidden md:block">
+              {/* piquito hacia la izquierda */}
+              <div className="absolute -left-2 top-4 h-3 w-3 rotate-45 bg-white border-l border-t border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-slate-700 dark:border-slate-600 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
+              <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-600 dark:bg-slate-700">
+                <span className="text-slate-700 dark:text-slate-200">
+                  {t("support_bubble_text")}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* ===== Columna derecha (formulario compacto, sin desbordar) ===== */}
+          {/* ===== Columna derecha: formulario ===== */}
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border bg-white p-5 sm:p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
+            className="rounded-2xl border bg-white p-6 sm:p-8 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
           >
-            <form onSubmit={onSubmit} className="space-y-3">
+            <form onSubmit={onSubmit} className="space-y-5">
               {/* Honeypot */}
               <input
                 type="text"
@@ -106,7 +104,7 @@ const SupportPage = () => {
               />
 
               <div>
-                <label className="mb-1 block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                   {t("support_form_name_label")}
                 </label>
                 <input
@@ -116,12 +114,12 @@ const SupportPage = () => {
                   onChange={onChange}
                   placeholder={t("support_form_name_placeholder")}
                   required
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                   {t("support_form_email_label")}
                 </label>
                 <input
@@ -129,14 +127,14 @@ const SupportPage = () => {
                   name="email"
                   value={form.email}
                   onChange={onChange}
-                  placeholder="email@ejemplo.com"
+                  placeholder={t("support_form_email_placeholder")}
                   required
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                   {t("support_form_subject_label")}
                 </label>
                 <input
@@ -145,12 +143,12 @@ const SupportPage = () => {
                   value={form.subject}
                   onChange={onChange}
                   placeholder={t("support_form_subject_placeholder")}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                   {t("support_form_message_label")}
                 </label>
                 <textarea
@@ -159,18 +157,18 @@ const SupportPage = () => {
                   onChange={onChange}
                   placeholder={t("support_form_message_placeholder")}
                   required
-                  rows={4}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 resize-none"
+                  rows={6}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400"
                 />
               </div>
 
-              <div>
-                <Button type="submit" className="h-10 rounded-xl px-4">
+              <div className="pt-2">
+                <Button type="submit" className="h-11 rounded-xl px-5">
                   {t("support_form_submit")}
                 </Button>
               </div>
 
-              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {t("support_form_privacy_hint")}{" "}
                 <a href="/privacidad" className="underline underline-offset-2">
                   {t("support_form_privacy_link")}
