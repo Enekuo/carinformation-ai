@@ -3,11 +3,14 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "engines": { "node": "20.x" },
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "node node_modules/vite/bin/vite.js",
     "build": "node node_modules/vite/bin/vite.js build",
     "preview": "node node_modules/vite/bin/vite.js preview --port 4173",
+    "api": "vercel dev",
     "postinstall": "node -e \"try{require('fs').chmodSync('node_modules/.bin/vite',0o755)}catch(e){}\""
   },
   "dependencies": {
@@ -20,6 +23,7 @@
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
+    "openai": "^6.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -37,6 +41,7 @@
     "eslint-config-react-app": "^7.0.1",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vercel": "^33.6.0"
   }
 }
