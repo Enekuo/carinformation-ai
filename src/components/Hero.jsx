@@ -197,7 +197,7 @@ export default function Hero() {
                     align="right"
                   />
                 </div> 
-              </div>
+              </div> 
             </div>
           </div>
 
