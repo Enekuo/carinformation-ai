@@ -6,11 +6,12 @@ const OPTIONS = [
   { value: "es",  label: "castellano" },
 ];
 
-// Mapeo a códigos de MyMemory
-const MM_CODES = { eus: "eu", es: "es" };
-
-// Opcional: si quieres más cuota gratuita, pon tu email:
-const MYMEMORY_EMAIL = ""; // e.g. "tucorreo@dominio.com" -> añade &de=...
+// Texto de dirección para el prompt del sistema
+const directionText = (src, dst) => {
+  if (src === "eus" && dst === "es") return "Traduce de Euskera a Español";
+  if (src === "es"  && dst === "eus") return "Traduce de Español a Euskera";
+  return "Traduce manteniendo el sentido y el formato";
+};
 
 export default function Hero() {
   const { t } = useTranslation();
@@ -56,7 +57,7 @@ export default function Hero() {
   useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
   useEffect(() => { autoResize(rightTA.current); }, [rightText]);
 
-  // ==== Traducción con MyMemory (debounced) ====
+  // ==== Traducción con ChatGPT (debounced) ====
   useEffect(() => {
     setErr("");
 
@@ -67,26 +68,31 @@ export default function Hero() {
     const timer = setTimeout(async () => {
       try {
         setLoading(true);
-        const from = MM_CODES[src];
-        const to   = MM_CODES[dst];
-        const base = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(leftText)}&langpair=${from}|${to}`;
-        const url  = MYMEMORY_EMAIL ? `${base}&de=${encodeURIComponent(MYMEMORY_EMAIL)}` : base;
 
-        const res = await fetch(url, { signal: controller.signal });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+        const system = `${directionText(src, dst)}. ` +
+          `Responde SOLO con la traducción final. ` +
+          `Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
 
-        // Texto traducido principal
-        const translated = data?.responseData?.translatedText ?? "";
-        setRightText(translated);
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            system,
+            model: "gpt-4o-mini",
+            temperature: 0.2,
+            messages: [{ role: "user", content: leftText }]
+          }),
+          signal: controller.signal
+        });
 
-        // Si hay un "match" mejor en matches (quality alta), úsalo
-        const best = Array.isArray(data?.matches)
-          ? data.matches.sort((a,b) => (b.quality ?? 0) - (a.quality ?? 0))[0]
-          : null;
-        if (best && (best.quality ?? 0) > 90 && best.translation) {
-          setRightText(best.translation);
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data?.error || `HTTP ${res.status}`);
         }
+
+        const data = await res.json();
+        const translated = data?.content ?? "";
+        setRightText(translated);
       } catch (e) {
         if (e.name !== "AbortError") {
           setErr("No se pudo traducir ahora mismo.");
@@ -201,7 +207,6 @@ export default function Hero() {
             </div>
           </div>
 
-
           {/* paneles */}
           <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
             {/* IZQUIERDA: entrada */}
@@ -238,4 +243,3 @@ export default function Hero() {
     </section>
   ); 
 }
- 
