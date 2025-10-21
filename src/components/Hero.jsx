@@ -35,7 +35,6 @@ export default function Hero() {
   const swap = () => {
     setSrc(dst);
     setDst(src);
-    // no tocamos textos; solo cambia dirección
   };
 
   // cerrar dropdowns
@@ -57,11 +56,10 @@ export default function Hero() {
   useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
   useEffect(() => { autoResize(rightTA.current); }, [rightText]);
 
-  // ==== Traducción con ChatGPT (debounced) ====
+  // ==== Traducción con OpenAI vía /api/chat (debounced) ====
   useEffect(() => {
     setErr("");
 
-    // No traducir si no hay texto
     if (!leftText.trim()) { setRightText(""); return; }
 
     const controller = new AbortController();
@@ -69,38 +67,41 @@ export default function Hero() {
       try {
         setLoading(true);
 
-        const system = `${directionText(src, dst)}. ` +
-          `Responde SOLO con la traducción final. ` +
-          `Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
+        const system = `${directionText(src, dst)}. Responde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          // ⬇️ IMPORTANTE: el system va *dentro* de messages
           body: JSON.stringify({
-            system,
             model: "gpt-4o-mini",
             temperature: 0.2,
-            messages: [{ role: "user", content: leftText }]
+            messages: [
+              { role: "system", content: system },
+              { role: "user",   content: leftText }
+            ]
           }),
-          signal: controller.signal
         });
 
         if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data?.error || `HTTP ${res.status}`);
+          // intentar leer el cuerpo para log de depuración
+          const raw = await res.text().catch(() => "");
+          console.error("API /api/chat error:", res.status, raw);
+          throw new Error(`API /api/chat ${res.status}`);
         }
 
         const data = await res.json();
-        const translated = data?.content ?? "";
-        setRightText(translated);
+        setRightText(data?.content ?? "");
       } catch (e) {
         if (e.name !== "AbortError") {
+          console.error("translate error:", e);
           setErr("No se pudo traducir ahora mismo.");
         }
       } finally {
         setLoading(false);
       }
-    }, 450); // debounce 450ms
+    }, 450); // debounce
 
     return () => { clearTimeout(timer); controller.abort(); };
   }, [leftText, src, dst]);
@@ -142,10 +143,8 @@ export default function Hero() {
   };
 
   return (
-    // Quitado min-h-screen
     <section className="w-full bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Quitado min-h-[calc(100vh-180px)] */}
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
           {/* barra superior */}
           <div className="relative h-12 border-b border-slate-200">
@@ -202,8 +201,8 @@ export default function Hero() {
                     onSelect={(val) => { setDst(val); setOpenRight(false); }}
                     align="right"
                   />
-                </div> 
-              </div> 
+                </div>
+              </div>
             </div>
           </div>
 
@@ -238,8 +237,8 @@ export default function Hero() {
               {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
             </div>
           </div>
-        </div> 
+        </div>
       </div>
     </section>
-  ); 
+  );
 }
