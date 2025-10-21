@@ -21,7 +21,7 @@ export default function Hero() {
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
 
-  const [leftText, setLeftText]   = useState("");
+  const [leftText, setLeftText]   = useState(""); 
   const [rightText, setRightText] = useState("");
 
   const [loading, setLoading] = useState(false);
