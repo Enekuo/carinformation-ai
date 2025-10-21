@@ -1,4 +1,3 @@
-// /api/chat.js — Vercel Serverless Function
 export default async function handler(req, res) {
   // CORS / Preflight
   if (req.method === "OPTIONS") {
@@ -7,10 +6,10 @@ export default async function handler(req, res) {
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     return res.status(200).end();
   }
-
   if (req.method !== "POST") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Allow", "POST, OPTIONS");
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
   try {
@@ -18,10 +17,10 @@ export default async function handler(req, res) {
     res.setHeader("Content-Type", "application/json");
 
     if (!process.env.OPENAI_API_KEY) {
-      return res.status(500).json({ error: "Missing OPENAI_API_KEY" });
+      return res.status(500).json({ ok: false, error: "Missing OPENAI_API_KEY" });
     }
 
-    // 1) Leer el body (patrón correcto en funciones Node de Vercel)
+    // Leer body seguro
     const raw = await new Promise((resolve, reject) => {
       let data = "";
       req.on("data", (c) => (data += c));
@@ -33,39 +32,52 @@ export default async function handler(req, res) {
     try {
       body = raw ? JSON.parse(raw) : {};
     } catch {
-      return res.status(400).json({ error: "Invalid JSON body" });
+      return res.status(400).json({ ok: false, error: "Invalid JSON body" });
     }
 
-    // 2) Extraer parámetros
-    const {
-      messages = [],
+    // Admite dos contratos, ambos van a OpenAI:
+    // A) { messages:[{role,content}, ...], system?, model?, temperature?, max_tokens? }
+    // B) { text, from, to }  -> lo convertimos a mensajes para traducir con OpenAI
+    const hasMessages = Array.isArray(body?.messages) && body.messages.length > 0;
+    const hasTranslate = typeof body?.text === "string" && body?.from && body?.to;
+
+    let messages = [];
+    let {
       system,
       temperature = 0.2,
       model = "gpt-4o-mini",
-      max_tokens,
+      max_tokens
     } = body;
 
-    if (!Array.isArray(messages) || messages.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Body inválido: { messages: [{role, content}, ...] }" });
+    if (hasMessages) {
+      messages = body.messages;
+    } else if (hasTranslate) {
+      const { text, from, to } = body;
+      // Adaptamos a prompt de traducción por ChatGPT (sin servicios externos)
+      system = system ?? "You are a precise translation engine.";
+      messages = [
+        { role: "user", content: `Translate the following text from ${from} to ${to}. Respond with only the translation, no explanations:\n\n${text}` }
+      ];
+    } else {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid body. Send {messages:[{role,content}...]} or {text, from, to}."
+      });
     }
 
-    // Límite simple anti-abuso
+    // Límite anti-abuso simple
     const totalLen =
       (system?.length || 0) +
       messages.reduce((n, m) => n + ((m?.content?.length) || 0), 0);
     if (totalLen > 8000) {
-      return res.status(413).json({ error: "Entrada demasiado larga." });
+      return res.status(413).json({ ok: false, error: "Input too long" });
     }
 
-    // 3) Construir mensajes finales (system opcional)
     const finalMessages = [
       ...(system ? [{ role: "system", content: system }] : []),
       ...messages,
     ];
 
-    // 4) Llamada a OpenAI
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -80,18 +92,28 @@ export default async function handler(req, res) {
       }),
     });
 
+    const detailText = await r.text().catch(() => "");
+    let data;
+    try { data = detailText ? JSON.parse(detailText) : {}; } catch { data = {}; }
+
     if (!r.ok) {
-      const detail = await r.text().catch(() => "");
-      console.error("OpenAI error:", r.status, detail);
-      return res.status(r.status).json({ error: "OpenAI error", detail });
+      return res.status(r.status).json({
+        ok: false,
+        error: "OpenAI error",
+        detail: typeof data === "object" ? data : detailText
+      });
     }
 
-    // 5) Responder al frontend
-    const data = await r.json();
     const content = data?.choices?.[0]?.message?.content ?? "";
-    return res.status(200).json({ content });
+    const usage = data?.usage ?? null;
+
+    return res.status(200).json({
+      ok: true,
+      provider: "openai",
+      content,
+      usage
+    });
   } catch (err) {
-    console.error("API /api/chat error:", err);
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ ok: false, error: err?.message || "Server error" });
   }
 }
