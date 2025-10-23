@@ -31,10 +31,20 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // ✅ Forzar euskera en la primera carga
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined" && !sessionStorage.getItem("lang-init")) {
+        setLanguage("EUS");
+        sessionStorage.setItem("lang-init", "1");
+      }
+    } catch {}
+  }, [setLanguage]);
+
   const handleFeatureClick = () => {
     toast({
-      title: "🚧 Esta función no está implementada aún",
-      description: "Puedes solicitarla en tu próximo prompt 🚀",
+      title: t("not_implemented_title"),
+      description: t("not_implemented_subtitle"),
     });
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
@@ -87,8 +97,6 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
-          {/* LOGO + TÍTULO: logo opcional (en /euskalia-logo.svg). 
-              Si no existe, se oculta el <img> y queda solo el texto. */}
           <Link to="/" className="mr-8 flex items-center">
             <img
               src="/euskalia-logo.svg"
@@ -104,7 +112,6 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {/* Herramientas: botón sin desplegable */}
             <button
               onClick={handleFeatureClick}
               className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
@@ -113,7 +120,6 @@ export default function Header() {
               <ChevronDown size={16} className="transition-transform" />
             </button>
 
-            {/* Recursos: mantiene desplegable */}
             <DropdownMenu open={isResourcesMenuOpen} onOpenChange={setIsResourcesMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
@@ -121,9 +127,12 @@ export default function Header() {
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
                 >
                   {t("header.resources")}
-                  <ChevronDown size={16} className={`transition-transform ${isResourcesMenuOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${isResourcesMenuOpen ? "rotate-180" : ""}`}
+                  />
                 </button>
-              </DropdownMenuTrigger> 
+              </DropdownMenuTrigger>
               <DropdownMenuContent
                 onPointerLeave={() => setIsResourcesMenuOpen(false)}
                 className="bg-white rounded-xl shadow-lg border border-slate-200 mt-2"
@@ -207,7 +216,6 @@ export default function Header() {
 
             <div className="p-4 flex flex-col h-[calc(100%-64px)]">
               <div className="flex flex-col gap-1">
-                {/* Herramientas: solo botón */}
                 <button
                   onClick={handleFeatureClick}
                   className="w-full text-left text-base font-medium h-12 px-2 rounded-md hover:bg-slate-100"

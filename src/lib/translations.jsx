@@ -91,6 +91,10 @@ export const translations = {
   support_form_submit:              { ES: "Enviar", EUS: "Bidali" },
   support_form_privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
+
+  /* === Aviso de funcionalidad no implementada === */
+  not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago inplementatuta" },
+  not_implemented_subtitle: { ES: "Puedes solicitarla en tu próximo prompt 🚀", EUS: "Hurrengo prompt-ean eska dezakezu 🚀" },
 };
 
 /* ====== i18n runtime ====== */
