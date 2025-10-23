@@ -7,7 +7,7 @@ export const translations = {
     tools:     { ES: "Herramientas",  EUS: "Tresnak" },
     resources: { ES: "Recursos",      EUS: "Baliabideak" },
     pricing:   { ES: "Precios",       EUS: "Prezioak" },
-    signIn:    { ES: "Iniciar sesión", EUS: "Saioa hasi" },
+    signIn:    { ES: "Iniciar sesión", EUS: "Hasi saioa" },
     startFree: { ES: "Comienza Gratis", EUS: "Doan hasi" },
   },
 
