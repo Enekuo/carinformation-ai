@@ -39,6 +39,7 @@ export default function Hero() {
     setDst(src);
   };
 
+  // cerrar dropdowns
   useEffect(() => {
     const onDown = (e) => {
       if (leftRef.current  && !leftRef.current.contains(e.target))  setOpenLeft(false);
@@ -48,6 +49,7 @@ export default function Hero() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
+  // auto-resize
   const autoResize = (el) => {
     if (!el) return;
     el.style.height = "auto";
@@ -56,13 +58,17 @@ export default function Hero() {
   useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
   useEffect(() => { autoResize(rightTA.current); }, [rightText]);
 
+  // ==== Traducción con OpenAI vía /api/chat (debounced) ====
   useEffect(() => {
-    setErr("");
+    // reset de error si el usuario vuelve a bajar del límite
+    if (leftText.length < MAX_CHARS) setErr("");
+
     if (!leftText.trim()) { setRightText(""); return; }
 
-    if (leftText.length > MAX_CHARS) {
+    // ⛔️ Bloqueo cuando está en el límite o lo supera
+    if (leftText.length >= MAX_CHARS) {
       setErr(`Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres.`);
-      return;
+      return; // no llamar a la API
     }
 
     const controller = new AbortController();
@@ -76,6 +82,7 @@ export default function Hero() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           signal: controller.signal,
+          // ⬇️ IMPORTANTE: el system va *dentro* de messages
           body: JSON.stringify({
             model: "gpt-4o-mini",
             temperature: 0.2,
@@ -87,6 +94,7 @@ export default function Hero() {
         });
 
         if (!res.ok) {
+          // intentar leer el cuerpo para log de depuración
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat error:", res.status, raw);
           throw new Error(`API /api/chat ${res.status}`);
@@ -102,7 +110,7 @@ export default function Hero() {
       } finally {
         setLoading(false);
       }
-    }, 450);
+    }, 450); // debounce
 
     return () => { clearTimeout(timer); controller.abort(); };
   }, [leftText, src, dst]);
@@ -147,9 +155,11 @@ export default function Hero() {
     <section className="w-full bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
+          {/* barra superior */}
           <div className="relative h-12 border-b border-slate-200">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
+                {/* izquierda */}
                 <div className="relative" ref={leftRef}>
                   <button
                     type="button"
@@ -169,6 +179,7 @@ export default function Hero() {
                   />
                 </div>
 
+                {/* swap */}
                 <button
                   type="button"
                   aria-label="Intercambiar idiomas"
@@ -181,6 +192,7 @@ export default function Hero() {
                   </svg>
                 </button>
 
+                {/* derecha */}
                 <div className="relative" ref={rightRef}>
                   <button
                     type="button"
@@ -203,7 +215,9 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* paneles */}
           <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
+            {/* IZQUIERDA: entrada */}
             <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
               <textarea
                 ref={leftTA}
@@ -213,11 +227,13 @@ export default function Hero() {
                 placeholder={t("translator.left_placeholder")}
                 className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
               />
+              {/* contador abajo a la derecha */}
               <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                 {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
               </div>
             </div>
 
+            {/* DERECHA: salida */}
             <div className="p-8 md:p-10">
               <textarea
                 ref={rightTA}
