@@ -93,7 +93,7 @@ export const translations = {
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
 
   /* === Aviso de funcionalidad no implementada === */
-  not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago inplementatuta" },
+  not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago ezarrita" },
   not_implemented_subtitle: { ES: "Puedes solicitarla en tu próximo prompt 🚀", EUS: "Hurrengo prompt-ean eska dezakezu 🚀" },
 };
 
