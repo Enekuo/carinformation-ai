@@ -225,11 +225,14 @@ export default function Hero() {
                 onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
                 onInput={(e) => autoResize(e.currentTarget)}
                 placeholder={t("translator.left_placeholder")}
-                className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                className="w-full min-h[430px] min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
               />
               {/* contador abajo a la derecha */}
               <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                 {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                <div className="text-[13px] text-red-500 mt-1">
+                  Límite máximo: {MAX_CHARS.toLocaleString()} caracteres.
+                </div>
               </div>
             </div>
 
