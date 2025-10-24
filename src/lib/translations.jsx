@@ -44,6 +44,16 @@ export const translations = {
   translator: {
     left_placeholder:  { ES: "Escribe o pega el texto aquí.", EUS: "Idatzi edo itsatsi testua hemen." },
     right_placeholder: { ES: "Aquí aparecerá la traducción.", EUS: "Hemen agertuko da itzulpena." },
+
+    /* === NUEVAS CLAVES para los botones/tooltip del Hero === */
+    listen:     { ES: "Escuchar",          EUS: "Entzun" },
+    copy:       { ES: "Copiar",            EUS: "Kopiatu" },
+    copied:     { ES: "Copiado",           EUS: "Kopiatuta" },
+    pdf:        { ES: "PDF",               EUS: "PDF" },
+    clear_left: { ES: "Borrar izquierda",  EUS: "Ezkerra garbitu" },
+    dictate:    { ES: "Dictar",            EUS: "Diktatu" },
+    listening:  { ES: "Escuchando…",       EUS: "Entzuten…" },
+    loading:    { ES: "Traduciendo…",      EUS: "Itzultzen…" },
   },
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */
