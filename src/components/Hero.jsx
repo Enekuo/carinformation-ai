@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
-import { Volume2, Copy as CopyIcon, FileDown } from "lucide-react";
+import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2 } from "lucide-react";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
@@ -29,6 +29,8 @@ export default function Hero() {
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+
+  const [listening, setListening] = useState(false);
 
   const leftRef  = useRef(null);
   const rightRef = useRef(null);
@@ -151,11 +153,9 @@ export default function Hero() {
   };
 
   // ===== Acciones: escuchar, copiar, PDF =====
-  const speakRef = useRef(null);
   const handleSpeak = () => {
     const text = rightText?.trim();
     if (!text) return;
-    // parar si ya está hablando
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = dst === "eus" ? "eu-ES" : "es-ES";
@@ -189,6 +189,39 @@ export default function Hero() {
     w.focus();
     w.print();
   };
+
+  // ===== Mic dictado (izquierda) =====
+  let recognitionRef = useRef(null);
+  const handleToggleMic = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    if (!recognitionRef.current) {
+      const rec = new SpeechRecognition();
+      rec.lang = src === "eus" ? "eu-ES" : "es-ES";
+      rec.interimResults = true;
+      rec.continuous = true;
+      rec.onresult = (e) => {
+        let finalText = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          finalText += e.results[i][0].transcript;
+        }
+        setLeftText((prev) => (prev + " " + finalText).slice(0, MAX_CHARS));
+      };
+      rec.onend = () => setListening(false);
+      recognitionRef.current = rec;
+    }
+    if (!listening) {
+      recognitionRef.current.lang = src === "eus" ? "eu-ES" : "es-ES";
+      recognitionRef.current.start();
+      setListening(true);
+    } else {
+      recognitionRef.current.stop();
+      setListening(false);
+    }
+  };
+
+  // ===== Borrar (derecha) =====
+  const handleClearRight = () => setRightText("");
 
   return (
     <section className="w-full bg-[#F4F8FF] py-10">
@@ -270,10 +303,38 @@ export default function Hero() {
               <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                 {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
               </div>
+
+              {/* MIC abajo a la izquierda */}
+              <div className="absolute bottom-4 left-6">
+                <button
+                  type="button"
+                  onClick={handleToggleMic}
+                  aria-label="Dictar al texto"
+                  className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
+                >
+                  <Mic className="w-5 h-5 text-slate-600" />
+                  <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                    {listening ? "Escuchando…" : "Dictar"}
+                  </span>
+                </button>
+              </div>
             </div>
 
             {/* DERECHA: salida */}
             <div className="p-8 md:p-10 relative">
+              {/* Botón BORRAR arriba-derecha */}
+              <button
+                type="button"
+                onClick={handleClearRight}
+                aria-label="Borrar traducción"
+                className="group absolute top-3 right-4 p-2 rounded-md hover:bg-slate-100"
+              >
+                <Trash2 className="w-5 h-5 text-slate-500" />
+                <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                  Borrar
+                </span>
+              </button>
+
               <textarea
                 ref={rightTA}
                 value={
@@ -296,7 +357,7 @@ export default function Hero() {
                 </div>
               )}
 
-              {/* === Acciones abajo a la derecha (tooltip al hover) === */}
+              {/* Acciones abajo a la derecha */}
               <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
                 {/* Escuchar */}
                 <button
