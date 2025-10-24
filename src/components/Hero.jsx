@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
+import { Volume2, Copy as CopyIcon, FileDown } from "lucide-react";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
@@ -149,6 +150,46 @@ export default function Hero() {
     );
   };
 
+  // ===== Acciones: escuchar, copiar, PDF =====
+  const speakRef = useRef(null);
+  const handleSpeak = () => {
+    const text = rightText?.trim();
+    if (!text) return;
+    // parar si ya está hablando
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = dst === "eus" ? "eu-ES" : "es-ES";
+    window.speechSynthesis.speak(utter);
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(rightText || "");
+    } catch (_) {}
+  };
+
+  // Abre una ventana imprimible (el usuario puede "Guardar como PDF")
+  const handleDownloadPdf = () => {
+    const text = (rightText || "").replace(/\n/g, "<br/>");
+    const w = window.open("", "_blank", "noopener,noreferrer");
+    if (!w) return;
+    w.document.write(`
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <title>Traducción - Euskalia</title>
+          <style>
+            body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif; padding: 32px; line-height: 1.6; color:#0f172a;}
+          </style>
+        </head>
+        <body>${text}</body>
+      </html>
+    `);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
   return (
     <section className="w-full bg-[#F4F8FF] py-10">
       <div className="max-w-7xl mx-auto px-6">
@@ -248,12 +289,54 @@ export default function Hero() {
               {/* 1ª posición (ya existente): debajo del textarea cuando hay error */}
               {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
 
-              {/* 2ª posición: fija abajo, alineada al mismo inicio horizontal que la primera */}
+              {/* 2ª posición: fija abajo, alineada a la izquierda del padding (solo si hay error) */}
               {err && (
                 <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                   {err}
                 </div>
               )}
+
+              {/* === Acciones abajo a la derecha (tooltip al hover) === */}
+              <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
+                {/* Escuchar */}
+                <button
+                  type="button"
+                  onClick={handleSpeak}
+                  aria-label="Escuchar traducción"
+                  className="group relative p-2 rounded-md hover:bg-slate-100"
+                >
+                  <Volume2 className="w-5 h-5" />
+                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                    Escuchar
+                  </span>
+                </button>
+
+                {/* Copiar */}
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  aria-label="Copiar traducción"
+                  className="group relative p-2 rounded-md hover:bg-slate-100"
+                >
+                  <CopyIcon className="w-5 h-5" />
+                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                    Copiar
+                  </span>
+                </button>
+
+                {/* PDF */}
+                <button
+                  type="button"
+                  onClick={handleDownloadPdf}
+                  aria-label="Descargar PDF"
+                  className="group relative p-2 rounded-md hover:bg-slate-100"
+                >
+                  <FileDown className="w-5 h-5" />
+                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                    PDF
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
