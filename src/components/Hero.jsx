@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
-import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2 } from "lucide-react";
+import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check } from "lucide-react";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
@@ -31,10 +31,17 @@ export default function Hero() {
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
 
+  const [copied, setCopied] = useState(false);             // ✅ nuevo estado
+  const copyTimerRef = useRef(null);                       // ✅ para limpiar timeout
+
   const leftRef  = useRef(null);
   const rightRef = useRef(null);
   const leftTA   = useRef(null);
   const rightTA  = useRef(null);
+
+  useEffect(() => () => {                                  // limpiar timeout al desmontar
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+  }, []);
 
   const swap = () => {
     setSrc(dst);
@@ -62,15 +69,11 @@ export default function Hero() {
 
   // ==== Traducción con OpenAI vía /api/chat (debounced) ====
   useEffect(() => {
-    // reset de error si el usuario vuelve a bajar del límite
     if (leftText.length < MAX_CHARS) setErr("");
-
     if (!leftText.trim()) { setRightText(""); return; }
-
-    // ⛔️ Bloqueo cuando está en el límite o lo supera
     if (leftText.length >= MAX_CHARS) {
       setErr(`Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres.`);
-      return; // no llamar a la API
+      return;
     }
 
     const controller = new AbortController();
@@ -110,7 +113,7 @@ export default function Hero() {
       } finally {
         setLoading(false);
       }
-    }, 450); // debounce
+    }, 450);
 
     return () => { clearTimeout(timer); controller.abort(); };
   }, [leftText, src, dst]);
@@ -164,10 +167,12 @@ export default function Hero() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(rightText || "");
+      setCopied(true);
+      if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+      copyTimerRef.current = setTimeout(() => setCopied(false), 1200);
     } catch (_) {}
   };
 
-  // Abre una ventana imprimible (el usuario puede "Guardar como PDF")
   const handleDownloadPdf = () => {
     const text = (rightText || "").replace(/\n/g, "<br/>");
     const w = window.open("", "_blank", "noopener,noreferrer");
@@ -346,10 +351,7 @@ export default function Hero() {
                 placeholder={t("translator.right_placeholder")}
                 className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
               />
-              {/* 1ª posición (ya existente): debajo del textarea cuando hay error */}
               {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
-
-              {/* 2ª posición: fija abajo, alineada a la izquierda del padding (solo si hay error) */}
               {err && (
                 <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                   {err}
@@ -371,16 +373,16 @@ export default function Hero() {
                   </span>
                 </button>
 
-                {/* Copiar */}
+                {/* Copiar (con ✓ al pulsar) */}
                 <button
                   type="button"
                   onClick={handleCopy}
                   aria-label="Copiar traducción"
                   className="group relative p-2 rounded-md hover:bg-slate-100"
                 >
-                  <CopyIcon className="w-5 h-5" />
+                  {copied ? <Check className="w-5 h-5" /> : <CopyIcon className="w-5 h-5" />}
                   <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    Copiar
+                    {copied ? "Copiado" : "Copiar"}
                   </span>
                 </button>
 
