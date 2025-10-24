@@ -248,9 +248,9 @@ export default function Hero() {
               {/* 1ª posición (ya existente): debajo del textarea cuando hay error */}
               {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
 
-              {/* 2ª posición: fija abajo a la derecha, misma altura que el contador (solo si hay error) */}
+              {/* 2ª posición: fija abajo, alineada al mismo inicio horizontal que la primera */}
               {err && (
-                <div className="absolute bottom-4 right-6 text-sm text-red-500">
+                <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                   {err}
                 </div>
               )}
