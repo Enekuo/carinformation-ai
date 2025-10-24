@@ -29,7 +29,6 @@ export default function Hero() {
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
-
   const [listening, setListening] = useState(false);
 
   const leftRef  = useRef(null);
@@ -220,8 +219,8 @@ export default function Hero() {
     }
   };
 
-  // ===== Borrar (derecha) =====
-  const handleClearRight = () => setRightText("");
+  // ===== Borrar (BORRA LA IZQUIERDA) =====
+  const handleClearLeft = () => setLeftText("");
 
   return (
     <section className="w-full bg-[#F4F8FF] py-10">
@@ -322,16 +321,16 @@ export default function Hero() {
 
             {/* DERECHA: salida */}
             <div className="p-8 md:p-10 relative">
-              {/* Botón BORRAR arriba-derecha */}
+              {/* Botón BORRAR arriba-derecha (borra la IZQUIERDA) */}
               <button
                 type="button"
-                onClick={handleClearRight}
-                aria-label="Borrar traducción"
+                onClick={handleClearLeft}
+                aria-label="Borrar texto de la izquierda"
                 className="group absolute top-3 right-4 p-2 rounded-md hover:bg-slate-100"
               >
                 <Trash2 className="w-5 h-5 text-slate-500" />
                 <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                  Borrar
+                  Borrar izquierda
                 </span>
               </button>
 
