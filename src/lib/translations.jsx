@@ -50,7 +50,7 @@ export const translations = {
     copy:       { ES: "Copiar",            EUS: "Kopiatu" },
     copied:     { ES: "Copiado",           EUS: "Kopiatuta" },
     pdf:        { ES: "PDF",               EUS: "PDF" },
-    clear_left: { ES: "Borrar izquierda",  EUS: "Ezkerra garbitu" },
+    clear_left: { ES: "Borrar",            EUS: "Garbitu" },
     dictate:    { ES: "Dictar",            EUS: "Diktatu" },
     listening:  { ES: "Escuchando…",       EUS: "Entzuten…" },
     loading:    { ES: "Traduciendo…",      EUS: "Itzultzen…" },
