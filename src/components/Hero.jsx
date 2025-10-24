@@ -24,22 +24,22 @@ export default function Hero() {
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
 
-  const [leftText, setLeftText]   = useState(""); 
+  const [leftText, setLeftText]   = useState("");
   const [rightText, setRightText] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
 
-  const [copied, setCopied] = useState(false);             // ✅ nuevo estado
-  const copyTimerRef = useRef(null);                       // ✅ para limpiar timeout
+  const [copied, setCopied] = useState(false);
+  const copyTimerRef = useRef(null);
 
   const leftRef  = useRef(null);
   const rightRef = useRef(null);
   const leftTA   = useRef(null);
   const rightTA  = useRef(null);
 
-  useEffect(() => () => {                                  // limpiar timeout al desmontar
+  useEffect(() => () => {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
   }, []);
 
@@ -70,7 +70,9 @@ export default function Hero() {
   // ==== Traducción con OpenAI vía /api/chat (debounced) ====
   useEffect(() => {
     if (leftText.length < MAX_CHARS) setErr("");
+
     if (!leftText.trim()) { setRightText(""); return; }
+
     if (leftText.length >= MAX_CHARS) {
       setErr(`Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres.`);
       return;
@@ -173,6 +175,7 @@ export default function Hero() {
     } catch (_) {}
   };
 
+  // Abre una ventana imprimible (el usuario puede "Guardar como PDF")
   const handleDownloadPdf = () => {
     const text = (rightText || "").replace(/\n/g, "<br/>");
     const w = window.open("", "_blank", "noopener,noreferrer");
@@ -313,12 +316,12 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={handleToggleMic}
-                  aria-label="Dictar al texto"
+                  aria-label={t("translator.dictate")}
                   className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
                 >
                   <Mic className="w-5 h-5 text-slate-600" />
                   <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {listening ? "Escuchando…" : "Dictar"}
+                    {listening ? t("translator.listening") : t("translator.dictate")}
                   </span>
                 </button>
               </div>
@@ -330,12 +333,12 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={handleClearLeft}
-                aria-label="Borrar texto de la izquierda"
+                aria-label={t("translator.clear_left")}
                 className="group absolute top-3 right-4 p-2 rounded-md hover:bg-slate-100"
               >
                 <Trash2 className="w-5 h-5 text-slate-500" />
                 <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                  Borrar izquierda
+                  {t("translator.clear_left")}
                 </span>
               </button>
 
@@ -351,7 +354,9 @@ export default function Hero() {
                 placeholder={t("translator.right_placeholder")}
                 className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
               />
+              {/* error arriba (ya existente) */}
               {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
+              {/* error abajo alineado al contador */}
               {err && (
                 <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                   {err}
@@ -364,12 +369,12 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={handleSpeak}
-                  aria-label="Escuchar traducción"
+                  aria-label={t("translator.listen")}
                   className="group relative p-2 rounded-md hover:bg-slate-100"
                 >
-                  <Volume2 className="w-5 h-5" />
+                  <Volume2 className="w-5 h-5" /> 
                   <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    Escuchar
+                    {t("translator.listen")}
                   </span>
                 </button>
 
@@ -377,12 +382,12 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  aria-label="Copiar traducción"
+                  aria-label={t("translator.copy")}
                   className="group relative p-2 rounded-md hover:bg-slate-100"
                 >
                   {copied ? <Check className="w-5 h-5" /> : <CopyIcon className="w-5 h-5" />}
                   <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {copied ? "Copiado" : "Copiar"}
+                    {copied ? t("translator.copied") : t("translator.copy")}
                   </span>
                 </button>
 
@@ -390,19 +395,19 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={handleDownloadPdf}
-                  aria-label="Descargar PDF"
+                  aria-label={t("translator.pdf")}
                   className="group relative p-2 rounded-md hover:bg-slate-100"
                 >
                   <FileDown className="w-5 h-5" />
                   <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    PDF
+                    {t("translator.pdf")}
                   </span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </div> 
+    </section> 
   );
 }
