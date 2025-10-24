@@ -82,7 +82,6 @@ export default function Hero() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           signal: controller.signal,
-          // ⬇️ IMPORTANTE: el system va *dentro* de messages
           body: JSON.stringify({
             model: "gpt-4o-mini",
             temperature: 0.2,
@@ -94,7 +93,6 @@ export default function Hero() {
         });
 
         if (!res.ok) {
-          // intentar leer el cuerpo para log de depuración
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat error:", res.status, raw);
           throw new Error(`API /api/chat ${res.status}`);
@@ -225,19 +223,16 @@ export default function Hero() {
                 onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
                 onInput={(e) => autoResize(e.currentTarget)}
                 placeholder={t("translator.left_placeholder")}
-                className="w-full min-h[430px] min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
               />
               {/* contador abajo a la derecha */}
               <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                 {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
-                <div className="text-[13px] text-red-500 mt-1">
-                  Límite máximo: {MAX_CHARS.toLocaleString()} caracteres.
-                </div>
               </div>
             </div>
 
             {/* DERECHA: salida */}
-            <div className="p-8 md:p-10">
+            <div className="p-8 md:p-10 relative">
               <textarea
                 ref={rightTA}
                 value={
@@ -250,7 +245,15 @@ export default function Hero() {
                 placeholder={t("translator.right_placeholder")}
                 className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
               />
+              {/* 1ª posición (ya existente): debajo del textarea cuando hay error */}
               {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
+
+              {/* 2ª posición: fija abajo a la derecha, misma altura que el contador (solo si hay error) */}
+              {err && (
+                <div className="absolute bottom-4 right-6 text-sm text-red-500">
+                  {err}
+                </div>
+              )}
             </div>
           </div>
         </div>
