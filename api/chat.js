@@ -1,3 +1,34 @@
+import { kv } from "@vercel/kv";
+import crypto from "crypto";
+
+// ====== Helpers de caché (TTL 14 días + clave estable) ======
+const CACHE_TTL_SECONDS = Number(process.env.CACHE_TTL_SECONDS || 60 * 60 * 24 * 14);
+
+function canonicalize(s) {
+  return (s || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/\s+/g, " ")
+    .replace(/^[\s,.!?;:|]+|[\s,.!?;:|]+$/g, "")
+    .trim();
+}
+
+function makeCacheKey({ task, model, system, messages, src, dst, lang, length }) {
+  const userText = canonicalize((messages || []).map(m => m?.content || "").join(" "));
+  const payload = JSON.stringify({
+    v: "v1",
+    task,
+    model,
+    pair: lang || `${src || ""}-${dst || ""}` || "na",
+    length: length || null,
+    system: system ? canonicalize(system) : "",
+    text: userText
+  });
+  const sha = crypto.createHash("sha256").update(payload).digest("hex");
+  const pair = lang || `${src || ""}-${dst || ""}` || "na";
+  return `cache:${task}:${pair}:${sha}`;
+}
+// ============================================================
+
 export default async function handler(req, res) {
   // CORS / Preflight
   if (req.method === "OPTIONS") {
@@ -78,6 +109,34 @@ export default async function handler(req, res) {
       ...messages,
     ];
 
+    // ====== KV CACHE: tarea + parámetros (para clave estable) ======
+    // task: si vienes con {text,from,to} lo tratamos como "translate"; si no, "chat"
+    const task = hasTranslate ? "translate" : (body?.task || "chat");
+    const src  = hasTranslate ? body.from : (body?.src || null);
+    const dst  = hasTranslate ? body.to   : (body?.dst || null);
+    const lang = body?.lang || null;          // para resúmenes si alguna vez lo usas aquí
+    const length = body?.length || null;      // "short|medium|long" para resúmenes
+
+    const cacheKey = makeCacheKey({
+      task, model, system, messages: finalMessages, src, dst, lang, length
+    });
+
+    // Intento de caché (si hay hit, devolvemos y renovamos TTL)
+    try {
+      const cached = await kv.get(cacheKey);
+      if (cached?.content) {
+        await kv.expire(cacheKey, CACHE_TTL_SECONDS); // renovar 14 días
+        return res.status(200).json({
+          ok: true,
+          provider: "openai",
+          content: cached.content,
+          usage: cached.usage || null,
+          cached: true
+        });
+      }
+    } catch {} // si KV falla, seguimos sin caché
+    // ===============================================================
+
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -107,11 +166,18 @@ export default async function handler(req, res) {
     const content = data?.choices?.[0]?.message?.content ?? "";
     const usage = data?.usage ?? null;
 
+    // ====== Guardar en KV (TTL 14 días) ======
+    try {
+      await kv.set(cacheKey, { content, usage }, { ex: CACHE_TTL_SECONDS });
+    } catch {}
+    // =========================================
+
     return res.status(200).json({
       ok: true,
       provider: "openai",
       content,
-      usage
+      usage,
+      cached: false
     });
   } catch (err) {
     return res.status(500).json({ ok: false, error: err?.message || "Server error" });
