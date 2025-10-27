@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Globe, ChevronDown, LifeBuoy, MessageSquare } from "lucide-react";
+import {
+  Menu,
+  X,
+  Globe,
+  ChevronDown,
+  Languages,
+  FileText
+} from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "@/lib/translations";
 import {
@@ -49,31 +56,43 @@ export default function Header() {
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
+  // ✅ NUEVO: recursos con Traductor y Resumen
   const resources = [
     {
-      name: t("resourcesMenu.support"),
-      icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
+      name: "Traductor",
+      subtitle: "Euskera ↔ Español",
+      icon: <Languages size={16} className="mr-2 text-slate-500" />,
       isLink: true,
-      path: "/soporte",
+      path: "/traductor",
     },
     {
-      name: t("resourcesMenu.aiChat"),
-      icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
+      name: "Resumen",
+      subtitle: "Resúmenes con IA",
+      icon: <FileText size={16} className="mr-2 text-slate-500" />,
+      isLink: true,
+      path: "/resumen",
     },
   ];
 
   const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
-    <div className={`p-1 ${inMobileMenu ? "w-full" : "w-48"}`}>
+    <div className={`p-1 ${inMobileMenu ? "w-full" : "w-56"}`}>
       {resources.map((item, idx) =>
         item.isLink ? (
           <Link
             key={idx}
             to={item.path}
-            className="w-full text-left flex items-center p-2 text-sm font-medium text-slate-700 rounded-md hover:bg-slate-100"
+            className="w-full text-left flex items-center p-2 text-[14px] font-medium text-slate-800 rounded-lg hover:bg-slate-100"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            {item.icon}
-            {item.name}
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 mr-2">
+              {item.icon}
+            </span>
+            <div className="flex flex-col">
+              <span className="font-medium">{item.name}</span>
+              {item.subtitle && (
+                <span className="text-xs text-slate-500">{item.subtitle}</span>
+              )}
+            </div>
           </Link>
         ) : (
           <button
@@ -139,6 +158,7 @@ export default function Header() {
                 align="start"
                 sideOffset={8}
               >
+                {/* flechita superior */}
                 <DropdownMenuArrow className="fill-white stroke-slate-200" width={16} height={8} />
                 <ResourcesDropdownContent />
               </DropdownMenuContent>
@@ -227,7 +247,9 @@ export default function Header() {
                   <DropdownMenuSeparator />
                 </div>
 
-                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">{t("header.resources")}</p>
+                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
+                  {t("header.resources")}
+                </p>
                 <div className="px-2">
                   <ResourcesDropdownContent inMobileMenu />
                 </div>
