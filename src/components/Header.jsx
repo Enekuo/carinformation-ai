@@ -7,7 +7,9 @@ import {
   Globe,
   ChevronDown,
   Languages,
-  FileText
+  FileText,
+  LifeBuoy,
+  MessageSquare,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "@/lib/translations";
@@ -28,7 +30,11 @@ const languages = [
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // ➜ Estados separados para cada dropdown (Herramientas / Recursos)
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false);
+
   const { toast } = useToast();
   const { language, setLanguage, t } = useTranslation();
 
@@ -56,43 +62,74 @@ export default function Header() {
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
-  // ✅ NUEVO: recursos con Traductor y Resumen
-  const resources = [
+  // --- Contenidos de los menús ---
+
+  // ✅ HERRAMIENTAS: Traductor / Resumen (NUEVO en Herramientas)
+  const tools = [
     {
       name: "Traductor",
       subtitle: "Euskera ↔ Español",
       icon: <Languages size={16} className="mr-2 text-slate-500" />,
-      isLink: true,
       path: "/traductor",
     },
     {
       name: "Resumen",
       subtitle: "Resúmenes con IA",
       icon: <FileText size={16} className="mr-2 text-slate-500" />,
-      isLink: true,
       path: "/resumen",
     },
   ];
 
-  const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
+  const ToolsDropdownContent = ({ inMobileMenu = false }) => (
     <div className={`p-1 ${inMobileMenu ? "w-full" : "w-56"}`}>
+      {tools.map((item, idx) => (
+        <Link
+          key={idx}
+          to={item.path}
+          className="w-full text-left flex items-center p-2 text-[14px] font-medium text-slate-800 rounded-lg hover:bg-slate-100"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 mr-2">
+            {item.icon}
+          </span>
+          <div className="flex flex-col">
+            <span className="font-medium">{item.name}</span>
+            {item.subtitle && (
+              <span className="text-xs text-slate-500">{item.subtitle}</span>
+            )}
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+
+  // ✅ RECURSOS: Soporte / Chat de IA (RESTABLECIDO como estaba)
+  const resources = [
+    {
+      name: t("resourcesMenu.support"),
+      icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
+      isLink: true,
+      path: "/soporte",
+    },
+    {
+      name: t("resourcesMenu.aiChat"),
+      icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
+      isLink: false,
+    },
+  ];
+
+  const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
+    <div className={`p-1 ${inMobileMenu ? "w-full" : "w-48"}`}>
       {resources.map((item, idx) =>
         item.isLink ? (
           <Link
             key={idx}
             to={item.path}
-            className="w-full text-left flex items-center p-2 text-[14px] font-medium text-slate-800 rounded-lg hover:bg-slate-100"
+            className="w-full text-left flex items-center p-2 text-sm font-medium text-slate-700 rounded-md hover:bg-slate-100"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 mr-2">
-              {item.icon}
-            </span>
-            <div className="flex flex-col">
-              <span className="font-medium">{item.name}</span>
-              {item.subtitle && (
-                <span className="text-xs text-slate-500">{item.subtitle}</span>
-              )}
-            </div>
+            {item.icon}
+            {item.name}
           </Link>
         ) : (
           <button
@@ -131,14 +168,32 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            <button
-              onClick={handleFeatureClick}
-              className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
-            >
-              {t("header.tools")}
-              <ChevronDown size={16} className="transition-transform" />
-            </button>
+            {/* ===== Herramientas (con Traductor/Resumen) ===== */}
+            <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  onPointerEnter={() => setIsToolsMenuOpen(true)}
+                  className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
+                >
+                  {t("header.tools")}
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${isToolsMenuOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                onPointerLeave={() => setIsToolsMenuOpen(false)}
+                className="bg-white rounded-xl shadow-lg border border-slate-200 mt-2"
+                align="start"
+                sideOffset={8}
+              >
+                <DropdownMenuArrow className="fill-white stroke-slate-200" width={16} height={8} />
+                <ToolsDropdownContent />
+              </DropdownMenuContent>
+            </DropdownMenu>
 
+            {/* ===== Recursos (restaurado: Soporte / Chat de IA) ===== */}
             <DropdownMenu open={isResourcesMenuOpen} onOpenChange={setIsResourcesMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
@@ -158,7 +213,6 @@ export default function Header() {
                 align="start"
                 sideOffset={8}
               >
-                {/* flechita superior */}
                 <DropdownMenuArrow className="fill-white stroke-slate-200" width={16} height={8} />
                 <ResourcesDropdownContent />
               </DropdownMenuContent>
@@ -216,6 +270,7 @@ export default function Header() {
         </div>
       </div>
 
+      {/* ===== Mobile ===== */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -236,17 +291,19 @@ export default function Header() {
 
             <div className="p-4 flex flex-col h-[calc(100%-64px)]">
               <div className="flex flex-col gap-1">
-                <button
-                  onClick={handleFeatureClick}
-                  className="w-full text-left text-base font-medium h-12 px-2 rounded-md hover:bg-slate-100"
-                >
+                {/* Herramientas (Traductor/Resumen) */}
+                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
                   {t("header.tools")}
-                </button>
+                </p>
+                <div className="px-2">
+                  <ToolsDropdownContent inMobileMenu />
+                </div>
 
-                <div className="px-2 my-1">
+                <div className="px-2 my-2">
                   <DropdownMenuSeparator />
                 </div>
 
+                {/* Recursos (Soporte / Chat de IA) */}
                 <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
                   {t("header.resources")}
                 </p>
@@ -256,7 +313,7 @@ export default function Header() {
 
                 <button
                   onClick={handleFeatureClick}
-                  className="w-full text-left text-base font-medium h-12 px-2 rounded-md hover:bg-slate-100"
+                  className="w-full text-left text-base font-medium h-12 px-2 rounded-md hover:bg-slate-100 mt-2"
                 >
                   {t("header.pricing")}
                 </button>
