@@ -70,7 +70,7 @@ export default function Header() {
       name: "Traductor",
       subtitle: "Euskera ↔ Español",
       icon: <Languages size={16} className="mr-2 text-slate-500" />,
-      path: "/traductor",
+      path: "/Hero",
     },
     {
       name: "Resumen",
