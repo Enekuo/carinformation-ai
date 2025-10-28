@@ -9,7 +9,8 @@ import CompaniesPage from '@/pages/CompaniesPage';
 import CreatorsPage from '@/pages/CreatorsPage';
 import AuthPage from '@/pages/AuthPage';
 import SupportPage from '@/pages/SupportPage';
-import Resumen from '@/pages/Resumen';
+import Resumen from "@/components/Resumen";
+
 
 
 function App() {
