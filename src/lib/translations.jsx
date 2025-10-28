@@ -64,22 +64,73 @@ export const translations = {
     sources_tab_document:  { ES: "Documento", EUS: "Dokumentua" },
     sources_tab_url:       { ES: "URL", EUS: "URLa" },
 
+    // Mensajes de ayuda (izquierda/derecha)
     create_help_left: {
       ES:  "Elige cómo quieres proporcionar el contenido. Puedes escribir, subir documentos o pegar URLs.",
       EUS: "Aukeratu edukia nola eman nahi duzun. Idatzi, dokumentuak igo edo URLak itsatsi ditzakezu.",
     },
-
-    generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     create_help_right: {
       ES:  "Selecciona una fuente (texto, documentos o URLs) y pulsa “Generar resumen”.",
       EUS: "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.",
     },
 
+    // CTA y buscador inferior
+    generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {
       ES:  "Escribe aquí un enfoque (opcional): tono, longitud, puntos clave…",
       EUS: "Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…",
     },
     generate_with_prompt:  { ES: "Generar con indicaciones", EUS: "Argibideekin sortu" },
+
+    // Texto (pestaña)
+    enter_text_here_full: { 
+      ES: "Escribe o pega tu texto aquí…", 
+      EUS: "Idatzi edo itsatsi zure testua hemen…" 
+    },
+
+    // Documento (pestaña)
+    choose_file_title: { 
+      ES: "Sube archivos", 
+      EUS: "Igo fitxategiak" 
+    },
+    accepted_formats: { 
+      ES: "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…", 
+      EUS: "Onartutako formatuak: PDF, DOCX, TXT, MD, irudiak…" 
+    },
+    folder_hint: { 
+      ES: "Puedes arrastrar varios archivos a la vez.", 
+      EUS: "Fitxategi anitz batera arrasta ditzakezu." 
+    },
+
+    // URL (pestaña)
+    paste_urls_label: { 
+      ES: "Pega aquí una o varias URLs (una por línea)", 
+      EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)" 
+    },
+    add_url: { 
+      ES: "Añadir URLs", 
+      EUS: "URLak gehitu" 
+    },
+    save_urls: { 
+      ES: "Guardar", 
+      EUS: "Gorde" 
+    },
+    cancel: { 
+      ES: "Cancelar", 
+      EUS: "Ezeztatu" 
+    },
+    urls_note_visible: { 
+      ES: "Solo se puede resumir contenido visible sin login.", 
+      EUS: "Loginik gabe ikusgai dagoen edukia soilik laburbil daiteke." 
+    },
+    urls_note_paywalled: { 
+      ES: "El contenido con muro de pago no se podrá procesar.", 
+      EUS: "Ordain-hesia duen edukia ez da prozesatuko." 
+    },
+    remove: { 
+      ES: "Quitar", 
+      EUS: "Kendu" 
+    },
   },
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */
