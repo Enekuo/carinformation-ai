@@ -120,12 +120,12 @@ export const translations = {
       EUS: "Ezeztatu" 
     },
     urls_note_visible: { 
-      ES: "Solo se puede resumir contenido visible sin login.", 
-      EUS: "Loginik gabe ikusgai dagoen edukia soilik laburbil daiteke." 
+      ES: "Solo se importará el texto visible del sitio web.", 
+      EUS: "Webguneko testu ikusgarria bakarrik inportatuko da."
     },
     urls_note_paywalled: { 
-      ES: "El contenido con muro de pago no se podrá procesar.", 
-      EUS: "Ordain-hesia duen edukia ez da prozesatuko." 
+      ES: "No se admiten artículos de pago.", 
+      EUS: "Ordainpeko artikuluak ez dira onartzen." 
     },
     remove: { 
       ES: "Quitar", 
