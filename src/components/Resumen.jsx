@@ -8,23 +8,19 @@ export default function Resumen() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
 
-  // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
   const [chatInput, setChatInput] = useState("");
 
-  // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
-  // URLs
   const [urlInputOpen, setUrlInputOpen] = useState(false);
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
-  // ===== Estilos / constantes visuales =====
-  const HEADER_HEIGHT_PX = 0; // no hay header local en esta página
+  const HEADER_HEIGHT_PX = 0;
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
   const GRAY_ICON = "#94a3b8";
@@ -36,7 +32,6 @@ export default function Resumen() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== i18n labels (con fallbacks) =====
   const labelSources = tr("summary.sources_title", "Fuentes");
   const labelTabText = tr("summary.sources_tab_text", "Texto");
   const labelTabDocument = tr("summary.sources_tab_document", "Documento");
@@ -57,7 +52,6 @@ export default function Resumen() {
   const labelBottomInputPh = tr("summary.bottom_input_ph","Escribe aquí un enfoque (opcional): tono, longitud, puntos clave…");
   const labelGenerateWithPrompt = tr("summary.generate_with_prompt","Generar con indicaciones");
 
-  // Mensaje de ayuda izquierdo (título + cuerpo)
   const leftRaw = tr("summary.create_help_left","Elige cómo quieres proporcionar el contenido. Puedes escribir, subir documentos o pegar URLs.");
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
@@ -66,7 +60,6 @@ export default function Resumen() {
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
 
-  // ===== Tabs botón
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
     <div className="relative flex-1 min-w-0 flex items-stretch">
       <button
@@ -85,7 +78,6 @@ export default function Resumen() {
     </div>
   );
 
-  // ===== Utils
   const parseUrlsFromText = (text) => {
     const raw = text.split(/[\s\n]+/).map((s) => s.trim()).filter(Boolean);
     const valid = [];
@@ -96,7 +88,6 @@ export default function Resumen() {
     return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
-  // Documentos
   const triggerPick = () => fileInputRef.current?.click();
   const addFiles = (list) => {
     if (!list?.length) return;
@@ -115,8 +106,6 @@ export default function Resumen() {
   };
 
   const removeDocument = (id) => setDocuments((prev) => prev.filter((d) => d.id !== id));
-
-  // URLs
   const addUrlsFromTextarea = () => {
     const parsed = parseUrlsFromText(urlsTextarea);
     if (!parsed.length) return;
@@ -127,30 +116,26 @@ export default function Resumen() {
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   return (
-    <section className="w-full bg-[#F4F8FF] pt-10 pb-6">
+    <section className="w-full bg-[#F4F8FF] pt-8 pb-0">
       <div className="max-w-7xl mx-auto w-full px-6">
         <motion.section
           className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6"
           initial="initial" animate="in" exit="out"
           variants={pageVariants} transition={{ duration: 0.3 }}
-          // mantenemos el alto pero con menos padding inferior ya no hace overflow
           style={{ minHeight: `calc(100vh - ${HEADER_HEIGHT_PX + 32}px)` }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
           <aside className="h-full rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
-            {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">{labelSources}</div>
             </div>
 
-            {/* Tabs */}
             <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
               <TabBtn active={sourceMode === "text"} icon={FileText} label={labelTabText} onClick={() => setSourceMode("text")} showDivider />
               <TabBtn active={sourceMode === "document"} icon={FileIcon} label={labelTabDocument} onClick={() => setSourceMode("document")} showDivider />
               <TabBtn active={sourceMode === "url"} icon={UrlIcon} label={labelTabUrl} onClick={() => setSourceMode("url")} />
             </div>
 
-            {/* Contenido */}
             <div className="flex-1 overflow-hidden p-4">
               {!sourceMode && (
                 <div className="h-full w-full flex items-center justify-center">
@@ -211,11 +196,7 @@ export default function Resumen() {
                               <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                             </div>
                           </div>
-                          <button
-                            onClick={() => removeDocument(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove} aria-label={labelRemove}
-                          >
+                          <button onClick={() => removeDocument(id)} className="shrink-0 p-1.5 rounded-md hover:bg-slate-100" title={labelRemove} aria-label={labelRemove}>
                             <X className="w-4 h-4" />
                           </button>
                         </li>
@@ -282,11 +263,7 @@ export default function Resumen() {
                               </a>
                             </div>
                           </div>
-                          <button
-                            onClick={() => removeUrl(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove} aria-label={labelRemove}
-                          >
+                          <button onClick={() => removeUrl(id)} className="shrink-0 p-1.5 rounded-md hover:bg-slate-100" title={labelRemove} aria-label={labelRemove}>
                             <X className="w-4 h-4" />
                           </button>
                         </li>
@@ -298,25 +275,24 @@ export default function Resumen() {
             </div>
           </aside>
 
-          {/* ===== Panel Derecho (resultado / CTA / input inferior) ===== */}
+          {/* ===== Panel Derecho ===== */}
           <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Botón principal centrado (ligeramente más arriba) */}
-            <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "36%" }}>
+            {/* Botón principal un poco más arriba */}
+            <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "34%" }}>
               <Button type="button" className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center">
                 {labelGenerateFromSources}
               </Button>
             </div>
 
-            {/* Mensaje secundario (ligeramente más arriba) */}
-            <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "47%" }}>
+            {/* Mensaje secundario un poco más arriba */}
+            <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "45%" }}>
               <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
             </div>
 
-            {/* espacio libre para resultados */}
             <div className="w-full h-full"></div>
 
-            {/* Input inferior: SUBIDO para evitar scroll */}
-            <div className="absolute bottom-6 left-0 right-0 p-4">
+            {/* Buscador inferior subido para evitar scroll */}
+            <div className="absolute bottom-10 left-0 right-0 p-4">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
                   <input
