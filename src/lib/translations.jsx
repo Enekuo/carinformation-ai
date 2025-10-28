@@ -131,6 +131,10 @@ export const translations = {
       ES: "Quitar", 
       EUS: "Kendu" 
     },
+    paste_urls_placeholder: { 
+      ES: "Introduce aquí una o más URLs (separadas por línea)", 
+      EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)" 
+},
   },
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */

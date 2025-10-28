@@ -381,7 +381,10 @@ export default function Resumen() {
                       <textarea
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
-                        placeholder="https://ejemplo.com/articulo-1"
+                        placeholder={tr(
+                          "summary.paste_urls_placeholder",
+                          "Introduce aquí una o más URLs (separadas por línea)"
+                        )}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                       />
