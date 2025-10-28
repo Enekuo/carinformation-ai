@@ -66,11 +66,11 @@ export const translations = {
 
     // Mensajes de ayuda (izquierda/derecha)
     create_help_left: {
-      ES:  "Elige cómo quieres proporcionar el contenido. Puedes escribir, subir documentos o pegar URLs.",
-      EUS: "Aukeratu edukia nola eman nahi duzun. Idatzi, dokumentuak igo edo URLak itsatsi ditzakezu.",
+      ES:  "Aquí aparecerán tus textos o documentos subidos.Puedes añadir archivos PDF, texto copiado, enlaces web...",
+      EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak. +Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak...",
     },
     create_help_right: {
-      ES:  "Selecciona una fuente (texto, documentos o URLs) y pulsa “Generar resumen”.",
+      ES:  "Aquí verás el resultado generado por la IA, junto con la opción de escucharlo en voz alta.",
       EUS: "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.",
     },
 
@@ -90,8 +90,8 @@ export const translations = {
 
     // Documento (pestaña)
     choose_file_title: { 
-      ES: "Sube archivos", 
-      EUS: "Igo fitxategiak" 
+      ES: "Elige tu archivo o carpeta", 
+      EUS: "Aukeratu zure fitxategia edo karpeta." 
     },
     accepted_formats: { 
       ES: "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…", 
@@ -99,13 +99,13 @@ export const translations = {
     },
     folder_hint: { 
       ES: "Puedes arrastrar varios archivos a la vez.", 
-      EUS: "Fitxategi anitz batera arrasta ditzakezu." 
+      EUS: "Fitxategi bat baino gehiago batera arrasta ditzakezu." 
     },
 
     // URL (pestaña)
     paste_urls_label: { 
-      ES: "Pega aquí una o varias URLs (una por línea)", 
-      EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)" 
+      ES: "Pegar URLs*", 
+      EUS: "URLak itsatsi*" 
     },
     add_url: { 
       ES: "Añadir URLs", 
