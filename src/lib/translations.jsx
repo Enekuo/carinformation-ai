@@ -56,6 +56,32 @@ export const translations = {
     loading:    { ES: "Traduciendo…",      EUS: "Itzultzen…" },
   },
 
+  /* === Bloque de Resumen (Euskalia) === */
+  summary: {
+    title:                 { ES: "Resumen", EUS: "Laburpena" },
+    sources_title:         { ES: "Fuentes", EUS: "Iturriak" },
+    sources_tab_text:      { ES: "Texto", EUS: "Testua" },
+    sources_tab_document:  { ES: "Documento", EUS: "Dokumentua" },
+    sources_tab_url:       { ES: "URL", EUS: "URLa" },
+
+    create_help_left: {
+      ES:  "Elige cómo quieres proporcionar el contenido. Puedes escribir, subir documentos o pegar URLs.",
+      EUS: "Aukeratu edukia nola eman nahi duzun. Idatzi, dokumentuak igo edo URLak itsatsi ditzakezu.",
+    },
+
+    generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
+    create_help_right: {
+      ES:  "Selecciona una fuente (texto, documentos o URLs) y pulsa “Generar resumen”.",
+      EUS: "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.",
+    },
+
+    bottom_input_ph: {
+      ES:  "Escribe aquí un enfoque (opcional): tono, longitud, puntos clave…",
+      EUS: "Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…",
+    },
+    generate_with_prompt:  { ES: "Generar con indicaciones", EUS: "Argibideekin sortu" },
+  },
+
   /* === Bloque anidado (por si lo usas en otras vistas) === */
   supportPage: {
     title:       { ES: "Soporte", EUS: "Laguntza" },
