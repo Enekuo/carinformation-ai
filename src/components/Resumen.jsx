@@ -25,8 +25,8 @@ export default function Resumen() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Longitud del resumen: "breve" | "medio" | "detallado"
-  const [summaryLength, setSummaryLength] = useState("breve");
+  // Longitud del resumen
+  const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
@@ -51,54 +51,33 @@ export default function Resumen() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== i18n labels (con fallbacks) =====
+  // ===== i18n labels =====
   const labelSources = tr("summary.sources_title", "Fuentes");
   const labelTabText = tr("summary.sources_tab_text", "Texto");
   const labelTabDocument = tr("summary.sources_tab_document", "Documento");
   const labelTabUrl = tr("summary.sources_tab_url", "URL");
   const labelEnterText = tr("summary.enter_text_here_full", "Escribe o pega tu texto aquí…");
   const labelChooseFileTitle = tr("summary.choose_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr(
-    "summary.accepted_formats",
-    "Puedes añadir archivos PDF, texto copiado, enlaces web…"
-  );
-  const labelFolderHint = tr(
-    "summary.folder_hint",
-    "Aquí aparecerán tus textos o documentos subidos."
-  );
+  const labelAcceptedFormats = tr("summary.accepted_formats","Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const labelFolderHint = tr("summary.folder_hint","Aquí aparecerán tus textos o documentos subidos.");
   const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "summary.urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
-  );
-  const labelUrlsNotePaywalled = tr(
-    "summary.urls_note_paywalled",
-    "No se admiten artículos de pago."
-  );
+  const labelUrlsNoteVisible = tr("summary.urls_note_visible","Solo se importará el texto visible del sitio web.");
+  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled","No se admiten artículos de pago.");
   const labelRemove = tr("summary.remove", "Quitar");
   const labelGenerateFromSources = tr("summary.generate_from_sources", "Laburpena sortu");
-  const labelHelpRight = tr(
-    "summary.create_help_right",
-    "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”."
-  );
-  const labelBottomInputPh = tr(
-    "summary.bottom_input_ph",
-    "Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…"
-  );
-  const labelGenerateWithPrompt = tr(
-    "summary.generate_with_prompt",
-    "Argibideekin sortu"
-  );
+  const labelHelpRight = tr("summary.create_help_right","Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.");
+  const labelBottomInputPh = tr("summary.bottom_input_ph","Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…");
+  const labelGenerateWithPrompt = tr("summary.generate_with_prompt","Argibideekin sortu");
 
-  // Longitud labels
+  // Etiquetas de longitud (con fallback para que no salgan las claves)
   const LBL_SHORT = tr("summary.length_short", "Breve");
   const LBL_MED   = tr("summary.length_medium", "Medio");
   const LBL_LONG  = tr("summary.length_long", "Detallado");
 
-  // Mensaje de ayuda izquierdo (título + cuerpo)
+  // Mensaje de ayuda izquierdo
   const leftRaw = tr(
     "summary.create_help_left",
     "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…"
@@ -110,7 +89,7 @@ export default function Resumen() {
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
 
-  // ===== Tabs botón
+  // ===== Componente Tab genérico (para lado izq) =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
     <div className="relative flex-1 min-w-0 flex items-stretch">
       <button
@@ -121,44 +100,49 @@ export default function Resumen() {
         aria-pressed={active}
         aria-label={label}
       >
-        <Icon
-          className="w-[18px] h-[18px] shrink-0"
-          style={{ color: active ? BLUE : GRAY_ICON }}
-        />
+        <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
         )}
       </button>
-      {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
-      )}
+      {showDivider && <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />}
     </div>
   );
 
-  // ===== Utils
+  // ===== Tabs de longitud (estilo igual que la izquierda) =====
+  const LengthTab = ({ active, label, onClick, showDivider }) => (
+    <div className="relative flex items-stretch">
+      <button
+        type="button"
+        onClick={onClick}
+        className="relative inline-flex items-center gap-2 h-[44px] px-3 text-[14px] font-medium"
+        style={{ color: active ? BLUE : GRAY_TEXT }}
+        aria-pressed={active}
+        aria-label={label}
+      >
+        <span className="truncate">{label}</span>
+        {active && (
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
+        )}
+      </button>
+      {showDivider && <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />}
+    </div>
+  );
+
+  // ===== Utils =====
   const parseUrlsFromText = (text) => {
     const raw = text.split(/[\s\n]+/).map((s) => s.trim()).filter(Boolean);
     const valid = [];
     for (const u of raw) {
-      try {
-        const url = new URL(u);
-        valid.push({ href: url.href, host: url.host });
-      } catch {}
+      try { const url = new URL(u); valid.push({ href: url.href, host: url.host }); } catch {}
     }
     const seen = new Set();
     return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
   const enforceLength = (text, mode) => {
-    // límites aproximados en palabras
+    // límites aproximados en palabras (para asegurar tamaño)
     const caps = { breve: 130, medio: 220, detallado: 300 };
     const maxWords = caps[mode] || caps.breve;
     const words = text.split(/\s+/);
@@ -174,10 +158,7 @@ export default function Resumen() {
     const newDocs = arr.map((file) => ({ id: crypto.randomUUID(), file }));
     setDocuments((prev) => [...prev, ...newDocs]);
   };
-  const onFiles = (e) => {
-    addFiles(e.target.files);
-    e.target.value = "";
-  };
+  const onFiles = (e) => { addFiles(e.target.files); e.target.value = ""; };
 
   const onDragEnter = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(true); };
   const onDragOver  = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(true); };
@@ -193,21 +174,15 @@ export default function Resumen() {
   const addUrlsFromTextarea = () => {
     const parsed = parseUrlsFromText(urlsTextarea);
     if (!parsed.length) return;
-    const newItems = parsed.map((p) => ({
-      id: crypto.randomUUID(),
-      url: p.href,
-      host: p.host,
-    }));
+    const newItems = parsed.map((p) => ({ id: crypto.randomUUID(), url: p.href, host: p.host }));
     setUrlItems((prev) => [...prev, ...newItems]);
-    setUrlsTextarea("");
-    setUrlInputOpen(false);
+    setUrlsTextarea(""); setUrlInputOpen(false);
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // ===== Lógica: Generar Resumen (solo botón superior)
+  // ===== Lógica: Generar Resumen =====
   const handleGenerate = async () => {
-    setErrorMsg("");
-    setResult("");
+    setErrorMsg(""); setResult("");
 
     const hasInput =
       (textValue && textValue.trim().length > 0) ||
@@ -222,7 +197,6 @@ export default function Resumen() {
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
-    // Instrucciones de formato y longitud
     const formattingRules =
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
@@ -272,7 +246,6 @@ export default function Resumen() {
 
       const data = await res.json();
 
-      // Backend devuelve { ok, content, ... } o formato OpenAI
       const rawText =
         data?.text ??
         data?.content ??
@@ -282,16 +255,15 @@ export default function Resumen() {
 
       if (!rawText) throw new Error("No se recibió texto de la API.");
 
-      // Limpieza defensiva: quitar viñetas/guiones/numeraciones y unificar a 1 párrafo
+      // Limpieza + párrafo único
       const cleaned = rawText
-        .replace(/^\s*[-–—•]\s+/gm, "")   // elimina guiones/viñetas al inicio
-        .replace(/^\s*\d+\.\s+/gm, "")    // elimina "1. ", "2. " al inicio
+        .replace(/^\s*[-–—•]\s+/gm, "")
+        .replace(/^\s*\d+\.\s+/gm, "")
         .replace(/\r/g, "")
-        .replace(/\n+/g, " ")             // todo a un solo párrafo
-        .replace(/\s{2,}/g, " ")          // colapsa espacios
+        .replace(/\n+/g, " ")
+        .replace(/\s{2,}/g, " ")
         .trim();
 
-      // Enforce longitud elegida (corte elegante por palabras)
       const clipped = enforceLength(cleaned, summaryLength);
 
       setResult(clipped);
@@ -350,26 +322,20 @@ export default function Resumen() {
 
             {/* Contenido */}
             <div className="flex-1 overflow-hidden p-3">
-              {/* Estado inicial */}
               {!sourceMode && (
                 <div className="h-full w-full flex items-center justify-center">
                   <div className="text-center px-2">
                     <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
                       <FileText className="w-6 h-6 text-slate-500" />
                     </div>
-                    <p className="text-[15px] font-semibold text-slate-600">
-                      {leftTitle}
-                    </p>
+                    <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
                     {leftBody && (
-                      <p className="mt-1 text-[13px] leading-6 text-slate-500">
-                        {leftBody}
-                      </p>
+                      <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>
                     )}
                   </div>
                 </div>
               )}
 
-              {/* Texto */}
               {sourceMode === "text" && (
                 <textarea
                   value={textValue}
@@ -380,12 +346,9 @@ export default function Resumen() {
                 />
               )}
 
-              {/* Documento */}
               {sourceMode === "document" && (
                 <div
-                  className={`h-full w-full flex flex-col relative ${
-                    dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
-                  }`}
+                  className={`h-full w-full flex flex-col relative ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -409,36 +372,22 @@ export default function Resumen() {
                     <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                       <Plus className="w-10 h-10 text-sky-600" />
                     </div>
-                    <div className="text-xl font-semibold text-slate-800">
-                      {labelChooseFileTitle}
-                    </div>
-                    <div className="mt-4 text-sm text-slate-500">
-                      {labelAcceptedFormats}
-                    </div>
-                    <div className="mt-1 text-xs text-slate-400">
-                      {labelFolderHint}
-                    </div>
+                    <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
+                    <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
+                    <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
                   </button>
 
-                  {/* Lista de documentos seleccionados */}
                   {documents.length > 0 && (
                     <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
                       {documents.map(({ id, file }) => (
-                        <li
-                          key={id}
-                          className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                        >
+                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
                           <div className="min-w-0 flex items-center gap-3 flex-1">
                             <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                               <FileIcon className="w-4 h-4" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <span className="text-sm font-medium block truncate">
-                                {file.name}
-                              </span>
-                              <span className="text-xs text-slate-500">
-                                {(file.size / 1024 / 1024).toFixed(2)} MB
-                              </span>
+                              <span className="text-sm font-medium block truncate">{file.name}</span>
+                              <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                             </div>
                           </div>
                           <button
@@ -456,7 +405,6 @@ export default function Resumen() {
                 </div>
               )}
 
-              {/* URL */}
               {sourceMode === "url" && (
                 <div className="h-full w-full flex flex-col">
                   <div className="mb-3 flex items-center justify-between">
@@ -491,10 +439,7 @@ export default function Resumen() {
                         </Button>
                         <button
                           type="button"
-                          onClick={() => {
-                            setUrlsTextarea("");
-                            setUrlInputOpen(false);
-                          }}
+                          onClick={() => { setUrlsTextarea(""); setUrlInputOpen(false); }}
                           className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
                         >
                           {labelCancel}
@@ -516,13 +461,7 @@ export default function Resumen() {
                               <UrlIcon className="w-4 h-4" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <a
-                                href={url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-sm font-medium block truncate text-sky-600 hover:underline"
-                                title={url}
-                              >
+                              <a href={url} target="_blank" rel="noreferrer" className="text-sm font-medium block truncate text-sky-600 hover:underline" title={url}>
                                 {host} — {url}
                               </a>
                             </div>
@@ -544,33 +483,33 @@ export default function Resumen() {
             </div>
           </aside>
 
-          {/* ===== Panel Derecho (resultado / CTA / input inferior) ===== */}
+          {/* ===== Panel Derecho ===== */}
           <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-
-            {/* Botones de Longitud (arriba) */}
-            <div className="absolute left-1/2 -translate-x-1/2 z-10 flex items-center gap-2"
-                 style={{ top: "18%" }}>
-              {["breve","medio","detallado"].map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  onClick={() => setSummaryLength(opt)}
-                  className={`h-9 px-4 rounded-full border text-sm font-medium transition
-                    ${summaryLength === opt
-                      ? "bg-[#2563eb] text-white border-[#2563eb]"
-                      : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"}`}
-                  aria-pressed={summaryLength === opt}
-                >
-                  {opt === "breve" ? LBL_SHORT : opt === "medio" ? LBL_MED : LBL_LONG}
-                </button>
-              ))}
+            {/* --- NUEVA BARRA SUPERIOR CON TABS DE LONGITUD --- */}
+            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+              <div className="flex items-center gap-2">
+                <LengthTab
+                  active={summaryLength === "breve"}
+                  label={LBL_SHORT}
+                  onClick={() => setSummaryLength("breve")}
+                  showDivider
+                />
+                <LengthTab
+                  active={summaryLength === "medio"}
+                  label={LBL_MED}
+                  onClick={() => setSummaryLength("medio")}
+                  showDivider
+                />
+                <LengthTab
+                  active={summaryLength === "detallado"}
+                  label={LBL_LONG}
+                  onClick={() => setSummaryLength("detallado")}
+                />
+              </div>
             </div>
 
             {/* Botón principal centrado */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 z-10"
-              style={{ top: "30%" }}
-            >
+            <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
               <Button
                 type="button"
                 onClick={handleGenerate}
@@ -583,13 +522,8 @@ export default function Resumen() {
             </div>
 
             {/* Mensaje secundario */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-              style={{ top: "40%" }}
-            >
-              <p className="text-sm leading-6 text-slate-600 max-w-xl">
-                {labelHelpRight}
-              </p>
+            <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+              <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
             </div>
 
             {/* Resultado */}
@@ -614,7 +548,7 @@ export default function Resumen() {
             </div>
 
             {/* Input inferior (prompt opcional) */}
-            <div className="absolute left-0 right-0 p-4 bottom-[84px] md:bottom-12">
+            <div className="absolute left-0 right-0 p-4 bottom=[84px] md:bottom-12">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
                   <input
@@ -624,11 +558,7 @@ export default function Resumen() {
                     className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-slate-400"
                     aria-label={labelBottomInputPh}
                   />
-                  <Button
-                    type="button"
-                    className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
-                    style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-                  >
+                  <Button type="button" className="h-10 rounded-full px-4 shrink-0 hover:brightness-95" style={{ backgroundColor: "#2563eb", color: "#ffffff" }}>
                     {labelGenerateWithPrompt}
                   </Button>
                 </div>
