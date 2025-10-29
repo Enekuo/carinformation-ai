@@ -75,9 +75,9 @@ export const translations = {
     },
 
     // --- Longitud del resumen (nuevas) ---
-     length_short:  { ES: "Breve",     EUS: "laburra" },
-     length_medium: { ES: "Medio",     EUS: "ertaina" },
-     length_long:   { ES: "Detallado", EUS: "zehatza" },  
+     length_short:  { ES: "Breve",     EUS: "Laburra" },
+     length_medium: { ES: "Medio",     EUS: "Ertaina" },
+     length_long:   { ES: "Detallado", EUS: "Zehatza" },  
 
 
     // CTA y buscador inferior
