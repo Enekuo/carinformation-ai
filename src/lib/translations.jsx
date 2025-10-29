@@ -74,6 +74,12 @@ export const translations = {
       EUS: "Hemen ikusiko duzu adimen artifizialak sortutako emaitza.",
     },
 
+    // --- Longitud del resumen (nuevas) ---
+     length_short:  { ES: "Breve",     EUS: "laburra" },
+     length_medium: { ES: "Medio",     EUS: "ertaina" },
+     length_long:   { ES: "Detallado", EUS: "zehatza" },  
+
+
     // CTA y buscador inferior
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {
