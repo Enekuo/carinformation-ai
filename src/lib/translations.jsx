@@ -70,15 +70,15 @@ export const translations = {
       EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak. +Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak...",
     },
     create_help_right: {
-      ES:  "Aquí verás el resultado generado por la IA, junto con la opción de escucharlo en voz alta.",
-      EUS: "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.",
+      ES:  "Aquí verás el resultado generado por la IA, junto.",
+      EUS: "Hemen ikusiko duzu adimen artifizialak sortutako emaitza.",
     },
 
     // CTA y buscador inferior
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {
-      ES:  "Escribe aquí un enfoque (opcional): tono, longitud, puntos clave…",
-      EUS: "Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…",
+      ES:  "Escribe el prompt aqui",
+      EUS: "Idatzi zure prompta hemen.",
     },
     generate_with_prompt:  { ES: "Generar con indicaciones", EUS: "Argibideekin sortu" },
 

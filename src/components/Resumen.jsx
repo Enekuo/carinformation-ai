@@ -453,7 +453,8 @@ export default function Resumen() {
             >
               <Button
                 type="button"
-                className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center"
+                className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95"
+                style={{ backgroundColor: BLUE, color: "#ffffff" }}
               >
                 {labelGenerateFromSources}
               </Button>
@@ -483,7 +484,11 @@ export default function Resumen() {
                     className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-slate-400"
                     aria-label={labelBottomInputPh}
                   />
-                  <Button type="button" className="h-10 rounded-full px-4 shrink-0">
+                  <Button
+                    type="button"
+                    className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
+                    style={{ backgroundColor: BLUE, color: "#ffffff" }}
+                  >
                     {labelGenerateWithPrompt}
                   </Button>
                 </div>
