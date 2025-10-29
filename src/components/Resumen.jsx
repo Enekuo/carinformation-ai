@@ -20,7 +20,7 @@ export default function Resumen() {
   const [textValue, setTextValue] = useState("");
   const [chatInput, setChatInput] = useState("");
 
-  // Nuevo: resultado y carga
+  // Resultado / carga / error
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -36,7 +36,7 @@ export default function Resumen() {
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
   // ===== Estilos / constantes visuales =====
-  const HEADER_HEIGHT_PX = 0; // no hay header local en esta página
+  const HEADER_HEIGHT_PX = 0;
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
   const GRAY_ICON = "#94a3b8";
@@ -91,7 +91,7 @@ export default function Resumen() {
     "Argibideekin sortu"
   );
 
-  // Mensaje de ayuda izquierdo (título + cuerpo)
+  // Mensaje de ayuda izquierdo
   const leftRaw = tr(
     "summary.create_help_left",
     "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…"
@@ -163,32 +163,15 @@ export default function Resumen() {
     e.target.value = "";
   };
 
-  const onDragEnter = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(true);
-  };
-  const onDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(true);
-  };
-  const onDragLeave = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-  };
+  const onDragEnter = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(true); };
+  const onDragOver  = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(true); };
+  const onDragLeave = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(false); };
   const onDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    const dt = e.dataTransfer;
-    if (dt?.files?.length) addFiles(dt.files);
+    e.preventDefault(); e.stopPropagation(); setDragActive(false);
+    const dt = e.dataTransfer; if (dt?.files?.length) addFiles(dt.files);
   };
 
-  const removeDocument = (id) => {
-    setDocuments((prev) => prev.filter((d) => d.id !== id));
-  };
+  const removeDocument = (id) => setDocuments((prev) => prev.filter((d) => d.id !== id));
 
   // URLs
   const addUrlsFromTextarea = () => {
@@ -203,9 +186,7 @@ export default function Resumen() {
     setUrlsTextarea("");
     setUrlInputOpen(false);
   };
-  const removeUrl = (id) => {
-    setUrlItems((prev) => prev.filter((u) => u.id !== id));
-  };
+  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   // ===== Lógica: Generar Resumen (solo botón superior)
   const handleGenerate = async () => {
@@ -222,7 +203,6 @@ export default function Resumen() {
       return;
     }
 
-    // Construimos el prompt del usuario
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
@@ -259,16 +239,15 @@ export default function Resumen() {
 
       const data = await res.json();
 
-      // Soporta dos formatos de respuesta
+      // === FIX: tu API devuelve { ok, content, ... }
       const text =
         data?.text ??
+        data?.content ??               // <--- clave de tu backend
         data?.choices?.[0]?.message?.content ??
         data?.message?.content ??
         "";
 
-      if (!text) {
-        throw new Error("No se recibió texto de la API.");
-      }
+      if (!text) throw new Error("No se recibió texto de la API.");
 
       setResult(text);
     } catch (err) {
@@ -326,7 +305,6 @@ export default function Resumen() {
 
             {/* Contenido */}
             <div className="flex-1 overflow-hidden p-3">
-              {/* Estado inicial */}
               {!sourceMode && (
                 <div className="h-full w-full flex items-center justify-center">
                   <div className="text-center px-2">
@@ -345,7 +323,6 @@ export default function Resumen() {
                 </div>
               )}
 
-              {/* Texto */}
               {sourceMode === "text" && (
                 <textarea
                   value={textValue}
@@ -356,7 +333,6 @@ export default function Resumen() {
                 />
               )}
 
-              {/* Documento */}
               {sourceMode === "document" && (
                 <div
                   className={`h-full w-full flex flex-col relative ${
@@ -379,8 +355,6 @@ export default function Resumen() {
                     type="button"
                     onClick={triggerPick}
                     className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                    aria-label={labelChooseFileTitle}
-                    title={labelChooseFileTitle}
                   >
                     <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                       <Plus className="w-10 h-10 text-sky-600" />
@@ -396,14 +370,10 @@ export default function Resumen() {
                     </div>
                   </button>
 
-                  {/* Lista de documentos seleccionados */}
                   {documents.length > 0 && (
                     <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
                       {documents.map(({ id, file }) => (
-                        <li
-                          key={id}
-                          className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                        >
+                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
                           <div className="min-w-0 flex items-center gap-3 flex-1">
                             <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                               <FileIcon className="w-4 h-4" />
@@ -432,7 +402,6 @@ export default function Resumen() {
                 </div>
               )}
 
-              {/* URL */}
               {sourceMode === "url" && (
                 <div className="h-full w-full flex flex-col">
                   <div className="mb-3 flex items-center justify-between">
@@ -467,10 +436,7 @@ export default function Resumen() {
                         </Button>
                         <button
                           type="button"
-                          onClick={() => {
-                            setUrlsTextarea("");
-                            setUrlInputOpen(false);
-                          }}
+                          onClick={() => { setUrlsTextarea(""); setUrlInputOpen(false); }}
                           className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
                         >
                           {labelCancel}
@@ -523,10 +489,7 @@ export default function Resumen() {
           {/* ===== Panel Derecho (resultado / CTA / input inferior) ===== */}
           <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Botón principal centrado */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 z-10"
-              style={{ top: "30%" }}
-            >
+            <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
               <Button
                 type="button"
                 onClick={handleGenerate}
@@ -539,13 +502,8 @@ export default function Resumen() {
             </div>
 
             {/* Mensaje secundario */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-              style={{ top: "40%" }}
-            >
-              <p className="text-sm leading-6 text-slate-600 max-w-xl">
-                {labelHelpRight}
-              </p>
+            <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+              <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
             </div>
 
             {/* Resultado */}
@@ -559,9 +517,7 @@ export default function Resumen() {
                   )}
                   {result && (
                     <article className="prose prose-slate max-w-none">
-                      {result.split("\n").map((line, i) => (
-                        <p key={i}>{line}</p>
-                      ))}
+                      {result.split("\n").map((line, i) => <p key={i}>{line}</p>)}
                     </article>
                   )}
                   {loading && !result && (
@@ -571,7 +527,7 @@ export default function Resumen() {
               )}
             </div>
 
-            {/* Input inferior (prompt opcional) — se mantiene como está, sin nueva lógica */}
+            {/* Input inferior sin lógica nueva */}
             <div className="absolute left-0 right-0 p-4 bottom-[84px] md:bottom-12">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
