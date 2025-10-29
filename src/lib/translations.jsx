@@ -80,7 +80,7 @@ export const translations = {
       ES:  "Escribe el prompt aqui",
       EUS: "Idatzi zure prompta hemen.",
     },
-    generate_with_prompt:  { ES: "Generar con indicaciones", EUS: "Argibideekin sortu" },
+    generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
 
     // Texto (pestaña)
     enter_text_here_full: { 
