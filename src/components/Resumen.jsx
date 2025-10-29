@@ -36,7 +36,7 @@ export default function Resumen() {
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
   // ===== Estilos / constantes visuales =====
-  const HEADER_HEIGHT_PX = 0;
+  const HEADER_HEIGHT_PX = 0; // no hay header local en esta página
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
   const GRAY_ICON = "#94a3b8";
@@ -49,7 +49,6 @@ export default function Resumen() {
   };
 
   // ===== i18n labels (con fallbacks) =====
-  const labelPageTitle = tr("summary.title", "Resumen");
   const labelSources = tr("summary.sources_title", "Fuentes");
   const labelTabText = tr("summary.sources_tab_text", "Texto");
   const labelTabDocument = tr("summary.sources_tab_document", "Documento");
@@ -91,7 +90,7 @@ export default function Resumen() {
     "Argibideekin sortu"
   );
 
-  // Mensaje de ayuda izquierdo
+  // Mensaje de ayuda izquierdo (título + cuerpo)
   const leftRaw = tr(
     "summary.create_help_left",
     "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…"
@@ -206,20 +205,29 @@ export default function Resumen() {
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
+    // Instrucciones para texto sin guiones/listas y en 1 solo párrafo
+    const formattingRules =
+      "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
+      "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
+
     const userContent = [
-      "Quiero un resumen claro y estructurado del siguiente contenido.",
+      "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList ? `\nURLs (extrae solo lo visible):\n${urlsList}` : "",
-      docNames ? `\nDOCUMENTOS (solo nombres, si tu backend ya los procesa): ${docNames}` : "",
+      docNames ? `\nDOCUMENTOS (solo nombres; tu backend ya gestiona el contenido si aplica): ${docNames}` : "",
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
-      "\nDevuelve la salida en el mismo idioma del texto de entrada si es posible.",
+      `\nREQUISITO DE FORMATO: ${formattingRules}`,
+      "\nIdioma de salida: usa el mismo del texto de entrada; si hay mezcla, usa Español.",
     ].join("");
 
     const messages = [
       {
         role: "system",
         content:
-          "Eres un asistente que resume textos y contenidos web en pocas frases claras, con viñetas si encaja y sin inventar datos.",
+          "Eres un asistente que redacta resúmenes en formato de texto corrido. " +
+          "No uses listas, viñetas, guiones ni numeraciones. " +
+          "Entrega un único párrafo, sin encabezados, con frases completas y buena coherencia. " +
+          "No inventes datos.",
       },
       { role: "user", content: userContent },
     ];
@@ -239,17 +247,26 @@ export default function Resumen() {
 
       const data = await res.json();
 
-      // === FIX: tu API devuelve { ok, content, ... }
-      const text =
+      // Backend devuelve { ok, content, ... } o formato OpenAI
+      const rawText =
         data?.text ??
-        data?.content ??               // <--- clave de tu backend
+        data?.content ??
         data?.choices?.[0]?.message?.content ??
         data?.message?.content ??
         "";
 
-      if (!text) throw new Error("No se recibió texto de la API.");
+      if (!rawText) throw new Error("No se recibió texto de la API.");
 
-      setResult(text);
+      // Limpieza defensiva: quitar viñetas/guiones/numeraciones y unificar a 1 párrafo
+      const cleaned = rawText
+        .replace(/^\s*[-–—•]\s+/gm, "")   // elimina guiones/viñetas al inicio
+        .replace(/^\s*\d+\.\s+/gm, "")    // elimina "1. ", "2. " al inicio
+        .replace(/\r/g, "")
+        .replace(/\n+/g, " ")             // todo a un solo párrafo
+        .replace(/\s{2,}/g, " ")          // colapsa espacios
+        .trim();
+
+      setResult(cleaned);
     } catch (err) {
       setErrorMsg(err.message || "Error generando el resumen.");
     } finally {
@@ -305,6 +322,7 @@ export default function Resumen() {
 
             {/* Contenido */}
             <div className="flex-1 overflow-hidden p-3">
+              {/* Estado inicial */}
               {!sourceMode && (
                 <div className="h-full w-full flex items-center justify-center">
                   <div className="text-center px-2">
@@ -323,6 +341,7 @@ export default function Resumen() {
                 </div>
               )}
 
+              {/* Texto */}
               {sourceMode === "text" && (
                 <textarea
                   value={textValue}
@@ -333,6 +352,7 @@ export default function Resumen() {
                 />
               )}
 
+              {/* Documento */}
               {sourceMode === "document" && (
                 <div
                   className={`h-full w-full flex flex-col relative ${
@@ -355,6 +375,8 @@ export default function Resumen() {
                     type="button"
                     onClick={triggerPick}
                     className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                    aria-label={labelChooseFileTitle}
+                    title={labelChooseFileTitle}
                   >
                     <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                       <Plus className="w-10 h-10 text-sky-600" />
@@ -370,10 +392,14 @@ export default function Resumen() {
                     </div>
                   </button>
 
+                  {/* Lista de documentos seleccionados */}
                   {documents.length > 0 && (
                     <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
                       {documents.map(({ id, file }) => (
-                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
+                        <li
+                          key={id}
+                          className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
+                        >
                           <div className="min-w-0 flex items-center gap-3 flex-1">
                             <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                               <FileIcon className="w-4 h-4" />
@@ -402,6 +428,7 @@ export default function Resumen() {
                 </div>
               )}
 
+              {/* URL */}
               {sourceMode === "url" && (
                 <div className="h-full w-full flex flex-col">
                   <div className="mb-3 flex items-center justify-between">
@@ -436,7 +463,10 @@ export default function Resumen() {
                         </Button>
                         <button
                           type="button"
-                          onClick={() => { setUrlsTextarea(""); setUrlInputOpen(false); }}
+                          onClick={() => {
+                            setUrlsTextarea("");
+                            setUrlInputOpen(false);
+                          }}
                           className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
                         >
                           {labelCancel}
@@ -489,7 +519,10 @@ export default function Resumen() {
           {/* ===== Panel Derecho (resultado / CTA / input inferior) ===== */}
           <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Botón principal centrado */}
-            <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
+            <div
+              className="absolute left-1/2 -translate-x-1/2 z-10"
+              style={{ top: "30%" }}
+            >
               <Button
                 type="button"
                 onClick={handleGenerate}
@@ -502,8 +535,13 @@ export default function Resumen() {
             </div>
 
             {/* Mensaje secundario */}
-            <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
-              <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+            <div
+              className="absolute left-1/2 -translate-x-1/2 text-center px-6"
+              style={{ top: "40%" }}
+            >
+              <p className="text-sm leading-6 text-slate-600 max-w-xl">
+                {labelHelpRight}
+              </p>
             </div>
 
             {/* Resultado */}
@@ -517,7 +555,8 @@ export default function Resumen() {
                   )}
                   {result && (
                     <article className="prose prose-slate max-w-none">
-                      {result.split("\n").map((line, i) => <p key={i}>{line}</p>)}
+                      {/* Un único párrafo fluido */}
+                      <p className="whitespace-normal">{result}</p>
                     </article>
                   )}
                   {loading && !result && (
@@ -527,7 +566,7 @@ export default function Resumen() {
               )}
             </div>
 
-            {/* Input inferior sin lógica nueva */}
+            {/* Input inferior (prompt opcional) — se mantiene sin lógica nueva */}
             <div className="absolute left-0 right-0 p-4 bottom-[84px] md:bottom-12">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
