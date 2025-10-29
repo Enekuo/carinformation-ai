@@ -25,6 +25,9 @@ export default function Resumen() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  // Longitud del resumen: "breve" | "medio" | "detallado"
+  const [summaryLength, setSummaryLength] = useState("breve");
+
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [dragActive, setDragActive] = useState(false);
@@ -90,6 +93,11 @@ export default function Resumen() {
     "Argibideekin sortu"
   );
 
+  // Longitud labels
+  const LBL_SHORT = tr("summary.length_short", "Breve");
+  const LBL_MED   = tr("summary.length_medium", "Medio");
+  const LBL_LONG  = tr("summary.length_long", "Detallado");
+
   // Mensaje de ayuda izquierdo (título + cuerpo)
   const leftRaw = tr(
     "summary.create_help_left",
@@ -149,6 +157,15 @@ export default function Resumen() {
     return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
+  const enforceLength = (text, mode) => {
+    // límites aproximados en palabras
+    const caps = { breve: 130, medio: 220, detallado: 300 };
+    const maxWords = caps[mode] || caps.breve;
+    const words = text.split(/\s+/);
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
+  };
+
   // Documentos
   const triggerPick = () => fileInputRef.current?.click();
   const addFiles = (list) => {
@@ -205,10 +222,17 @@ export default function Resumen() {
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
-    // Instrucciones para texto sin guiones/listas y en 1 solo párrafo
+    // Instrucciones de formato y longitud
     const formattingRules =
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
+
+    const lengthRule =
+      summaryLength === "breve"
+        ? "Extensión: 3–4 frases, ~100–130 palabras."
+        : summaryLength === "medio"
+        ? "Extensión: 6–8 frases, ~150–220 palabras."
+        : "Extensión: 10–12 frases, máximo ~250–300 palabras.";
 
     const userContent = [
       "Quiero un resumen profesional del siguiente contenido.",
@@ -217,6 +241,7 @@ export default function Resumen() {
       docNames ? `\nDOCUMENTOS (solo nombres; tu backend ya gestiona el contenido si aplica): ${docNames}` : "",
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
+      `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
       "\nIdioma de salida: usa el mismo del texto de entrada; si hay mezcla, usa Español.",
     ].join("");
 
@@ -227,7 +252,7 @@ export default function Resumen() {
           "Eres un asistente que redacta resúmenes en formato de texto corrido. " +
           "No uses listas, viñetas, guiones ni numeraciones. " +
           "Entrega un único párrafo, sin encabezados, con frases completas y buena coherencia. " +
-          "No inventes datos.",
+          "Sé conciso. No inventes datos.",
       },
       { role: "user", content: userContent },
     ];
@@ -266,7 +291,10 @@ export default function Resumen() {
         .replace(/\s{2,}/g, " ")          // colapsa espacios
         .trim();
 
-      setResult(cleaned);
+      // Enforce longitud elegida (corte elegante por palabras)
+      const clipped = enforceLength(cleaned, summaryLength);
+
+      setResult(clipped);
     } catch (err) {
       setErrorMsg(err.message || "Error generando el resumen.");
     } finally {
@@ -518,6 +546,26 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho (resultado / CTA / input inferior) ===== */}
           <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+
+            {/* Botones de Longitud (arriba) */}
+            <div className="absolute left-1/2 -translate-x-1/2 z-10 flex items-center gap-2"
+                 style={{ top: "18%" }}>
+              {["breve","medio","detallado"].map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setSummaryLength(opt)}
+                  className={`h-9 px-4 rounded-full border text-sm font-medium transition
+                    ${summaryLength === opt
+                      ? "bg-[#2563eb] text-white border-[#2563eb]"
+                      : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"}`}
+                  aria-pressed={summaryLength === opt}
+                >
+                  {opt === "breve" ? LBL_SHORT : opt === "medio" ? LBL_MED : LBL_LONG}
+                </button>
+              ))}
+            </div>
+
             {/* Botón principal centrado */}
             <div
               className="absolute left-1/2 -translate-x-1/2 z-10"
@@ -555,7 +603,6 @@ export default function Resumen() {
                   )}
                   {result && (
                     <article className="prose prose-slate max-w-none">
-                      {/* Un único párrafo fluido */}
                       <p className="whitespace-normal">{result}</p>
                     </article>
                   )}
@@ -566,7 +613,7 @@ export default function Resumen() {
               )}
             </div>
 
-            {/* Input inferior (prompt opcional) — se mantiene sin lógica nueva */}
+            {/* Input inferior (prompt opcional) */}
             <div className="absolute left-0 right-0 p-4 bottom-[84px] md:bottom-12">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
