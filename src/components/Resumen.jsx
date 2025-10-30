@@ -543,7 +543,7 @@ export default function Resumen() {
             </div>
 
             {/* Input inferior (prompt opcional) */}
-            <div className="absolute left-0 right-0 p-4 bottom-[84px] md:bottom-12">
+            <div className="absolute left-0 right-0 p-4 bottom-[32px] md:bottom-8">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
                   <input
