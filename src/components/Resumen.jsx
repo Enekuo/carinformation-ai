@@ -159,12 +159,10 @@ export default function Resumen() {
       .replace(/\s+/g, " ")
       .trim();
 
-  // ===== Reglas UX: limpiar resultado solo si el texto queda vacío,
-  // y marcar "desactualizado" si el texto cambió respecto al último resumen
+  // ===== Reglas UX =====
   useEffect(() => {
     const sig = canonicalize(textValue);
     if (sig.length === 0) {
-      // Ha borrado todo: limpiar resumen y aviso
       setResult("");
       setIsOutdated(false);
       return;
@@ -293,7 +291,6 @@ export default function Resumen() {
       const clipped = enforceLength(cleaned, summaryLength);
 
       setResult(clipped);
-      // Guardamos la firma del texto en el momento de generar para detectar cambios posteriores
       setLastSummarySig(canonicalize(textValue));
       setIsOutdated(false);
     } catch (err) {
@@ -370,7 +367,8 @@ export default function Resumen() {
                   value={textValue}
                   onChange={(e) => setTextValue(e.target.value)}
                   placeholder={labelEnterText}
-                  className="w-full h-[220px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                  /* ⬇️ Alargado: mucho más alto en todas las vistas */
+                  className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                   aria-label={labelTabText}
                 />
               )}
