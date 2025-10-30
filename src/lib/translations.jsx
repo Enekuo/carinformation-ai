@@ -84,7 +84,7 @@ export const translations = {
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {
       ES:  "Escribe el prompt aqui",
-      EUS: "Idatzi zure prompta hemen.",
+      EUS: "Idatzi zure prompta hemen.", 
     },
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
 

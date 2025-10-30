@@ -72,7 +72,7 @@ export default function Resumen() {
   const labelBottomInputPh = tr("summary.bottom_input_ph","Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…");
   const labelGenerateWithPrompt = tr("summary.generate_with_prompt","Argibideekin sortu");
 
-  // Etiquetas de longitud (con fallback para que no salgan las claves)
+  // Etiquetas de longitud (con fallback)
   const LBL_SHORT = tr("summary.length_short", "Breve");
   const LBL_MED   = tr("summary.length_medium", "Medio");
   const LBL_LONG  = tr("summary.length_long", "Detallado");
@@ -236,7 +236,7 @@ export default function Resumen() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages, length: summaryLength }), // <— añadida la longitud
       });
 
       if (!res.ok) {
@@ -548,7 +548,7 @@ export default function Resumen() {
             </div>
 
             {/* Input inferior (prompt opcional) */}
-            <div className="absolute left-0 right-0 p-4 bottom=[84px] md:bottom-12">
+            <div className="absolute left-0 right-0 p-4 bottom-[84px] md:bottom-12">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
                   <input
