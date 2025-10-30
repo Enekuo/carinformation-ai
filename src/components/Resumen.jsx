@@ -87,7 +87,7 @@ export default function Resumen() {
     const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
-  }, [leftRaw]);
+  }, [leftRaw]); 
 
   // ===== Componente Tab genérico (para lado izq) =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
