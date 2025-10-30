@@ -88,7 +88,7 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-    const first = (parts.shift() || leftRaw || "").trim();
+       const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
@@ -260,7 +260,7 @@ export default function Resumen() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, length: summaryLength }), // <- pasamos longitud al backend (opcional pero útil)
+        body: JSON.stringify({ messages, length: summaryLength }),
       });
 
       if (!res.ok) {
@@ -279,7 +279,6 @@ export default function Resumen() {
 
       if (!rawText) throw new Error("No se recibió texto de la API.");
 
-      // Limpieza + párrafo único
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
         .replace(/^\s*\d+\.\s+/gm, "")
@@ -301,7 +300,7 @@ export default function Resumen() {
   };
 
   return (
-    <section className="w-full bg-[#F4F8FF] pt-4 pb-0">
+    <section className="w-full bg-[#F4F8FF] pt-4 pb-24">
       <div className="max-w-7xl mx-auto w-full px-6">
         <motion.section
           className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6"
@@ -310,10 +309,10 @@ export default function Resumen() {
           exit="out"
           variants={pageVariants}
           transition={{ duration: 0.3 }}
-          style={{ minHeight: `calc(100vh - ${HEADER_HEIGHT_PX + 32}px)` }}
+          /* ❌ quitamos el minHeight forzado para que no llegue al fondo */
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="h-full rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -367,7 +366,6 @@ export default function Resumen() {
                   value={textValue}
                   onChange={(e) => setTextValue(e.target.value)}
                   placeholder={labelEnterText}
-                  /* ⬇️ Alargado: mucho más alto en todas las vistas */
                   className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                   aria-label={labelTabText}
                 />
@@ -511,7 +509,7 @@ export default function Resumen() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con tabs de longitud */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
@@ -554,7 +552,7 @@ export default function Resumen() {
             </div>
 
             {/* Resultado */}
-            <div className="w-full h-full">
+            <div className="w-full">
               {(result || errorMsg || loading) && (
                 <div className="px-6 pt-[46%] pb-32 max-w-3xl mx-auto">
                   {errorMsg && (
@@ -563,7 +561,6 @@ export default function Resumen() {
                     </div>
                   )}
 
-                  {/* Aviso discreto si el texto cambió desde el último resumen */}
                   {isOutdated && !loading && result && (
                     <div className="mb-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
                       El texto ha cambiado. Vuelve a generar el resumen para actualizarlo.
