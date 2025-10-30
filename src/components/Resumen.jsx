@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FileText,
@@ -27,6 +27,10 @@ export default function Resumen() {
 
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
+
+  // Track del estado del texto para avisar si el resumen está desactualizado
+  const [lastSummarySig, setLastSummarySig] = useState(null);
+  const [isOutdated, setIsOutdated] = useState(false);
 
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
@@ -72,7 +76,7 @@ export default function Resumen() {
   const labelBottomInputPh = tr("summary.bottom_input_ph","Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…");
   const labelGenerateWithPrompt = tr("summary.generate_with_prompt","Argibideekin sortu");
 
-  // Etiquetas de longitud (con fallback)
+  // Etiquetas de longitud
   const LBL_SHORT = tr("summary.length_short", "Breve");
   const LBL_MED   = tr("summary.length_medium", "Medio");
   const LBL_LONG  = tr("summary.length_long", "Detallado");
@@ -87,9 +91,9 @@ export default function Resumen() {
     const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
-  }, [leftRaw]); 
+  }, [leftRaw]);
 
-  // ===== Componente Tab genérico (para lado izq) =====
+  // ===== Componentes de tabs =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
     <div className="relative flex-1 min-w-0 flex items-stretch">
       <button
@@ -110,7 +114,6 @@ export default function Resumen() {
     </div>
   );
 
-  // ===== Tabs de longitud (estilo igual que la izquierda) =====
   const LengthTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
@@ -142,7 +145,6 @@ export default function Resumen() {
   };
 
   const enforceLength = (text, mode) => {
-    // límites aproximados en palabras (para asegurar tamaño)
     const caps = { breve: 130, medio: 220, detallado: 300 };
     const maxWords = caps[mode] || caps.breve;
     const words = text.split(/\s+/);
@@ -150,7 +152,31 @@ export default function Resumen() {
     return words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
   };
 
-  // Documentos
+  const canonicalize = (s) =>
+    (s || "")
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+
+  // ===== Reglas UX: limpiar resultado solo si el texto queda vacío,
+  // y marcar "desactualizado" si el texto cambió respecto al último resumen
+  useEffect(() => {
+    const sig = canonicalize(textValue);
+    if (sig.length === 0) {
+      // Ha borrado todo: limpiar resumen y aviso
+      setResult("");
+      setIsOutdated(false);
+      return;
+    }
+    if (lastSummarySig && sig !== lastSummarySig) {
+      setIsOutdated(true);
+    } else {
+      setIsOutdated(false);
+    }
+  }, [textValue, lastSummarySig]);
+
+  // ===== Documentos =====
   const triggerPick = () => fileInputRef.current?.click();
   const addFiles = (list) => {
     if (!list?.length) return;
@@ -170,7 +196,7 @@ export default function Resumen() {
 
   const removeDocument = (id) => setDocuments((prev) => prev.filter((d) => d.id !== id));
 
-  // URLs
+  // ===== URLs =====
   const addUrlsFromTextarea = () => {
     const parsed = parseUrlsFromText(urlsTextarea);
     if (!parsed.length) return;
@@ -180,7 +206,7 @@ export default function Resumen() {
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // ===== Lógica: Generar Resumen =====
+  // ===== Generar Resumen =====
   const handleGenerate = async () => {
     setErrorMsg(""); setResult("");
 
@@ -236,7 +262,7 @@ export default function Resumen() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, length: summaryLength }), // <— añadida la longitud
+        body: JSON.stringify({ messages, length: summaryLength }), // <- pasamos longitud al backend (opcional pero útil)
       });
 
       if (!res.ok) {
@@ -267,6 +293,9 @@ export default function Resumen() {
       const clipped = enforceLength(cleaned, summaryLength);
 
       setResult(clipped);
+      // Guardamos la firma del texto en el momento de generar para detectar cambios posteriores
+      setLastSummarySig(canonicalize(textValue));
+      setIsOutdated(false);
     } catch (err) {
       setErrorMsg(err.message || "Error generando el resumen.");
     } finally {
@@ -485,7 +514,7 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="h-full relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* --- NUEVA BARRA SUPERIOR CON TABS DE LONGITUD --- */}
+            {/* Barra superior con tabs de longitud */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab
@@ -521,7 +550,7 @@ export default function Resumen() {
               </Button>
             </div>
 
-            {/* Mensaje secundario */}
+            {/* Mensaje secundario (estado vacío) */}
             <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
               <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
             </div>
@@ -535,6 +564,14 @@ export default function Resumen() {
                       {errorMsg}
                     </div>
                   )}
+
+                  {/* Aviso discreto si el texto cambió desde el último resumen */}
+                  {isOutdated && !loading && result && (
+                    <div className="mb-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
+                      El texto ha cambiado. Vuelve a generar el resumen para actualizarlo.
+                    </div>
+                  )}
+
                   {result && (
                     <article className="prose prose-slate max-w-none">
                       <p className="whitespace-normal">{result}</p>
