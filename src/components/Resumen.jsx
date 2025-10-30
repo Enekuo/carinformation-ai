@@ -15,20 +15,16 @@ export default function Resumen() {
   const tr = (key, fallback) => t(key) || fallback;
 
   // ===== Estado =====
-  // null | "text" | "document" | "url"
-  const [sourceMode, setSourceMode] = useState(null);
+  const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
   const [chatInput, setChatInput] = useState("");
 
-  // Resultado / carga / error
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // Track del estado del texto para avisar si el resumen está desactualizado
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
@@ -43,7 +39,6 @@ export default function Resumen() {
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
   // ===== Estilos / constantes visuales =====
-  const HEADER_HEIGHT_PX = 0; // no hay header local en esta página
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
   const GRAY_ICON = "#94a3b8";
@@ -88,7 +83,7 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-       const first = (parts.shift() || leftRaw || "").trim();
+    const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
@@ -300,7 +295,7 @@ export default function Resumen() {
   };
 
   return (
-    <section className="w-full bg-[#F4F8FF] pt-4 pb-24">
+    <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
       <div className="max-w-7xl mx-auto w-full px-6">
         <motion.section
           className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6"
@@ -309,10 +304,10 @@ export default function Resumen() {
           exit="out"
           variants={pageVariants}
           transition={{ duration: 0.3 }}
-          /* ❌ quitamos el minHeight forzado para que no llegue al fondo */
+          /* sin minHeight global para no estirar hasta el fondo */
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[520px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -509,7 +504,7 @@ export default function Resumen() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[520px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con tabs de longitud */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
@@ -554,7 +549,7 @@ export default function Resumen() {
             {/* Resultado */}
             <div className="w-full">
               {(result || errorMsg || loading) && (
-                <div className="px-6 pt-[46%] pb-32 max-w-3xl mx-auto">
+                <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
                   {errorMsg && (
                     <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
                       {errorMsg}
