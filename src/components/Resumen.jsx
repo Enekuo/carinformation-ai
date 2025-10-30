@@ -1,12 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  FileText,
-  File as FileIcon,
-  Link2 as UrlIcon,
-  Plus,
-  X,
-} from "lucide-react";
+import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 
@@ -304,10 +298,9 @@ export default function Resumen() {
           exit="out"
           variants={pageVariants}
           transition={{ duration: 0.3 }}
-          /* sin minHeight global para no estirar hasta el fondo */
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[520px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[680px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -317,27 +310,9 @@ export default function Resumen() {
 
             {/* Tabs */}
             <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
-              <TabBtn
-                active={sourceMode === "text"}
-                icon={FileText}
-                label={labelTabText}
-                onClick={() => setSourceMode("text")}
-                showDivider
-              />
-              <TabBtn
-                active={sourceMode === "document"}
-                icon={FileIcon}
-                label={labelTabDocument}
-                onClick={() => setSourceMode("document")}
-                showDivider
-              />
-              <TabBtn
-                active={sourceMode === "url"}
-                icon={UrlIcon}
-                label={labelTabUrl}
-                onClick={() => setSourceMode("url")}
-                showDivider={false}
-              />
+              <TabBtn active={sourceMode === "text"} icon={FileText} label={labelTabText} onClick={() => setSourceMode("text")} showDivider />
+              <TabBtn active={sourceMode === "document"} icon={FileIcon} label={labelTabDocument} onClick={() => setSourceMode("document")} showDivider />
+              <TabBtn active={sourceMode === "url"} icon={UrlIcon} label={labelTabUrl} onClick={() => setSourceMode("url")} showDivider={false} />
             </div>
 
             {/* Contenido */}
@@ -349,9 +324,7 @@ export default function Resumen() {
                       <FileText className="w-6 h-6 text-slate-500" />
                     </div>
                     <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
-                    {leftBody && (
-                      <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>
-                    )}
+                    {leftBody && <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>}
                   </div>
                 </div>
               )}
@@ -410,12 +383,7 @@ export default function Resumen() {
                               <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                             </div>
                           </div>
-                          <button
-                            onClick={() => removeDocument(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
+                          <button onClick={() => removeDocument(id)} className="shrink-0 p-1.5 rounded-md hover:bg-slate-100" title={labelRemove} aria-label={labelRemove}>
                             <X className="w-4 h-4" />
                           </button>
                         </li>
@@ -486,12 +454,7 @@ export default function Resumen() {
                               </a>
                             </div>
                           </div>
-                          <button
-                            onClick={() => removeUrl(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
+                          <button onClick={() => removeUrl(id)} className="shrink-0 p-1.5 rounded-md hover:bg-slate-100" title={labelRemove} aria-label={labelRemove}>
                             <X className="w-4 h-4" />
                           </button>
                         </li>
@@ -504,27 +467,13 @@ export default function Resumen() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[520px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[680px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con tabs de longitud */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
-                <LengthTab
-                  active={summaryLength === "breve"}
-                  label={LBL_SHORT}
-                  onClick={() => setSummaryLength("breve")}
-                  showDivider
-                />
-                <LengthTab
-                  active={summaryLength === "medio"}
-                  label={LBL_MED}
-                  onClick={() => setSummaryLength("medio")}
-                  showDivider
-                />
-                <LengthTab
-                  active={summaryLength === "detallado"}
-                  label={LBL_LONG}
-                  onClick={() => setSummaryLength("detallado")}
-                />
+                <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
+                <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => setSummaryLength("medio")} showDivider />
+                <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
               </div>
             </div>
 
@@ -567,9 +516,7 @@ export default function Resumen() {
                       <p className="whitespace-normal">{result}</p>
                     </article>
                   )}
-                  {loading && !result && (
-                    <p className="text-sm text-slate-500">Generando el resumen…</p>
-                  )}
+                  {loading && !result && <p className="text-sm text-slate-500">Generando el resumen…</p>}
                 </div>
               )}
             </div>
