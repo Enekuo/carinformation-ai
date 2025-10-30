@@ -13,12 +13,15 @@ export default function Resumen() {
   const [textValue, setTextValue] = useState("");
   const [chatInput, setChatInput] = useState("");
 
+  // Resultado / carga / error
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
+  // Track del estado del texto para avisar si el resumen está desactualizado
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
@@ -300,7 +303,7 @@ export default function Resumen() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[680px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -383,7 +386,12 @@ export default function Resumen() {
                               <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                             </div>
                           </div>
-                          <button onClick={() => removeDocument(id)} className="shrink-0 p-1.5 rounded-md hover:bg-slate-100" title={labelRemove} aria-label={labelRemove}>
+                          <button
+                            onClick={() => removeDocument(id)}
+                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                            title={labelRemove}
+                            aria-label={labelRemove}
+                          >
                             <X className="w-4 h-4" />
                           </button>
                         </li>
@@ -449,12 +457,23 @@ export default function Resumen() {
                               <UrlIcon className="w-4 h-4" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <a href={url} target="_blank" rel="noreferrer" className="text-sm font-medium block truncate text-sky-600 hover:underline" title={url}>
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-sm font-medium block truncate text-sky-600 hover:underline"
+                                title={url}
+                              >
                                 {host} — {url}
                               </a>
                             </div>
                           </div>
-                          <button onClick={() => removeUrl(id)} className="shrink-0 p-1.5 rounded-md hover:bg-slate-100" title={labelRemove} aria-label={labelRemove}>
+                          <button
+                            onClick={() => removeUrl(id)}
+                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                            title={labelRemove}
+                            aria-label={labelRemove}
+                          >
                             <X className="w-4 h-4" />
                           </button>
                         </li>
@@ -467,7 +486,7 @@ export default function Resumen() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[680px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[600px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con tabs de longitud */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
@@ -516,7 +535,9 @@ export default function Resumen() {
                       <p className="whitespace-normal">{result}</p>
                     </article>
                   )}
-                  {loading && !result && <p className="text-sm text-slate-500">Generando el resumen…</p>}
+                  {loading && !result && (
+                    <p className="text-sm text-slate-500">Generando el resumen…</p>
+                  )}
                 </div>
               )}
             </div>
@@ -532,7 +553,11 @@ export default function Resumen() {
                     className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-slate-400"
                     aria-label={labelBottomInputPh}
                   />
-                  <Button type="button" className="h-10 rounded-full px-4 shrink-0 hover:brightness-95" style={{ backgroundColor: "#2563eb", color: "#ffffff" }}>
+                  <Button
+                    type="button"
+                    className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
+                    style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
+                  >
                     {labelGenerateWithPrompt}
                   </Button>
                 </div>
