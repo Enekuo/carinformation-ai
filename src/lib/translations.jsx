@@ -88,7 +88,7 @@ export const translations = {
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
 
     // Estado de carga
-    loading_label: { 
+    summary_loading_main: { 
       ES: "Generando el resumen…", 
       EUS: "Laburpena sortzen…" 
     },
@@ -159,8 +159,8 @@ export const translations = {
       EUS: "Funtzioa Premium planean bakarrik" 
     },
     premium_prompt_body: { 
-      ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen (tono, puntos clave, idioma, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium (con prueba gratuita).", 
-      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena doitzen duen jarraibidea (tona, gakoak, hizkuntza, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana (proba doan)." 
+      ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen a tu gusto (tono, puntos clave, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium.", 
+      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena zure gustura doitzen duen jarraibidea (tona, gakoak, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana." 
     },
     premium_prompt_cta: { 
       ES: "Probar plan Premium", 

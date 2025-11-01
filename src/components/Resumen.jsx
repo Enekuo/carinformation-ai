@@ -655,7 +655,7 @@ export default function Resumen() {
 
                   {loading && !result && (
                     <p className="text-center text-slate-600 text-base md:text-lg font-medium py-10">
-                      {tr("summary.loading_main", "Generando el resumen…")}
+                      {tr("summary_loading_main", "Generando el resumen…")}
                     </p>
                   )}
                 </div>
