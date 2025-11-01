@@ -17,6 +17,7 @@ export default function Resumen() {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [errorKind, setErrorKind] = useState(null); // ← añadido (null | "limit")
 
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
@@ -40,6 +41,7 @@ export default function Resumen() {
   const GRAY_TEXT = "#64748b";
   const GRAY_ICON = "#94a3b8";
   const DIVIDER = "#e5e7eb";
+  const MAX_CHARS = 12000; // ← añadido
 
   const pageVariants = {
     initial: { opacity: 0, y: 12 },
@@ -222,15 +224,44 @@ export default function Resumen() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
+  // ===== Bloque amable de límite (CTA Premium) =====
+  const LimitCard = () => (
+    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sky-900">
+      <div className="text-sm font-semibold">
+        {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
+      </div>
+      <p className="mt-1 text-sm">
+        {tr("summary.limit_body","Puedes pegar hasta 12.000 caracteres por petición. Para textos más largos, divide el contenido o prueba el plan Premium con prueba gratuita.")}
+      </p>
+      <div className="mt-3 flex items-center gap-2">
+        <a href="/pricing" className="inline-flex items-center justify-center rounded-full px-4 h-9 text-white" style={{ backgroundColor: "#2563eb" }}>
+          {tr("summary.limit_cta", "Probar Premium Gratis")}
+        </a>
+        <button onClick={() => setErrorKind(null)} className="h-9 px-3 rounded-full border border-slate-300 text-sm hover:bg-white">
+          {tr("summary.limit_dismiss", "Seguir con plan Gratis")}
+        </button>
+      </div>
+      <p className="mt-2 text-xs text-sky-800">
+        {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
+      </p>
+    </div>
+  );
+
   // ===== Generar Resumen =====
   const handleGenerate = async () => {
-    setErrorMsg(""); setResult("");
+    setErrorMsg(""); setResult(""); setErrorKind(null); // ← añadido
 
     // Revalidación inmediata para evitar llamadas inútiles
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
+
+    // Límite de caracteres (plan gratis)
+    if ((textValue || "").length > MAX_CHARS) {
+      setErrorKind("limit");
+      return;
+    }
 
     if (!validNow) {
       setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
@@ -294,6 +325,12 @@ export default function Resumen() {
       });
 
       if (!res.ok) {
+        // ← añadido: captura 413 del backend
+        if (res.status === 413) {
+          setErrorKind("limit");
+          setLoading(false);
+          return;
+        }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
       }
@@ -566,8 +603,10 @@ export default function Resumen() {
 
             {/* Resultado / errores / loader */}
             <div className="w-full">
-              {(result || errorMsg || loading) && (
+              {(result || errorMsg || loading || errorKind) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
+                  {errorKind === "limit" && <LimitCard />}
+
                   {errorMsg && (
                     <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
                       {errorMsg}
