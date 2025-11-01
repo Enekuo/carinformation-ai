@@ -86,6 +86,7 @@ export const translations = {
       EUS: "Idatzi zure prompta hemen.", 
     },
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
+    loading_label: { ES: "Generando el resumen…", EUS: "Laburpena sortzen…" },
 
     // Texto (pestaña)
     enter_text_here_full: { 
