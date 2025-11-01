@@ -88,9 +88,10 @@ export const translations = {
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
 
     // Estado de carga
-    summary_loading_main: { 
-      ES: "Generando el resumen…", 
-      EUS: "Laburpena sortzen…" 
+    summary: {
+    // ...
+    loading_label: { ES: "Generando el resumen…", EUS: "Laburpena sortzen…" },
+    // ...
     },
 
     // Texto (pestaña)
