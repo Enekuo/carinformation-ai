@@ -160,7 +160,7 @@ export const translations = {
     },
     premium_prompt_body: { 
       ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen a tu gusto (tono, puntos clave, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium.", 
-      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena zure gustura doitzen duen jarraibidea (tona, gakoak, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana." 
+      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena zure gustura doitzen duen jarraibidea (tonoa, gakoak, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana." 
     },
     premium_prompt_cta: { 
       ES: "Probar plan Premium", 
