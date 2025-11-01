@@ -18,6 +18,7 @@ export default function Resumen() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
+  const [showPremiumNote, setShowPremiumNote] = useState(false); // <— NUEVO
 
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
@@ -224,7 +225,7 @@ export default function Resumen() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Bloque de límite (alineado a la izquierda) =====
+  // ===== Bloques de tarjetas =====
   const LimitCard = () => (
     <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900">
       <div className="text-sm font-semibold">
@@ -251,7 +252,37 @@ export default function Resumen() {
     </div>
   );
 
-  // ===== Generar Resumen =====
+  // ——— NUEVO: tarjeta de aviso Premium para el botón de prompt
+  const PremiumPromptNote = () => (
+    <div className="mb-4 rounded-xl border border-indigo-200 bg-indigo-50 px-6 py-5 text-indigo-900">
+      <div className="text-sm font-semibold">
+        {tr("summary.premium_prompt_title", "Función disponible en el plan Premium")}
+      </div>
+      <p className="text-sm text-slate-700 mt-2">
+        {tr(
+          "summary.premium_prompt_body",
+          "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen (tono, puntos clave, idioma, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium (con prueba gratuita)."
+        )}
+      </p>
+      <div className="mt-4 flex flex-row items-center gap-3">
+        <a
+          href="/pricing"
+          className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
+          style={{ backgroundColor: "#2563eb" }}
+        >
+          {tr("summary.premium_prompt_cta", "Probar plan Premium")}
+        </a>
+        <button
+          onClick={() => setShowPremiumNote(false)}
+          className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
+        >
+          {tr("summary.premium_prompt_close", "Entendido")}
+        </button>
+      </div>
+    </div>
+  );
+
+  // ===== Generar Resumen (normal, no prompt) =====
   const handleGenerate = async () => {
     setErrorMsg(""); setResult(""); setErrorKind(null);
 
@@ -579,8 +610,8 @@ export default function Resumen() {
               </div>
             </div>
 
-            {/* Botón + mensaje (oculto si hay errorKind) */}
-            {!loading && !result && !errorKind && (
+            {/* Botón + mensaje (oculto si hay errorKind o nota premium) */}
+            {!loading && !result && !errorKind && !showPremiumNote && (
               <>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                   <Button
@@ -600,11 +631,12 @@ export default function Resumen() {
               </>
             )}
 
-            {/* Resultado / errores / loader / aviso límite */}
+            {/* Resultado / errores / loader / avisos */}
             <div className="w-full">
-              {(result || errorMsg || loading || errorKind) && (
+              {(result || errorMsg || loading || errorKind || showPremiumNote) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
                   {errorKind === "limit" && <LimitCard />}
+                  {showPremiumNote && <PremiumPromptNote />}
 
                   {errorMsg && (
                     <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
@@ -624,7 +656,6 @@ export default function Resumen() {
                     </article>
                   )}
 
-                  {/* === ÚNICA FRASE DE CARGA GRANDE (con i18n) === */}
                   {loading && !result && (
                     <div className="flex items-center justify-center py-16">
                       <p className="text-base md:text-lg font-medium text-slate-700 animate-pulse">
@@ -636,7 +667,7 @@ export default function Resumen() {
               )}
             </div>
 
-            {/* Input inferior (prompt opcional) */}
+            {/* Input inferior (prompt opcional) — PREMIUM ONLY: no llama a la API */}
             <div className="absolute left-0 right-0 p-4 bottom-[8px] md:bottom-2">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
@@ -651,8 +682,8 @@ export default function Resumen() {
                     type="button"
                     className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
                     style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-                    onClick={handleGenerate}
-                    disabled={loading || !hasValidInput}
+                    onClick={() => setShowPremiumNote(true)}  // <— AQUÍ: ya no llama a la API
+                    disabled={loading}                         // solo bloquea si está cargando otra cosa
                   >
                     {labelGenerateWithPrompt}
                   </Button>
