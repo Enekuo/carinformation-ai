@@ -75,10 +75,9 @@ export const translations = {
     },
 
     // --- Longitud del resumen (nuevas) ---
-     length_short:  { ES: "Breve",     EUS: "Laburra" },
-     length_medium: { ES: "Medio",     EUS: "Ertaina" },
-     length_long:   { ES: "Detallado", EUS: "Zehatza" },  
-
+    length_short:  { ES: "Breve",     EUS: "Laburra" },
+    length_medium: { ES: "Medio",     EUS: "Ertaina" },
+    length_long:   { ES: "Detallado", EUS: "Zehatza" },  
 
     // CTA y buscador inferior
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
@@ -140,7 +139,14 @@ export const translations = {
     paste_urls_placeholder: { 
       ES: "Introduce aquí una o más URLs (separadas por línea)", 
       EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)" 
-},
+    },
+
+    /* === NUEVAS CLAVES: aviso límite plan gratis === */
+    limit_title:   { ES: "Has alcanzado el límite del plan Gratis", EUS: "Doako planaren muga gainditu duzu" },
+    limit_body:    { ES: "Puedes pegar hasta 12.000 caracteres por petición. Para textos más largos, divide el contenido o prueba el plan Premium con prueba gratuita.", EUS: "Eskaera bakoitzeko gehienez 12.000 karaktere itsatsi ditzakezu. Eduki luzeetarako, zatitu testua edo probatu Premium plana doako probarekin." },
+    limit_cta:     { ES: "Probar Premium Gratis", EUS: "Probatu Premium doan" },
+    limit_dismiss: { ES: "Seguir con plan Gratis", EUS: "Jarraitu doako planarekin" },
+    limit_note:    { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako." },
   },
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */

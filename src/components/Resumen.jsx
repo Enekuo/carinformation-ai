@@ -17,7 +17,7 @@ export default function Resumen() {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [errorKind, setErrorKind] = useState(null); // ← añadido (null | "limit")
+  const [errorKind, setErrorKind] = useState(null); // null | "limit"   ← añadido
 
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
@@ -249,15 +249,15 @@ export default function Resumen() {
 
   // ===== Generar Resumen =====
   const handleGenerate = async () => {
-    setErrorMsg(""); setResult(""); setErrorKind(null); // ← añadido
+    setErrorMsg(""); setResult(""); setErrorKind(null);
 
-    // Revalidación inmediata para evitar llamadas inútiles
+    // Revalidación
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
-    // Límite de caracteres (plan gratis)
+    // Límite del plan
     if ((textValue || "").length > MAX_CHARS) {
       setErrorKind("limit");
       return;
@@ -271,7 +271,6 @@ export default function Resumen() {
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
-    // ===== STRICT_EXTRACTIVE si solo hay texto y es relativamente corto =====
     const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
     const wordCount = words.length;
     const strictExtractive = onlyText && wordCount <= 120;
@@ -325,8 +324,7 @@ export default function Resumen() {
       });
 
       if (!res.ok) {
-        // ← añadido: captura 413 del backend
-        if (res.status === 413) {
+        if (res.status === 413) { // backend: texto demasiado largo
           setErrorKind("limit");
           setLoading(false);
           return;
@@ -354,7 +352,6 @@ export default function Resumen() {
         .replace(/\s{2,}/g, " ")
         .trim();
 
-      // Si el modelo ha devuelto el aviso de brevedad, lo mostramos tal cual
       if (/^el texto es demasiado breve para resumir con fidelidad\.?$/i.test(cleaned)) {
         setResult("El texto es demasiado breve para resumir con fidelidad.");
         setLastSummarySig(canonicalize(textValue));
@@ -580,8 +577,8 @@ export default function Resumen() {
               </div>
             </div>
 
-            {/* Botón + mensaje solo cuando no hay carga ni resultado */}
-            {!loading && !result && (
+            {/* Botón + mensaje (oculto si hay errorKind) */}
+            {!loading && !result && !errorKind && (
               <>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                   <Button
@@ -601,7 +598,7 @@ export default function Resumen() {
               </>
             )}
 
-            {/* Resultado / errores / loader */}
+            {/* Resultado / errores / loader / aviso límite */}
             <div className="w-full">
               {(result || errorMsg || loading || errorKind) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
