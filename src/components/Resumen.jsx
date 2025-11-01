@@ -136,12 +136,29 @@ export default function Resumen() {
     return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
+  // Recorte por nº máximo de frases y palabras (dual-limit, más estricto)
   const enforceLength = (text, mode) => {
-    const caps = { breve: 130, medio: 220, detallado: 300 };
-    const maxWords = caps[mode] || caps.breve;
-    const words = text.split(/\s+/);
-    if (words.length <= maxWords) return text;
-    return words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
+    const config = {
+      breve:     { maxWords: 90,  maxSentences: 3 },
+      medio:     { maxWords: 180, maxSentences: 6 },
+      detallado: { maxWords: 260, maxSentences: 10 },
+    };
+    const { maxWords, maxSentences } = config[mode] || config.breve;
+
+    let t = (text || "")
+      .replace(/\r/g, "")
+      .replace(/\n+/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+
+    const sentences = t.split(/(?<=[.!?…])\s+/).filter(Boolean);
+    let clipped = sentences.slice(0, maxSentences).join(" ");
+
+    const words = clipped.split(/\s+/);
+    if (words.length > maxWords) {
+      clipped = words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
+    }
+    return clipped;
   };
 
   const canonicalize = (s) =>
@@ -223,19 +240,26 @@ export default function Resumen() {
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
+    // ===== STRICT_EXTRACTIVE si solo hay texto y es relativamente corto =====
+    const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
+    const wordCount = words.length;
+    const strictExtractive = onlyText && wordCount <= 120;
+
     const formattingRules =
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
 
     const lengthRule =
       summaryLength === "breve"
-        ? "Extensión: 3–4 frases, ~100–130 palabras."
+        ? "Extensión: 2–3 frases, ~70–90 palabras."
         : summaryLength === "medio"
-        ? "Extensión: 6–8 frases, ~150–220 palabras."
-        : "Extensión: 10–12 frases, máximo ~250–300 palabras.";
+        ? "Extensión: 4–6 frases, ~120–180 palabras."
+        : "Extensión: 8–10 frases, ~200–260 palabras.";
 
     const userContent = [
-      "Quiero un resumen profesional del siguiente contenido.",
+      strictExtractive
+        ? "Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: 'El texto es demasiado breve para resumir con fidelidad.'"
+        : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList ? `\nURLs (extrae solo lo visible):\n${urlsList}` : "",
       docNames ? `\nDOCUMENTOS (solo nombres; tu backend ya gestiona el contenido si aplica): ${docNames}` : "",
@@ -245,15 +269,19 @@ export default function Resumen() {
       "\nIdioma de salida: usa el mismo del texto de entrada; si hay mezcla, usa Español.",
     ].join("");
 
+    const systemBase =
+      "Eres un asistente que redacta resúmenes en formato de texto corrido. " +
+      "No uses listas, viñetas, guiones ni numeraciones. " +
+      "Entrega un único párrafo, sin encabezados, con frases completas y buena coherencia. " +
+      "Sé conciso. No inventes datos.";
+
+    const systemStrict =
+      systemBase +
+      " Restringe la salida estrictamente a la información presente en el texto de entrada. " +
+      "No introduzcas fechas, nombres propios o hechos que no aparezcan explícitamente.";
+
     const messages = [
-      {
-        role: "system",
-        content:
-          "Eres un asistente que redacta resúmenes en formato de texto corrido. " +
-          "No uses listas, viñetas, guiones ni numeraciones. " +
-          "Entrega un único párrafo, sin encabezados, con frases completas y buena coherencia. " +
-          "Sé conciso. No inventes datos.",
-      },
+      { role: "system", content: strictExtractive ? systemStrict : systemBase },
       { role: "user", content: userContent },
     ];
 
@@ -288,6 +316,15 @@ export default function Resumen() {
         .replace(/\n+/g, " ")
         .replace(/\s{2,}/g, " ")
         .trim();
+
+      // Si el modelo ha devuelto el aviso de brevedad, lo mostramos tal cual
+      if (/^el texto es demasiado breve para resumir con fidelidad\.?$/i.test(cleaned)) {
+        setResult("El texto es demasiado breve para resumir con fidelidad.");
+        setLastSummarySig(canonicalize(textValue));
+        setIsOutdated(false);
+        setLoading(false);
+        return;
+      }
 
       const clipped = enforceLength(cleaned, summaryLength);
 
