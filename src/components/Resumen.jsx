@@ -224,20 +224,16 @@ export default function Resumen() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Bloque de límite (sin cuerpo y con botones debajo de la nota) =====
+  // ===== Bloque de límite (centrado y botones más abajo) =====
   const LimitCard = () => (
-    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sky-900">
-      <div className="text-sm font-semibold">
+    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-5 py-3 text-sky-900">
+      <div className="text-sm font-semibold text-center">
         {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
       </div>
-
-      {/* Nota de límite */}
-      <p className="mt-2 text-xs text-sky-800">
+      <p className="mt-2 text-xs text-slate-600 text-center">
         {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
       </p>
-
-      {/* Botones bajo la nota */}
-      <div className="mt-3 flex items-center gap-2">
+      <div className="mt-5 flex items-center justify-center gap-2">
         <a
           href="/pricing"
           className="inline-flex items-center justify-center rounded-full px-4 h-9 text-white"
