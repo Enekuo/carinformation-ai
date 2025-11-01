@@ -224,16 +224,16 @@ export default function Resumen() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Bloque de límite =====
+  // ===== Bloque de límite (alineado a la izquierda) =====
   const LimitCard = () => (
-    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold mb-1">
+    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900">
+      <div className="text-sm font-semibold">
         {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
       </div>
-      <p className="text-xs text-slate-600 mb-5">
+      <p className="text-xs text-slate-600 mt-1">
         {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
       </p>
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
+      <div className="mt-4 flex flex-row items-center gap-3">
         <a
           href="/pricing"
           className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
@@ -508,7 +508,7 @@ export default function Resumen() {
                       <textarea
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
-                        placeholder="https://ejemplo.com/articulo-1"
+                        placeholder={tr("summary.paste_urls_placeholder","Introduce aquí una o más URLs (separadas por línea)")}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                       />
@@ -624,11 +624,11 @@ export default function Resumen() {
                     </article>
                   )}
 
-                  {/* === SOLO UNA FRASE GRANDE DE CARGA (sin imagen) === */}
+                  {/* === ÚNICA FRASE DE CARGA GRANDE (con i18n) === */}
                   {loading && !result && (
                     <div className="flex items-center justify-center py-16">
                       <p className="text-base md:text-lg font-medium text-slate-700 animate-pulse">
-                        Generando el resumen…
+                        {tr("summary.loading_label", "Generando el resumen…")}
                       </p>
                     </div>
                   )}
