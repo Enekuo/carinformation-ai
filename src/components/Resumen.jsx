@@ -80,7 +80,7 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-       const first = (parts.shift() || leftRaw || "").trim();
+    const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
@@ -426,7 +426,7 @@ export default function Resumen() {
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
                         placeholder="https://ejemplo.com/articulo-1"
-                        className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
+                        className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text:[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                       />
                       <div className="mt-2 flex items-center gap-2">
@@ -496,25 +496,28 @@ export default function Resumen() {
               </div>
             </div>
 
-            {/* Botón principal centrado */}
-            <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
-              <Button
-                type="button"
-                onClick={handleGenerate}
-                disabled={loading}
-                className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60"
-                style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-              >
-                {loading ? "Generando…" : labelGenerateFromSources}
-              </Button>
-            </div>
+            {/* Botón + mensaje solo cuando no hay carga ni resultado */}
+            {!loading && !result && (
+              <>
+                <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
+                  <Button
+                    type="button"
+                    onClick={handleGenerate}
+                    disabled={(!textValue.trim() && urlItems.length === 0 && documents.length === 0)}
+                    className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
+                  >
+                    {labelGenerateFromSources}
+                  </Button>
+                </div>
 
-            {/* Mensaje secundario (estado vacío) */}
-            <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
-              <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
-            </div>
+                <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+                  <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+                </div>
+              </>
+            )}
 
-            {/* Resultado */}
+            {/* Resultado / errores / loader */}
             <div className="w-full">
               {(result || errorMsg || loading) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
@@ -535,8 +538,17 @@ export default function Resumen() {
                       <p className="whitespace-normal">{result}</p>
                     </article>
                   )}
+
                   {loading && !result && (
-                    <p className="text-sm text-slate-500">Generando el resumen…</p>
+                    <div className="flex flex-col items-center justify-center text-slate-600 py-12">
+                      <img
+                        src="/loader-mascot.gif"
+                        alt="Generando resumen"
+                        className="w-28 h-28 mb-4 select-none pointer-events-none"
+                        draggable={false}
+                      />
+                      <p className="text-sm animate-pulse">Generando el resumen…</p>
+                    </div>
                   )}
                 </div>
               )}
@@ -557,6 +569,8 @@ export default function Resumen() {
                     type="button"
                     className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
                     style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
+                    onClick={handleGenerate}
+                    disabled={loading}
                   >
                     {labelGenerateWithPrompt}
                   </Button>
