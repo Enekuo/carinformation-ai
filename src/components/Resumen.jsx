@@ -196,17 +196,27 @@ export default function Resumen() {
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
+  // ===== Validación de entrada =====
+  const textIsValid = useMemo(() => {
+    const trimmed = (textValue || "").trim();
+    const words = trimmed.split(/\s+/).filter(Boolean);
+    return trimmed.length >= 20 && words.length >= 5;
+  }, [textValue]);
+
+  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
+
   // ===== Generar Resumen =====
   const handleGenerate = async () => {
     setErrorMsg(""); setResult("");
 
-    const hasInput =
-      (textValue && textValue.trim().length > 0) ||
-      urlItems.length > 0 ||
-      documents.length > 0;
+    // Revalidación inmediata para evitar llamadas inútiles
+    const trimmed = (textValue || "").trim();
+    const words = trimmed.split(/\s+/).filter(Boolean);
+    const textOk = trimmed.length >= 20 && words.length >= 5;
+    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
-    if (!hasInput) {
-      setErrorMsg("Añade texto o URLs antes de generar el resumen.");
+    if (!validNow) {
+      setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
       return;
     }
 
@@ -426,7 +436,7 @@ export default function Resumen() {
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
                         placeholder="https://ejemplo.com/articulo-1"
-                        className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text:[15px] leading-6 placeholder:text-slate-400"
+                        className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                       />
                       <div className="mt-2 flex items-center gap-2">
@@ -503,7 +513,7 @@ export default function Resumen() {
                   <Button
                     type="button"
                     onClick={handleGenerate}
-                    disabled={(!textValue.trim() && urlItems.length === 0 && documents.length === 0)}
+                    disabled={loading || !hasValidInput}
                     className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
                     style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
                   >
@@ -570,7 +580,7 @@ export default function Resumen() {
                     className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
                     style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
                     onClick={handleGenerate}
-                    disabled={loading}
+                    disabled={loading || !hasValidInput}
                   >
                     {labelGenerateWithPrompt}
                   </Button>
