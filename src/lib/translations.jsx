@@ -86,7 +86,12 @@ export const translations = {
       EUS: "Idatzi zure prompta hemen.", 
     },
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
-    loading_label: { ES: "Generando  resumen…", EUS: "Laburpena sortzen…" },
+
+    // Estado de carga
+    loading_label: { 
+      ES: "Generando el resumen…", 
+      EUS: "Laburpena sortzen…" 
+    },
 
     // Texto (pestaña)
     enter_text_here_full: { 
@@ -147,6 +152,24 @@ export const translations = {
     limit_cta:     { ES: "Probar plan Premium", EUS: "Premium plana probatu" },
     limit_dismiss: { ES: "Seguir con plan Gratis", EUS: "Jarraitu doako planarekin" },
     limit_note:    { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako." },
+
+    /* === NUEVAS CLAVES: aviso de función premium (prompt) === */
+    premium_prompt_title: { 
+      ES: "Función disponible en el plan Premium", 
+      EUS: "Funtzioa Premium planean bakarrik" 
+    },
+    premium_prompt_body: { 
+      ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen (tono, puntos clave, idioma, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium (con prueba gratuita).", 
+      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena doitzen duen jarraibidea (tona, gakoak, hizkuntza, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana (proba doan)." 
+    },
+    premium_prompt_cta: { 
+      ES: "Probar plan Premium", 
+      EUS: "Premium plana probatu" 
+    },
+    premium_prompt_close: { 
+      ES: "Entendido", 
+      EUS: "Ulertuta" 
+    },
   },
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */
