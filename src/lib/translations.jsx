@@ -143,8 +143,7 @@ export const translations = {
 
     /* === NUEVAS CLAVES: aviso límite plan gratis === */
     limit_title:   { ES: "Has alcanzado el límite del plan Gratis", EUS: "Doako planaren muga gainditu duzu" },
-    limit_body:    { ES: "Puedes pegar hasta 12.000 caracteres por petición. Para textos más largos, divide el contenido o prueba el plan Premium con prueba gratuita.", EUS: "Eskaera bakoitzeko gehienez 12.000 karaktere itsatsi ditzakezu. Eduki luzeetarako, zatitu testua edo probatu Premium plana doako probarekin." },
-    limit_cta:     { ES: "Probar Premium Gratis", EUS: "Probatu Premium doan" },
+    limit_cta:     { ES: "Probar plan Premium", EUS: "Premium plana probatu" },
     limit_dismiss: { ES: "Seguir con plan Gratis", EUS: "Jarraitu doako planarekin" },
     limit_note:    { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako." },
   },
