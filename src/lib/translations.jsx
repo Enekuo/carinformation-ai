@@ -66,8 +66,8 @@ export const translations = {
 
     // Mensajes de ayuda (izquierda/derecha)
     create_help_left: {
-      ES:  "Aquí aparecerán tus textos o documentos subidos.Puedes añadir archivos PDF, texto copiado, enlaces web...",
-      EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak. +Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak...",
+      ES:  "Aquí aparecerán tus textos o documentos subidos. Puedes añadir archivos PDF, texto copiado, enlaces web...",
+      EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak...",
     },
     create_help_right: {
       ES:  "Aquí verás el resultado generado por la IA, junto.",
@@ -88,11 +88,7 @@ export const translations = {
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
 
     // Estado de carga
-    summary: {
-    // ...
     loading_label: { ES: "Generando el resumen…", EUS: "Laburpena sortzen…" },
-    // ...
-    },
 
     // Texto (pestaña)
     enter_text_here_full: { 
