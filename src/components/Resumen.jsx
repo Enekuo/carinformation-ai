@@ -224,26 +224,26 @@ export default function Resumen() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Bloque de límite (centrado y botones más abajo) =====
+  // ===== Bloque de límite =====
   const LimitCard = () => (
-    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-5 py-3 text-sky-900">
-      <div className="text-sm font-semibold text-center">
+    <div className="mb-4 rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
+      <div className="text-sm font-semibold mb-1">
         {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
       </div>
-      <p className="mt-2 text-xs text-slate-600 text-center">
+      <p className="text-xs text-slate-600 mb-5">
         {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
       </p>
-      <div className="mt-5 flex items-center justify-center gap-2">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
         <a
           href="/pricing"
-          className="inline-flex items-center justify-center rounded-full px-4 h-9 text-white"
+          className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
           style={{ backgroundColor: "#2563eb" }}
         >
-          {tr("summary.limit_cta", "Probar Premium Gratis")}
+          {tr("summary.limit_cta", "Probar plan Premium")}
         </a>
         <button
           onClick={() => setErrorKind(null)}
-          className="h-9 px-3 rounded-full border border-slate-300 text-sm hover:bg-white"
+          className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
         >
           {tr("summary.limit_dismiss", "Seguir con plan Gratis")}
         </button>
@@ -260,7 +260,6 @@ export default function Resumen() {
     const textOk = trimmed.length >= 20 && words.length >= 5;
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
-    // Límite del plan
     if ((textValue || "").length > MAX_CHARS) {
       setErrorKind("limit");
       return;
@@ -625,15 +624,12 @@ export default function Resumen() {
                     </article>
                   )}
 
+                  {/* === SOLO UNA FRASE GRANDE DE CARGA (sin imagen) === */}
                   {loading && !result && (
-                    <div className="flex flex-col items-center justify-center text-slate-600 py-12">
-                      <img
-                        src="/loader-mascot.gif"
-                        alt="Generando resumen"
-                        className="w-28 h-28 mb-4 select-none pointer-events-none"
-                        draggable={false}
-                      />
-                      <p className="text-sm animate-pulse">Generando el resumen…</p>
+                    <div className="flex items-center justify-center py-16">
+                      <p className="text-base md:text-lg font-medium text-slate-700 animate-pulse">
+                        Generando el resumen…
+                      </p>
                     </div>
                   )}
                 </div>
