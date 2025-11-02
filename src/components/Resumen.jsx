@@ -281,6 +281,59 @@ export default function Resumen() {
     setTextValue("");
   };
 
+  // ===== Extraer TEXTO legible de documentos y URLs (best-effort front) =====
+  const isLikelyTextLike = (type = "", name = "") => {
+    const t = (type || "").toLowerCase();
+    const n = (name || "").toLowerCase();
+    // Permitimos formatos textuales comunes
+    if (t.startsWith("text/")) return true;
+    if (t.includes("json") || t.includes("xml") || t.includes("csv")) return true;
+    if (n.endsWith(".md") || n.endsWith(".txt") || n.endsWith(".csv") || n.endsWith(".json") || n.endsWith(".xml")) return true;
+    // PDFs/imágenes NO (requiere backend/libs)
+    return false;
+  };
+
+  const extractDocsText = async (docs) => {
+    const chunks = [];
+    for (const { file } of docs) {
+      try {
+        if (!isLikelyTextLike(file.type, file.name)) continue;
+        const txt = await file.text();
+        const trimmed = (txt || "").toString().replace(/\r/g, "").trim();
+        if (trimmed) {
+          chunks.push(`\n\n=== DOCUMENTO: ${file.name} ===\n${trimmed}\n`);
+        }
+      } catch {}
+    }
+    return chunks.join("\n");
+  };
+
+  const extractUrlsText = async (items) => {
+    const chunks = [];
+    // Intento directo (muchas webs bloquearán CORS; las ignoramos)
+    for (const { url } of items) {
+      try {
+        const res = await fetch(url, { method: "GET" });
+        if (!res.ok) continue;
+        const html = await res.text();
+        // Limpieza básica: quitar scripts/estilos y extraer texto visible aproximado
+        const stripped = html
+          .replace(/<script[\s\S]*?<\/script>/gi, " ")
+          .replace(/<style[\s\S]*?<\/style>/gi, " ")
+          .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+          .replace(/<[^>]+>/g, " ")
+          .replace(/\s{2,}/g, " ")
+          .trim();
+        if (stripped) {
+          chunks.push(`\n\n=== URL: ${url} ===\n${stripped}\n`);
+        }
+      } catch {
+        // CORS u otros errores -> ignorar
+      }
+    }
+    return chunks.join("\n");
+  };
+
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
@@ -357,7 +410,9 @@ export default function Resumen() {
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
-    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
+    const anyDocs = documents.length > 0;
+    const anyUrls = urlItems.length > 0;
+    const validNow = textOk || anyUrls || anyDocs;
 
     if ((textValue || "").length > MAX_CHARS) {
       setErrorKind("limit");
@@ -368,11 +423,31 @@ export default function Resumen() {
       return;
     }
 
+    // 1) Intentamos extraer texto legible de documentos y URLs
+    let combinedText = "";
+    if (anyDocs) {
+      const docText = await extractDocsText(documents);
+      if (docText) combinedText += docText;
+    }
+    if (anyUrls) {
+      const urlText = await extractUrlsText(urlItems);
+      if (urlText) combinedText += `\n${urlText}`;
+    }
+
+    // 2) Fuente principal: si el usuario ha pegado texto, prima ese texto
+    const finalText = textOk ? trimmed : combinedText.trim();
+
+    if (!finalText || finalText.length < 20) {
+      setErrorMsg("No se pudo leer contenido de tus documentos/URLs. Pega texto o usa archivos de texto (TXT, MD, CSV, JSON).");
+      return;
+    }
+
+    // 3) Construimos el prompt
     const urlsList = urlItems.map((u) => u.url).join("\n");
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
-    const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
-    const wordCount = words.length;
+    const onlyText = textOk && !anyUrls && !anyDocs;
+    const wordCount = finalText.split(/\s+/).filter(Boolean).length;
     const strictExtractive = onlyText && wordCount <= 120;
 
     const formattingRules =
@@ -397,9 +472,9 @@ export default function Resumen() {
       strictExtractive
         ? "Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: 'El texto es demasiado breve para resumir con fidelidad.'"
         : "Quiero un resumen profesional del siguiente contenido.",
-      textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList ? `\nURLs (extrae solo lo visible):\n${urlsList}` : "",
-      docNames ? `\nDOCUMENTOS (solo nombres; tu backend ya gestiona el contenido si aplica): ${docNames}` : "",
+      `\nTEXTO:\n${finalText}`,
+      urlsList ? `\n(Referencias añadidas por el usuario):\n${urlsList}` : "",
+      docNames ? `\n(DOCS): ${docNames}` : "",
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -424,7 +499,7 @@ export default function Resumen() {
 
     // cacheKey para el backend
     const cacheBase = JSON.stringify({
-      textValue, urls: urlItems.map(u => u.url), docNames, summaryLength, outputLang
+      textValue: finalText, urls: urlItems.map(u => u.url), docNames, summaryLength, outputLang
     });
     const cacheKey = await sha256Hex(cacheBase);
 
@@ -470,7 +545,7 @@ export default function Resumen() {
 
       if (/^el texto es demasiado breve para resumir con fidelidad\.?$/i.test(cleaned)) {
         setResult("El texto es demasiado breve para resumir con fidelidad.");
-        setLastSummarySig(canonicalize(textValue));
+        setLastSummarySig(canonicalize(finalText));
         setIsOutdated(false);
         setLoading(false);
         return;
@@ -479,7 +554,7 @@ export default function Resumen() {
       const clipped = enforceLength(cleaned, summaryLength);
 
       setResult(clipped);
-      setLastSummarySig(canonicalize(textValue));
+      setLastSummarySig(canonicalize(finalText));
       setIsOutdated(false);
     } catch (err) {
       setErrorMsg(err.message || "Error generando el resumen.");
