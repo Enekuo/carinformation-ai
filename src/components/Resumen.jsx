@@ -23,6 +23,10 @@ export default function Resumen() {
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
+  // ===== Nuevo: selector de idioma de salida =====
+  // "auto" | "eus" | "es" | "en"
+  const [outputLang, setOutputLang] = useState("auto");
+
   // Track del estado del texto para avisar si el resumen está desactualizado
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
@@ -75,6 +79,13 @@ export default function Resumen() {
   const LBL_SHORT = tr("summary.length_short", "Breve");
   const LBL_MED   = tr("summary.length_medium", "Medio");
   const LBL_LONG  = tr("summary.length_long", "Detallado");
+
+  // Labels idioma salida
+  const LBL_LANG = tr("summary.output_language", "Idioma");
+  const LBL_AUTO = tr("summary.output_language_auto", "Auto");
+  const LBL_ES   = tr("summary.output_language_es", "Castellano");
+  const LBL_EUS  = tr("summary.output_language_eus", "Euskera");
+  const LBL_EN   = tr("summary.output_language_en", "Inglés");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -317,6 +328,16 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
+    // Instrucción de idioma según selector
+    const langInstruction =
+      outputLang === "es"
+        ? "Idioma de salida: Castellano."
+        : outputLang === "eus"
+        ? "Idioma de salida: Euskera."
+        : outputLang === "en"
+        ? "Idioma de salida: Inglés."
+        : "Idioma de salida: usa el mismo del texto de entrada; si hay mezcla, usa Español.";
+
     const userContent = [
       strictExtractive
         ? "Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: 'El texto es demasiado breve para resumir con fidelidad.'"
@@ -327,7 +348,7 @@ export default function Resumen() {
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
-      "\nIdioma de salida: usa el mismo del texto de entrada; si hay mezcla, usa Español.",
+      `\n${langInstruction}`,
     ].join("");
 
     const systemBase =
@@ -599,12 +620,31 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con tabs de longitud */}
+            {/* Barra superior con tabs de longitud + selector idioma */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
                 <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => setSummaryLength("medio")} showDivider />
                 <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
+              </div>
+
+              {/* Selector de idioma (derecha) */}
+              <div className="flex items-center gap-2">
+                <label htmlFor="outLang" className="text-xs font-medium text-slate-600 hidden md:block">
+                  {LBL_LANG}
+                </label>
+                <select
+                  id="outLang"
+                  value={outputLang}
+                  onChange={(e) => setOutputLang(e.target.value)}
+                  className="h-8 rounded-full border border-slate-300 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400/40"
+                  aria-label={LBL_LANG}
+                >
+                  <option value="auto">{LBL_AUTO}</option>
+                  <option value="eus">{LBL_EUS}</option>
+                  <option value="es">{LBL_ES}</option>
+                  <option value="en">{LBL_EN}</option>
+                </select>
               </div>
             </div>
 
@@ -684,7 +724,7 @@ export default function Resumen() {
                     type="button"
                     className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
                     style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-                    // IMPORTANTE: en plan Gratis NO genera; abre la nota Premium
+                    // En plan Gratis: muestra nota Premium
                     onClick={() => setShowPremiumNote(true)}
                   >
                     {labelGenerateWithPrompt}
