@@ -77,13 +77,19 @@ export const translations = {
     // --- Longitud del resumen (nuevas) ---
     length_short:  { ES: "Breve",     EUS: "Laburra" },
     length_medium: { ES: "Medio",     EUS: "Ertaina" },
-    length_long:   { ES: "Detallado", EUS: "Zehatza" },  
+    length_long:   { ES: "Detallado", EUS: "Zehatza" },
+
+    // --- Selector de idioma (sin Auto) ---
+    output_language:     { ES: "Idioma",     EUS: "Hizkuntza" },
+    output_language_es:  { ES: "Castellano", EUS: "Gaztelania" },
+    output_language_eus: { ES: "Euskera",    EUS: "Euskara" },
+    output_language_en:  { ES: "Inglés",     EUS: "Ingelesa" },
 
     // CTA y buscador inferior
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {
       ES:  "Escribe el prompt aqui",
-      EUS: "Idatzi zure prompta hemen.", 
+      EUS: "Idatzi zure prompta hemen.",
     },
     generate_with_prompt:  { ES: "Generar", EUS: "Sortu" },
 
@@ -91,57 +97,57 @@ export const translations = {
     loading_label: { ES: "Generando el resumen…", EUS: "Laburpena sortzen…" },
 
     // Texto (pestaña)
-    enter_text_here_full: { 
-      ES: "Escribe o pega tu texto aquí…", 
-      EUS: "Idatzi edo itsatsi zure testua hemen…" 
+    enter_text_here_full: {
+      ES: "Escribe o pega tu texto aquí…",
+      EUS: "Idatzi edo itsatsi zure testua hemen…"
     },
 
     // Documento (pestaña)
-    choose_file_title: { 
-      ES: "Elige tu archivo o carpeta", 
-      EUS: "Aukeratu zure fitxategia edo karpeta." 
+    choose_file_title: {
+      ES: "Elige tu archivo o carpeta",
+      EUS: "Aukeratu zure fitxategia edo karpeta."
     },
-    accepted_formats: { 
-      ES: "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…", 
-      EUS: "Onartutako formatuak: PDF, DOCX, TXT, MD, irudiak…" 
+    accepted_formats: {
+      ES: "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…",
+      EUS: "Onartutako formatuak: PDF, DOCX, TXT, MD, irudiak…"
     },
-    folder_hint: { 
-      ES: "Puedes arrastrar varios archivos a la vez.", 
-      EUS: "Fitxategi bat baino gehiago batera arrasta ditzakezu." 
+    folder_hint: {
+      ES: "Puedes arrastrar varios archivos a la vez.",
+      EUS: "Fitxategi bat baino gehiago batera arrasta ditzakezu."
     },
 
     // URL (pestaña)
-    paste_urls_label: { 
-      ES: "Pegar URLs*", 
-      EUS: "URLak itsatsi*" 
+    paste_urls_label: {
+      ES: "Pegar URLs*",
+      EUS: "URLak itsatsi*"
     },
-    add_url: { 
-      ES: "Añadir URLs", 
-      EUS: "URLak gehitu" 
+    add_url: {
+      ES: "Añadir URLs",
+      EUS: "URLak gehitu"
     },
-    save_urls: { 
-      ES: "Guardar", 
-      EUS: "Gorde" 
+    save_urls: {
+      ES: "Guardar",
+      EUS: "Gorde"
     },
-    cancel: { 
-      ES: "Cancelar", 
-      EUS: "Ezeztatu" 
+    cancel: {
+      ES: "Cancelar",
+      EUS: "Ezeztatu"
     },
-    urls_note_visible: { 
-      ES: "Solo se importará el texto visible del sitio web.", 
+    urls_note_visible: {
+      ES: "Solo se importará el texto visible del sitio web.",
       EUS: "Webguneko testu ikusgarria bakarrik inportatuko da."
     },
-    urls_note_paywalled: { 
-      ES: "No se admiten artículos de pago.", 
-      EUS: "Ordainpeko artikuluak ez dira onartzen." 
+    urls_note_paywalled: {
+      ES: "No se admiten artículos de pago.",
+      EUS: "Ordainpeko artikuluak ez dira onartzen."
     },
-    remove: { 
-      ES: "Quitar", 
-      EUS: "Kendu" 
+    remove: {
+      ES: "Quitar",
+      EUS: "Kendu"
     },
-    paste_urls_placeholder: { 
-      ES: "Introduce aquí una o más URLs (separadas por línea)", 
-      EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)" 
+    paste_urls_placeholder: {
+      ES: "Introduce aquí una o más URLs (separadas por línea)",
+      EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)"
     },
 
     /* === NUEVAS CLAVES: aviso límite plan gratis === */
@@ -151,21 +157,21 @@ export const translations = {
     limit_note:    { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako." },
 
     /* === NUEVAS CLAVES: aviso de función premium (prompt) === */
-    premium_prompt_title: { 
-      ES: "Función disponible en el plan Premium", 
-      EUS: "Funtzioa Premium planean bakarrik" 
+    premium_prompt_title: {
+      ES: "Función disponible en el plan Premium",
+      EUS: "Funtzioa Premium planean bakarrik"
     },
-    premium_prompt_body: { 
-      ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen a tu gusto (tono, puntos clave, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium.", 
-      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena zure gustura doitzen duen jarraibidea (tonoa, gakoak, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana." 
+    premium_prompt_body: {
+      ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen a tu gusto (tono, puntos clave, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium.",
+      EUS: "«Sortu» botoiak prompt bat erabiltzen du: laburpena zure gustura doitzen duen jarraibidea (tonoa, gakoak, fokua…). Plan Doanean testua itsatsi eta ohiko laburpena sor dezakezu. Prompt aurreratuak erabiltzeko, probatu Premium plana."
     },
-    premium_prompt_cta: { 
-      ES: "Probar plan Premium", 
-      EUS: "Premium plana probatu" 
+    premium_prompt_cta: {
+      ES: "Probar plan Premium",
+      EUS: "Premium plana probatu"
     },
-    premium_prompt_close: { 
-      ES: "Entendido", 
-      EUS: "Ulertuta" 
+    premium_prompt_close: {
+      ES: "Entendido",
+      EUS: "Ulertuta"
     },
   },
 
