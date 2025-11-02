@@ -18,6 +18,7 @@ export default function Resumen() {
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
+  theFirst
   const [chatInput, setChatInput] = useState("");
 
   // Resultado / carga / error
@@ -98,9 +99,9 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-    theFirst = (parts.shift() || leftRaw || "").trim();
+    const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
-    return [theFirst.endsWith(".") ? theFirst : `${theFirst}.`, rest];
+    return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
 
   // ===== Tabs =====
