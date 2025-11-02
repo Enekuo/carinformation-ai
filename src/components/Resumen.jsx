@@ -33,9 +33,6 @@ export default function Resumen() {
   // Idioma de salida (ES/EUS/EN) — por defecto Euskera
   const [outputLang, setOutputLang] = useState("eus");
 
-  // Feedback “copiado”
-  const [copied, setCopied] = useState(false);
-
   // Track “resumen desactualizado”
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
@@ -244,16 +241,12 @@ export default function Resumen() {
 
   // ===== Acciones barra derecha =====
   const handleCopy = async () => {
-    if (!result) {
-      setErrorMsg("No hay resultado que copiar.");
-      return;
-    }
+    // Silencioso si no hay resultado (no muestra ningún mensaje)
+    if (!result) return;
     try {
       await navigator.clipboard.writeText(result);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
     } catch {
-      setErrorMsg("No se pudo copiar el resultado.");
+      // Ignorar: no mostramos errores visuales
     }
   };
 
@@ -336,7 +329,6 @@ export default function Resumen() {
     }
 
     const urlsList = urlItems.map((u) => u.url).join("\n");
-    theFirst
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
     const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
@@ -644,7 +636,7 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con tabs + selector + acciones (ubicación que marcaste) */}
+            {/* Barra superior con tabs + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
@@ -652,7 +644,7 @@ export default function Resumen() {
                 <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 {/* Selector de idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -680,24 +672,23 @@ export default function Resumen() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
+                {/* Copiar resultado (icono solo, sin círculo) */}
                 <button
                   type="button"
                   onClick={handleCopy}
-                  title={copied ? "Copiado" : "Copiar resultado"}
-                  className={`h-9 w-9 rounded-xl border bg-white flex items-center justify-center
-                              ${copied ? "border-emerald-300 text-emerald-600" : "border-slate-300 text-slate-600 hover:border-slate-400 hover:bg-slate-50"}`}
+                  title="Copiar resultado"
+                  className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
                   aria-label="Copiar resultado"
                 >
                   <Copy className="w-4 h-4" />
                 </button>
 
-                {/* Eliminar texto de la izquierda */}
+                {/* Eliminar texto de la izquierda (icono solo) */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
                   title="Eliminar texto de entrada"
-                  className="h-9 w-9 rounded-xl border border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50 flex items-center justify-center"
+                  className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
                   aria-label="Eliminar texto de entrada"
                 >
                   <Trash className="w-4 h-4" />
