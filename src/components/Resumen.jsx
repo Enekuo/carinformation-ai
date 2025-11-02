@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X } from "lucide-react";
+import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X, Copy, Trash } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +32,9 @@ export default function Resumen() {
 
   // Idioma de salida (ES/EUS/EN) — por defecto Euskera
   const [outputLang, setOutputLang] = useState("eus");
+
+  // Feedback “copiado”
+  const [copied, setCopied] = useState(false);
 
   // Track “resumen desactualizado”
   const [lastSummarySig, setLastSummarySig] = useState(null);
@@ -239,6 +242,25 @@ export default function Resumen() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
+  // ===== Acciones barra derecha =====
+  const handleCopy = async () => {
+    if (!result) {
+      setErrorMsg("No hay resultado que copiar.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setErrorMsg("No se pudo copiar el resultado.");
+    }
+  };
+
+  const handleClearLeft = () => {
+    setTextValue(""); // solo limpia el texto escrito a la izquierda
+  };
+
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
@@ -314,6 +336,7 @@ export default function Resumen() {
     }
 
     const urlsList = urlItems.map((u) => u.url).join("\n");
+    theFirst
     const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
     const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
@@ -621,7 +644,7 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con tabs + selector (sin palabra “Hizkuntza”) */}
+            {/* Barra superior con tabs + selector + acciones (ubicación que marcaste) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
@@ -629,50 +652,57 @@ export default function Resumen() {
                 <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
               </div>
 
-              {/* Selector custom compacto — posición mantenida */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
-                               flex items-center justify-between hover:border-slate-400
-                               shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                    aria-label="Idioma de salida"
-                  >
-                    <span className="truncate">
-                      {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
-                    </span>
-                    <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                    </svg>
-                  </button>
-                </DropdownMenuTrigger>
+              <div className="flex items-center gap-2">
+                {/* Selector de idioma */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
+                                 flex items-center justify-between hover:border-slate-400
+                                 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      aria-label="Idioma de salida"
+                    >
+                      <span className="truncate">
+                        {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                      </span>
+                      <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
+                      </svg>
+                    </button>
+                  </DropdownMenuTrigger>
 
-                <DropdownMenuContent
-                  align="end"
-                  className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+                  <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
+                    <DropdownMenuItem onClick={() => setOutputLang("es")}  className="cursor-pointer rounded-lg text-[14px] px-3 py-2">{LBL_ES}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOutputLang("eus")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">{LBL_EUS}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOutputLang("en")}  className="cursor-pointer rounded-lg text-[14px] px-3 py-2">{LBL_EN}</DropdownMenuItem>
+                    <DropdownMenuArrow className="fill-white" />
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Copiar resultado */}
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  title={copied ? "Copiado" : "Copiar resultado"}
+                  className={`h-9 w-9 rounded-xl border bg-white flex items-center justify-center
+                              ${copied ? "border-emerald-300 text-emerald-600" : "border-slate-300 text-slate-600 hover:border-slate-400 hover:bg-slate-50"}`}
+                  aria-label="Copiar resultado"
                 >
-                  <DropdownMenuItem
-                    onClick={() => setOutputLang("es")}
-                    className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                  >
-                    {LBL_ES}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setOutputLang("eus")}
-                    className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                  >
-                    {LBL_EUS}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setOutputLang("en")}
-                    className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                  >
-                    {LBL_EN}
-                  </DropdownMenuItem>
-                  <DropdownMenuArrow className="fill-white" />
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <Copy className="w-4 h-4" />
+                </button>
+
+                {/* Eliminar texto de la izquierda */}
+                <button
+                  type="button"
+                  onClick={handleClearLeft}
+                  title="Eliminar texto de entrada"
+                  className="h-9 w-9 rounded-xl border border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50 flex items-center justify-center"
+                  aria-label="Eliminar texto de entrada"
+                >
+                  <Trash className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Estado inicial */}
