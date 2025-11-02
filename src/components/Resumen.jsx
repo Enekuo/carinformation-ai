@@ -3,6 +3,13 @@ import { motion } from "framer-motion";
 import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuArrow,
+} from "@/components/ui/dropdown-menu";
 
 export default function Resumen() {
   const { t } = useTranslation();
@@ -23,11 +30,10 @@ export default function Resumen() {
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // ===== Selector de idioma (sin Auto) =====
-  // "eus" | "es" | "en"
+  // Idioma de salida (selector tipo menú — como la captura). Opciones visibles: ES / EUS
   const [outputLang, setOutputLang] = useState("eus"); // por defecto Euskera
 
-  // Control “resumen desactualizado”
+  // Track “resumen desactualizado”
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
@@ -84,7 +90,7 @@ export default function Resumen() {
   const LBL_LANG = tr("summary.output_language", "Hizkuntza");
   const LBL_ES   = tr("summary.output_language_es", "Gaztelania");
   const LBL_EUS  = tr("summary.output_language_eus", "Euskara");
-  const LBL_EN   = tr("summary.output_language_en", "Ingelesa");
+  // (tenemos EN en traducciones, pero este menú solo muestra ES/EUS como la captura)
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -326,13 +332,9 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // Idioma de salida forzado
+    // Idioma de salida forzado (ES/EUS)
     const langInstruction =
-      outputLang === "es"
-        ? "Idioma de salida: Castellano."
-        : outputLang === "en"
-        ? "Idioma de salida: Inglés."
-        : "Idioma de salida: Euskera.";
+      outputLang === "es" ? "Idioma de salida: Castellano." : "Idioma de salida: Euskera.";
 
     const userContent = [
       strictExtractive
@@ -616,7 +618,7 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con tabs + selector cuadrado */}
+            {/* Barra superior con tabs + selector tipo menú (como la captura) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
@@ -624,23 +626,47 @@ export default function Resumen() {
                 <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
               </div>
 
+              {/* Selector custom (ES/EUS) */}
               <div className="flex items-center gap-2">
-                <label htmlFor="outLang" className="text-xs font-medium text-slate-600 hidden md:block">
-                  {LBL_LANG}
-                </label>
-                <select
-                  id="outLang"
-                  value={outputLang}
-                  onChange={(e) => setOutputLang(e.target.value)}
-                  className="h-9 min-w-[140px] border border-slate-300 rounded-md bg-white px-3 text-sm text-slate-800
-                             focus:outline-none focus:ring-2 focus:ring-sky-400/40 hover:border-slate-400
-                             shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                  aria-label={LBL_LANG}
-                >
-                  <option value="eus">{LBL_EUS}</option>
-                  <option value="es">{LBL_ES}</option>
-                  <option value="en">{LBL_EN}</option>
-                </select>
+                <span className="text-xs font-medium text-slate-600 hidden md:block">{LBL_LANG}</span>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="h-9 min-w-[160px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
+                                 flex items-center justify-between hover:border-slate-400
+                                 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      aria-label={LBL_LANG}
+                    >
+                      <span className="truncate">
+                        {outputLang === "es" ? LBL_ES : LBL_EUS}
+                      </span>
+                      <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
+                      </svg>
+                    </button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent
+                    align="end"
+                    className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+                  >
+                    <DropdownMenuItem
+                      onClick={() => setOutputLang("es")}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_ES}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setOutputLang("eus")}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_EUS}
+                    </DropdownMenuItem>
+                    <DropdownMenuArrow className="fill-white" />
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
 
