@@ -23,9 +23,9 @@ export default function Resumen() {
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // ===== Nuevo: selector de idioma de salida =====
-  // "auto" | "eus" | "es" | "en"
-  const [outputLang, setOutputLang] = useState("auto");
+  // ===== Selector de idioma de salida (sin Auto) =====
+  // valores: "eus" | "es" | "en"
+  const [outputLang, setOutputLang] = useState("eus"); // Por defecto Euskera
 
   // Track del estado del texto para avisar si el resumen está desactualizado
   const [lastSummarySig, setLastSummarySig] = useState(null);
@@ -81,11 +81,10 @@ export default function Resumen() {
   const LBL_LONG  = tr("summary.length_long", "Detallado");
 
   // Labels idioma salida
-  const LBL_LANG = tr("summary.output_language", "Idioma");
-  const LBL_AUTO = tr("summary.output_language_auto", "Auto");
-  const LBL_ES   = tr("summary.output_language_es", "Castellano");
-  const LBL_EUS  = tr("summary.output_language_eus", "Euskera");
-  const LBL_EN   = tr("summary.output_language_en", "Inglés");
+  const LBL_LANG = tr("summary.output_language", "Hizkuntza");
+  const LBL_ES   = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EUS  = tr("summary.output_language_eus", "Euskara");
+  const LBL_EN   = tr("summary.output_language_en", "Ingelesa");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -328,15 +327,13 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // Instrucción de idioma según selector
+    // Idioma de salida: siempre forzado al seleccionado
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: Castellano."
-        : outputLang === "eus"
-        ? "Idioma de salida: Euskera."
         : outputLang === "en"
         ? "Idioma de salida: Inglés."
-        : "Idioma de salida: usa el mismo del texto de entrada; si hay mezcla, usa Español.";
+        : "Idioma de salida: Euskera.";
 
     const userContent = [
       strictExtractive
@@ -640,7 +637,6 @@ export default function Resumen() {
                   className="h-8 rounded-full border border-slate-300 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400/40"
                   aria-label={LBL_LANG}
                 >
-                  <option value="auto">{LBL_AUTO}</option>
                   <option value="eus">{LBL_EUS}</option>
                   <option value="es">{LBL_ES}</option>
                   <option value="en">{LBL_EN}</option>
@@ -724,7 +720,6 @@ export default function Resumen() {
                     type="button"
                     className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
                     style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-                    // En plan Gratis: muestra nota Premium
                     onClick={() => setShowPremiumNote(true)}
                   >
                     {labelGenerateWithPrompt}
