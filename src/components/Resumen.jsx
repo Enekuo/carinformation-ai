@@ -70,29 +70,35 @@ export default function Resumen() {
   const labelTabUrl = tr("summary.sources_tab_url", "URL");
   const labelEnterText = tr("summary.enter_text_here_full", "Escribe o pega tu texto aquí…");
   const labelChooseFileTitle = tr("summary.choose_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr("summary.accepted_formats","Puedes añadir archivos PDF, texto copiado, enlaces web…");
-  const labelFolderHint = tr("summary.folder_hint","Aquí aparecerán tus textos o documentos subidos.");
+  const labelAcceptedFormats = tr("summary.accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const labelFolderHint = tr("summary.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
   const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr("summary.urls_note_visible","Solo se importará el texto visible del sitio web.");
-  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled","No se admiten artículos de pago.");
+  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible del sitio web.");
+  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("summary.remove", "Quitar");
   const labelGenerateFromSources = tr("summary.generate_from_sources", "Laburpena sortu");
-  const labelHelpRight = tr("summary.create_help_right","Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.");
-  const labelBottomInputPh = tr("summary.bottom_input_ph","Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…");
-  const labelGenerateWithPrompt = tr("summary.generate_with_prompt","Argibideekin sortu");
+  const labelHelpRight = tr(
+    "summary.create_help_right",
+    "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”."
+  );
+  const labelBottomInputPh = tr(
+    "summary.bottom_input_ph",
+    "Idatzi hemen ikuspegia (aukerakoa): tonua, luzera, puntu garrantzitsuak…"
+  );
+  const labelGenerateWithPrompt = tr("summary.generate_with_prompt", "Argibideekin sortu");
 
   // Longitud
   const LBL_SHORT = tr("summary.length_short", "Breve");
-  const LBL_MED   = tr("summary.length_medium", "Medio");
-  const LBL_LONG  = tr("summary.length_long", "Detallado");
+  const LBL_MED = tr("summary.length_medium", "Medio");
+  const LBL_LONG = tr("summary.length_long", "Detallado");
 
   // Etiquetas de idioma
-  const LBL_ES   = tr("summary.output_language_es", "Gaztelania");
-  const LBL_EUS  = tr("summary.output_language_eus", "Euskara");
-  const LBL_EN   = tr("summary.output_language_en", "Ingelesa");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -146,90 +152,36 @@ export default function Resumen() {
     </div>
   );
 
-  // ===== Utils (URLs / Docs) =====
+  // ===== Utils =====
   const parseUrlsFromText = (text) => {
-    const raw = text.split(/[\s\n]+/).map((s) => s.trim()).filter(Boolean);
+    const raw = text
+      .split(/[\s\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
     const valid = [];
     for (const u of raw) {
-      try { const url = new URL(u); valid.push({ href: url.href, host: url.host }); } catch {}
+      try {
+        const url = new URL(u);
+        valid.push({ href: url.href, host: url.host });
+      } catch {}
     }
     const seen = new Set();
     return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
-  const cleanWhitespace = (s) =>
-    (s || "")
-      .replace(/\r/g, "")
-      .replace(/\n+/g, " ")
-      .replace(/\s{2,}/g, " ")
-      .trim();
-
-  // Extraer texto visible de HTML
-  const htmlToVisibleText = (html) => {
-    try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-      doc.querySelectorAll("script, style, noscript, svg, img, footer, nav").forEach((el) => el.remove());
-      const text = doc.body?.innerText || "";
-      return cleanWhitespace(text);
-    } catch {
-      return "";
-    }
-  };
-
-  // Descargar y extraer de una URL (con timeout y CORS)
-  const fetchUrlText = async (url) => {
-    try {
-      const controller = new AbortController();
-      const to = setTimeout(() => controller.abort(), 8000);
-      const res = await fetch(url, { signal: controller.signal, mode: "cors" });
-      clearTimeout(to);
-      const ct = res.headers.get("content-type") || "";
-      if (!res.ok) return "";
-      const body = await res.text();
-      if (ct.includes("text/html")) return htmlToVisibleText(body);
-      if (ct.includes("text/plain") || ct.includes("application/json") || ct.includes("text/markdown") || ct.includes("text/csv")) {
-        return cleanWhitespace(body);
-      }
-      return "";
-    } catch {
-      return "";
-    }
-  };
-
-  // Leer ficheros de texto (TXT, MD, CSV, JSON)
-  const readFileAsText = (file) =>
-    new Promise((resolve) => {
-      try {
-        const name = (file.name || "").toLowerCase();
-        const type = file.type || "";
-        const isText =
-          type.startsWith("text/") ||
-          type === "application/json" ||
-          name.endsWith(".txt") ||
-          name.endsWith(".md") ||
-          name.endsWith(".csv") ||
-          name.endsWith(".json");
-        if (!isText) return resolve("");
-
-        const reader = new FileReader();
-        reader.onerror = () => resolve("");
-        reader.onload = () => resolve(cleanWhitespace(String(reader.result || "")));
-        reader.readAsText(file);
-      } catch {
-        resolve("");
-      }
-    });
-
   const enforceLength = (text, mode) => {
     const config = {
-      breve:     { maxWords: 90,  maxSentences: 3 },
-      medio:     { maxWords: 180, maxSentences: 6 },
+      breve: { maxWords: 90, maxSentences: 3 },
+      medio: { maxWords: 180, maxSentences: 6 },
       detallado: { maxWords: 260, maxSentences: 10 },
     };
     const { maxWords, maxSentences } = config[mode] || config.breve;
 
-    let t = cleanWhitespace(text);
+    let t = (text || "")
+      .replace(/\r/g, "")
+      .replace(/\n+/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
 
     const sentences = t.split(/(?<=[.!?…])\s+/).filter(Boolean);
     let clipped = sentences.slice(0, maxSentences).join(" ");
@@ -243,7 +195,8 @@ export default function Resumen() {
 
   const canonicalize = (s) =>
     (s || "")
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .replace(/\s+/g, " ")
       .trim();
@@ -252,7 +205,6 @@ export default function Resumen() {
   useEffect(() => {
     const sig = canonicalize(textValue);
     if (sig.length === 0) {
-      setResult("");
       setIsOutdated(false);
       return;
     }
@@ -291,14 +243,32 @@ export default function Resumen() {
     const newDocs = arr.map((file) => ({ id: crypto.randomUUID(), file }));
     setDocuments((prev) => [...prev, ...newDocs]);
   };
-  const onFiles = (e) => { addFiles(e.target.files); e.target.value = ""; };
+  const onFiles = (e) => {
+    addFiles(e.target.files);
+    e.target.value = "";
+  };
 
-  const onDragEnter = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(true); };
-  const onDragOver  = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(true); };
-  const onDragLeave = (e) => { e.preventDefault(); e.stopPropagation(); setDragActive(false); };
+  const onDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+  const onDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+  const onDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
   const onDrop = (e) => {
-    e.preventDefault(); e.stopPropagation(); setDragActive(false);
-    const dt = e.dataTransfer; if (dt?.files?.length) addFiles(dt.files);
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    const dt = e.dataTransfer;
+    if (dt?.files?.length) addFiles(dt.files);
   };
 
   const removeDocument = (id) => setDocuments((prev) => prev.filter((d) => d.id !== id));
@@ -309,7 +279,8 @@ export default function Resumen() {
     if (!parsed.length) return;
     const newItems = parsed.map((p) => ({ id: crypto.randomUUID(), url: p.href, host: p.host }));
     setUrlItems((prev) => [...prev, ...newItems]);
-    setUrlsTextarea(""); setUrlInputOpen(false);
+    setUrlsTextarea("");
+    setUrlInputOpen(false);
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
@@ -344,12 +315,8 @@ export default function Resumen() {
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold">
-        {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
-      </div>
-      <p className="text-xs text-slate-600 mt-1">
-        {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
-      </p>
+      <div className="text-sm font-semibold">{tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
+      <p className="text-xs text-slate-600 mt-1">{tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}</p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
           href="/pricing"
@@ -358,10 +325,7 @@ export default function Resumen() {
         >
           {tr("summary.limit_cta", "Probar plan Premium")}
         </a>
-        <button
-          onClick={() => setErrorKind(null)}
-          className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
-        >
+        <button onClick={() => setErrorKind(null)} className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white">
           {tr("summary.limit_dismiss", "Seguir con plan Gratis")}
         </button>
       </div>
@@ -370,9 +334,7 @@ export default function Resumen() {
 
   const PremiumPromptNote = () => (
     <div className="rounded-xl border border-indigo-200 bg-indigo-50 px-6 py-5 text-indigo-900 shadow-sm">
-      <div className="text-sm font-semibold">
-        {tr("summary.premium_prompt_title", "Función disponible en el plan Premium")}
-      </div>
+      <div className="text-sm font-semibold">{tr("summary.premium_prompt_title", "Función disponible en el plan Premium")}</div>
       <p className="text-sm text-slate-700 mt-2">
         {tr(
           "summary.premium_prompt_body",
@@ -387,10 +349,7 @@ export default function Resumen() {
         >
           {tr("summary.premium_prompt_cta", "Probar plan Premium")}
         </a>
-        <button
-          onClick={() => setShowPremiumNote(false)}
-          className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
-        >
+        <button onClick={() => setShowPremiumNote(false)} className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white">
           {tr("summary.premium_prompt_close", "Entendido")}
         </button>
       </div>
@@ -412,41 +371,33 @@ export default function Resumen() {
 
   // ===== Generar =====
   const handleGenerate = async () => {
-    setErrorMsg(""); setResult(""); setErrorKind(null);
+    // Arreglo del parpadeo: activar loading primero y no limpiar result al iniciar
+    setLoading(true);
+    setErrorMsg("");
+    setErrorKind(null);
 
-    // 1) Preparar materia prima: texto pegado + URLs + Docs (texto)
-    // --- URLs: descargar y extraer visible (máx 3)
-    let urlsExtracted = "";
-    if (urlItems.length > 0) {
-      const top = urlItems.slice(0, 3).map((u) => u.url);
-      const fetched = await Promise.all(top.map((u) => fetchUrlText(u)));
-      urlsExtracted = cleanWhitespace(fetched.filter(Boolean).join("\n\n"));
-    }
+    const trimmed = (textValue || "").trim();
+    const words = trimmed.split(/\s+/).filter(Boolean);
+    const textOk = trimmed.length >= 20 && words.length >= 5;
+    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
-    // --- Documentos: leer si son de texto (TXT/MD/CSV/JSON)
-    let docsExtracted = "";
-    if (documents.length > 0) {
-      const readable = await Promise.all(documents.map((d) => readFileAsText(d.file)));
-      docsExtracted = cleanWhitespace(readable.filter(Boolean).join("\n\n"));
-    }
-
-    // --- Combinar y recortar duro al máximo permitido
-    const combinedRaw = [textValue, urlsExtracted, docsExtracted].filter(Boolean).join("\n\n");
-    const combined = combinedRaw.slice(0, MAX_CHARS); // hard cap
-
-    // Validaciones de entrada
-    if (combined.length === 0) {
-      setErrorMsg("No se pudo leer contenido de tus documentos/URLs. Pega texto o usa archivos de texto (TXT, MD, CSV, JSON).");
-      return;
-    }
-    if (combined.length > MAX_CHARS) {
+    if ((textValue || "").length > MAX_CHARS) {
       setErrorKind("limit");
+      setLoading(false);
+      return;
+    }
+    if (!validNow) {
+      setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
+      setLoading(false);
       return;
     }
 
-    // Para la regla extractiva, cuenta sobre el combinado
-    const words = combined.split(/\s+/).filter(Boolean);
-    const textOk = combined.length >= 20 && words.length >= 5;
+    const urlsList = urlItems.map((u) => u.url).join("\n");
+    const docNames = documents
+      .map((d) => d.file?.name)
+      .filter(Boolean)
+      .join(", ");
+
     const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
     const wordCount = words.length;
     const strictExtractive = onlyText && wordCount <= 120;
@@ -463,17 +414,15 @@ export default function Resumen() {
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
     const langInstruction =
-      outputLang === "es"
-        ? "Idioma de salida: Castellano."
-        : outputLang === "en"
-        ? "Idioma de salida: Inglés."
-        : "Idioma de salida: Euskera.";
+      outputLang === "es" ? "Idioma de salida: Castellano." : outputLang === "en" ? "Idioma de salida: Inglés." : "Idioma de salida: Euskera.";
 
     const userContent = [
       strictExtractive
         ? "Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: 'El texto es demasiado breve para resumir con fidelidad.'"
         : "Quiero un resumen profesional del siguiente contenido.",
-      `\nTEXTO (combinado de entrada: pegado, URLs y/o documentos si los había):\n${combined}`,
+      textValue ? `\nTEXTO:\n${textValue}` : "",
+      urlsList ? `\nURLs (extrae solo lo visible):\n${urlsList}` : "",
+      docNames ? `\nDOCUMENTOS (solo nombres; tu backend ya gestiona el contenido si aplica): ${docNames}` : "",
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -496,14 +445,16 @@ export default function Resumen() {
       { role: "user", content: userContent },
     ];
 
-    // cacheKey para el backend
     const cacheBase = JSON.stringify({
-      combined, summaryLength, outputLang
+      textValue,
+      urls: urlItems.map((u) => u.url),
+      docNames,
+      summaryLength,
+      outputLang,
     });
     const cacheKey = await sha256Hex(cacheBase);
 
     try {
-      setLoading(true);
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -526,19 +477,17 @@ export default function Resumen() {
       const data = await res.json();
 
       const rawText =
-        data?.text ??
-        data?.content ??
-        data?.choices?.[0]?.message?.content ??
-        data?.message?.content ??
-        "";
+        data?.text ?? data?.content ?? data?.choices?.[0]?.message?.content ?? data?.message?.content ?? "";
 
       if (!rawText) throw new Error("No se recibió texto de la API.");
 
-      const cleaned = cleanWhitespace(
-        rawText
-          .replace(/^\s*[-–—•]\s+/gm, "")
-          .replace(/^\s*\d+\.\s+/gm, "")
-      );
+      const cleaned = rawText
+        .replace(/^\s*[-–—•]\s+/gm, "")
+        .replace(/^\s*\d+\.\s+/gm, "")
+        .replace(/\r/g, "")
+        .replace(/\n+/g, " ")
+        .replace(/\s{2,}/g, " ")
+        .trim();
 
       if (/^el texto es demasiado breve para resumir con fidelidad\.?$/i.test(cleaned)) {
         setResult("El texto es demasiado breve para resumir con fidelidad.");
@@ -566,11 +515,7 @@ export default function Resumen() {
   const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
   const overLimit = charCount > MAX_CHARS;
 
-  const barClass = overLimit
-    ? "bg-red-500"
-    : nearLimit
-    ? "bg-amber-500"
-    : "bg-sky-500";
+  const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
 
   return (
     <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
@@ -587,9 +532,7 @@ export default function Resumen() {
           <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              <div className="text-sm font-medium text-slate-700">
-                {labelSources}
-              </div>
+              <div className="text-sm font-medium text-slate-700">{labelSources}</div>
             </div>
 
             {/* Tabs */}
@@ -719,7 +662,7 @@ export default function Resumen() {
                       <textarea
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
-                        placeholder={tr("summary.paste_urls_placeholder","Introduce aquí una o más URLs (separadas por línea)")}
+                        placeholder={tr("summary.paste_urls_placeholder", "Introduce aquí una o más URLs (separadas por línea)")}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                       />
@@ -729,7 +672,10 @@ export default function Resumen() {
                         </Button>
                         <button
                           type="button"
-                          onClick={() => { setUrlsTextarea(""); setUrlInputOpen(false); }}
+                          onClick={() => {
+                            setUrlsTextarea("");
+                            setUrlInputOpen(false);
+                          }}
                           className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
                         >
                           {labelCancel}
@@ -786,7 +732,11 @@ export default function Resumen() {
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
                 <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => setSummaryLength("medio")} showDivider />
-                <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
+                <LengthTab
+                  active={summaryLength === "detallado"}
+                  label={LBL_LONG}
+                  onClick={() => setSummaryLength("detallado")}
+                />
               </div>
 
               <div className="flex items-center gap-1">
@@ -810,9 +760,15 @@ export default function Resumen() {
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
-                    <DropdownMenuItem onClick={() => setOutputLang("es")}  className="cursor-pointer rounded-lg text-[14px] px-3 py-2">{LBL_ES}</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setOutputLang("eus")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">{LBL_EUS}</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setOutputLang("en")}  className="cursor-pointer rounded-lg text-[14px] px-3 py-2">{LBL_EN}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOutputLang("es")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                      {LBL_ES}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOutputLang("eus")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                      {LBL_EUS}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOutputLang("en")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                      {LBL_EN}
+                    </DropdownMenuItem>
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -822,15 +778,13 @@ export default function Resumen() {
                   type="button"
                   onClick={() => handleCopy(true)}
                   title="Copiar resultado"
-                  className={`h-9 w-9 flex items-center justify-center ${result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"}`}
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                  }`}
                   aria-label="Copiar resultado"
                   disabled={!result}
                 >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" style={{ color: BLUE }} />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
+                  {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
                 {/* Eliminar texto de la izquierda */}
@@ -838,7 +792,9 @@ export default function Resumen() {
                   type="button"
                   onClick={handleClearLeft}
                   title="Eliminar texto de entrada"
-                  className={`h-9 w-9 flex items-center justify-center ${(sourceMode === "text" && textValue) ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"}`}
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                  }`}
                   aria-label="Eliminar texto de entrada"
                   disabled={!(sourceMode === "text" && textValue)}
                 >
