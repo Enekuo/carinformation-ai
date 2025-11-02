@@ -18,16 +18,16 @@ export default function Resumen() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
-  const [showPremiumNote, setShowPremiumNote] = useState(false); // NOTA PREMIUM
+  const [showPremiumNote, setShowPremiumNote] = useState(false);
 
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // ===== Selector de idioma de salida (sin Auto) =====
-  // valores: "eus" | "es" | "en"
-  const [outputLang, setOutputLang] = useState("eus"); // Por defecto Euskera
+  // ===== Selector de idioma (sin Auto) =====
+  // "eus" | "es" | "en"
+  const [outputLang, setOutputLang] = useState("eus"); // por defecto Euskera
 
-  // Track del estado del texto para avisar si el resumen está desactualizado
+  // Control “resumen desactualizado”
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
@@ -41,7 +41,7 @@ export default function Resumen() {
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
-  // ===== Estilos / constantes visuales =====
+  // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
   const GRAY_ICON = "#94a3b8";
@@ -54,7 +54,7 @@ export default function Resumen() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== i18n labels =====
+  // ===== i18n =====
   const labelSources = tr("summary.sources_title", "Fuentes");
   const labelTabText = tr("summary.sources_tab_text", "Texto");
   const labelTabDocument = tr("summary.sources_tab_document", "Documento");
@@ -80,7 +80,7 @@ export default function Resumen() {
   const LBL_MED   = tr("summary.length_medium", "Medio");
   const LBL_LONG  = tr("summary.length_long", "Detallado");
 
-  // Labels idioma salida
+  // Idioma salida
   const LBL_LANG = tr("summary.output_language", "Hizkuntza");
   const LBL_ES   = tr("summary.output_language_es", "Gaztelania");
   const LBL_EUS  = tr("summary.output_language_eus", "Euskara");
@@ -290,7 +290,7 @@ export default function Resumen() {
     </div>
   );
 
-  // ===== Generar (normal) =====
+  // ===== Generar =====
   const handleGenerate = async () => {
     setErrorMsg(""); setResult(""); setErrorKind(null);
 
@@ -303,7 +303,6 @@ export default function Resumen() {
       setErrorKind("limit");
       return;
     }
-
     if (!validNow) {
       setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
       return;
@@ -327,7 +326,7 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // Idioma de salida: siempre forzado al seleccionado
+    // Idioma de salida forzado
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: Castellano."
@@ -617,7 +616,7 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con tabs de longitud + selector idioma */}
+            {/* Barra superior con tabs + selector cuadrado */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
@@ -625,7 +624,6 @@ export default function Resumen() {
                 <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
               </div>
 
-              {/* Selector de idioma (derecha) */}
               <div className="flex items-center gap-2">
                 <label htmlFor="outLang" className="text-xs font-medium text-slate-600 hidden md:block">
                   {LBL_LANG}
@@ -634,7 +632,9 @@ export default function Resumen() {
                   id="outLang"
                   value={outputLang}
                   onChange={(e) => setOutputLang(e.target.value)}
-                  className="h-8 rounded-full border border-slate-300 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400/40"
+                  className="h-9 min-w-[140px] border border-slate-300 rounded-md bg-white px-3 text-sm text-slate-800
+                             focus:outline-none focus:ring-2 focus:ring-sky-400/40 hover:border-slate-400
+                             shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                   aria-label={LBL_LANG}
                 >
                   <option value="eus">{LBL_EUS}</option>
@@ -644,7 +644,7 @@ export default function Resumen() {
               </div>
             </div>
 
-            {/* Botón + mensaje solo cuando no hay carga, ni resultado, ni aviso de límite */}
+            {/* Estado inicial */}
             {!loading && !result && !errorKind && (
               <>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
@@ -700,7 +700,6 @@ export default function Resumen() {
 
             {/* Input inferior (prompt opcional) */}
             <div className="absolute left-0 right-0 p-4 bottom-[8px] md:bottom-2">
-              {/* Nota Premium sobre PROMPT: pegada a la franja del input */}
               {showPremiumNote && (
                 <div className="mx-auto max-w-4xl mb-3">
                   <PremiumPromptNote />
