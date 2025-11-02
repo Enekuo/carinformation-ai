@@ -18,7 +18,6 @@ export default function Resumen() {
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
-  theFirst
   const [chatInput, setChatInput] = useState("");
 
   // Resultado / carga / error
