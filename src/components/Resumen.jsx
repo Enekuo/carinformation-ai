@@ -30,8 +30,8 @@ export default function Resumen() {
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // Idioma de salida (selector tipo menú — como la captura). Opciones visibles: ES / EUS
-  const [outputLang, setOutputLang] = useState("eus"); // por defecto Euskera
+  // Idioma de salida (ES/EUS/EN) — por defecto Euskera
+  const [outputLang, setOutputLang] = useState("eus");
 
   // Track “resumen desactualizado”
   const [lastSummarySig, setLastSummarySig] = useState(null);
@@ -86,11 +86,10 @@ export default function Resumen() {
   const LBL_MED   = tr("summary.length_medium", "Medio");
   const LBL_LONG  = tr("summary.length_long", "Detallado");
 
-  // Idioma salida
-  const LBL_LANG = tr("summary.output_language", "Hizkuntza");
+  // Etiquetas de idioma
   const LBL_ES   = tr("summary.output_language_es", "Gaztelania");
   const LBL_EUS  = tr("summary.output_language_eus", "Euskara");
-  // (tenemos EN en traducciones, pero este menú solo muestra ES/EUS como la captura)
+  const LBL_EN   = tr("summary.output_language_en", "Ingelesa");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -99,9 +98,9 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-    const first = (parts.shift() || leftRaw || "").trim();
+    theFirst = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
-    return [first.endsWith(".") ? first : `${first}.`, rest];
+    return [theFirst.endsWith(".") ? theFirst : `${theFirst}.`, rest];
   }, [leftRaw]);
 
   // ===== Tabs =====
@@ -332,9 +331,13 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // Idioma de salida forzado (ES/EUS)
+    // Idioma de salida forzado
     const langInstruction =
-      outputLang === "es" ? "Idioma de salida: Castellano." : "Idioma de salida: Euskera.";
+      outputLang === "es"
+        ? "Idioma de salida: Castellano."
+        : outputLang === "en"
+        ? "Idioma de salida: Inglés."
+        : "Idioma de salida: Euskera.";
 
     const userContent = [
       strictExtractive
@@ -618,7 +621,7 @@ export default function Resumen() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con tabs + selector tipo menú (como la captura) */}
+            {/* Barra superior con tabs + selector (sin palabra “Hizkuntza”) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
                 <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
@@ -626,48 +629,50 @@ export default function Resumen() {
                 <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => setSummaryLength("detallado")} />
               </div>
 
-              {/* Selector custom (ES/EUS) */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-600 hidden md:block">{LBL_LANG}</span>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      type="button"
-                      className="h-9 min-w-[160px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
-                                 flex items-center justify-between hover:border-slate-400
-                                 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label={LBL_LANG}
-                    >
-                      <span className="truncate">
-                        {outputLang === "es" ? LBL_ES : LBL_EUS}
-                      </span>
-                      <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                      </svg>
-                    </button>
-                  </DropdownMenuTrigger>
-
-                  <DropdownMenuContent
-                    align="end"
-                    className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+              {/* Selector custom compacto — posición mantenida */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
+                               flex items-center justify-between hover:border-slate-400
+                               shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                    aria-label="Idioma de salida"
                   >
-                    <DropdownMenuItem
-                      onClick={() => setOutputLang("es")}
-                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                    >
-                      {LBL_ES}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setOutputLang("eus")}
-                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                    >
-                      {LBL_EUS}
-                    </DropdownMenuItem>
-                    <DropdownMenuArrow className="fill-white" />
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+                    <span className="truncate">
+                      {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                    </span>
+                    <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
+                    </svg>
+                  </button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent
+                  align="end"
+                  className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+                >
+                  <DropdownMenuItem
+                    onClick={() => setOutputLang("es")}
+                    className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                  >
+                    {LBL_ES}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setOutputLang("eus")}
+                    className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                  >
+                    {LBL_EUS}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setOutputLang("en")}
+                    className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                  >
+                    {LBL_EN}
+                  </DropdownMenuItem>
+                  <DropdownMenuArrow className="fill-white" />
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {/* Estado inicial */}
