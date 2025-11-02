@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X, Copy, Trash } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,7 @@ import {
 export default function Resumen() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
+  const { toast } = useToast();
 
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
@@ -200,6 +202,26 @@ export default function Resumen() {
     }
   }, [textValue, lastSummarySig]);
 
+  // Atajos de teclado: Ctrl/⌘+Enter (generar), Ctrl/⌘+C (copiar), Esc (cerrar URLs)
+  useEffect(() => {
+    const onKey = (e) => {
+      const meta = e.metaKey || e.ctrlKey;
+      if (meta && e.key.toLowerCase() === "enter") {
+        e.preventDefault();
+        if (!loading) handleGenerate();
+      } else if (meta && e.key.toLowerCase() === "c") {
+        if (result) {
+          e.preventDefault();
+          handleCopy(true);
+        }
+      } else if (e.key === "Escape") {
+        if (urlInputOpen) setUrlInputOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [loading, result, urlInputOpen, textValue, urlItems, documents, summaryLength, outputLang]);
+
   // ===== Documentos =====
   const triggerPick = () => fileInputRef.current?.click();
   const addFiles = (list) => {
@@ -240,17 +262,20 @@ export default function Resumen() {
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones barra derecha =====
-  const handleCopy = async () => {
-    // Silencioso si no hay resultado (no muestra ningún mensaje)
-    if (!result) return;
+  const handleCopy = async (showToast = false) => {
+    if (!result) return; // deshabilitado silencioso si no hay resultado
     try {
       await navigator.clipboard.writeText(result);
+      if (showToast) {
+        toast({ title: tr("translator.copied", "Copiado"), duration: 1200 });
+      }
     } catch {
-      // Ignorar: no mostramos errores visuales
+      // silencioso
     }
   };
 
   const handleClearLeft = () => {
+    if (sourceMode !== "text" && !textValue) return;
     setTextValue(""); // solo limpia el texto escrito a la izquierda
   };
 
@@ -310,6 +335,19 @@ export default function Resumen() {
     </div>
   );
 
+  // ===== Helper: cache key (sha-256) para KV =====
+  const sha256Hex = async (input) => {
+    try {
+      const enc = new TextEncoder().encode(input);
+      const digest = await crypto.subtle.digest("SHA-256", enc);
+      return Array.from(new Uint8Array(digest))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    } catch {
+      return null;
+    }
+  };
+
   // ===== Generar =====
   const handleGenerate = async () => {
     setErrorMsg(""); setResult(""); setErrorKind(null);
@@ -346,7 +384,6 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // Idioma de salida forzado
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: Castellano."
@@ -383,12 +420,18 @@ export default function Resumen() {
       { role: "user", content: userContent },
     ];
 
+    // (7) CacheKey para KV (el backend puede usarlo para cachear)
+    const cacheBase = JSON.stringify({
+      textValue, urls: urlItems.map(u => u.url), docNames, summaryLength, outputLang
+    });
+    const cacheKey = await sha256Hex(cacheBase);
+
     try {
       setLoading(true);
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, length: summaryLength }),
+        body: JSON.stringify({ messages, length: summaryLength, cacheKey }),
       });
 
       if (!res.ok) {
@@ -396,6 +439,9 @@ export default function Resumen() {
           setErrorKind("limit");
           setLoading(false);
           return;
+        }
+        if (res.status === 429) {
+          throw new Error("Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium.");
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -440,6 +486,18 @@ export default function Resumen() {
     }
   };
 
+  // ===== Contador / barra (punto 2) =====
+  const charCount = (textValue || "").length;
+  const pct = Math.min(100, Math.round((charCount / MAX_CHARS) * 100));
+  const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
+  const overLimit = charCount > MAX_CHARS;
+
+  const barClass = overLimit
+    ? "bg-red-500"
+    : nearLimit
+    ? "bg-amber-500"
+    : "bg-sky-500";
+
   return (
     <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
       <div className="max-w-7xl mx-auto w-full px-6">
@@ -482,13 +540,26 @@ export default function Resumen() {
               )}
 
               {sourceMode === "text" && (
-                <textarea
-                  value={textValue}
-                  onChange={(e) => setTextValue(e.target.value)}
-                  placeholder={labelEnterText}
-                  className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
-                  aria-label={labelTabText}
-                />
+                <div className="flex flex-col h-full">
+                  <textarea
+                    value={textValue}
+                    onChange={(e) => setTextValue(e.target.value)}
+                    placeholder={labelEnterText}
+                    className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    aria-label={labelTabText}
+                  />
+                  {/* Contador + barra de progreso (punto 2) */}
+                  <div className="mt-2">
+                    <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
+                    </div>
+                    <div className="mt-1 text-right text-xs">
+                      <span className={overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"}>
+                        {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               )}
 
               {sourceMode === "document" && (
@@ -672,24 +743,26 @@ export default function Resumen() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado (icono solo, sin círculo) */}
+                {/* Copiar resultado (deshabilitado si no hay resultado) */}
                 <button
                   type="button"
-                  onClick={handleCopy}
+                  onClick={() => handleCopy(true)}
                   title="Copiar resultado"
-                  className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
+                  className={`h-9 w-9 flex items-center justify-center ${result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"}`}
                   aria-label="Copiar resultado"
+                  disabled={!result}
                 >
                   <Copy className="w-4 h-4" />
                 </button>
 
-                {/* Eliminar texto de la izquierda (icono solo) */}
+                {/* Eliminar texto de la izquierda (deshabilitado si no procede) */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
                   title="Eliminar texto de entrada"
-                  className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
+                  className={`h-9 w-9 flex items-center justify-center ${(sourceMode === "text" && textValue) ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"}`}
                   aria-label="Eliminar texto de entrada"
+                  disabled={!(sourceMode === "text" && textValue)}
                 >
                   <Trash className="w-4 h-4" />
                 </button>
@@ -741,10 +814,13 @@ export default function Resumen() {
                     </article>
                   )}
 
+                  {/* Skeleton de carga (punto 5) */}
                   {loading && !result && (
-                    <p className="text-center text-slate-600 text-base md:text-lg font-medium py-10">
-                      {tr("summary.loading_label", "Generando el resumen…")}
-                    </p>
+                    <div className="space-y-3 animate-pulse">
+                      <div className="h-4 bg-slate-200 rounded" />
+                      <div className="h-4 bg-slate-200 rounded w-11/12" />
+                      <div className="h-4 bg-slate-200 rounded w-10/12" />
+                    </div>
                   )}
                 </div>
               )}
