@@ -1,9 +1,8 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X, Copy, Trash } from "lucide-react";
+import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X, Copy, Trash, Check } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +14,6 @@ import {
 export default function Resumen() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
-  const { toast } = useToast();
 
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
@@ -48,6 +46,9 @@ export default function Resumen() {
   const [urlInputOpen, setUrlInputOpen] = useState(false);
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
+
+  // Copia: flash de tic azul
+  const [copiedFlash, setCopiedFlash] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -202,7 +203,7 @@ export default function Resumen() {
     }
   }, [textValue, lastSummarySig]);
 
-  // Atajos de teclado: Ctrl/⌘+Enter (generar), Ctrl/⌘+C (copiar), Esc (cerrar URLs)
+  // Atajos de teclado
   useEffect(() => {
     const onKey = (e) => {
       const meta = e.metaKey || e.ctrlKey;
@@ -262,12 +263,13 @@ export default function Resumen() {
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones barra derecha =====
-  const handleCopy = async (showToast = false) => {
-    if (!result) return; // deshabilitado silencioso si no hay resultado
+  const handleCopy = async (flash = false) => {
+    if (!result) return;
     try {
       await navigator.clipboard.writeText(result);
-      if (showToast) {
-        toast({ title: tr("translator.copied", "Copiado"), duration: 1200 });
+      if (flash) {
+        setCopiedFlash(true);
+        setTimeout(() => setCopiedFlash(false), 1200);
       }
     } catch {
       // silencioso
@@ -276,7 +278,7 @@ export default function Resumen() {
 
   const handleClearLeft = () => {
     if (sourceMode !== "text" && !textValue) return;
-    setTextValue(""); // solo limpia el texto escrito a la izquierda
+    setTextValue("");
   };
 
   // ===== Tarjetas =====
@@ -420,7 +422,7 @@ export default function Resumen() {
       { role: "user", content: userContent },
     ];
 
-    // (7) CacheKey para KV (el backend puede usarlo para cachear)
+    // cacheKey para el backend
     const cacheBase = JSON.stringify({
       textValue, urls: urlItems.map(u => u.url), docNames, summaryLength, outputLang
     });
@@ -486,7 +488,7 @@ export default function Resumen() {
     }
   };
 
-  // ===== Contador / barra (punto 2) =====
+  // ===== Contador / barra =====
   const charCount = (textValue || "").length;
   const pct = Math.min(100, Math.round((charCount / MAX_CHARS) * 100));
   const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
@@ -548,7 +550,7 @@ export default function Resumen() {
                     className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                   />
-                  {/* Contador + barra de progreso (punto 2) */}
+                  {/* Contador + barra */}
                   <div className="mt-2">
                     <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
                       <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
@@ -743,7 +745,7 @@ export default function Resumen() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado (deshabilitado si no hay resultado) */}
+                {/* Copiar resultado: cambia a tic azul al copiar */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -752,10 +754,14 @@ export default function Resumen() {
                   aria-label="Copiar resultado"
                   disabled={!result}
                 >
-                  <Copy className="w-4 h-4" />
+                  {copiedFlash ? (
+                    <Check className="w-4 h-4" style={{ color: BLUE }} />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
                 </button>
 
-                {/* Eliminar texto de la izquierda (deshabilitado si no procede) */}
+                {/* Eliminar texto de la izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -814,7 +820,7 @@ export default function Resumen() {
                     </article>
                   )}
 
-                  {/* Skeleton de carga (punto 5) */}
+                  {/* Skeleton de carga */}
                   {loading && !result && (
                     <div className="space-y-3 animate-pulse">
                       <div className="h-4 bg-slate-200 rounded" />
