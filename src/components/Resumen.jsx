@@ -284,6 +284,15 @@ export default function Resumen() {
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
+  // >>> NUEVO: limpiar resultado al cambiar las URLs (añadir/borrar) <<<
+  useEffect(() => {
+    // Al modificar la lista de URLs, limpiamos resumen y estados de error
+    setResult("");
+    setErrorMsg("");
+    setErrorKind(null);
+    setIsOutdated(false);
+  }, [urlItems]);
+
   // ===== Validación =====
   const textIsValid = useMemo(() => {
     const trimmed = (textValue || "").trim();
