@@ -284,14 +284,29 @@ export default function Resumen() {
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // >>> NUEVO: limpiar resultado al cambiar las URLs (añadir/borrar) <<<
+  // >>> EXISTENTE: limpiar resultado al cambiar URLs <<<
   useEffect(() => {
-    // Al modificar la lista de URLs, limpiamos resumen y estados de error
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
   }, [urlItems]);
+
+  // >>> NUEVO: limpiar resultado al cambiar TEXTO <<<
+  useEffect(() => {
+    setResult("");
+    setErrorMsg("");
+    setErrorKind(null);
+    setIsOutdated(false);
+  }, [textValue]);
+
+  // >>> NUEVO: limpiar resultado al cambiar DOCUMENTOS <<<
+  useEffect(() => {
+    setResult("");
+    setErrorMsg("");
+    setErrorKind(null);
+    setIsOutdated(false);
+  }, [documents]);
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -380,7 +395,6 @@ export default function Resumen() {
 
   // ===== Generar =====
   const handleGenerate = async () => {
-    // Arreglo del parpadeo: activar loading primero y no limpiar result al iniciar
     setLoading(true);
     setErrorMsg("");
     setErrorKind(null);
@@ -402,10 +416,7 @@ export default function Resumen() {
     }
 
     const urlsList = urlItems.map((u) => u.url).join("\n");
-    const docNames = documents
-      .map((d) => d.file?.name)
-      .filter(Boolean)
-      .join(", ");
+    const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
 
     const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
     const wordCount = words.length;
@@ -782,7 +793,7 @@ export default function Resumen() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado: cambia a tic azul al copiar */}
+                {/* Copiar resultado */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
