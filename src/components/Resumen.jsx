@@ -37,8 +37,8 @@ export default function Resumen() {
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
-  // Documentos
-  const [documents, setDocuments] = useState([]); // [{id,file}]
+  // Documentos: { id, file, text|null }
+  const [documents, setDocuments] = useState([]);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -236,15 +236,42 @@ export default function Resumen() {
   }, [loading, result, urlInputOpen, textValue, urlItems, documents, summaryLength, outputLang]);
 
   // ===== Documentos =====
+
+  const TEXT_EXTS = new Set(["txt","md","json","csv","srt","vtt","rtf","html","htm"]);
+  const canReadAsText = (file) => {
+    const ext = (file.name.split(".").pop() || "").toLowerCase();
+    return file.type.startsWith("text/") || TEXT_EXTS.has(ext);
+  };
+
+  const readFileAsText = (file) =>
+    new Promise((resolve) => {
+      if (file.size > 1.5 * 1024 * 1024 || !canReadAsText(file)) return resolve(null);
+      const reader = new FileReader();
+      reader.onerror = () => resolve(null);
+      reader.onabort = () => resolve(null);
+      reader.onload = () => {
+        const txt = typeof reader.result === "string" ? reader.result : null;
+        resolve(txt);
+      };
+      reader.readAsText(file, "utf-8");
+    });
+
   const triggerPick = () => fileInputRef.current?.click();
-  const addFiles = (list) => {
+
+  const addFiles = async (list) => {
     if (!list?.length) return;
     const arr = Array.from(list);
-    const newDocs = arr.map((file) => ({ id: crypto.randomUUID(), file }));
+    const newDocs = await Promise.all(
+      arr.map(async (file) => {
+        const text = await readFileAsText(file);
+        return { id: crypto.randomUUID(), file, text };
+      })
+    );
     setDocuments((prev) => [...prev, ...newDocs]);
   };
-  const onFiles = (e) => {
-    addFiles(e.target.files);
+
+  const onFiles = async (e) => {
+    await addFiles(e.target.files);
     e.target.value = "";
   };
 
@@ -263,12 +290,12 @@ export default function Resumen() {
     e.stopPropagation();
     setDragActive(false);
   };
-  const onDrop = (e) => {
+  const onDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
     const dt = e.dataTransfer;
-    if (dt?.files?.length) addFiles(dt.files);
+    if (dt?.files?.length) await addFiles(dt.files);
   };
 
   const removeDocument = (id) => setDocuments((prev) => prev.filter((d) => d.id !== id));
@@ -284,7 +311,7 @@ export default function Resumen() {
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // >>> EXISTENTE: limpiar resultado al cambiar URLs <<<
+  // Limpiar resultado al cambiar URLs (ya lo tenías)
   useEffect(() => {
     setResult("");
     setErrorMsg("");
@@ -292,15 +319,7 @@ export default function Resumen() {
     setIsOutdated(false);
   }, [urlItems]);
 
-  // >>> NUEVO: limpiar resultado al cambiar TEXTO <<<
-  useEffect(() => {
-    setResult("");
-    setErrorMsg("");
-    setErrorKind(null);
-    setIsOutdated(false);
-  }, [textValue]);
-
-  // >>> NUEVO: limpiar resultado al cambiar DOCUMENTOS <<<
+  // >>> NUEVO: Limpiar resultado al cambiar DOCUMENTOS (como URL) <<<
   useEffect(() => {
     setResult("");
     setErrorMsg("");
@@ -315,7 +334,10 @@ export default function Resumen() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput =
+    textIsValid ||
+    urlItems.length > 0 ||
+    documents.some((d) => typeof d.text === "string" && d.text.trim().length > 0);
 
   // ===== Acciones barra derecha =====
   const handleCopy = async (flash = false) => {
@@ -326,9 +348,7 @@ export default function Resumen() {
         setCopiedFlash(true);
         setTimeout(() => setCopiedFlash(false), 1200);
       }
-    } catch {
-      // silencioso
-    }
+    } catch {}
   };
 
   const handleClearLeft = () => {
@@ -402,7 +422,9 @@ export default function Resumen() {
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
-    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
+
+    const docsOk = documents.some((d) => typeof d.text === "string" && d.text.trim().length > 0);
+    const validNow = textOk || urlItems.length > 0 || docsOk;
 
     if ((textValue || "").length > MAX_CHARS) {
       setErrorKind("limit");
@@ -416,9 +438,12 @@ export default function Resumen() {
     }
 
     const urlsList = urlItems.map((u) => u.url).join("\n");
-    const docNames = documents.map((d) => d.file?.name).filter(Boolean).join(", ");
+    const docNames = documents
+      .map((d) => d.file?.name)
+      .filter(Boolean)
+      .join(", ");
 
-    const onlyText = textOk && urlItems.length === 0 && documents.length === 0;
+    const onlyText = textOk && urlItems.length === 0 && !docsOk;
     const wordCount = words.length;
     const strictExtractive = onlyText && wordCount <= 120;
 
@@ -474,11 +499,27 @@ export default function Resumen() {
     });
     const cacheKey = await sha256Hex(cacheBase);
 
+    // Construir documentsText para el backend (solo los que tienen texto)
+    const documentsText = documents
+      .filter((d) => typeof d.text === "string" && d.text.trim())
+      .map((d) => ({
+        name: d.file?.name || "sin_nombre.txt",
+        // recorte prudente por documento (el backend ya recorta globalmente también)
+        text: d.text.slice(0, 8000),
+      }));
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, length: summaryLength, cacheKey }),
+        body: JSON.stringify({
+          messages,
+          length: summaryLength,
+          cacheKey,
+          // Enviamos para que el backend integre fuentes reales:
+          urls: urlItems.map((u) => u.url),
+          documentsText,
+        }),
       });
 
       if (!res.ok) {
@@ -632,7 +673,7 @@ export default function Resumen() {
 
                   {documents.length > 0 && (
                     <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
-                      {documents.map(({ id, file }) => (
+                      {documents.map(({ id, file, text }) => (
                         <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
                           <div className="min-w-0 flex items-center gap-3 flex-1">
                             <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
@@ -640,7 +681,9 @@ export default function Resumen() {
                             </div>
                             <div className="min-w-0 flex-1">
                               <span className="text-sm font-medium block truncate">{file.name}</span>
-                              <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                              <span className="text-xs text-slate-500">
+                                {(file.size / 1024 / 1024).toFixed(2)} MB · {text ? "Incluido" : "No compatible (se omite)"}
+                              </span>
                             </div>
                           </div>
                           <button
@@ -807,7 +850,7 @@ export default function Resumen() {
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
-                {/* Eliminar texto de la izquierda */}
+                {/* Eliminar texto de la izquierda (solo afecta a Texto) */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -868,7 +911,6 @@ export default function Resumen() {
                     </article>
                   )}
 
-                  {/* Skeleton de carga */}
                   {loading && !result && (
                     <div className="space-y-3 animate-pulse">
                       <div className="h-4 bg-slate-200 rounded" />
