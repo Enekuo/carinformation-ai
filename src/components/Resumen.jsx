@@ -202,6 +202,21 @@ export default function Resumen() {
       .replace(/\s+/g, " ")
       .trim();
 
+  // ===== Limpieza del panel derecho =====
+  const clearRight = () => {
+    setResult("");
+    setErrorMsg("");
+    setErrorKind(null);
+    setIsOutdated(false);
+    setLoading(false);
+  };
+
+  const handleLengthChange = (mode) => {
+    if (mode === summaryLength) return;
+    setSummaryLength(mode);
+    clearRight(); // ✅ limpia solo el resultado
+  };
+
   // ===== Reglas UX =====
   useEffect(() => {
     const sig = canonicalize(textValue);
@@ -792,12 +807,12 @@ export default function Resumen() {
             {/* Barra superior con tabs + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="flex items-center gap-2">
-                <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => setSummaryLength("breve")} showDivider />
-                <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => setSummaryLength("medio")} showDivider />
+                <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => handleLengthChange("breve")} showDivider />
+                <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => handleLengthChange("medio")} showDivider />
                 <LengthTab
                   active={summaryLength === "detallado"}
                   label={LBL_LONG}
-                  onClick={() => setSummaryLength("detallado")}
+                  onClick={() => handleLengthChange("detallado")}
                 />
               </div>
 
@@ -822,13 +837,37 @@ export default function Resumen() {
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
-                    <DropdownMenuItem onClick={() => setOutputLang("es")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "es") {
+                          setOutputLang("es");
+                          clearRight(); // ✅ limpia solo la derecha
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
                       {LBL_ES}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setOutputLang("eus")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "eus") {
+                          setOutputLang("eus");
+                          clearRight(); // ✅
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
                       {LBL_EUS}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setOutputLang("en")} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "en") {
+                          setOutputLang("en");
+                          clearRight(); // ✅
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
                       {LBL_EN}
                     </DropdownMenuItem>
                     <DropdownMenuArrow className="fill-white" />
