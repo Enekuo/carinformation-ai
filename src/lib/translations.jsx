@@ -159,7 +159,7 @@ export const translations = {
     /* === NUEVAS CLAVES: aviso de función premium (prompt) === */
     premium_prompt_title: {
       ES: "Función disponible en el plan Premium",
-      EUS: "Funtzioa Premium planean bakarrik"
+      EUS: "Funtzioa hau Premium planean bakarrik"
     },
     premium_prompt_body: {
       ES: "El botón «Generar» usa un prompt: una instrucción para ajustar el resumen a tu gusto (tono, puntos clave, foco…). En el plan Gratis puedes pegar texto y generar el resumen normal. Para usar prompts avanzados, prueba el plan Premium.",
@@ -173,6 +173,11 @@ export const translations = {
       ES: "Entendido",
       EUS: "Ulertuta"
     },
+
+    /* === NUEVAS CLAVES: aviso de contenido desactualizado === */
+    outdated_notice: { ES: "El texto ha cambiado. Actualiza el resumen.", EUS: "Testua aldatu da. Eguneratu laburpena." },
+    outdated_update: { ES: "Actualizar", EUS: "Eguneratu" },
+    outdated_close:  { ES: "Ocultar aviso", EUS: "Abisua ezkutatu" },
   },
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */

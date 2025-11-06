@@ -938,35 +938,32 @@ export default function Resumen() {
                     </div>
                   )}
 
-                  {/* 🔔 Aviso mejorado y bilingüe */}
                   {isOutdated && !loading && result && (
-                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                      <span className="truncate">
-                        {outputLang === "eus"
-                          ? "Testua aldatu da. Eguneratu laburpena."
-                          : "El texto ha cambiado. Actualiza el resumen."}
-                      </span>
-                      <div className="shrink-0 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={handleGenerate}
-                          className="h-8 px-3 rounded-full text-[13px]"
-                          style={{ backgroundColor: "#2563eb", color: "#fff" }}
-                        >
-                          {outputLang === "eus" ? "Eguneratu" : "Actualizar"}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => setIsOutdated(false)}
-                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                          title={outputLang === "eus" ? "Itxi abisua" : "Ocultar aviso"}
-                          aria-label={outputLang === "eus" ? "Itxi abisua" : "Ocultar aviso"}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                  <span className="truncate">
+                  {tr("summary.outdated_notice", "El texto ha cambiado. Actualiza el resumen.")}
+                  </span>
+                  <div className="shrink-0 flex items-center gap-2">
+                  <Button
+                   type="button"
+                   onClick={handleGenerate}
+                    className="h-8 px-3 rounded-full text-[13px]"
+                    style={{ backgroundColor: "#2563eb", color: "#fff" }}
+      >
+                     {tr("summary.outdated_update", "Actualizar")}
+                      </Button>
+                     <button
+                   type="button"
+                   onClick={() => setIsOutdated(false)}
+                  className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                 title={tr("summary.outdated_close", "Ocultar aviso")}
+                 aria-label={tr("summary.outdated_close", "Ocultar aviso")}
+                 >
+                 ×
+                 </button>
+                 </div>
+                 </div>
+                 )}
 
                   {result && (
                     <article className="prose prose-slate max-w-none">
