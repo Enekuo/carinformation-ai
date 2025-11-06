@@ -39,7 +39,7 @@ export default function Resumen() {
 
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
-  const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]
+  const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]  // NUEVO: textos reales de .txt/.md
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -108,7 +108,7 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-    const first = (parts.shift() || leftRaw || "").trim();
+       const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
@@ -214,7 +214,7 @@ export default function Resumen() {
   const handleLengthChange = (mode) => {
     if (mode === summaryLength) return;
     setSummaryLength(mode);
-    clearRight();
+    clearRight(); // limpia solo el resultado
   };
 
   // ===== Reglas UX =====
@@ -252,7 +252,9 @@ export default function Resumen() {
   }, [loading, result, urlInputOpen, textValue, urlItems, documents, summaryLength, outputLang]);
 
   // ===== Documentos =====
-  const readTextFromFiles = async (items) => {
+
+  // Lee como texto los archivos con extensión .txt o .md, conservando el mismo id del documento
+  const readTextFromFiles = async (items /* [{id,file}] */) => {
     const results = await Promise.all(
       items.map(
         ({ id, file }) =>
@@ -275,17 +277,21 @@ export default function Resumen() {
 
   const triggerPick = () => fileInputRef.current?.click();
 
+  // Añadir documentos y leer .txt/.md
   const addFiles = async (list) => {
     if (!list?.length) return;
 
     const arr = Array.from(list);
     const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
 
+    // 1) Añadir a la lista visible
     setDocuments((prev) => [...prev, ...withIds]);
 
+    // 2) Leer contenidos de TXT/MD y guardarlos
     const texts = await readTextFromFiles(withIds);
     if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
 
+    // 3) Igual que con URLs: al cambiar documentos, limpiamos el resultado
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
@@ -323,6 +329,7 @@ export default function Resumen() {
   const removeDocument = (id) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
     setDocumentsText((prev) => prev.filter((d) => d.id !== id));
+    // limpiar salida (misma UX que en URLs)
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
@@ -340,6 +347,7 @@ export default function Resumen() {
   };
   const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
+  // Limpiar resultado cuando cambie la lista de URLs
   useEffect(() => {
     setResult("");
     setErrorMsg("");
@@ -365,10 +373,11 @@ export default function Resumen() {
         setCopiedFlash(true);
         setTimeout(() => setCopiedFlash(false), 1200);
       }
-    } catch {}
+    } catch {
+      // silencioso
+    }
   };
 
-  // ✅ AHORA borra izquierda + derecha
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
@@ -434,6 +443,7 @@ export default function Resumen() {
 
   // ===== Generar =====
   const handleGenerate = async () => {
+    // Arreglo del parpadeo: activar loading primero y no limpiar result al iniciar
     setLoading(true);
     setErrorMsg("");
     setErrorKind(null);
@@ -524,7 +534,8 @@ export default function Resumen() {
           messages,
           length: summaryLength,
           cacheKey,
-          documentsText,
+          // NUEVO: pasamos el contenido real de documentos TXT/MD
+          documentsText, // [{id,name,text}]
         }),
       });
 
@@ -827,37 +838,65 @@ export default function Resumen() {
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
-                    <DropdownMenuItem onClick={() => { if (outputLang !== "es") { setOutputLang("es"); clearRight(); }}} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "es") {
+                          setOutputLang("es");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
                       {LBL_ES}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { if (outputLang !== "eus") { setOutputLang("eus"); clearRight(); }}} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "eus") {
+                          setOutputLang("eus");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
                       {LBL_EUS}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { if (outputLang !== "en") { setOutputLang("en"); clearRight(); }}} className="cursor-pointer rounded-lg text-[14px] px-3 py-2">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "en") {
+                          setOutputLang("en");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
                       {LBL_EN}
                     </DropdownMenuItem>
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
+                {/* Copiar resultado: cambia a tic azul al copiar */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
                   title="Copiar resultado"
-                  className={`h-9 w-9 flex items-center justify-center ${result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"}`}
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                  }`}
                   aria-label="Copiar resultado"
                   disabled={!result}
                 >
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
-                {/* Eliminar texto de la izquierda + limpiar derecha */}
+                {/* Eliminar texto de la izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
                   title="Eliminar texto de entrada y resultado"
-                  className={`h-9 w-9 flex items-center justify-center ${sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"}`}
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                  }`}
                   aria-label="Eliminar texto de entrada y resultado"
                   disabled={!(sourceMode === "text" && textValue)}
                 >
@@ -887,7 +926,7 @@ export default function Resumen() {
               </>
             )}
 
-            {/* Resultado / errores / loader / límite */}
+            {/* Resultado / errores / loader / aviso / límite */}
             <div className="w-full">
               {(result || errorMsg || loading || errorKind) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
@@ -899,9 +938,33 @@ export default function Resumen() {
                     </div>
                   )}
 
+                  {/* 🔔 Aviso mejorado y bilingüe */}
                   {isOutdated && !loading && result && (
-                    <div className="mb-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
-                      El texto ha cambiado. Vuelve a generar el resumen para actualizarlo.
+                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      <span className="truncate">
+                        {outputLang === "eus"
+                          ? "Testua aldatu da. Eguneratu laburpena."
+                          : "El texto ha cambiado. Actualiza el resumen."}
+                      </span>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={handleGenerate}
+                          className="h-8 px-3 rounded-full text-[13px]"
+                          style={{ backgroundColor: "#2563eb", color: "#fff" }}
+                        >
+                          {outputLang === "eus" ? "Eguneratu" : "Actualizar"}
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => setIsOutdated(false)}
+                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                          title={outputLang === "eus" ? "Itxi abisua" : "Ocultar aviso"}
+                          aria-label={outputLang === "eus" ? "Itxi abisua" : "Ocultar aviso"}
+                        >
+                          ×
+                        </button>
+                      </div>
                     </div>
                   )}
 
