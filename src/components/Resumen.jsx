@@ -39,7 +39,7 @@ export default function Resumen() {
 
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
-  const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]  // NUEVO: textos reales de .txt/.md
+  const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -108,7 +108,7 @@ export default function Resumen() {
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
-       const first = (parts.shift() || leftRaw || "").trim();
+    const first = (parts.shift() || leftRaw || "").trim();
     const rest = parts.join(".").trim();
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
@@ -478,6 +478,14 @@ export default function Resumen() {
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
 
+    // ✅ instrucción de idioma reforzada
+    const langInstruction =
+      outputLang === "es"
+        ? "Idioma de salida: español (ISO: es). Redacta toda la respuesta en español."
+        : outputLang === "en"
+        ? "Output language: English (ISO: en). Write the entire response in English."
+        : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi erantzun osoa euskaraz.";
+
     const lengthRule =
       summaryLength === "breve"
         ? "Extensión: 2–3 frases, ~70–90 palabras."
@@ -485,16 +493,21 @@ export default function Resumen() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    const langInstruction =
-      outputLang === "es" ? "Idioma de salida: Castellano." : outputLang === "en" ? "Idioma de salida: Inglés." : "Idioma de salida: Euskera.";
+    // ✅ incrustar contenido real de .txt/.md en el prompt
+    const docsInline = documentsText?.length
+      ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
+        documentsText
+          .map(d => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`)
+          .join("\n\n")
+      : "";
 
     const userContent = [
       strictExtractive
         ? "Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: 'El texto es demasiado breve para resumir con fidelidad.'"
         : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList ? `\nURLs (extrae solo lo visible):\n${urlsList}` : "",
-      docNames ? `\nDOCUMENTOS (solo nombres; tu backend ya gestiona el contenido si aplica): ${docNames}` : "",
+      urlsList ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}` : "",
+      docsInline, // ⬅️ aquí metemos el contenido real de .txt/.md
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -534,7 +547,7 @@ export default function Resumen() {
           messages,
           length: summaryLength,
           cacheKey,
-          // NUEVO: pasamos el contenido real de documentos TXT/MD
+          // seguimos enviando el contenido por si el backend lo usa también
           documentsText, // [{id,name,text}]
         }),
       });
@@ -939,31 +952,31 @@ export default function Resumen() {
                   )}
 
                   {isOutdated && !loading && result && (
-                  <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                  <span className="truncate">
-                  {tr("summary.outdated_notice", "El texto ha cambiado. Actualiza el resumen.")}
-                  </span>
-                  <div className="shrink-0 flex items-center gap-2">
-                  <Button
-                   type="button"
-                   onClick={handleGenerate}
-                    className="h-8 px-3 rounded-full text-[13px]"
-                    style={{ backgroundColor: "#2563eb", color: "#fff" }}
-      >
-                     {tr("summary.outdated_update", "Actualizar")}
-                      </Button>
-                     <button
-                   type="button"
-                   onClick={() => setIsOutdated(false)}
-                  className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                 title={tr("summary.outdated_close", "Ocultar aviso")}
-                 aria-label={tr("summary.outdated_close", "Ocultar aviso")}
-                 >
-                 ×
-                 </button>
-                 </div>
-                 </div>
-                 )}
+                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      <span className="truncate">
+                        {tr("summary.outdated_notice", "El texto ha cambiado. Actualiza el resumen.")}
+                      </span>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={handleGenerate}
+                          className="h-8 px-3 rounded-full text-[13px]"
+                          style={{ backgroundColor: "#2563eb", color: "#fff" }}
+                        >
+                          {tr("summary.outdated_update", "Actualizar")}
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => setIsOutdated(false)}
+                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                          title={tr("summary.outdated_close", "Ocultar aviso")}
+                          aria-label={tr("summary.outdated_close", "Ocultar aviso")}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {result && (
                     <article className="prose prose-slate max-w-none">
