@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
 import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check } from "lucide-react";
+import CtaSection from "@/components/CtaSection";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
@@ -231,183 +232,188 @@ export default function Hero() {
   const handleClearLeft = () => setLeftText("");
 
   return (
-    <section className="w-full bg-[#F4F8FF] py-10">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
-          {/* barra superior */}
-          <div className="relative h-12 border-b border-slate-200">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
-                {/* izquierda */}
-                <div className="relative" ref={leftRef}>
+    <>
+      <section className="w-full bg-[#F4F8FF] py-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
+            {/* barra superior */}
+            <div className="relative h-12 border-b border-slate-200">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
+                  {/* izquierda */}
+                  <div className="relative" ref={leftRef}>
+                    <button
+                      type="button"
+                      onClick={() => { setOpenLeft(v => !v); setOpenRight(false); }}
+                      className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                    >
+                      <span>{OPTIONS.find(o => o.value === src)?.label}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <Dropdown
+                      open={openLeft}
+                      selected={src}
+                      onSelect={(val) => { setSrc(val); setOpenLeft(false); }}
+                      align="left"
+                    />
+                  </div>
+
+                  {/* swap */}
                   <button
                     type="button"
-                    onClick={() => { setOpenLeft(v => !v); setOpenRight(false); }}
-                    className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                    aria-label="Intercambiar idiomas"
+                    onClick={swap}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
                   >
-                    <span>{OPTIONS.find(o => o.value === src)?.label}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
-                  <Dropdown
-                    open={openLeft}
-                    selected={src}
-                    onSelect={(val) => { setSrc(val); setOpenLeft(false); }}
-                    align="left"
-                  />
+
+                  {/* derecha */}
+                  <div className="relative" ref={rightRef}>
+                    <button
+                      type="button"
+                      onClick={() => { setOpenRight(v => !v); setOpenLeft(false); }}
+                      className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                    >
+                      <span>{OPTIONS.find(o => o.value === dst)?.label}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <Dropdown
+                      open={openRight}
+                      selected={dst}
+                      onSelect={(val) => { setDst(val); setOpenRight(false); }}
+                      align="right"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* paneles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
+              {/* IZQUIERDA: entrada */}
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
+                <textarea
+                  ref={leftTA}
+                  value={leftText}
+                  onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
+                  onInput={(e) => autoResize(e.currentTarget)}
+                  placeholder={t("translator.left_placeholder")}
+                  className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                />
+                {/* contador abajo a la derecha */}
+                <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
+                  {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                 </div>
 
-                {/* swap */}
-                <button
-                  type="button"
-                  aria-label="Intercambiar idiomas"
-                  onClick={swap}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-
-                {/* derecha */}
-                <div className="relative" ref={rightRef}>
+                {/* MIC abajo a la izquierda */}
+                <div className="absolute bottom-4 left-6">
                   <button
                     type="button"
-                    onClick={() => { setOpenRight(v => !v); setOpenLeft(false); }}
-                    className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                    onClick={handleToggleMic}
+                    aria-label={t("translator.dictate")}
+                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
                   >
-                    <span>{OPTIONS.find(o => o.value === dst)?.label}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <Mic className="w-5 h-5 text-slate-600" />
+                    <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {listening ? t("translator.listening") : t("translator.dictate")}
+                    </span>
                   </button>
-                  <Dropdown
-                    open={openRight}
-                    selected={dst}
-                    onSelect={(val) => { setDst(val); setOpenRight(false); }}
-                    align="right"
-                  />
+                </div>
+              </div>
+
+              {/* DERECHA: salida */}
+              <div className="p-8 md:p-10 relative">
+                {/* Botón BORRAR arriba-derecha (borra la IZQUIERDA) */}
+                <button
+                  type="button"
+                  onClick={handleClearLeft}
+                  aria-label={t("translator.clear_left")}
+                  className="group absolute top-3 right-4 p-2 rounded-md hover:bg-slate-100"
+                >
+                  <Trash2 className="w-5 h-5 text-slate-500" />
+                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                    {t("translator.clear_left")}
+                  </span>
+                </button>
+
+                <textarea
+                  ref={rightTA}
+                  value={
+                    loading && document.activeElement !== rightTA.current
+                      ? t("translator.loading")
+                      : rightText
+                  }
+                  onChange={(e) => setRightText(e.target.value)}
+                  onInput={(e) => autoResize(e.currentTarget)}
+                  placeholder={t("translator.right_placeholder")}
+                  className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
+                />
+                {/* error arriba (ya existente) */}
+                {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
+                {/* error abajo alineado al contador */}
+                {err && (
+                  <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
+                    {err}
+                  </div>
+                )}
+
+                {/* Acciones abajo a la derecha */}
+                <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
+                  {/* Escuchar */}
+                  <button
+                    type="button"
+                    onClick={handleSpeak}
+                    aria-label={t("translator.listen")}
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
+                  >
+                    <Volume2 className="w-5 h-5" /> 
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {t("translator.listen")}
+                    </span>
+                  </button>
+
+                  {/* Copiar (con ✓ al pulsar) */}
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    aria-label={t("translator.copy")}
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
+                  >
+                    {copied ? <Check className="w-5 h-5" /> : <CopyIcon className="w-5 h-5" />}
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {copied ? t("translator.copied") : t("translator.copy")}
+                    </span>
+                  </button>
+
+                  {/* PDF */}
+                  <button
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    aria-label={t("translator.pdf")}
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
+                  >
+                    <FileDown className="w-5 h-5" />
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {t("translator.pdf")}
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+        </div> 
+      </section>
 
-          {/* paneles */}
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
-            {/* IZQUIERDA: entrada */}
-            <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-              <textarea
-                ref={leftTA}
-                value={leftText}
-                onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
-                onInput={(e) => autoResize(e.currentTarget)}
-                placeholder={t("translator.left_placeholder")}
-                className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
-              />
-              {/* contador abajo a la derecha */}
-              <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
-                {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
-              </div>
-
-              {/* MIC abajo a la izquierda */}
-              <div className="absolute bottom-4 left-6">
-                <button
-                  type="button"
-                  onClick={handleToggleMic}
-                  aria-label={t("translator.dictate")}
-                  className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
-                >
-                  <Mic className="w-5 h-5 text-slate-600" />
-                  <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {listening ? t("translator.listening") : t("translator.dictate")}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* DERECHA: salida */}
-            <div className="p-8 md:p-10 relative">
-              {/* Botón BORRAR arriba-derecha (borra la IZQUIERDA) */}
-              <button
-                type="button"
-                onClick={handleClearLeft}
-                aria-label={t("translator.clear_left")}
-                className="group absolute top-3 right-4 p-2 rounded-md hover:bg-slate-100"
-              >
-                <Trash2 className="w-5 h-5 text-slate-500" />
-                <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                  {t("translator.clear_left")}
-                </span>
-              </button>
-
-              <textarea
-                ref={rightTA}
-                value={
-                  loading && document.activeElement !== rightTA.current
-                    ? t("translator.loading")
-                    : rightText
-                }
-                onChange={(e) => setRightText(e.target.value)}
-                onInput={(e) => autoResize(e.currentTarget)}
-                placeholder={t("translator.right_placeholder")}
-                className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
-              />
-              {/* error arriba (ya existente) */}
-              {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
-              {/* error abajo alineado al contador */}
-              {err && (
-                <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
-                  {err}
-                </div>
-              )}
-
-              {/* Acciones abajo a la derecha */}
-              <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
-                {/* Escuchar */}
-                <button
-                  type="button"
-                  onClick={handleSpeak}
-                  aria-label={t("translator.listen")}
-                  className="group relative p-2 rounded-md hover:bg-slate-100"
-                >
-                  <Volume2 className="w-5 h-5" /> 
-                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {t("translator.listen")}
-                  </span>
-                </button>
-
-                {/* Copiar (con ✓ al pulsar) */}
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  aria-label={t("translator.copy")}
-                  className="group relative p-2 rounded-md hover:bg-slate-100"
-                >
-                  {copied ? <Check className="w-5 h-5" /> : <CopyIcon className="w-5 h-5" />}
-                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {copied ? t("translator.copied") : t("translator.copy")}
-                  </span>
-                </button>
-
-                {/* PDF */}
-                <button
-                  type="button"
-                  onClick={handleDownloadPdf}
-                  aria-label={t("translator.pdf")}
-                  className="group relative p-2 rounded-md hover:bg-slate-100"
-                >
-                  <FileDown className="w-5 h-5" />
-                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {t("translator.pdf")}
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> 
-    </section> 
+      {/* CTA (solo título de momento) */}
+      <CtaSection />
+    </>
   );
 }
