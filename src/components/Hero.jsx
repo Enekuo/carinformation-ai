@@ -233,10 +233,9 @@ export default function Hero() {
 
   return (
     <>
-      {/* Traductor */}
       <section className="w-full bg-[#F4F8FF] py-10">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[1000px] pb-16 md:pb-28">
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
               <div className="absolute inset-0 flex items-center justify-center">
@@ -298,7 +297,7 @@ export default function Hero() {
             </div>
 
             {/* paneles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 <textarea
@@ -307,7 +306,7 @@ export default function Hero() {
                   onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
                   onInput={(e) => autoResize(e.currentTarget)}
                   placeholder={t("translator.left_placeholder")}
-                  className="w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                  className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
                 />
                 {/* contador abajo a la derecha */}
                 <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
@@ -355,7 +354,7 @@ export default function Hero() {
                   onChange={(e) => setRightText(e.target.value)}
                   onInput={(e) => autoResize(e.currentTarget)}
                   placeholder={t("translator.right_placeholder")}
-                  className={`w-full min-h-[430px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
+                  className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
                 />
                 {/* error arriba (ya existente) */}
                 {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
@@ -375,7 +374,7 @@ export default function Hero() {
                     aria-label={t("translator.listen")}
                     className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
-                    <Volume2 className="w-5 h-5" /> 
+                    <Volume2 className="w-5 h-5" />
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
                       {t("translator.listen")}
                     </span>
@@ -410,10 +409,10 @@ export default function Hero() {
               </div>
             </div>
           </div>
-        </div> 
+        </div>
       </section>
 
-      {/* CTA debajo del traductor */}
+      {/* CTA */}
       <CtaSection />
     </>
   );
