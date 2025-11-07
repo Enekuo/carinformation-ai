@@ -233,7 +233,8 @@ export default function Hero() {
 
   return (
     <>
-      <section className="w-full bg-[#F4F8FF] py-10">
+      {/* CAMBIO: solo alargamos el fondo con más padding inferior */}
+      <section className="w-full bg-[#F4F8FF] pt-10 pb-24 md:pb-40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
@@ -417,3 +418,4 @@ export default function Hero() {
     </>
   );
 }
+
