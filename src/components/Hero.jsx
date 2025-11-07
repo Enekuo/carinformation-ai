@@ -236,7 +236,7 @@ export default function Hero() {
       {/* Traductor */}
       <section className="w-full bg-[#F4F8FF] py-10">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full pb-16 md:pb-24">
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full min-h-[920px] pb-12 md:pb-20">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
               <div className="absolute inset-0 flex items-center justify-center">
