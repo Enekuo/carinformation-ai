@@ -298,7 +298,7 @@ export default function Hero() {
             </div>
 
             {/* paneles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[430px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-[620px]">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 <textarea
