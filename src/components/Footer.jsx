@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -44,23 +43,25 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnAboutTitle", "Sobre Euskalia")}
             </h3>
-            <Accordion type="single" collapsible className="w-full">
-              {aboutItems.map((item) => (
-                <AccordionItem value={item.id} key={item.id} className="border-b-slate-200 dark:border-b-slate-800">
-                  <AccordionTrigger className="text-sm text-left hover:no-underline py-3 text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary">
-                    {tr(item.titleKey, "")}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs pt-1 pb-3 text-slate-600 dark:text-slate-400">
-                    {tr(item.contentKey, "").split("\n").map((line, idx) => (
-                      <React.Fragment key={idx}>
+
+            <div className="divide-y divide-slate-200 dark:divide-slate-800 rounded-lg border border-slate-200 dark:border-slate-800">
+              {aboutItems.map((item, idx) => (
+                <details key={item.id} className="group open:bg-slate-50/50 dark:open:bg-slate-800/30">
+                  <summary className="cursor-pointer list-none py-3 px-4 text-sm text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary flex items-center justify-between">
+                    <span>{tr(item.titleKey, "")}</span>
+                    <span className="ml-3 transition-transform group-open:rotate-180">▾</span>
+                  </summary>
+                  <div className="px-4 pb-3 text-xs text-slate-600 dark:text-slate-400">
+                    {tr(item.contentKey, "").split("\n").map((line, i) => (
+                      <React.Fragment key={`${idx}-${i}`}>
                         {line}
                         <br />
                       </React.Fragment>
                     ))}
-                  </AccordionContent>
-                </AccordionItem>
+                  </div>
+                </details>
               ))}
-            </Accordion>
+            </div>
           </div>
 
           {/* Columna 2: Legal */}
@@ -122,14 +123,6 @@ export default function Footer() {
                   <Linkedin size={20} />
                 </a>
               </div>
-            </div>
-
-            <div className="mb-6">
-              <h4 className="text-sm font-medium mb-2 text-slate-800 dark:text-slate-200">
-                {tr("eusFooterLanguageTitle", "Idioma")}
-              </h4>
-              {/* Si tu LanguageSwitcher está en otra ruta, cambia el import arriba */}
-              {/* <LanguageSwitcher /> */}
             </div>
 
             <Button asChild className="w-full text-sm bg-primary text-white hover:bg-primary/90">
