@@ -229,6 +229,58 @@ export const translations = {
   /* === Aviso de funcionalidad no implementada === */
   not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago ezarrita" },
   not_implemented_subtitle: { ES: "Puedes solicitarla en tu próximo prompt 🚀", EUS: "Hurrengo prompt-ean eska dezakezu 🚀" },
+
+  /* === NUEVAS CLAVES FOOTER (EUSKALIA) === */
+  eusFooterColumnAboutTitle:   { ES: "Sobre Euskalia",            EUS: "Euskaliari buruz" },
+  eusFooterColumnLegalTitle:   { ES: "Legal",                     EUS: "Legeak" },
+  eusFooterColumnContactTitle: { ES: "Contacto y Comunidad",      EUS: "Kontaktua eta Komunitatea" },
+  eusFooterLanguageTitle:      { ES: "Idioma",                    EUS: "Hizkuntza" },
+  eusFooterPlansButton:        { ES: "Planes",                    EUS: "Planak" },
+  eusFooterRights:             { ES: "Todos los derechos reservados", EUS: "Eskubide guztiak erreserbatuta" },
+  eusFooterCookies:            { ES: "Cookies",                   EUS: "Cookieak" },
+  eusFooterContactEmailValue:  { ES: "contacto@euskalia.ai",      EUS: "contacto@euskalia.ai" },
+
+  eusFooterAboutTitle1:   { ES: "¿Qué es Euskalia?", EUS: "Zer da Euskalia?" },
+  eusFooterAboutContent1: {
+    ES:  "Traductor y resumidor inteligente enfocado en Euskera ↔ Español.\nRápido, claro y pensado para uso diario.",
+    EUS: "Euskara ↔ Gaztelania itzultzaile eta laburtzaile adimenduna.\nAzkarra, argia eta eguneroko erabilerarako pentsatua."
+  },
+  eusFooterAboutTitle2:   { ES: "¿Cómo funciona?",   EUS: "Nola dabil?" },
+  eusFooterAboutContent2: {
+    ES:  "Pega texto, sube documento o indica una URL.\nLa IA traduce o resume y te devuelve el resultado limpio.",
+    EUS: "Testua itsatsi, dokumentua igo edo URL bat eman.\nIAk itzuli edo laburtu, eta emaitza garbia ematen dizu."
+  },
+  eusFooterAboutTitle3:   { ES: "Escucha tu contenido", EUS: "Entzun edukia" },
+  eusFooterAboutContent3: {
+    ES:  "Convierte el resultado en audio para revisarlo mientras haces otras cosas.",
+    EUS: "Emaitza audio bihurtu, beste gauzak egiten dituzun bitartean berrikusteko."
+  },
+  eusFooterAboutTitle4:   { ES: "Crear texto", EUS: "Testua sortu" },
+  eusFooterAboutContent4: {
+    ES:  "Genera textos cortos en el idioma elegido con indicaciones simples.",
+    EUS: "Aukeratutako hizkuntzan testu laburrak sortu, argibide sinpleekin."
+  },
+  eusFooterAboutTitle5:   { ES: "Crear resumen", EUS: "Laburpena sortu" },
+  eusFooterAboutContent5: {
+    ES:  "Obtén puntos clave, bullets y un resumen claro en segundos.",
+    EUS: "Puntu garrantzitsuak, bulet-ak eta laburpen argia segundo gutxitan."
+  },
+
+  eusFooterLegalTitle1: { ES: "Aviso legal",                EUS: "Lege-oharra" },
+  eusFooterLegalTitle2: { ES: "Política de privacidad",     EUS: "Pribatutasun politika" },
+  eusFooterLegalTitle3: { ES: "Términos y condiciones",     EUS: "Baldintzak eta erabilera" },
+  eusFooterLegalTitle4: { ES: "Uso de voz sintética / IA",  EUS: "Ahots sintetikoa / IA erabilera" },
+  eusFooterLegalTitle5: { ES: "Política de cookies",        EUS: "Cookie politika" },
+
+  // Toast genérico usado en el Footer (iconos sociales, etc.)
+  eusToastFeatureNotImplementedTitle: {
+    ES: "🚧 Funcionalidad no implementada",
+    EUS: "🚧 Funtzionaltasuna ez dago erabilgarri oraindik"
+  },
+  eusToastFeatureNotImplementedDescription: {
+    ES: "Esta función aún no está implementada. ¡Pídela en tu próximo mensaje! 🚀",
+    EUS: "Funtzio hau oraindik ez dago martxan. Eskatu hurrengo mezua bidaltzean! 🚀"
+  },
 };
 
 /* ====== i18n runtime ====== */
