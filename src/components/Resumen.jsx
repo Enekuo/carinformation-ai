@@ -11,6 +11,7 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 import CtaSection from "@/components/CtaSection";
+import Footer from "@/components/Footer";
 
 export default function Resumen() {
   const { t } = useTranslation();
@@ -1033,6 +1034,9 @@ export default function Resumen() {
 
       {/* CTA final */}
       <CtaSection />
+      
+      {/* FOOTER */}
+      <Footer />
     </>
   );
 }
