@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
 import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
+import Footer from "@/components/Footer";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
@@ -415,6 +416,8 @@ export default function Hero() {
 
       {/* CTA */}
       <CtaSection />
+      {/* FOOTER */}
+      <Footer />
     </>
   );
 }
