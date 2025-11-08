@@ -135,7 +135,7 @@ export default function Footer() {
         </div>
 
         {/* Franja inferior: copyright centrado y enlaces en la esquina derecha */}
-        <div className="mt-8 py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+        <div className="mt-8 py-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             {/* Columna izquierda (espaciador) */}
             <div className="hidden md:block" />
