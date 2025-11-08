@@ -36,7 +36,6 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-      {/* Mantengo top amplio y sin padding inferior extra en el bloque principal */}
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
           {/* Columna 1: Sobre Euskalia */}
@@ -135,10 +134,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Franja inferior: centrada verticalmente (simétrica) */}
-        <div className="mt-8 py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+        {/* Franja inferior centrada horizontalmente */}
+        <div className="mt-8 py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center gap-3 text-center">
           <div>© {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Todos los derechos reservados")}</div>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookies")}</Link>
             <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Aviso legal")}</Link>
             <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Política de privacidad")}</Link>
