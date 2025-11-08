@@ -134,13 +134,27 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Franja inferior centrada horizontalmente */}
-        <div className="mt-8 py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center gap-3 text-center">
-          <div>© {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Todos los derechos reservados")}</div>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookies")}</Link>
-            <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Aviso legal")}</Link>
-            <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Política de privacidad")}</Link>
+        {/* Franja inferior: copyright centrado y enlaces en la esquina derecha */}
+        <div className="mt-8 py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center">
+            {/* Columna izquierda (espaciador) */}
+            <div className="hidden md:block" />
+            {/* Columna central: copyright centrado */}
+            <div className="text-center">
+              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Todos los derechos reservados")}
+            </div>
+            {/* Columna derecha: enlaces a la esquina */}
+            <div className="flex justify-end gap-4">
+              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterCookies", "Cookies")}
+              </Link>
+              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterLegalTitle1", "Aviso legal")}
+              </Link>
+              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterLegalTitle2", "Política de privacidad")}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
