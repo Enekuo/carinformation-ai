@@ -239,6 +239,7 @@ export const translations = {
   eusFooterRights:             { ES: "Todos los derechos reservados", EUS: "Eskubide guztiak erreserbatuta" },
   eusFooterCookies:            { ES: "Cookies",                   EUS: "Cookieak" },
   eusFooterContactEmailValue:  { ES: "contacto@euskalia.ai",      EUS: "contacto@euskalia.ai" },
+  eusFooterLanguageLabel:      { ES: "Idioma",                    EUS: "Hizkuntza" },
 
   eusFooterAboutTitle1:   { ES: "¿Qué es Euskalia?", EUS: "Zer da Euskalia?" },
   eusFooterAboutContent1: {
