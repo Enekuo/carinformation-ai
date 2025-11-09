@@ -5,20 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-/** Ikurriña (Basque flag) en SVG mini (16x12) */
+/** Ikurriña mini (16x12) */
 function FlagEUS({ className = "" }) {
   return (
     <svg viewBox="0 0 16 12" width="16" height="12" className={className} aria-hidden="true">
-      {/* Rojo de fondo */}
       <rect width="16" height="12" fill="#D52B1E" rx="2" />
-      {/* Aspa verde */}
       <path d="M0 0 L16 12 M16 0 L0 12" stroke="#007A3D" strokeWidth="3" opacity="0.95" />
-      {/* Cruz blanca */}
-      <rect x="6.5" y="0" width="3" height="12" fill="#FFFFFF" />
-      <rect x="0" y="4.5" width="16" height="3" fill="#FFFFFF" />
+      <rect x="6.5" y="0" width="3" height="12" fill="#FFF" />
+      <rect x="0" y="4.5" width="16" height="3" fill="#FFF" />
     </svg>
   );
 }
+
+function FlagES() { return <span className="text-base" role="img" aria-label="España">🇪🇸</span>; }
+function FlagUS() { return <span className="text-base" role="img" aria-label="United States">🇺🇸</span>; }
 
 export default function Footer() {
   const { t, language, setLanguage } = useTranslation();
@@ -26,7 +26,7 @@ export default function Footer() {
   const tr = (key, fallback) => t(key) || fallback;
 
   const [openLang, setOpenLang] = useState(false);
-  const langBtnRef = useRef(null);
+  const btnRef = useRef(null);
 
   const aboutItems = [
     { id: "what-is",     titleKey: "eusFooterAboutTitle1",   contentKey: "eusFooterAboutContent1" },
@@ -52,9 +52,9 @@ export default function Footer() {
     });
   };
 
-  const currentIcon = () => {
-    if (language === "ES") return <span className="text-base" aria-label="España" role="img">🇪🇸</span>;
-    if (language === "EN") return <span className="text-base" aria-label="United States" role="img">🇺🇸</span>;
+  const currentFlag = () => {
+    if (language === "ES") return <FlagES />;
+    if (language === "EN") return <FlagUS />;
     return <FlagEUS />;
   };
 
@@ -63,14 +63,25 @@ export default function Footer() {
     setOpenLang(false);
   };
 
-  // Cerrar al hacer blur (pequeño retardo para permitir el click)
-  const handleBlur = () => setTimeout(() => setOpenLang(false), 120);
+  const LangItem = ({ active, onClick, children }) => (
+    <button
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      role="menuitem"
+      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] 
+      hover:bg-slate-50 dark:hover:bg-slate-800 
+      ${active ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+    >
+      {children}
+    </button>
+  );
 
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-          {/* Columna 1: lista plana */}
+
+          {/* Columna 1: Sobre Euskalia (lista plana) */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnAboutTitle", "Euskaliari buruz")}
@@ -117,7 +128,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + Idioma (botón con desplegable) + Planes */}
+          {/* Columna 3: Contacto + Idioma (botón + menú) + Planes */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnContactTitle", "Kontaktua eta Komunitatea")}
@@ -147,17 +158,17 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* === Idioma === */}
+            {/* Etiqueta Idioma */}
             <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
 
-            {/* Botón pequeño que muestra SOLO el idioma activo */}
+            {/* Botón pequeño que muestra SOLO la bandera activa */}
             <div className="relative mb-6">
               <button
-                ref={langBtnRef}
+                ref={btnRef}
                 onClick={() => setOpenLang(v => !v)}
-                onBlur={handleBlur}
+                onBlur={() => setTimeout(() => setOpenLang(false), 120)}
                 type="button"
                 className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
                 aria-haspopup="menu"
@@ -165,39 +176,25 @@ export default function Footer() {
                 aria-label="Cambiar idioma"
                 title={tr("eusFooterLanguageLabel", "Idioma")}
               >
-                {currentIcon()}
+                {currentFlag()}
               </button>
 
-              {/* Desplegable con las 3 opciones */}
+              {/* Menú flotante estilo tarjeta (exacto al ejemplo) */}
               {openLang && (
                 <div
                   role="menu"
-                  className="absolute z-20 mt-2 w-36 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg p-2"
+                  className="absolute z-50 mt-2 w-40 rounded-2xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5 p-2
+                             dark:bg-slate-900 dark:border-slate-700"
                 >
-                  <button
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => choose("EUS")}
-                    className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${language==="EUS" ? "bg-slate-50 dark:bg-slate-800" : ""}`}
-                  >
-                    <FlagEUS />
-                    <span>Euskara</span>
-                  </button>
-                  <button
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => choose("ES")}
-                    className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${language==="ES" ? "bg-slate-50 dark:bg-slate-800" : ""}`}
-                  >
-                    <span className="text-base" role="img" aria-label="España">🇪🇸</span>
-                    <span>Español</span>
-                  </button>
-                  <button
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => choose("EN")}
-                    className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${language==="EN" ? "bg-slate-50 dark:bg-slate-800" : ""}`}
-                  >
-                    <span className="text-base" role="img" aria-label="United States">🇺🇸</span>
-                    <span>English (US)</span>
-                  </button>
+                  <LangItem active={language==="ES"} onClick={() => choose("ES")}>
+                    <FlagES /> <span className="ml-2 text-[13px]">ES</span>
+                  </LangItem>
+                  <LangItem active={language==="EN"} onClick={() => choose("EN")}>
+                    <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
+                  </LangItem>
+                  <LangItem active={language==="EUS"} onClick={() => choose("EUS")}>
+                    <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
+                  </LangItem>
                 </div>
               )}
             </div>
