@@ -41,15 +41,39 @@ export default function Footer() {
   const { toast } = useToast();
   const tr = (key, fallback) => t(key) || fallback;
 
+  // === Selector de idioma ===
   const [openLang, setOpenLang] = useState(false);
   const langBtnRef = useRef(null);
+  const CurrentFlag = () => {
+    if (language === "ES") return <FlagES />;
+    if (language === "EN") return <FlagUS />;
+    return <FlagEUS />; // EUS por defecto
+  };
+  const chooseLang = (code) => {
+    setLanguage(code);
+    setOpenLang(false);
+  };
+  const handleBlur = () => setTimeout(() => setOpenLang(false), 120);
+  const LangItem = ({ active, onClick, children }) => (
+    <button
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      role="menuitem"
+      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px]
+                  hover:bg-slate-50 dark:hover:bg-slate-800
+                  ${active ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+    >
+      {children}
+    </button>
+  );
 
   const aboutItems = [
-    { id: "what-is",     titleKey: "eusFooterAboutTitle1",   contentKey: "eusFooterAboutContent1" },
-    { id: "how-works",   titleKey: "eusFooterAboutTitle2",   contentKey: "eusFooterAboutContent2" },
-    { id: "listen-cont", titleKey: "eusFooterAboutTitle3",   contentKey: "eusFooterAboutContent3" },
-    { id: "create-text", titleKey: "eusFooterAboutTitle4",   contentKey: "eusFooterAboutContent4" },
-    { id: "create-sum",  titleKey: "eusFooterAboutTitle5",   contentKey: "eusFooterAboutContent5" },
+    { id: "what-is",       titleKey: "eusFooterAboutTitle1", contentKey: "eusFooterAboutContent1" }, // ¿Qué es Euskalia?
+    { id: "how-works",     titleKey: "eusFooterAboutTitle2", contentKey: "eusFooterAboutContent2" }, // ¿Cómo funciona?
+    { id: "translator",    titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" }, // Traductor
+    { id: "create-summary",titleKey: "eusFooterAboutTitle4", contentKey: "eusFooterAboutContent4" }, // Crear resumen
+    { id: "plans",         titleKey: "eusFooterAboutTitle5", contentKey: "eusFooterAboutContent5" }, // ¿Gratis o premium?
+    { id: "languages",     titleKey: "eusFooterAboutTitle6", contentKey: "eusFooterAboutContent6" }, // Idiomas admitidos
   ];
 
   const legalItems = [
@@ -68,32 +92,6 @@ export default function Footer() {
     });
   };
 
-  const CurrentFlag = () => {
-    if (language === "ES") return <FlagES />;
-    if (language === "EN") return <FlagUS />;
-    return <FlagEUS />; // EUS por defecto
-  };
-
-  const chooseLang = (code) => {
-    setLanguage(code);
-    setOpenLang(false);
-  };
-
-  const handleBlur = () => setTimeout(() => setOpenLang(false), 120);
-
-  const LangItem = ({ active, onClick, children }) => (
-    <button
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={onClick}
-      role="menuitem"
-      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px]
-                  hover:bg-slate-50 dark:hover:bg-slate-800
-                  ${active ? "bg-slate-50 dark:bg-slate-800" : ""}`}
-    >
-      {children}
-    </button>
-  );
-
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
@@ -103,6 +101,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnAboutTitle", "Sobre Euskalia")}
             </h3>
+
             <div className="border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800">
               {aboutItems.map((item, idx) => (
                 <details key={item.id} className="group">
@@ -160,28 +159,16 @@ export default function Footer() {
                 {tr("eusFooterContactEmailValue", "contacto@euskalia.ai")}
               </a>
               <div className="flex space-x-3">
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
-                  aria-label="Instagram"
-                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
-                >
+                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Instagram"
+                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                   <Instagram size={20} />
                 </a>
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
-                  aria-label="Twitter"
-                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
-                >
+                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Twitter"
+                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                   <Twitter size={20} />
                 </a>
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
-                  aria-label="LinkedIn"
-                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
-                >
+                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="LinkedIn"
+                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                   <Linkedin size={20} />
                 </a>
               </div>
@@ -192,7 +179,7 @@ export default function Footer() {
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
 
-            {/* Botón con bandera activa (bandera grande 24×18) + menú (EUS primero) */}
+            {/* Botón con bandera activa + desplegable (EUS primero) */}
             <div className="relative mb-6">
               <button
                 ref={langBtnRef}
@@ -241,7 +228,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Franja inferior */}
+        {/* Franja inferior: copyright centrado + enlaces a la derecha */}
         <div className="mt-8 py-2 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             <div className="hidden md:block" />
