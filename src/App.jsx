@@ -10,6 +10,10 @@ import CreatorsPage from '@/pages/CreatorsPage';
 import AuthPage from '@/pages/AuthPage';
 import SupportPage from '@/pages/SupportPage';
 import Resumen from "@/components/Resumen";
+import LegalNoticePage from "@/components/Legal/LegalNoticePage";
+import PrivacyPolicyPage from "@/components/Legal/PrivacyPolicyPage";
+import TermsConditionsPage from "@/components/Legal/TermsConditionsPage";
+import CookiesPolicyPage from "@/components/Legal/CookiesPolicyPage";
 import UseAIPage from "@/components/Legal/UseAIPage";
 
 
@@ -38,6 +42,10 @@ function App() {
                         <Route path="/creadores" element={<CreatorsPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
                         <Route path="/resumen" element={<Resumen />} />
+                        <Route path="/aviso-legal" element={<LegalNoticePage />} />
+                        <Route path="/politica-de-privacidad" element={<PrivacyPolicyPage />} />
+                        <Route path="/terminos-condiciones" element={<TermsConditionsPage />} />
+                        <Route path="/cookies" element={<CookiesPolicyPage />} />
                         <Route path="/uso-de-ia" element={<UseAIPage />} />
                        
                     </Routes>
