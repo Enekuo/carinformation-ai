@@ -89,7 +89,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + idioma pequeño + Planak */}
+          {/* Columna 3: Contacto + idioma + Planak */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnContactTitle", "Kontaktua eta Komunitatea")}
@@ -131,21 +131,20 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* BOTÓN DE IDIOMA PEQUEÑO */}
+            {/* Botón de idioma pequeño con icono + letras */}
             <button
               type="button"
               onClick={toggleLanguage}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition mb-4"
+              className="inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition mb-4"
               aria-label={language === "EUS" ? "Aldatu gaztelerara" : "Cambiar a euskera"}
               title={language === "EUS" ? "Euskara ▸ Español" : "Español ▸ Euskara"}
             >
               <Globe size={16} />
+              <span className="text-xs tracking-wide">{language === "EUS" ? "EUS" : "ES"}</span>
             </button>
 
-            {/* Espacio para colocar Planak donde marcaste */}
+            {/* Espacio y botón Planak azul */}
             <div className="mt-4" />
-
-            {/* PLANAK AZUL */}
             <Button asChild className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
               <Link to="/pricing">
                 <Sparkles size={16} className="mr-2" />
