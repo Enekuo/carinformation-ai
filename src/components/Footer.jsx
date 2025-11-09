@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-/* ==== Banderas en SVG (tamaño configurable) ==== */
-function FlagEUS({ w = 20, h = 15 }) {
+/* ==== Banderas en SVG (24×18) ==== */
+function FlagEUS() {
   return (
-    <svg viewBox="0 0 16 12" width={w} height={h} aria-hidden="true">
+    <svg viewBox="0 0 16 12" width="24" height="18" aria-hidden="true">
       <rect width="16" height="12" fill="#D52B1E" rx="2" />
       <path d="M0 0 L16 12 M16 0 L0 12" stroke="#007A3D" strokeWidth="3" />
       <rect x="6.5" y="0" width="3" height="12" fill="#fff" />
@@ -16,17 +16,17 @@ function FlagEUS({ w = 20, h = 15 }) {
     </svg>
   );
 }
-function FlagES({ w = 20, h = 15 }) {
+function FlagES() {
   return (
-    <svg viewBox="0 0 16 12" width={w} height={h} aria-hidden="true">
+    <svg viewBox="0 0 16 12" width="24" height="18" aria-hidden="true">
       <rect width="16" height="12" fill="#AA151B" rx="2" />
       <rect x="0" y="3" width="16" height="6" fill="#F1BF00" />
     </svg>
   );
 }
-function FlagUS({ w = 20, h = 15 }) {
+function FlagUS() {
   return (
-    <svg viewBox="0 0 16 12" width={w} height={h} aria-hidden="true">
+    <svg viewBox="0 0 16 12" width="24" height="18" aria-hidden="true">
       <rect width="16" height="12" fill="#B22234" rx="2" />
       {[1,3,5,7,9,11].map((y)=>(
         <rect key={y} x="0" y={y} width="16" height="1" fill="#fff" />
@@ -69,9 +69,9 @@ export default function Footer() {
   };
 
   const CurrentFlag = () => {
-    if (language === "ES") return <FlagES w={20} h={15} />;
-    if (language === "EN") return <FlagUS w={20} h={15} />;
-    return <FlagEUS w={20} h={15} />; // EUS por defecto
+    if (language === "ES") return <FlagES />;
+    if (language === "EN") return <FlagUS />;
+    return <FlagEUS />; // EUS por defecto
   };
 
   const chooseLang = (code) => {
@@ -192,7 +192,7 @@ export default function Footer() {
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
 
-            {/* Botón con bandera activa + desplegable (EUS primero) */}
+            {/* Botón con bandera activa (bandera grande 24×18) + menú (EUS primero) */}
             <div className="relative mb-6">
               <button
                 ref={langBtnRef}
@@ -219,13 +219,13 @@ export default function Footer() {
                 >
                   {/* EUS primero */}
                   <LangItem active={language==="EUS"} onClick={() => chooseLang("EUS")}>
-                    <FlagEUS w={20} h={15} /> <span className="ml-2 text-[13px]">EUS</span>
+                    <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
                   </LangItem>
                   <LangItem active={language==="ES"} onClick={() => chooseLang("ES")}>
-                    <FlagES w={20} h={15} /> <span className="ml-2 text-[13px]">ES</span>
+                    <FlagES /> <span className="ml-2 text-[13px]">ES</span>
                   </LangItem>
                   <LangItem active={language==="EN"} onClick={() => chooseLang("EN")}>
-                    <FlagUS w={20} h={15} /> <span className="ml-2 text-[13px]">EN</span>
+                    <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
                   </LangItem>
                 </div>
               )}
