@@ -35,7 +35,6 @@ export default function Footer() {
   };
 
   const toggleLanguage = () => {
-    // Alterna entre ES y EUS (ajusta si tienes más idiomas)
     setLanguage(language === "EUS" ? "ES" : "EUS");
   };
 
@@ -43,10 +42,10 @@ export default function Footer() {
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-          {/* Columna 1: Sobre Euskalia — estética lista plana */}
+          {/* Columna 1: lista plana */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
-              {tr("eusFooterColumnAboutTitle", "Sobre Euskalia")}
+              {tr("eusFooterColumnAboutTitle", "Euskaliari buruz")}
             </h3>
             <div className="border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800">
               {aboutItems.map((item, idx) => (
@@ -74,7 +73,7 @@ export default function Footer() {
           {/* Columna 2: Legal */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
-              {tr("eusFooterColumnLegalTitle", "Legal")}
+              {tr("eusFooterColumnLegalTitle", "Legeak")}
             </h3>
             <ul className="space-y-2">
               {legalItems.map((item) => (
@@ -90,10 +89,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + botones idioma / planak */}
+          {/* Columna 3: Contacto + idioma pequeño + Planak */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
-              {tr("eusFooterColumnContactTitle", "Contacto y Comunidad")}
+              {tr("eusFooterColumnContactTitle", "Kontaktua eta Komunitatea")}
             </h3>
 
             <div className="space-y-3 mb-6">
@@ -132,21 +131,21 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Botón elegir idioma (arriba) */}
-            <Button
+            {/* BOTÓN DE IDIOMA PEQUEÑO */}
+            <button
               type="button"
               onClick={toggleLanguage}
-              variant="outline"
-              className="w-full mb-4 text-sm border-slate-300 dark:border-slate-700"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition mb-4"
+              aria-label={language === "EUS" ? "Aldatu gaztelerara" : "Cambiar a euskera"}
+              title={language === "EUS" ? "Euskara ▸ Español" : "Español ▸ Euskara"}
             >
-              <Globe size={16} className="mr-2" />
-              {language === "EUS" ? "Euskara" : "Español"}
-            </Button>
+              <Globe size={16} />
+            </button>
 
-            {/* Espaciado para bajar Planak a la zona marcada en rojo */}
-            <div className="mt-10" />
+            {/* Espacio para colocar Planak donde marcaste */}
+            <div className="mt-4" />
 
-            {/* Botón Planak en azul */}
+            {/* PLANAK AZUL */}
             <Button asChild className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
               <Link to="/pricing">
                 <Sparkles size={16} className="mr-2" />
@@ -161,12 +160,12 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             <div className="hidden md:block" />
             <div className="text-center">
-              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Todos los derechos reservados")}
+              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Eskubide guztiak erreserbatuta")}
             </div>
             <div className="flex justify-end gap-4">
-              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookies")}</Link>
-              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Aviso legal")}</Link>
-              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Política de privacidad")}</Link>
+              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookieak")}</Link>
+              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Lege-oharra")}</Link>
+              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Pribatutasun politika")}</Link>
             </div>
           </div>
         </div>
