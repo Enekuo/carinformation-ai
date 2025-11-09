@@ -3,7 +3,6 @@ import React from "react";
 /* ====== DICCIONARIO (solo ES y EUS) ====== */
 export const translations = {
   header: {
-    brand:     { ES: "Meditation.AI", EUS: "Meditation.AI" },
     tools:     { ES: "Herramientas",  EUS: "Tresnak" },
     resources: { ES: "Recursos",      EUS: "Baliabideak" },
     pricing:   { ES: "Precios",       EUS: "Prezioak" },
@@ -11,29 +10,6 @@ export const translations = {
     startFree: { ES: "Comienza Gratis", EUS: "Doan hasi" },
   },
 
-  toolsMenu: {
-    users: {
-      title: { ES: "Usuarios", EUS: "Erabiltzaileak" },
-      description: {
-        ES:  "Meditación personalizada para usuarios particulares.",
-        EUS: "Meditazio pertsonalizatua erabiltzaile partikularrentzat.",
-      },
-    },
-    companies: {
-      title: { ES: "Empresas", EUS: "Enpresak" },
-      description: {
-        ES:  "Meditaciones personalizadas para empresas.",
-        EUS: "Meditazio pertsonalizatuak enpresentzat.",
-      },
-    },
-    creators: {
-      title: { ES: "Creadores de contenido", EUS: "Eduki-sortzaileak" },
-      description: {
-        ES:  "Meditaciones personalizadas para creadores de contenido.",
-        EUS: "Meditazio pertsonalizatuak eduki-sortzaileentzat.",
-      },
-    },
-  },
 
   resourcesMenu: {
     support: { ES: "Soporte", EUS: "Laguntza" },
@@ -203,7 +179,10 @@ export const translations = {
     },
   },
 
-  /* === Claves planas que usa la página (support_*) === */
+
+
+  /* === SOPORTE === */
+
   support_title:        { ES: "Soporte", EUS: "Laguntza" },
   support_subtitle:     { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },
   support_kicker:       { ES: "¿Cómo podemos ayudarte?", EUS: "Nola lagun diezazukegu?" },
@@ -230,7 +209,11 @@ export const translations = {
   not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago ezarrita" },
   not_implemented_subtitle: { ES: "Puedes solicitarla en tu próximo prompt 🚀", EUS: "Hurrengo prompt-ean eska dezakezu 🚀" },
 
-  /* === NUEVAS CLAVES FOOTER (EUSKALIA) === */
+
+
+
+                                       /* ===FOOTER=== */
+
   eusFooterColumnAboutTitle:   { ES: "Sobre Euskalia",            EUS: "Euskaliari buruz" },
   eusFooterColumnLegalTitle:   { ES: "Legal",                     EUS: "Legeak" },
   eusFooterColumnContactTitle: { ES: "Contacto y Comunidad",      EUS: "Kontaktua eta Komunitatea" },
@@ -285,6 +268,24 @@ export const translations = {
   eusFooterLegalTitle4: { ES: "Uso de APIs de IA",          EUS: "Adimen Artifizialeko API en erabilera" },
   eusFooterLegalTitle5: { ES: "Política de cookies",        EUS: "Cookie politika" },
 
+/* ==== CTA FINAL ==== */
+
+cta: {
+  title: {
+    ES: "✨ Lleva tu experiencia Euskalia al siguiente nivel",
+    EUS: "✨ Euskalia esperientzia hurrengo mailara eraman",
+  },
+  subtitle: {
+    ES: "Guarda tus textos, elimina los anuncios y disfruta sin límites.",
+    EUS: "Gorde zure testuak, kendu iragarkiak eta gozatu mugarik gabe.",
+  },
+  button: {
+    ES: "🚀 Crear cuenta",
+    EUS: "🚀 Kontua sortu",
+  },
+},
+
+
   // Toast genérico usado en el Footer (iconos sociales, etc.)
   eusToastFeatureNotImplementedTitle: {
     ES: "🚧 Funcionalidad no implementada",
@@ -295,6 +296,8 @@ export const translations = {
     EUS: "Funtzio hau oraindik ez dago martxan. Eskatu hurrengo mezua bidaltzean! 🚀"
   },
 };
+
+
 
 /* ====== i18n runtime ====== */
 export const SUPPORTED_LANGS = ["ES", "EUS"]; // Si en el selector usas "EN", el sistema hace fallback a ES automáticamente.
