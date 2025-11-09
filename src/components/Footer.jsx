@@ -1,32 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-
-/** Ikurriña mini (16x12) */
-function FlagEUS({ className = "" }) {
-  return (
-    <svg viewBox="0 0 16 12" width="16" height="12" className={className} aria-hidden="true">
-      <rect width="16" height="12" fill="#D52B1E" rx="2" />
-      <path d="M0 0 L16 12 M16 0 L0 12" stroke="#007A3D" strokeWidth="3" opacity="0.95" />
-      <rect x="6.5" y="0" width="3" height="12" fill="#FFF" />
-      <rect x="0" y="4.5" width="16" height="3" fill="#FFF" />
-    </svg>
-  );
-}
-
-function FlagES() { return <span className="text-base" role="img" aria-label="España">🇪🇸</span>; }
-function FlagUS() { return <span className="text-base" role="img" aria-label="United States">🇺🇸</span>; }
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Footer() {
-  const { t, language, setLanguage } = useTranslation();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const tr = (key, fallback) => t(key) || fallback;
-
-  const [openLang, setOpenLang] = useState(false);
-  const btnRef = useRef(null);
 
   const aboutItems = [
     { id: "what-is",     titleKey: "eusFooterAboutTitle1",   contentKey: "eusFooterAboutContent1" },
@@ -52,40 +35,17 @@ export default function Footer() {
     });
   };
 
-  const currentFlag = () => {
-    if (language === "ES") return <FlagES />;
-    if (language === "EN") return <FlagUS />;
-    return <FlagEUS />;
-  };
-
-  const choose = (code) => {
-    setLanguage(code);
-    setOpenLang(false);
-  };
-
-  const LangItem = ({ active, onClick, children }) => (
-    <button
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={onClick}
-      role="menuitem"
-      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] 
-      hover:bg-slate-50 dark:hover:bg-slate-800 
-      ${active ? "bg-slate-50 dark:bg-slate-800" : ""}`}
-    >
-      {children}
-    </button>
-  );
-
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-
-          {/* Columna 1: Sobre Euskalia (lista plana) */}
+          {/* Columna 1: Sobre Euskalia — estética lista plana */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
-              {tr("eusFooterColumnAboutTitle", "Euskaliari buruz")}
+              {tr("eusFooterColumnAboutTitle", "Sobre Euskalia")}
             </h3>
+
+            {/* Lista simple con separadores finos */}
             <div className="border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800">
               {aboutItems.map((item, idx) => (
                 <details key={item.id} className="group">
@@ -112,7 +72,7 @@ export default function Footer() {
           {/* Columna 2: Legal */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
-              {tr("eusFooterColumnLegalTitle", "Legeak")}
+              {tr("eusFooterColumnLegalTitle", "Legal")}
             </h3>
             <ul className="space-y-2">
               {legalItems.map((item) => (
@@ -128,10 +88,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + Idioma (botón + menú) + Planes */}
+          {/* Columna 3: Contacto + Idioma (selector ejemplo) + Planak */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
-              {tr("eusFooterColumnContactTitle", "Kontaktua eta Komunitatea")}
+              {tr("eusFooterColumnContactTitle", "Contacto y Comunidad")}
             </h3>
 
             <div className="space-y-3 mb-6">
@@ -143,89 +103,61 @@ export default function Footer() {
                 {tr("eusFooterContactEmailValue", "contacto@euskalia.ai")}
               </a>
               <div className="flex space-x-3">
-                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Instagram"
-                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  aria-label="Instagram"
+                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                >
                   <Instagram size={20} />
                 </a>
-                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Twitter"
-                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  aria-label="Twitter"
+                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                >
                   <Twitter size={20} />
                 </a>
-                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="LinkedIn"
-                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  aria-label="LinkedIn"
+                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                >
                   <Linkedin size={20} />
                 </a>
               </div>
             </div>
 
-            {/* Etiqueta Idioma */}
+            {/* Selector de idioma EXACTO al ejemplo */}
             <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
+            <LanguageSwitcher />
 
-            {/* Botón pequeño que muestra SOLO la bandera activa */}
-            <div className="relative mb-6">
-              <button
-                ref={btnRef}
-                onClick={() => setOpenLang(v => !v)}
-                onBlur={() => setTimeout(() => setOpenLang(false), 120)}
-                type="button"
-                className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
-                aria-haspopup="menu"
-                aria-expanded={openLang}
-                aria-label="Cambiar idioma"
-                title={tr("eusFooterLanguageLabel", "Idioma")}
-              >
-                {currentFlag()}
-              </button>
-
-              {/* Menú flotante estilo tarjeta (exacto al ejemplo) */}
-              {openLang && (
-                <div
-                  role="menu"
-                  className="absolute z-50 mt-2 w-40 rounded-2xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5 p-2
-                             dark:bg-slate-900 dark:border-slate-700"
-                >
-                  <LangItem active={language==="ES"} onClick={() => choose("ES")}>
-                    <FlagES /> <span className="ml-2 text-[13px]">ES</span>
-                  </LangItem>
-                  <LangItem active={language==="EN"} onClick={() => choose("EN")}>
-                    <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
-                  </LangItem>
-                  <LangItem active={language==="EUS"} onClick={() => choose("EUS")}>
-                    <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
-                  </LangItem>
-                </div>
-              )}
-            </div>
-
-            {/* Botón Planes / Planak */}
+            {/* Espacio y botón Planak (azul) */}
+            <div className="mt-6" />
             <Button asChild className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
               <Link to="/pricing">
                 <Sparkles size={16} className="mr-2" />
-                {tr("eusFooterPlansButton", language === "EUS" ? "Planak" : "Planes")}
+                {tr("eusFooterPlansButton", "Planak")}
               </Link>
             </Button>
           </div>
         </div>
 
-        {/* Franja inferior */}
+        {/* Franja inferior: copyright centrado + enlaces a la derecha */}
         <div className="mt-8 py-2 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             <div className="hidden md:block" />
             <div className="text-center">
-              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", language === "EUS" ? "Eskubide guztiak erreserbatuta" : "Todos los derechos reservados")}
+              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Eskubide guztiak erreserbatuta")}
             </div>
             <div className="flex justify-end gap-4">
-              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">
-                {tr("eusFooterCookies", language === "EUS" ? "Cookieak" : "Cookies")}
-              </Link>
-              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">
-                {tr("eusFooterLegalTitle1", language === "EUS" ? "Lege-oharra" : "Aviso legal")}
-              </Link>
-              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">
-                {tr("eusFooterLegalTitle2", language === "EUS" ? "Pribatutasun politika" : "Política de privacidad")}
-              </Link>
+              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookieak")}</Link>
+              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Lege-oharra")}</Link>
+              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Pribatutasun politika")}</Link>
             </div>
           </div>
         </div>
