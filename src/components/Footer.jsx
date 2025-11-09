@@ -1,15 +1,33 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+
+/* ==== Banderas (inline) ==== */
+function FlagEUS() {
+  // Ikurriña mini en SVG
+  return (
+    <svg viewBox="0 0 16 12" width="16" height="12" aria-hidden="true">
+      <rect width="16" height="12" fill="#D52B1E" rx="2" />
+      <path d="M0 0 L16 12 M16 0 L0 12" stroke="#007A3D" strokeWidth="3" />
+      <rect x="6.5" y="0" width="3" height="12" fill="#fff" />
+      <rect x="0" y="4.5" width="16" height="3" fill="#fff" />
+    </svg>
+  );
+}
+const FlagES = () => <span role="img" aria-label="Spain" className="text-base">🇪🇸</span>;
+const FlagUS = () => <span role="img" aria-label="United States" className="text-base">🇺🇸</span>;
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, language, setLanguage } = useTranslation(); // asumo que tu hook expone language y setLanguage
   const { toast } = useToast();
   const tr = (key, fallback) => t(key) || fallback;
+
+  // Estado del menú del selector
+  const [openLang, setOpenLang] = useState(false);
+  const langBtnRef = useRef(null);
 
   const aboutItems = [
     { id: "what-is",     titleKey: "eusFooterAboutTitle1",   contentKey: "eusFooterAboutContent1" },
@@ -35,17 +53,42 @@ export default function Footer() {
     });
   };
 
+  const CurrentFlag = () => {
+    if (language === "ES") return <FlagES />;
+    if (language === "EN") return <FlagUS />;
+    return <FlagEUS />; // EUS por defecto
+  };
+
+  const chooseLang = (code) => {
+    setLanguage(code);
+    setOpenLang(false);
+  };
+
+  // Cierra el desplegable al perder foco (con pequeño retardo para permitir click)
+  const handleBlur = () => setTimeout(() => setOpenLang(false), 120);
+
+  const LangItem = ({ active, onClick, children }) => (
+    <button
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      role="menuitem"
+      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px]
+                  hover:bg-slate-50 dark:hover:bg-slate-800
+                  ${active ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+    >
+      {children}
+    </button>
+  );
+
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-          {/* Columna 1: Sobre Euskalia — estética lista plana */}
+          {/* Columna 1: Sobre Euskalia — lista plana */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnAboutTitle", "Sobre Euskalia")}
             </h3>
-
-            {/* Lista simple con separadores finos */}
             <div className="border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800">
               {aboutItems.map((item, idx) => (
                 <details key={item.id} className="group">
@@ -88,7 +131,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + Idioma (selector ejemplo) + Planak */}
+          {/* Columna 3: Contacto + Selector Idioma (inline) + Planak */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnContactTitle", "Contacto y Comunidad")}
@@ -130,14 +173,50 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Selector de idioma EXACTO al ejemplo */}
-            <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+            {/* Etiqueta Idioma */}
+            <div className="mb-2 text-sm font-medium text-slate-800 dark:text-slate-200">
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
-            <LanguageSwitcher />
 
-            {/* Espacio y botón Planak (azul) */}
-            <div className="mt-6" />
+            {/* Botón pequeño con bandera activa + desplegable con ES/EN/EUS */}
+            <div className="relative mb-6">
+              <button
+                ref={langBtnRef}
+                onClick={() => setOpenLang(v => !v)}
+                onBlur={handleBlur}
+                type="button"
+                className="inline-flex items-center justify-center h-9 w-9 rounded-lg
+                           border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900
+                           shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                aria-haspopup="menu"
+                aria-expanded={openLang}
+                aria-label={tr("eusFooterLanguageLabel", "Idioma")}
+                title={tr("eusFooterLanguageLabel", "Idioma")}
+              >
+                <CurrentFlag />
+              </button>
+
+              {openLang && (
+                <div
+                  role="menu"
+                  className="absolute z-50 mt-2 w-40 rounded-2xl border border-slate-200 bg-white
+                             shadow-xl ring-1 ring-black/5 p-2
+                             dark:bg-slate-900 dark:border-slate-700"
+                >
+                  <LangItem active={language==="ES"} onClick={() => chooseLang("ES")}>
+                    <FlagES /> <span className="ml-2 text-[13px]">ES</span>
+                  </LangItem>
+                  <LangItem active={language==="EN"} onClick={() => chooseLang("EN")}>
+                    <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
+                  </LangItem>
+                  <LangItem active={language==="EUS"} onClick={() => chooseLang("EUS")}>
+                    <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
+                  </LangItem>
+                </div>
+              )}
+            </div>
+
+            {/* Botón Planak (azul) */}
             <Button asChild className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
               <Link to="/pricing">
                 <Sparkles size={16} className="mr-2" />
@@ -147,7 +226,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Franja inferior: copyright centrado + enlaces a la derecha */}
+        {/* Franja inferior */}
         <div className="mt-8 py-2 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             <div className="hidden md:block" />
