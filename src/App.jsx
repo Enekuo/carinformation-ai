@@ -10,6 +10,7 @@ import CreatorsPage from '@/pages/CreatorsPage';
 import AuthPage from '@/pages/AuthPage';
 import SupportPage from '@/pages/SupportPage';
 import Resumen from "@/components/Resumen";
+import UseAIPage from "@/components/Legal/UseAIPage";
 
 
 function App() {
@@ -37,7 +38,8 @@ function App() {
                         <Route path="/creadores" element={<CreatorsPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
                         <Route path="/resumen" element={<Resumen />} />
-                        
+                        <Route path="/uso-de-ia" element={<UseAIPage />} />
+                       
                     </Routes>
                 </main>
                 <Toaster />

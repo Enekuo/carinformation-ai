@@ -282,7 +282,7 @@ export const translations = {
   eusFooterLegalTitle1: { ES: "Aviso legal",                EUS: "Lege-oharra" },
   eusFooterLegalTitle2: { ES: "Política de privacidad",     EUS: "Pribatutasun politika" },
   eusFooterLegalTitle3: { ES: "Términos y condiciones",     EUS: "Baldintzak eta erabilera" },
-  eusFooterLegalTitle4: { ES: "Uso de voz sintética / IA",  EUS: "Ahots sintetikoa / IA erabilera" },
+  eusFooterLegalTitle4: { ES: "Uso de APIs de IA",          EUS: "Adimen Artifizialeko API en erabilera" },
   eusFooterLegalTitle5: { ES: "Política de cookies",        EUS: "Cookie politika" },
 
   // Toast genérico usado en el Footer (iconos sociales, etc.)
