@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-/* ==== Banderas (inline) ==== */
+/* ==== Banderas en SVG (16x12) ==== */
 function FlagEUS() {
-  // Ikurriña mini en SVG
   return (
     <svg viewBox="0 0 16 12" width="16" height="12" aria-hidden="true">
       <rect width="16" height="12" fill="#D52B1E" rx="2" />
@@ -17,15 +16,35 @@ function FlagEUS() {
     </svg>
   );
 }
-const FlagES = () => <span role="img" aria-label="Spain" className="text-base">🇪🇸</span>;
-const FlagUS = () => <span role="img" aria-label="United States" className="text-base">🇺🇸</span>;
+function FlagES() {
+  // Simplificación: franjas roja-amarilla-roja
+  return (
+    <svg viewBox="0 0 16 12" width="16" height="12" aria-hidden="true">
+      <rect width="16" height="12" fill="#AA151B" rx="2" />
+      <rect x="0" y="3" width="16" height="6" fill="#F1BF00" />
+    </svg>
+  );
+}
+function FlagUS() {
+  // Simplificación: 13 franjas + canton azul (sin estrellas detalladas)
+  return (
+    <svg viewBox="0 0 16 12" width="16" height="12" aria-hidden="true">
+      <rect width="16" height="12" fill="#B22234" rx="2" />
+      {/* Franjas blancas */}
+      {[1,3,5,7,9,11].map((y)=>(
+        <rect key={y} x="0" y={y} width="16" height="1" fill="#fff" />
+      ))}
+      {/* Canton */}
+      <rect x="0" y="0" width="7" height="7" fill="#3C3B6E" rx="1" />
+    </svg>
+  );
+}
 
 export default function Footer() {
-  const { t, language, setLanguage } = useTranslation(); // asumo que tu hook expone language y setLanguage
+  const { t, language, setLanguage } = useTranslation();
   const { toast } = useToast();
   const tr = (key, fallback) => t(key) || fallback;
 
-  // Estado del menú del selector
   const [openLang, setOpenLang] = useState(false);
   const langBtnRef = useRef(null);
 
@@ -64,7 +83,6 @@ export default function Footer() {
     setOpenLang(false);
   };
 
-  // Cierra el desplegable al perder foco (con pequeño retardo para permitir click)
   const handleBlur = () => setTimeout(() => setOpenLang(false), 120);
 
   const LangItem = ({ active, onClick, children }) => (
@@ -131,7 +149,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + Selector Idioma (inline) + Planak */}
+          {/* Columna 3: Contacto + Selector Idioma + Planak */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnContactTitle", "Contacto y Comunidad")}
@@ -178,7 +196,7 @@ export default function Footer() {
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
 
-            {/* Botón pequeño con bandera activa + desplegable con ES/EN/EUS */}
+            {/* Botón con bandera activa + desplegable (EUS primero) */}
             <div className="relative mb-6">
               <button
                 ref={langBtnRef}
@@ -203,14 +221,15 @@ export default function Footer() {
                              shadow-xl ring-1 ring-black/5 p-2
                              dark:bg-slate-900 dark:border-slate-700"
                 >
+                  {/* EUS primero */}
+                  <LangItem active={language==="EUS"} onClick={() => chooseLang("EUS")}>
+                    <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
+                  </LangItem>
                   <LangItem active={language==="ES"} onClick={() => chooseLang("ES")}>
                     <FlagES /> <span className="ml-2 text-[13px]">ES</span>
                   </LangItem>
                   <LangItem active={language==="EN"} onClick={() => chooseLang("EN")}>
                     <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
-                  </LangItem>
-                  <LangItem active={language==="EUS"} onClick={() => chooseLang("EUS")}>
-                    <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
                   </LangItem>
                 </div>
               )}
