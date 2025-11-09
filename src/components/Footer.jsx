@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
+/** Ikurriña (Basque flag) en SVG mini (16x12) */
+function FlagEUS({ className = "" }) {
+  return (
+    <svg viewBox="0 0 16 12" width="16" height="12" className={className} aria-hidden="true">
+      {/* Rojo de fondo */}
+      <rect width="16" height="12" fill="#D52B1E" rx="2" />
+      {/* Aspa verde */}
+      <path d="M0 0 L16 12 M16 0 L0 12" stroke="#007A3D" strokeWidth="3" opacity="0.95" />
+      {/* Cruz blanca */}
+      <rect x="6.5" y="0" width="3" height="12" fill="#FFFFFF" />
+      <rect x="0" y="4.5" width="16" height="3" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
 export default function Footer() {
   const { t, language, setLanguage } = useTranslation();
   const { toast } = useToast();
   const tr = (key, fallback) => t(key) || fallback;
+
+  const [openLang, setOpenLang] = useState(false);
+  const langBtnRef = useRef(null);
 
   const aboutItems = [
     { id: "what-is",     titleKey: "eusFooterAboutTitle1",   contentKey: "eusFooterAboutContent1" },
@@ -34,14 +52,19 @@ export default function Footer() {
     });
   };
 
-  const setLang = (code) => setLanguage(code);
+  const currentIcon = () => {
+    if (language === "ES") return <span className="text-base" aria-label="España" role="img">🇪🇸</span>;
+    if (language === "EN") return <span className="text-base" aria-label="United States" role="img">🇺🇸</span>;
+    return <FlagEUS />;
+  };
 
-  const activeBtn =
-    "ring-2 ring-blue-500 border-blue-400 bg-blue-50/60 dark:bg-slate-800/60";
-  const baseBtn =
-    "inline-flex items-center justify-center h-9 min-w-9 px-2 rounded-lg border text-sm " +
-    "border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 " +
-    "hover:bg-slate-50 dark:hover:bg-slate-800 transition";
+  const choose = (code) => {
+    setLanguage(code);
+    setOpenLang(false);
+  };
+
+  // Cerrar al hacer blur (pequeño retardo para permitir el click)
+  const handleBlur = () => setTimeout(() => setOpenLang(false), 120);
 
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
@@ -94,7 +117,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + Idioma (mini) + Planes */}
+          {/* Columna 3: Contacto + Idioma (botón con desplegable) + Planes */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnContactTitle", "Kontaktua eta Komunitatea")}
@@ -128,39 +151,55 @@ export default function Footer() {
             <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
-            <div className="flex items-center gap-2 mb-6">
-              {/* EUS */}
+
+            {/* Botón pequeño que muestra SOLO el idioma activo */}
+            <div className="relative mb-6">
               <button
+                ref={langBtnRef}
+                onClick={() => setOpenLang(v => !v)}
+                onBlur={handleBlur}
                 type="button"
-                onClick={() => setLang("EUS")}
-                className={`${baseBtn} ${language === "EUS" ? activeBtn : ""}`}
-                aria-label="Euskara"
-                title="Euskara"
+                className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                aria-haspopup="menu"
+                aria-expanded={openLang}
+                aria-label="Cambiar idioma"
+                title={tr("eusFooterLanguageLabel", "Idioma")}
               >
-                <span className="text-[11px] font-semibold tracking-wide">EUS</span>
+                {currentIcon()}
               </button>
 
-              {/* ES (España) */}
-              <button
-                type="button"
-                onClick={() => setLang("ES")}
-                className={`${baseBtn} ${language === "ES" ? activeBtn : ""}`}
-                aria-label="Español"
-                title="Español"
-              >
-                <span role="img" aria-label="Bandera de España" className="text-base">🇪🇸</span>
-              </button>
-
-              {/* EN (USA) */}
-              <button
-                type="button"
-                onClick={() => setLang("EN")}
-                className={`${baseBtn} ${language === "EN" ? activeBtn : ""}`}
-                aria-label="English (US)"
-                title="English (US)"
-              >
-                <span role="img" aria-label="United States Flag" className="text-base">🇺🇸</span>
-              </button>
+              {/* Desplegable con las 3 opciones */}
+              {openLang && (
+                <div
+                  role="menu"
+                  className="absolute z-20 mt-2 w-36 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg p-2"
+                >
+                  <button
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => choose("EUS")}
+                    className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${language==="EUS" ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+                  >
+                    <FlagEUS />
+                    <span>Euskara</span>
+                  </button>
+                  <button
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => choose("ES")}
+                    className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${language==="ES" ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+                  >
+                    <span className="text-base" role="img" aria-label="España">🇪🇸</span>
+                    <span>Español</span>
+                  </button>
+                  <button
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => choose("EN")}
+                    className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${language==="EN" ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+                  >
+                    <span className="text-base" role="img" aria-label="United States">🇺🇸</span>
+                    <span>English (US)</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Botón Planes / Planak */}
