@@ -35,6 +35,15 @@ function FlagUS() {
     </svg>
   );
 }
+function FlagFR() {
+  return (
+    <svg viewBox="0 0 16 12" width="24" height="18" aria-hidden="true">
+      <rect width="16" height="12" fill="#ED2939" rx="2" />
+      <rect x="0" y="0" width="10.66" height="12" fill="#fff" rx="2" />
+      <rect x="0" y="0" width="5.33" height="12" fill="#002395" rx="2" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   const { t, language, setLanguage } = useTranslation();
@@ -47,6 +56,7 @@ export default function Footer() {
   const CurrentFlag = () => {
     if (language === "ES") return <FlagES />;
     if (language === "EN") return <FlagUS />;
+    if (language === "FR") return <FlagFR />;
     return <FlagEUS />; // EUS por defecto
   };
   const chooseLang = (code) => {
@@ -68,19 +78,20 @@ export default function Footer() {
   );
 
   const aboutItems = [
-    { id: "what-is",       titleKey: "eusFooterAboutTitle1", contentKey: "eusFooterAboutContent1" }, // ¿Qué es Euskalia?
-    { id: "how-works",     titleKey: "eusFooterAboutTitle2", contentKey: "eusFooterAboutContent2" }, // ¿Cómo funciona?
-    { id: "translator",    titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" }, // Traductor
-    { id: "create-summary",titleKey: "eusFooterAboutTitle4", contentKey: "eusFooterAboutContent4" }, // Crear resumen
-    { id: "plans",         titleKey: "eusFooterAboutTitle5", contentKey: "eusFooterAboutContent5" }, // ¿Gratis o premium?
-    { id: "languages",     titleKey: "eusFooterAboutTitle6", contentKey: "eusFooterAboutContent6" }, // Idiomas admitidos
+    { id: "what-is",        titleKey: "eusFooterAboutTitle1", contentKey: "eusFooterAboutContent1" },
+    { id: "how-works",      titleKey: "eusFooterAboutTitle2", contentKey: "eusFooterAboutContent2" },
+    { id: "translator",     titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" },
+    { id: "create-summary", titleKey: "eusFooterAboutTitle4", contentKey: "eusFooterAboutContent4" },
+    { id: "plans",          titleKey: "eusFooterAboutTitle5", contentKey: "eusFooterAboutContent5" },
+    { id: "languages",      titleKey: "eusFooterAboutTitle6", contentKey: "eusFooterAboutContent6" },
   ];
 
   const legalItems = [
     { titleKey: "eusFooterLegalTitle1", path: "/aviso-legal" },
     { titleKey: "eusFooterLegalTitle2", path: "/politica-de-privacidad" },
     { titleKey: "eusFooterLegalTitle3", path: "/terminos-condiciones" },
-    { titleKey: "eusFooterLegalTitle4", path: "/synthetic-voice-use" },
+    // 🔧 actualizado para la nueva página:
+    { titleKey: "eusFooterLegalTitle4", path: "/uso-de-ia" },
     { titleKey: "eusFooterLegalTitle5", path: "/cookies" },
   ];
 
@@ -179,7 +190,7 @@ export default function Footer() {
               {tr("eusFooterLanguageLabel", "Idioma")}
             </div>
 
-            {/* Botón con bandera activa + desplegable (EUS primero) */}
+            {/* Botón con bandera activa + desplegable */}
             <div className="relative mb-6">
               <button
                 ref={langBtnRef}
@@ -204,7 +215,6 @@ export default function Footer() {
                              shadow-xl ring-1 ring-black/5 p-2
                              dark:bg-slate-900 dark:border-slate-700"
                 >
-                  {/* EUS primero */}
                   <LangItem active={language==="EUS"} onClick={() => chooseLang("EUS")}>
                     <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
                   </LangItem>
@@ -213,6 +223,9 @@ export default function Footer() {
                   </LangItem>
                   <LangItem active={language==="EN"} onClick={() => chooseLang("EN")}>
                     <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
+                  </LangItem>
+                  <LangItem active={language==="FR"} onClick={() => chooseLang("FR")}>
+                    <FlagFR /> <span className="ml-2 text-[13px]">FR</span>
                   </LangItem>
                 </div>
               )}
