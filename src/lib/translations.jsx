@@ -241,30 +241,41 @@ export const translations = {
   eusFooterContactEmailValue:  { ES: "contacto@euskalia.ai",      EUS: "contacto@euskalia.ai" },
   eusFooterLanguageLabel:      { ES: "Idioma",                    EUS: "Hizkuntza" },
 
-  eusFooterAboutTitle1:   { ES: "¿Qué es Euskalia?", EUS: "Zer da Euskalia?" },
+  /* ==== SOBRE EUSKALIA – VERSIÓN DEFINITIVA (6) ==== */
+  eusFooterAboutTitle1: { ES: "¿Qué es Euskalia?", EUS: "Zer da Euskalia?" },
   eusFooterAboutContent1: {
-    ES:  "Traductor y resumidor inteligente enfocado en Euskera ↔ Español.\nRápido, claro y pensado para uso diario.",
-    EUS: "Euskara ↔ Gaztelania itzultzaile eta laburtzaile adimenduna.\nAzkarra, argia eta eguneroko erabilerarako pentsatua."
+    ES:  "Euskalia es una plataforma que traduce y resume textos entre euskera y español con IA. Su objetivo es facilitar la comprensión y la comunicación diaria.",
+    EUS: "Euskalia euskararen eta gaztelaniaren arteko testuak itzuli eta laburbiltzen dituen plataforma da, AA erabiliz. Helburua da eguneroko ulermena eta komunikazioa erraztea."
   },
-  eusFooterAboutTitle2:   { ES: "¿Cómo funciona?",   EUS: "Nola dabil?" },
+
+  eusFooterAboutTitle2: { ES: "¿Cómo funciona?", EUS: "Nola funtzionatzen du?" },
   eusFooterAboutContent2: {
-    ES:  "Pega texto, sube documento o indica una URL.\nLa IA traduce o resume y te devuelve el resultado limpio.",
-    EUS: "Testua itsatsi, dokumentua igo edo URL bat eman.\nIAk itzuli edo laburtu, eta emaitza garbia ematen dizu."
+    ES:  "Pega un texto, sube un documento o indica una URL. La IA procesa el contenido y genera una traducción o un resumen claro en segundos.",
+    EUS: "Testua itsatsi, dokumentua igo edo URL bat eman. AAk edukia prozesatu eta segundo gutxitan itzulpena edo laburpen argia sortzen du."
   },
-  eusFooterAboutTitle3:   { ES: "Escucha tu contenido", EUS: "Entzun edukia" },
+
+  eusFooterAboutTitle3: { ES: "Traductor", EUS: "Itzultzailea" },
   eusFooterAboutContent3: {
-    ES:  "Convierte el resultado en audio para revisarlo mientras haces otras cosas.",
-    EUS: "Emaitza audio bihurtu, beste gauzak egiten dituzun bitartean berrikusteko."
+    ES:  "Convierte textos entre euskera y castellano manteniendo el sentido y la naturalidad del idioma.",
+    EUS: "Testuak euskara eta gaztelaniaren artean bihurtzen ditu, esanahia eta hizkuntzaren naturaltasuna mantenduz."
   },
-  eusFooterAboutTitle4:   { ES: "Crear texto", EUS: "Testua sortu" },
+
+  eusFooterAboutTitle4: { ES: "Crear resumen", EUS: "Laburpena sortu" },
   eusFooterAboutContent4: {
-    ES:  "Genera textos cortos en el idioma elegido con indicaciones simples.",
-    EUS: "Aukeratutako hizkuntzan testu laburrak sortu, argibide sinpleekin."
+    ES:  "Resume textos largos en puntos clave y párrafos breves para leer rápido sin perder lo importante.",
+    EUS: "Testu luzeak puntu garrantzitsuetan eta paragrafo laburretan laburbiltzen ditu, garrantzitsuena galdu gabe azkar irakurtzeko."
   },
-  eusFooterAboutTitle5:   { ES: "Crear resumen", EUS: "Laburpena sortu" },
+
+  eusFooterAboutTitle5: { ES: "¿Euskalia es gratis o tiene planes premium?", EUS: "Euskalia doakoa al da edo premium planak ditu?" },
   eusFooterAboutContent5: {
-    ES:  "Obtén puntos clave, bullets y un resumen claro en segundos.",
-    EUS: "Puntu garrantzitsuak, bulet-ak eta laburpen argia segundo gutxitan."
+    ES:  "Uso gratis con límites diarios. Los planes premium amplían caracteres, velocidad y funciones avanzadas.",
+    EUS: "Doako erabilera eguneroko muga batzuekin. Premium planek karaktere kopurua, abiadura eta funtzio aurreratuak zabaltzen dituzte."
+  },
+
+  eusFooterAboutTitle6: { ES: "¿Qué idiomas admite Euskalia?", EUS: "Zein hizkuntza onartzen ditu Euskaliak?" },
+  eusFooterAboutContent6: {
+    ES:  "Ahora: euskera y castellano. Próximamente: inglés y francés.",
+    EUS: "Gaur egun: euskara eta gaztelania. Laster: ingelesa eta frantsesa."
   },
 
   eusFooterLegalTitle1: { ES: "Aviso legal",                EUS: "Lege-oharra" },
@@ -285,7 +296,7 @@ export const translations = {
 };
 
 /* ====== i18n runtime ====== */
-export const SUPPORTED_LANGS = ["ES", "EUS"];
+export const SUPPORTED_LANGS = ["ES", "EUS"]; // Si en el selector usas "EN", el sistema hace fallback a ES automáticamente.
 export const LanguageContext = React.createContext(null);
 
 export function LanguageProvider({ children, defaultLang = "ES" }) {
