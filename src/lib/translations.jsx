@@ -244,13 +244,13 @@ export const translations = {
   /* ==== SOBRE EUSKALIA – VERSIÓN DEFINITIVA (6) ==== */
   eusFooterAboutTitle1: { ES: "¿Qué es Euskalia?", EUS: "Zer da Euskalia?" },
   eusFooterAboutContent1: {
-    ES:  "Euskalia es una plataforma que traduce y resume textos entre euskera y español con IA. Su objetivo es facilitar la comprensión y la comunicación diaria.",
+    ES:  "Euskalia es una plataforma creada para que el euskera esté presente en la vida digital de todos. Con ayuda de la inteligencia artificial, permite traducir y resumir textos entre euskera, castellano e inglés de forma natural, rápida y precisa. Su misión es facilitar la comprensión y el uso cotidiano del euskera, tanto para quienes lo dominan como para quienes lo están aprendiendo o necesitan entenderlo mejor.",
     EUS: "Euskalia euskararen eta gaztelaniaren arteko testuak itzuli eta laburbiltzen dituen plataforma da, AA erabiliz. Helburua da eguneroko ulermena eta komunikazioa erraztea."
   },
 
   eusFooterAboutTitle2: { ES: "¿Cómo funciona?", EUS: "Nola funtzionatzen du?" },
   eusFooterAboutContent2: {
-    ES:  "Pega un texto, sube un documento o indica una URL. La IA procesa el contenido y genera una traducción o un resumen claro en segundos.",
+    ES:  "Solo tienes que pegar un texto, subir un documento o indicar una URL. La IA analiza el contenido y genera una traducción o resumen claro en segundos, cuidando el sentido y el estilo original. No hace falta registrarse: todo es gratis, directo y sin complicaciones.",
     EUS: "Testua itsatsi, dokumentua igo edo URL bat eman. AAk edukia prozesatu eta segundo gutxitan itzulpena edo laburpen argia sortzen du."
   },
 
@@ -266,9 +266,9 @@ export const translations = {
     EUS: "Testu luzeak puntu garrantzitsuetan eta paragrafo laburretan laburbiltzen ditu, garrantzitsuena galdu gabe azkar irakurtzeko."
   },
 
-  eusFooterAboutTitle5: { ES: "¿Euskalia es gratis o tiene planes premium?", EUS: "Euskalia doakoa al da edo premium planak ditu?" },
+  eusFooterAboutTitle5: { ES: "Planes", EUS: "Euskalia doakoa al da edo premium planak ditu?" },
   eusFooterAboutContent5: {
-    ES:  "Uso gratis con límites diarios. Los planes premium amplían caracteres, velocidad y funciones avanzadas.",
+    ES:  "La versión gratuita ofrece lo esencial: traducir y resumir textos de forma rápida y sencilla. El plan de pago, además de eliminar los anuncios, permitirá disfrutar de menos limitaciones y acceder a una cuenta personal de Euskalia, donde podrás guardar tus textos, resúmenes y traducciones en una biblioteca privada para consultarlos cuando quieras.",
     EUS: "Doako erabilera eguneroko muga batzuekin. Premium planek karaktere kopurua, abiadura eta funtzio aurreratuak zabaltzen dituzte."
   },
 
