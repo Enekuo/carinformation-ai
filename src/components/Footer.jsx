@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
-import { Instagram, Twitter, Linkedin, Mail, Sparkles, Globe } from "lucide-react";
+import { Instagram, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function Footer() {
@@ -34,9 +34,14 @@ export default function Footer() {
     });
   };
 
-  const toggleLanguage = () => {
-    setLanguage(language === "EUS" ? "ES" : "EUS");
-  };
+  const setLang = (code) => setLanguage(code);
+
+  const activeBtn =
+    "ring-2 ring-blue-500 border-blue-400 bg-blue-50/60 dark:bg-slate-800/60";
+  const baseBtn =
+    "inline-flex items-center justify-center h-9 min-w-9 px-2 rounded-lg border text-sm " +
+    "border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 " +
+    "hover:bg-slate-50 dark:hover:bg-slate-800 transition";
 
   return (
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
@@ -89,7 +94,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 3: Contacto + idioma + Planak */}
+          {/* Columna 3: Contacto + Idioma (mini) + Planes */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnContactTitle", "Kontaktua eta Komunitatea")}
@@ -104,51 +109,65 @@ export default function Footer() {
                 {tr("eusFooterContactEmailValue", "contacto@euskalia.ai")}
               </a>
               <div className="flex space-x-3">
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
-                  aria-label="Instagram"
-                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
-                >
+                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Instagram"
+                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                   <Instagram size={20} />
                 </a>
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
-                  aria-label="Twitter"
-                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
-                >
+                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Twitter"
+                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                   <Twitter size={20} />
                 </a>
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
-                  aria-label="LinkedIn"
-                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
-                >
+                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="LinkedIn"
+                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                   <Linkedin size={20} />
                 </a>
               </div>
             </div>
 
-            {/* Botón de idioma pequeño con icono + letras */}
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className="inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition mb-4"
-              aria-label={language === "EUS" ? "Aldatu gaztelerara" : "Cambiar a euskera"}
-              title={language === "EUS" ? "Euskara ▸ Español" : "Español ▸ Euskara"}
-            >
-              <Globe size={16} />
-              <span className="text-xs tracking-wide">{language === "EUS" ? "EUS" : "ES"}</span>
-            </button>
+            {/* === Idioma === */}
+            <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+              {tr("eusFooterLanguageLabel", "Idioma")}
+            </div>
+            <div className="flex items-center gap-2 mb-6">
+              {/* EUS */}
+              <button
+                type="button"
+                onClick={() => setLang("EUS")}
+                className={`${baseBtn} ${language === "EUS" ? activeBtn : ""}`}
+                aria-label="Euskara"
+                title="Euskara"
+              >
+                <span className="text-[11px] font-semibold tracking-wide">EUS</span>
+              </button>
 
-            {/* Espacio y botón Planak azul */}
-            <div className="mt-4" />
+              {/* ES (España) */}
+              <button
+                type="button"
+                onClick={() => setLang("ES")}
+                className={`${baseBtn} ${language === "ES" ? activeBtn : ""}`}
+                aria-label="Español"
+                title="Español"
+              >
+                <span role="img" aria-label="Bandera de España" className="text-base">🇪🇸</span>
+              </button>
+
+              {/* EN (USA) */}
+              <button
+                type="button"
+                onClick={() => setLang("EN")}
+                className={`${baseBtn} ${language === "EN" ? activeBtn : ""}`}
+                aria-label="English (US)"
+                title="English (US)"
+              >
+                <span role="img" aria-label="United States Flag" className="text-base">🇺🇸</span>
+              </button>
+            </div>
+
+            {/* Botón Planes / Planak */}
             <Button asChild className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
               <Link to="/pricing">
                 <Sparkles size={16} className="mr-2" />
-                {tr("eusFooterPlansButton", "Planak")}
+                {tr("eusFooterPlansButton", language === "EUS" ? "Planak" : "Planes")}
               </Link>
             </Button>
           </div>
@@ -159,12 +178,18 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             <div className="hidden md:block" />
             <div className="text-center">
-              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Eskubide guztiak erreserbatuta")}
+              © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", language === "EUS" ? "Eskubide guztiak erreserbatuta" : "Todos los derechos reservados")}
             </div>
             <div className="flex justify-end gap-4">
-              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookieak")}</Link>
-              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Lege-oharra")}</Link>
-              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Pribatutasun politika")}</Link>
+              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterCookies", language === "EUS" ? "Cookieak" : "Cookies")}
+              </Link>
+              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterLegalTitle1", language === "EUS" ? "Lege-oharra" : "Aviso legal")}
+              </Link>
+              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterLegalTitle2", language === "EUS" ? "Pribatutasun politika" : "Política de privacidad")}
+              </Link>
             </div>
           </div>
         </div>
