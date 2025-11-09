@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 
 export default function CtaSection() {
@@ -12,6 +13,7 @@ export default function CtaSection() {
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
       "
       style={{ backgroundImage: "url('/cta-background.png')" }}
+      aria-labelledby="cta-title"
     >
       {/* Contenido alineado a la izquierda */}
       <div className="relative z-10 w-full">
@@ -23,35 +25,45 @@ export default function CtaSection() {
           "
         >
           <h2
+            id="cta-title"
             className="
               text-white font-extrabold leading-tight
               text-[36px] sm:text-[44px] md:text-[56px] lg:text-[64px]
             "
           >
-            {tr("cta.title", "Empieza ahora a crear y escuchar tu contenido con IA")}
+            {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </h2>
 
           <p className="text-white/90 text-xl sm:text-2xl md:text-[26px]">
             {tr(
               "cta.subtitle",
-              "No necesitas cuenta. Gratis, rápido y sin complicaciones."
+              "Guarda tus textos, elimina los anuncios y disfruta sin límites."
             )}
           </p>
 
           <div className="pt-2">
-            <a
-              href="/free-trial"
+            <Link
+              to="/pricing"
               className="
-                inline-flex items-center gap-2
-                bg-green-500 hover:bg-green-600 text-white
-                font-semibold text-2xl px-12 md:px-14 py-5 md:py-6
-                rounded-2xl shadow-md hover:shadow-xl transition-all duration-300
+                inline-flex items-center justify-center
+                bg-emerald-500 hover:bg-emerald-600
+                text-white font-semibold text-2xl
+                px-12 md:px-14 py-5 md:py-6 rounded-2xl
+                shadow-[0_10px_28px_rgba(16,185,129,0.35)]
+                hover:shadow-[0_14px_34px_rgba(16,185,129,0.45)]
+                transition-all duration-300
+                hover:-translate-y-[2px] active:translate-y-[0px]
+                focus:outline-none focus:ring-4 focus:ring-emerald-300/40
               "
-              aria-label={tr("cta.button", "Prueba Gratis")}
+              aria-label={tr("cta.button", "Crear cuenta")}
             >
-              <span role="img" aria-hidden>🚀</span>
-              {tr("cta.button", "Prueba Gratis")}
-            </a>
+              {tr("cta.button", "Crear cuenta")}
+            </Link>
+
+            {/* microcopy opcional */}
+            {/* <p className="mt-3 text-white/70 text-sm md:text-base">
+              {tr("cta.microcopy", "Empieza gratis. Cambia a cuenta cuando quieras.")}
+            </p> */}
           </div>
         </div>
       </div>
