@@ -272,7 +272,7 @@ export const translations = {
     EUS: "Bertsio doakoak funtzio nagusiak eskaintzen ditu: testuak azkar eta erraz itzuli eta laburtzea. Ordainpeko planak, iragarkiak ezabatzeaz gain, murrizketa gutxiago izango ditu eta Euskaliako kontu pertsonal batera sartzeko aukera emango du, non zure testuak, laburpenak eta itzulpenak gordeko dituzun liburutegi pribatu batean, nahi duzunean berrikusteko."
   },
 
-  eusFooterAboutTitle6: { ES: "¿Qué idiomas admite Euskalia?", EUS: "Zein hizkuntza onartzen ditu Euskaliak?" },
+  eusFooterAboutTitle6: { ES: "Idiomas", EUS: "Hizkuntzak" },
   eusFooterAboutContent6: {
     ES:  "Euskalia funciona actualmente con cuatro idiomas principales: Euskera (EU), Castellano (ES), Inglés (GB) y Francés (FR). Puedes traducir o resumir en cualquiera de las combinaciones entre ellos. Aunque el enfoque principal es el uso y la comprensión del euskera, Euskalia está pensada para que el idioma conviva con naturalidad junto al español, el inglés y el francés.",
     EUS: "Euskalia gaur egun lau hizkuntza nagusirekin dabil: euskara (EU), gaztelania (ES), ingelesa (GB) eta frantsesa (FR). Itzulpenak eta laburpenak haien arteko edozein konbinaziotan egin daitezke. Nahiz eta helburu nagusia euskara erabiltzea eta ulertzea sustatzea izan, Euskalia pentsatuta dago euskara espainierarekin, ingelesarekin eta frantsesarekin modu naturalean bizikidetzan aritzeko."
