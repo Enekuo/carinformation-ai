@@ -38,24 +38,24 @@ export default function Footer() {
     <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto w-full px-6 pt-16 md:pt-20 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-          {/* Columna 1: Sobre Euskalia (estética “cuadro”) */}
+          {/* Columna 1: Sobre Euskalia — estética “lista plana” */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
               {tr("eusFooterColumnAboutTitle", "Sobre Euskalia")}
             </h3>
 
-            {/* Caja con borde, fondo claro, separadores y +/– */}
-            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 divide-y divide-slate-200 dark:divide-slate-700 shadow-sm overflow-hidden">
+            {/* Lista simple: sin caja, separadores finos */}
+            <div className="border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800">
               {aboutItems.map((item, idx) => (
                 <details key={item.id} className="group">
-                  <summary className="cursor-pointer list-none flex items-center justify-between px-4 py-4 text-slate-700 dark:text-slate-300 hover:bg-white/70 dark:hover:bg-slate-800/60 transition">
+                  <summary className="cursor-pointer list-none flex items-center justify-between py-3 md:py-3.5 text-slate-700 dark:text-slate-300">
                     <span className="text-sm md:text-[15px]">{tr(item.titleKey, "")}</span>
                     <span className="ml-3 text-slate-400 dark:text-slate-500 text-xl leading-none select-none">
                       <span className="group-open:hidden">＋</span>
                       <span className="hidden group-open:inline">−</span>
                     </span>
                   </summary>
-                  <div className="px-4 pb-4 text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 bg-white/60 dark:bg-transparent">
+                  <div className="pt-1 pb-4 text-[13px] leading-relaxed text-slate-600 dark:text-slate-400">
                     {tr(item.contentKey, "").split("\n").map((line, i) => (
                       <React.Fragment key={`${idx}-${i}`}>
                         {line}
@@ -138,7 +138,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Franja inferior: copyright centrado + enlaces a la derecha (altura más pequeña) */}
+        {/* Franja inferior: copyright centrado + enlaces a la derecha */}
         <div className="mt-8 py-2 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
           <div className="grid grid-cols-1 md:grid-cols-3 items-center">
             <div className="hidden md:block" />
@@ -162,4 +162,3 @@ export default function Footer() {
     </footer>
   );
 }
-
