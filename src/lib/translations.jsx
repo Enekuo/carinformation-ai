@@ -304,7 +304,7 @@ authPage: {
   pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
   pageDescription:        { ES: "Accede a tu cuenta para seguir usando Euskalia.", EUS: "Sartu zure kontura Euskalia erabiltzen jarraitzeko." },
 
-  welcome:                { ES: "Bienvenido de nuevo",                  EUS: "Ongi etorri berriro" },
+  welcome:                { ES: "BIENVENIDO",                  EUS: "ONGI ETORRI" },
   continueWithGoogle:     { ES: "Continuar con Google",                 EUS: "Jarraitu Google-rekin" },
   or:                     { ES: "o",                                    EUS: "edo" },
 
