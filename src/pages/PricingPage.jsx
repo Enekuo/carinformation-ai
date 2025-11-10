@@ -35,7 +35,7 @@ export default function PricingPage() {
     },
     {
       key: "basic",
-      highlighted: true, // para el badge “Más popular”
+      highlighted: true,
       titleKey: "pricing.plan.basic",
       price: "6,99€",
       perMonthKey: "pricing.perMonth",
