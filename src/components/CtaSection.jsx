@@ -1,45 +1,105 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
+
+/**
+ * CtaSection robusta: anima un halo grande (radial) que sube y baja usando transform inline
+ * - No depende de @keyframes ni de clases construidas en Tailwind (evita CSP / purge issues)
+ * - Tiene z-index controlado: halo zIndex=1, contenido zIndex=2
+ * - Incluye flags de debugging para forzar visibilidad y comprobar que el componente se renderiza
+ *
+ * Si sigue sin verse:
+ * 1) Abre DevTools → Console: ¿hay errores? (pegar aquí)
+ * 2) Si ves el halo en color sólido cuando debug=true pero no en normal, probar aumentar size/opacity.
+ */
 
 export default function CtaSection() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
+  // Ref al elemento halo para manipular su transform
+  const haloRef = useRef(null);
+
+  // Duración del ciclo en ms
+  const DURATION = 9000;
+
+  // debug: si true fuerza visibilidad máxima y fondo de prueba
+  const debug = false;
+
+  useEffect(() => {
+    let rafId = null;
+    const start = performance.now();
+
+    function animate(now) {
+      const elapsed = (now - start) % DURATION;
+      // Oscilación suave (seno) entre +40% (abajo) y -10% (arriba)
+      const tNorm = elapsed / DURATION; // 0..1
+      const sin = Math.sin(tNorm * Math.PI * 2); // -1..1
+      // Map sin (-1..1) to translateY percent (40 -> -10)
+      const from = 40;
+      const to = -10;
+      const translateY = from + ((sin + 1) / 2) * (to - from); // smooth
+
+      if (haloRef.current) {
+        haloRef.current.style.transform = `translateX(-50%) translateY(${translateY}%)`;
+      }
+      rafId = requestAnimationFrame(animate);
+    }
+
+    rafId = requestAnimationFrame(animate);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
     <section
-      className="
+      aria-labelledby="cta-title"
+      className={`
         relative w-full bg-no-repeat bg-cover bg-center
-        bg-[#1e73ff]  /* fallback si falla la imagen */
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
         overflow-hidden
-      "
+        ${debug ? "bg-pink-600" : "bg-[#1e73ff]"} /* fallback visible color */
+      `}
       style={{ backgroundImage: "url('/cta-background.png')" }}
-      aria-labelledby="cta-title"
     >
-      {/* === HALO ANIMADO MUY VISIBLE (sube de abajo a arriba) === */}
+      {/* === HALO ANIMADO (JS-driven, inline styles) === */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1]" // por encima del fondo, por debajo del contenido
         aria-hidden
+        // halo container is above the background (z 1) but below content (z 2)
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 1,
+          overflow: "hidden",
+        }}
       >
         <div
-          className="absolute left-1/2 -translate-x-1/2 animate-[ctaRise_10s_ease-in-out_infinite]"
+          ref={haloRef}
+          // centered horizontally, positioned visually below (bottom negative)
           style={{
-            // tamaño del halo (muy grande para que se vea)
-            width: "1400px",
-            height: "1400px",
-            bottom: "-60%",
-            // halo radial fuerte y suave a la vez
+            position: "absolute",
+            left: "50%",
+            // translateX(-50%) will be aplicado por transform en useEffect también
+            transform: "translateX(-50%) translateY(40%)",
+            // TAMAÑO deliberadamente GRANDE para que se vea en cualquier pantalla
+            width: debug ? "1600px" : "1400px",
+            height: debug ? "1600px" : "1400px",
+            bottom: debug ? "-60%" : "-60%",
+            // radial gradient: fuerte en el centro y desvaneciendo
             background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 32%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0.0) 72%)",
-            filter: "blur(28px)",
-            opacity: 0.9,
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.36) 28%, rgba(255,255,255,0.14) 52%, rgba(255,255,255,0) 70%)",
+            filter: "blur(40px)",
+            opacity: debug ? 1 : 0.92,
+            // ensure it is rendered on GPU for smooth transforms
+            willChange: "transform, opacity",
           }}
         />
       </div>
 
-      {/* Contenido */}
-      <div className="relative z-[2] w-full">
+      {/* Contenido - zIndex superior */}
+      <div style={{ position: "relative", zIndex: 2 }} className="relative z-10 w-full">
         <div
           className="
             flex flex-col items-start text-left gap-6
@@ -64,6 +124,7 @@ export default function CtaSection() {
             )}
           </p>
 
+          {/* Botón blanco compacto */}
           <div className="pt-4">
             <Link
               to="/pricing"
@@ -81,7 +142,9 @@ export default function CtaSection() {
               "
               aria-label={tr("cta.button", "Hasi doain")}
             >
-              <span className="text-sm md:text-base" aria-hidden>🚀</span>
+              <span className="text-sm md:text-base" aria-hidden>
+                🚀
+              </span>
               <span>{tr("cta.button", "Hasi doain")}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,17 +161,6 @@ export default function CtaSection() {
           </div>
         </div>
       </div>
-
-      {/* Keyframes inline (no depende de Tailwind config) */}
-      <style>
-        {`
-          @keyframes ctaRise {
-            0%   { transform: translate(-50%, 30%); }
-            50%  { transform: translate(-50%, -10%); }
-            100% { transform: translate(-50%, 30%); }
-          }
-        `}
-      </style>
     </section>
   );
 }
