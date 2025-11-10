@@ -50,7 +50,7 @@ export default function CtaSection() {
                 bg-white hover:bg-white/90
                 text-blue-700 font-medium
                 text-base md:text-[17px]
-                px-6 md:px-7 py-3 md:py-3.5
+                px-6 md:px-7 py-2 md:py-2.5
                 rounded-[12px]
                 shadow-[0_6px_14px_rgba(0,0,0,0.08)]
                 transition-all duration-200
