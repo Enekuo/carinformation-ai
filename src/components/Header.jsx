@@ -1,3 +1,4 @@
+// src/components/Header.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -31,7 +32,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // ➜ Estados separados para cada dropdown (Herramientas / Recursos)
+  // Estados separados para cada dropdown
   const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false);
 
@@ -44,7 +45,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ✅ Forzar euskera en la primera carga
+  // Forzar euskera en primera carga
   useEffect(() => {
     try {
       if (typeof window !== "undefined" && !sessionStorage.getItem("lang-init")) {
@@ -63,14 +64,12 @@ export default function Header() {
   };
 
   // --- Contenidos de los menús ---
-
-  // ✅ HERRAMIENTAS: Traductor / Resumen (NUEVO en Herramientas)
   const tools = [
     {
       name: "Traductor",
       subtitle: "Euskera ↔ Español",
       icon: <Languages size={16} className="mr-2 text-slate-500" />,
-      path: "/", // ✅ Traductor enlazado a Hero (ruta principal)
+      path: "/",
     },
     {
       name: "Resumen",
@@ -103,7 +102,6 @@ export default function Header() {
     </div>
   );
 
-  // ✅ RECURSOS: Soporte / Chat de IA (RESTABLECIDO como estaba)
   const resources = [
     {
       name: t("resourcesMenu.support"),
@@ -167,8 +165,9 @@ export default function Header() {
             </span>
           </Link>
 
+          {/* NAV DESKTOP */}
           <nav className="hidden lg:flex items-center gap-1">
-            {/* ===== Herramientas (con Traductor/Resumen) ===== */}
+            {/* Herramientas */}
             <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
@@ -193,7 +192,7 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* ===== Recursos (restaurado: Soporte / Chat de IA) ===== */}
+            {/* Recursos */}
             <DropdownMenu open={isResourcesMenuOpen} onOpenChange={setIsResourcesMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
@@ -218,15 +217,18 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <button
-              onClick={handleFeatureClick}
+            {/* Precios / Prezioak */}
+            <Link
+              to="/pricing"
               className="text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
             >
               {t("header.pricing")}
-            </button>
+            </Link>
           </nav>
+          {/* <-- IMPORTANTE: aquí sí cerramos el </nav> */}
         </div>
 
+        {/* DERECHA (desktop) */}
         <div className="hidden lg:flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -236,7 +238,10 @@ export default function Header() {
                 <ChevronDown size={16} className="opacity-70" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40 bg-white rounded-lg shadow-lg border border-slate-200 mt-2">
+            <DropdownMenuContent
+              align="end"
+              className="w-40 bg-white rounded-lg shadow-lg border border-slate-200 mt-2"
+            >
               {languages.map((lang) => (
                 <DropdownMenuItem
                   key={lang.code}
@@ -263,6 +268,7 @@ export default function Header() {
           </motion.button>
         </div>
 
+        {/* HAMBURGER (mobile) */}
         <div className="lg:hidden">
           <button onClick={() => setIsMobileMenuOpen(true)} className="text-slate-800">
             <Menu size={24} />
@@ -270,7 +276,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ===== Mobile ===== */}
+      {/* ===== Mobile Drawer ===== */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -291,7 +297,7 @@ export default function Header() {
 
             <div className="p-4 flex flex-col h-[calc(100%-64px)]">
               <div className="flex flex-col gap-1">
-                {/* Herramientas (Traductor/Resumen) */}
+                {/* Herramientas */}
                 <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
                   {t("header.tools")}
                 </p>
@@ -303,7 +309,7 @@ export default function Header() {
                   <DropdownMenuSeparator />
                 </div>
 
-                {/* Recursos (Soporte / Chat de IA) */}
+                {/* Recursos */}
                 <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
                   {t("header.resources")}
                 </p>
@@ -311,12 +317,14 @@ export default function Header() {
                   <ResourcesDropdownContent inMobileMenu />
                 </div>
 
-                <button
-                  onClick={handleFeatureClick}
+                {/* Precios (móvil) */}
+                <Link
+                  to="/pricing"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full text-left text-base font-medium h-12 px-2 rounded-md hover:bg-slate-100 mt-2"
                 >
                   {t("header.pricing")}
-                </button>
+                </Link>
               </div>
 
               <div className="mt-auto flex flex-col gap-4">
