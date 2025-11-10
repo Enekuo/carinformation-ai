@@ -24,17 +24,19 @@ export default function CtaSection() {
             max-w-[980px]
           "
         >
+          {/* TITULAR: más pequeño */}
           <h2
             id="cta-title"
             className="
               text-white font-extrabold leading-tight
-              text-[36px] sm:text-[44px] md:text-[56px] lg:text-[64px]
+              text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px]
             "
           >
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </h2>
 
-          <p className="text-white/90 text-xl sm:text-2xl md:text-[26px]">
+          {/* SUBTÍTULO: más pequeño */}
+          <p className="text-white/90 text-base sm:text-lg md:text-xl">
             {tr(
               "cta.subtitle",
               "Guarda tus textos, elimina los anuncios y disfruta sin límites."
@@ -47,8 +49,8 @@ export default function CtaSection() {
               className="
                 inline-flex items-center justify-center
                 bg-emerald-500 hover:bg-emerald-600
-                text-white font-semibold text-2xl
-                px-12 md:px-14 py-5 md:py-6 rounded-2xl
+                text-white font-semibold text-lg md:text-xl
+                px-8 md:px-10 py-3.5 md:py-4 rounded-2xl
                 shadow-[0_10px_28px_rgba(16,185,129,0.35)]
                 hover:shadow-[0_14px_34px_rgba(16,185,129,0.45)]
                 transition-all duration-300
