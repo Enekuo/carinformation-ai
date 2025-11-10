@@ -10,25 +10,26 @@ export default function CtaSection() {
   const prefersReduced = useReducedMotion();
   const controls = useAnimation();
 
-  // Variantes
+  // Contenedor: controla el stagger
   const container = {
     hidden: {},
     show: {
       transition: {
-        staggerChildren: 0.18,
-        delayChildren: 0.12,
+        staggerChildren: 0.22,
+        delayChildren: 0.14,
       },
     },
   };
 
+  // Items: más desplazamiento y duración mayor
   const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 48 },
+    hidden: { opacity: 0, y: prefersReduced ? 0 : 96 },
     show: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.9,
-        ease: [0.16, 1, 0.3, 1], // easeOutQuint-like, más suave
+        duration: 1.25,                // más lento
+        ease: [0.2, 0.8, 0.16, 1],     // ease-out suave
       },
     },
   };
@@ -37,7 +38,7 @@ export default function CtaSection() {
     <section
       className="
         relative w-full bg-no-repeat bg-cover bg-center
-        bg-[#1e73ff]  /* fallback por si falla la imagen */
+        bg-[#1e73ff]
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
         overflow-hidden
       "
@@ -55,8 +56,8 @@ export default function CtaSection() {
           initial="hidden"
           animate={controls}
           whileInView="show"
-          viewport={{ once: false, amount: 0.35 }}
-          onViewportLeave={() => controls.set("hidden")} // se resetea al salir para re-animar al volver a entrar
+          viewport={{ once: false, amount: 0.25 }}   // re-animar al entrar
+          onViewportLeave={() => controls.set("hidden")}
         >
           <motion.h2
             id="cta-title"
