@@ -15,7 +15,6 @@ export default function CtaSection() {
       style={{ backgroundImage: "url('/cta-background.png')" }}
       aria-labelledby="cta-title"
     >
-      {/* Contenido alineado a la izquierda */}
       <div className="relative z-10 w-full">
         <div
           className="
@@ -24,7 +23,7 @@ export default function CtaSection() {
             max-w-[980px]
           "
         >
-          {/* TITULAR: más pequeño */}
+          {/* TITULAR */}
           <h2
             id="cta-title"
             className="
@@ -35,7 +34,7 @@ export default function CtaSection() {
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </h2>
 
-          {/* SUBTÍTULO: más pequeño */}
+          {/* SUBTÍTULO */}
           <p className="text-white/90 text-base sm:text-lg md:text-xl">
             {tr(
               "cta.subtitle",
@@ -43,29 +42,23 @@ export default function CtaSection() {
             )}
           </p>
 
+          {/* BOTÓN BLANCO */}
           <div className="pt-2">
             <Link
               to="/pricing"
               className="
-                inline-flex items-center justify-center
-                bg-emerald-500 hover:bg-emerald-600
-                text-white font-semibold text-lg md:text-xl
-                px-8 md:px-10 py-3.5 md:py-4 rounded-2xl
-                shadow-[0_10px_28px_rgba(16,185,129,0.35)]
-                hover:shadow-[0_14px_34px_rgba(16,185,129,0.45)]
+                inline-flex items-center justify-center gap-2
+                bg-white hover:bg-blue-50
+                text-blue-700 font-semibold text-lg md:text-xl
+                px-10 md:px-12 py-4 rounded-2xl
+                shadow-[0_8px_20px_rgba(255,255,255,0.25)]
+                hover:shadow-[0_10px_24px_rgba(255,255,255,0.35)]
                 transition-all duration-300
-                hover:-translate-y-[2px] active:translate-y-[0px]
-                focus:outline-none focus:ring-4 focus:ring-emerald-300/40
               "
-              aria-label={tr("cta.button", "Crear cuenta")}
+              aria-label={tr("cta.button", "Hasi doain")}
             >
-              {tr("cta.button", "Crear cuenta")}
+              {tr("cta.button", "Hasi doain")} →
             </Link>
-
-            {/* microcopy opcional */}
-            {/* <p className="mt-3 text-white/70 text-sm md:text-base">
-              {tr("cta.microcopy", "Empieza gratis. Cambia a cuenta cuando quieras.")}
-            </p> */}
           </div>
         </div>
       </div>
