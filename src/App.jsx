@@ -15,6 +15,7 @@ import PrivacyPolicyPage from "@/components/Legal/PrivacyPolicyPage";
 import TermsConditionsPage from "@/components/Legal/TermsConditionsPage";
 import CookiesPolicyPage from "@/components/Legal/CookiesPolicyPage";
 import UseAIPage from "@/components/Legal/UseAIPage";
+import PricingPage from "@/pages/PricingPage";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
                         <Route path="/terminos-condiciones" element={<TermsConditionsPage />} />
                         <Route path="/cookies" element={<CookiesPolicyPage />} />
                         <Route path="/uso-de-ia" element={<UseAIPage />} />
+                        <Route path="/pricing" element={<PricingPage />} />
                        
                     </Routes>
                 </main>
