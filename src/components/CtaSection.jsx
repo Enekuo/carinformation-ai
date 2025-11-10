@@ -10,7 +10,7 @@ export default function CtaSection() {
     <section
       className="
         relative w-full bg-no-repeat bg-cover bg-center
-        bg-[#1e73ff]  /* fallback */
+        bg-[#1e73ff]
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
       "
       style={{ backgroundImage: "url('/cta-background.png')" }}
@@ -41,32 +41,35 @@ export default function CtaSection() {
             )}
           </p>
 
-          {/* Botón blanco estilo referencia */}
-          <div className="pt-2">
+          {/* BOTÓN BLANCO (ajustes solicitados) */}
+          <div className="pt-4">{/* antes pt-2 */}
             <Link
               to="/pricing"
               className="
-                inline-flex items-center gap-2
+                group inline-flex items-center gap-2
                 bg-white hover:bg-white/90
                 text-blue-700 font-medium
                 text-base md:text-[17px]
                 px-6 md:px-7 py-2 md:py-2.5
                 rounded-[12px]
-                shadow-[0_6px_14px_rgba(0,0,0,0.08)]
+                shadow-[0_3px_8px_rgba(0,0,0,0.08)]
+                hover:shadow-[0_5px_12px_rgba(0,0,0,0.12)]
                 transition-all duration-200
                 focus:outline-none focus:ring-4 focus:ring-white/40
               "
               aria-label={tr("cta.button", "Hasi doain")}
             >
+              {/* icono más pequeño */}
+              <span className="text-sm md:text-base" aria-hidden>🚀</span>
               <span>{tr("cta.button", "Hasi doain")}</span>
-              {/* Flecha fina como en el ejemplo */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 md:h-4.5 md:w-4.5"
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
+                aria-hidden
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
