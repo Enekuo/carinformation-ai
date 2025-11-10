@@ -10,36 +10,36 @@ export default function CtaSection() {
     <section
       className="
         relative w-full bg-no-repeat bg-cover bg-center
-        bg-[#1e73ff]  /* Fallback por si falla la imagen */
+        bg-[#1e73ff]  /* fallback si falla la imagen */
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
         overflow-hidden
       "
       style={{ backgroundImage: "url('/cta-background.png')" }}
       aria-labelledby="cta-title"
     >
-      {/* Capa animada de glow que sube (más visible) */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* Banda 1 (principal) */}
+      {/* === HALO ANIMADO MUY VISIBLE (sube de abajo a arriba) === */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1]" // por encima del fondo, por debajo del contenido
+        aria-hidden
+      >
         <div
-          className="
-            absolute left-1/4 w-[160%] h-[240%]
-            bg-gradient-to-t from-white/0 via-white/30 to-white/0
-            blur-[96px] opacity-80 rise-anim
-          "
-        />
-        {/* Banda 2 (profundidad con delay) */}
-        <div
-          className="
-            absolute left-0 w-[140%] h-[220%]
-            bg-gradient-to-t from-white/0 via-white/20 to-white/0
-            blur-[72px] opacity-70 rise-anim
-          "
-          style={{ animationDelay: "1.2s" }}
+          className="absolute left-1/2 -translate-x-1/2 animate-[ctaRise_10s_ease-in-out_infinite]"
+          style={{
+            // tamaño del halo (muy grande para que se vea)
+            width: "1400px",
+            height: "1400px",
+            bottom: "-60%",
+            // halo radial fuerte y suave a la vez
+            background:
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 32%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0.0) 72%)",
+            filter: "blur(28px)",
+            opacity: 0.9,
+          }}
         />
       </div>
 
       {/* Contenido */}
-      <div className="relative z-10 w-full">
+      <div className="relative z-[2] w-full">
         <div
           className="
             flex flex-col items-start text-left gap-6
@@ -64,7 +64,6 @@ export default function CtaSection() {
             )}
           </p>
 
-          {/* Botón blanco compacto con animación en la flecha (igual que dejaste) */}
           <div className="pt-4">
             <Link
               to="/pricing"
@@ -100,16 +99,13 @@ export default function CtaSection() {
         </div>
       </div>
 
-      {/* Animación inline (independiente de Tailwind) */}
+      {/* Keyframes inline (no depende de Tailwind config) */}
       <style>
         {`
-          @keyframes rise {
-            0%   { transform: translateY(40%); }
-            50%  { transform: translateY(-10%); }
-            100% { transform: translateY(40%); }
-          }
-          .rise-anim {
-            animation: rise 9s ease-in-out infinite;
+          @keyframes ctaRise {
+            0%   { transform: translate(-50%, 30%); }
+            50%  { transform: translate(-50%, -10%); }
+            100% { transform: translate(-50%, 30%); }
           }
         `}
       </style>
