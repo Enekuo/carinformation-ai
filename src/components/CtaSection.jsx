@@ -17,28 +17,28 @@ export default function CtaSection() {
       style={{ backgroundImage: "url('/cta-background.png')" }}
       aria-labelledby="cta-title"
     >
-      {/* Capa animada de glow que sube (detrás del contenido) */}
+      {/* Capa animada de glow que sube (más visible) */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* Banda 1 */}
+        {/* Banda 1 (principal) */}
         <div
           className="
-            absolute left-1/3 w-[140%] h-[220%]
-            bg-gradient-to-t from-white/0 via-white/18 to-white/0
-            blur-3xl opacity-60 rise-anim
+            absolute left-1/4 w-[160%] h-[240%]
+            bg-gradient-to-t from-white/0 via-white/30 to-white/0
+            blur-[96px] opacity-80 rise-anim
           "
         />
-        {/* Banda 2 (delay para profundidad) */}
+        {/* Banda 2 (profundidad con delay) */}
         <div
           className="
-            absolute left-0 w-[120%] h-[200%]
-            bg-gradient-to-t from-white/0 via-white/12 to-white/0
-            blur-[64px] opacity-50 rise-anim
+            absolute left-0 w-[140%] h-[220%]
+            bg-gradient-to-t from-white/0 via-white/20 to-white/0
+            blur-[72px] opacity-70 rise-anim
           "
           style={{ animationDelay: "1.2s" }}
         />
       </div>
 
-      {/* Contenido alineado a la izquierda */}
+      {/* Contenido */}
       <div className="relative z-10 w-full">
         <div
           className="
@@ -64,7 +64,7 @@ export default function CtaSection() {
             )}
           </p>
 
-          {/* Botón blanco compacto con animación en la flecha */}
+          {/* Botón blanco compacto con animación en la flecha (igual que dejaste) */}
           <div className="pt-4">
             <Link
               to="/pricing"
@@ -100,13 +100,13 @@ export default function CtaSection() {
         </div>
       </div>
 
-      {/* Estilos de la animación (puedes moverlos a tu CSS global si prefieres) */}
+      {/* Animación inline (independiente de Tailwind) */}
       <style>
         {`
           @keyframes rise {
-            0%   { transform: translateY(35%); }
-            50%  { transform: translateY(-5%); }
-            100% { transform: translateY(35%); }
+            0%   { transform: translateY(40%); }
+            50%  { transform: translateY(-10%); }
+            100% { transform: translateY(40%); }
           }
           .rise-anim {
             animation: rise 9s ease-in-out infinite;
