@@ -10,26 +10,26 @@ export default function CtaSection() {
   const prefersReduced = useReducedMotion();
   const controls = useAnimation();
 
-  // Contenedor: controla el stagger
+  // Contenedor: controla el delay entre elementos
   const container = {
     hidden: {},
     show: {
       transition: {
-        staggerChildren: 0.22,
-        delayChildren: 0.14,
+        staggerChildren: 0.35,
+        delayChildren: 0.25,
       },
     },
   };
 
-  // Items: más desplazamiento y duración mayor
+  // Elementos individuales
   const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 96 },
+    hidden: { opacity: 0, y: prefersReduced ? 0 : 120 },
     show: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.25,                // más lento
-        ease: [0.2, 0.8, 0.16, 1],     // ease-out suave
+        duration: 2.2, // MUY LENTO
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
@@ -56,9 +56,10 @@ export default function CtaSection() {
           initial="hidden"
           animate={controls}
           whileInView="show"
-          viewport={{ once: false, amount: 0.25 }}   // re-animar al entrar
+          viewport={{ once: false, amount: 0.3 }}
           onViewportLeave={() => controls.set("hidden")}
         >
+          {/* Título */}
           <motion.h2
             id="cta-title"
             className="
@@ -70,6 +71,7 @@ export default function CtaSection() {
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </motion.h2>
 
+          {/* Subtítulo */}
           <motion.p
             className="text-white/90 text-base sm:text-lg md:text-xl"
             variants={item}
@@ -80,6 +82,7 @@ export default function CtaSection() {
             )}
           </motion.p>
 
+          {/* Botón */}
           <motion.div className="pt-4" variants={item}>
             <Link
               to="/pricing"
