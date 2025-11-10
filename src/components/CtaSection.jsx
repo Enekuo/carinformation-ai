@@ -1,32 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useAnimation, useReducedMotion } from "framer-motion";
 
 export default function CtaSection() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
-  const prefersReduced = useReducedMotion();
 
-  // Variantes de animación: contenedor (stagger) + items (subida)
+  const prefersReduced = useReducedMotion();
+  const controls = useAnimation();
+
+  // Variantes
   const container = {
     hidden: {},
     show: {
       transition: {
-        staggerChildren: 0.10,
-        delayChildren: 0.10,
+        staggerChildren: 0.18,
+        delayChildren: 0.12,
       },
     },
   };
 
   const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 28 },
+    hidden: { opacity: 0, y: prefersReduced ? 0 : 48 },
     show: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.55,
-        ease: [0.22, 1, 0.36, 1], // easeOutQuint-like
+        duration: 0.9,
+        ease: [0.16, 1, 0.3, 1], // easeOutQuint-like, más suave
       },
     },
   };
@@ -42,7 +44,6 @@ export default function CtaSection() {
       style={{ backgroundImage: "url('/cta-background.png')" }}
       aria-labelledby="cta-title"
     >
-      {/* Contenido alineado a la izquierda */}
       <div className="relative z-10 w-full">
         <motion.div
           className="
@@ -52,10 +53,11 @@ export default function CtaSection() {
           "
           variants={container}
           initial="hidden"
+          animate={controls}
           whileInView="show"
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={{ once: false, amount: 0.35 }}
+          onViewportLeave={() => controls.set("hidden")} // se resetea al salir para re-animar al volver a entrar
         >
-          {/* TÍTULO: entra de abajo hacia arriba */}
           <motion.h2
             id="cta-title"
             className="
@@ -67,7 +69,6 @@ export default function CtaSection() {
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </motion.h2>
 
-          {/* SUBTÍTULO: entra de abajo hacia arriba */}
           <motion.p
             className="text-white/90 text-base sm:text-lg md:text-xl"
             variants={item}
@@ -78,7 +79,6 @@ export default function CtaSection() {
             )}
           </motion.p>
 
-          {/* BOTÓN: entra de abajo hacia arriba y se queda */}
           <motion.div className="pt-4" variants={item}>
             <Link
               to="/pricing"
