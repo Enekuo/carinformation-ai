@@ -1,131 +1,85 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
-
-/**
- * CtaSection robusta: anima un halo grande (radial) que sube y baja usando transform inline
- * - No depende de @keyframes ni de clases construidas en Tailwind (evita CSP / purge issues)
- * - Tiene z-index controlado: halo zIndex=1, contenido zIndex=2
- * - Incluye flags de debugging para forzar visibilidad y comprobar que el componente se renderiza
- *
- * Si sigue sin verse:
- * 1) Abre DevTools → Console: ¿hay errores? (pegar aquí)
- * 2) Si ves el halo en color sólido cuando debug=true pero no en normal, probar aumentar size/opacity.
- */
+import { motion, useReducedMotion } from "framer-motion";
 
 export default function CtaSection() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
+  const prefersReduced = useReducedMotion();
 
-  // Ref al elemento halo para manipular su transform
-  const haloRef = useRef(null);
+  // Variantes de animación: contenedor (stagger) + items (subida)
+  const container = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.10,
+        delayChildren: 0.10,
+      },
+    },
+  };
 
-  // Duración del ciclo en ms
-  const DURATION = 9000;
-
-  // debug: si true fuerza visibilidad máxima y fondo de prueba
-  const debug = false;
-
-  useEffect(() => {
-    let rafId = null;
-    const start = performance.now();
-
-    function animate(now) {
-      const elapsed = (now - start) % DURATION;
-      // Oscilación suave (seno) entre +40% (abajo) y -10% (arriba)
-      const tNorm = elapsed / DURATION; // 0..1
-      const sin = Math.sin(tNorm * Math.PI * 2); // -1..1
-      // Map sin (-1..1) to translateY percent (40 -> -10)
-      const from = 40;
-      const to = -10;
-      const translateY = from + ((sin + 1) / 2) * (to - from); // smooth
-
-      if (haloRef.current) {
-        haloRef.current.style.transform = `translateX(-50%) translateY(${translateY}%)`;
-      }
-      rafId = requestAnimationFrame(animate);
-    }
-
-    rafId = requestAnimationFrame(animate);
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, []);
+  const item = {
+    hidden: { opacity: 0, y: prefersReduced ? 0 : 28 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.55,
+        ease: [0.22, 1, 0.36, 1], // easeOutQuint-like
+      },
+    },
+  };
 
   return (
     <section
-      aria-labelledby="cta-title"
-      className={`
+      className="
         relative w-full bg-no-repeat bg-cover bg-center
+        bg-[#1e73ff]  /* fallback por si falla la imagen */
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
         overflow-hidden
-        ${debug ? "bg-pink-600" : "bg-[#1e73ff]"} /* fallback visible color */
-      `}
+      "
       style={{ backgroundImage: "url('/cta-background.png')" }}
+      aria-labelledby="cta-title"
     >
-      {/* === HALO ANIMADO (JS-driven, inline styles) === */}
-      <div
-        aria-hidden
-        // halo container is above the background (z 1) but below content (z 2)
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 1,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          ref={haloRef}
-          // centered horizontally, positioned visually below (bottom negative)
-          style={{
-            position: "absolute",
-            left: "50%",
-            // translateX(-50%) will be aplicado por transform en useEffect también
-            transform: "translateX(-50%) translateY(40%)",
-            // TAMAÑO deliberadamente GRANDE para que se vea en cualquier pantalla
-            width: debug ? "1600px" : "1400px",
-            height: debug ? "1600px" : "1400px",
-            bottom: debug ? "-60%" : "-60%",
-            // radial gradient: fuerte en el centro y desvaneciendo
-            background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.36) 28%, rgba(255,255,255,0.14) 52%, rgba(255,255,255,0) 70%)",
-            filter: "blur(40px)",
-            opacity: debug ? 1 : 0.92,
-            // ensure it is rendered on GPU for smooth transforms
-            willChange: "transform, opacity",
-          }}
-        />
-      </div>
-
-      {/* Contenido - zIndex superior */}
-      <div style={{ position: "relative", zIndex: 2 }} className="relative z-10 w-full">
-        <div
+      {/* Contenido alineado a la izquierda */}
+      <div className="relative z-10 w-full">
+        <motion.div
           className="
             flex flex-col items-start text-left gap-6
             pl-4 sm:pl-8 md:pl-16 lg:pl-24 xl:pl-28
             max-w-[980px]
           "
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.35 }}
         >
-          <h2
+          {/* TÍTULO: entra de abajo hacia arriba */}
+          <motion.h2
             id="cta-title"
             className="
               text-white font-extrabold leading-tight
               text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px]
             "
+            variants={item}
           >
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
-          </h2>
+          </motion.h2>
 
-          <p className="text-white/90 text-base sm:text-lg md:text-xl">
+          {/* SUBTÍTULO: entra de abajo hacia arriba */}
+          <motion.p
+            className="text-white/90 text-base sm:text-lg md:text-xl"
+            variants={item}
+          >
             {tr(
               "cta.subtitle",
               "Guarda tus textos, elimina los anuncios y disfruta sin límites."
             )}
-          </p>
+          </motion.p>
 
-          {/* Botón blanco compacto */}
-          <div className="pt-4">
+          {/* BOTÓN: entra de abajo hacia arriba y se queda */}
+          <motion.div className="pt-4" variants={item}>
             <Link
               to="/pricing"
               className="
@@ -142,9 +96,7 @@ export default function CtaSection() {
               "
               aria-label={tr("cta.button", "Hasi doain")}
             >
-              <span className="text-sm md:text-base" aria-hidden>
-                🚀
-              </span>
+              <span className="text-sm md:text-base" aria-hidden>🚀</span>
               <span>{tr("cta.button", "Hasi doain")}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -158,8 +110,8 @@ export default function CtaSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
