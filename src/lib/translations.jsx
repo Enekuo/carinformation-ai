@@ -16,11 +16,15 @@ export const translations = {
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
 
+
+
   /* === Placeholders del traductor === */
   translator: {
     left_placeholder:  { ES: "Escribe o pega el texto aquí.", EUS: "Idatzi edo itsatsi testua hemen." },
     right_placeholder: { ES: "Aquí aparecerá la traducción.", EUS: "Hemen agertuko da itzulpena." },
 
+    
+    
     /* === NUEVAS CLAVES para los botones/tooltip del Hero === */
     listen:     { ES: "Escuchar",          EUS: "Entzun" },
     copy:       { ES: "Copiar",            EUS: "Kopiatu" },
@@ -32,6 +36,7 @@ export const translations = {
     loading:    { ES: "Traduciendo…",      EUS: "Itzultzen…" },
   },
 
+
   /* === Bloque de Resumen (Euskalia) === */
   summary: {
     title:                 { ES: "Resumen", EUS: "Laburpena" },
@@ -39,6 +44,7 @@ export const translations = {
     sources_tab_text:      { ES: "Texto", EUS: "Testua" },
     sources_tab_document:  { ES: "Documento", EUS: "Dokumentua" },
     sources_tab_url:       { ES: "URL", EUS: "URLa" },
+
 
     // Mensajes de ayuda (izquierda/derecha)
     create_help_left: {
@@ -49,6 +55,7 @@ export const translations = {
       ES:  "Aquí verás el resultado generado por la IA, junto.",
       EUS: "Hemen ikusiko duzu adimen artifizialak sortutako emaitza.",
     },
+
 
     // --- Longitud del resumen (nuevas) ---
     length_short:  { ES: "Breve",     EUS: "Laburra" },
@@ -126,11 +133,13 @@ export const translations = {
       EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)"
     },
 
+
     /* === NUEVAS CLAVES: aviso límite plan gratis === */
     limit_title:   { ES: "Has alcanzado el límite del plan Gratis", EUS: "Doako planaren muga gainditu duzu" },
     limit_cta:     { ES: "Probar plan Premium", EUS: "Premium plana probatu" },
     limit_dismiss: { ES: "Seguir con plan Gratis", EUS: "Jarraitu doako planarekin" },
     limit_note:    { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako." },
+
 
     /* === NUEVAS CLAVES: aviso de función premium (prompt) === */
     premium_prompt_title: {
@@ -150,11 +159,13 @@ export const translations = {
       EUS: "Ulertuta"
     },
 
+
     /* === NUEVAS CLAVES: aviso de contenido desactualizado === */
     outdated_notice: { ES: "El texto ha cambiado. Actualiza el resumen.", EUS: "Testua aldatu da. Eguneratu laburpena." },
     outdated_update: { ES: "Actualizar", EUS: "Eguneratu" },
     outdated_close:  { ES: "Ocultar aviso", EUS: "Abisua ezkutatu" },
   },
+
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */
   supportPage: {
@@ -204,6 +215,7 @@ export const translations = {
   support_form_submit:              { ES: "Enviar", EUS: "Bidali" },
   support_form_privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
+
 
   /* === Aviso de funcionalidad no implementada === */
   not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago ezarrita" },
@@ -268,6 +280,9 @@ export const translations = {
   eusFooterLegalTitle4: { ES: "Uso de APIs de IA",          EUS: "Adimen Artifizialeko API en erabilera" },
   eusFooterLegalTitle5: { ES: "Política de cookies",        EUS: "Cookie politika" },
 
+
+
+
 /* ==== CTA FINAL ==== */
 
 cta: {
@@ -284,6 +299,33 @@ cta: {
     EUS: "🚀 Hasi doain",
   },
 },
+
+authPage: {
+  pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
+  pageDescription:        { ES: "Accede a tu cuenta para seguir usando Euskalia.", EUS: "Sartu zure kontura Euskalia erabiltzen jarraitzeko." },
+
+  welcome:                { ES: "Bienvenido de nuevo",                  EUS: "Ongi etorri berriro" },
+  continueWithGoogle:     { ES: "Continuar con Google",                 EUS: "Jarraitu Google-rekin" },
+  or:                     { ES: "o",                                    EUS: "edo" },
+
+  emailOrUserPlaceholder: { ES: "Introduce tu correo o nombre de usuario", EUS: "Idatzi zure posta edo erabiltzaile-izena" },
+  signInButton:           { ES: "Continuar",                            EUS: "Jarraitu" },
+
+  emailRequiredError:     { ES: "Por favor, introduce tu correo electrónico.", EUS: "Mesedez, idatzi zure posta elektronikoa." },
+  emailInvalidError:      { ES: "El formato del correo no es válido.",  EUS: "Posta elektronikoaren formatua ez da baliozkoa." },
+  passwordRequiredError:  { ES: "Por favor, introduce tu contraseña.",  EUS: "Mesedez, idatzi zure pasahitza." },
+
+  legalText: {
+    prefix:  { ES: "Al continuar, aceptas nuestros", EUS: "Jarraitzearen bidez, gure" },
+    terms:   { ES: "Términos",                        EUS: "Baldintzak" },
+    and:     { ES: "y",                               EUS: "eta" },
+    privacy: { ES: "Política de Privacidad",         EUS: "Pribatutasun-politika" },
+  },
+
+  noAccount: { ES: "¿No tienes cuenta?", EUS: "Ez duzu konturik?" },
+  signUp:    { ES: "Regístrate",         EUS: "Erregistratu" },
+}, 
+
 
 
   // Toast genérico usado en el Footer (iconos sociales, etc.)
