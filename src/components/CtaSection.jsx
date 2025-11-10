@@ -10,12 +10,35 @@ export default function CtaSection() {
     <section
       className="
         relative w-full bg-no-repeat bg-cover bg-center
-        bg-[#1e73ff]
+        bg-[#1e73ff]  /* Fallback por si falla la imagen */
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
+        overflow-hidden
       "
       style={{ backgroundImage: "url('/cta-background.png')" }}
       aria-labelledby="cta-title"
     >
+      {/* Capa animada de glow que sube (detrás del contenido) */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        {/* Banda 1 */}
+        <div
+          className="
+            absolute left-1/3 w-[140%] h-[220%]
+            bg-gradient-to-t from-white/0 via-white/18 to-white/0
+            blur-3xl opacity-60 rise-anim
+          "
+        />
+        {/* Banda 2 (delay para profundidad) */}
+        <div
+          className="
+            absolute left-0 w-[120%] h-[200%]
+            bg-gradient-to-t from-white/0 via-white/12 to-white/0
+            blur-[64px] opacity-50 rise-anim
+          "
+          style={{ animationDelay: "1.2s" }}
+        />
+      </div>
+
+      {/* Contenido alineado a la izquierda */}
       <div className="relative z-10 w-full">
         <div
           className="
@@ -41,8 +64,8 @@ export default function CtaSection() {
             )}
           </p>
 
-          {/* BOTÓN BLANCO (ajustes solicitados) */}
-          <div className="pt-4">{/* antes pt-2 */}
+          {/* Botón blanco compacto con animación en la flecha */}
+          <div className="pt-4">
             <Link
               to="/pricing"
               className="
@@ -59,7 +82,6 @@ export default function CtaSection() {
               "
               aria-label={tr("cta.button", "Hasi doain")}
             >
-              {/* icono más pequeño */}
               <span className="text-sm md:text-base" aria-hidden>🚀</span>
               <span>{tr("cta.button", "Hasi doain")}</span>
               <svg
@@ -77,6 +99,20 @@ export default function CtaSection() {
           </div>
         </div>
       </div>
+
+      {/* Estilos de la animación (puedes moverlos a tu CSS global si prefieres) */}
+      <style>
+        {`
+          @keyframes rise {
+            0%   { transform: translateY(35%); }
+            50%  { transform: translateY(-5%); }
+            100% { transform: translateY(35%); }
+          }
+          .rise-anim {
+            animation: rise 9s ease-in-out infinite;
+          }
+        `}
+      </style>
     </section>
   );
 }
