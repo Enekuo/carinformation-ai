@@ -10,6 +10,7 @@ export default function CtaSection() {
     <section
       className="
         relative w-full bg-no-repeat bg-cover bg-center
+        bg-[#1e73ff]  /* fallback */
         min-h-[60vh] md:min-h-[64vh] lg:min-h-[70vh] py-24 md:py-28
       "
       style={{ backgroundImage: "url('/cta-background.png')" }}
@@ -23,7 +24,6 @@ export default function CtaSection() {
             max-w-[980px]
           "
         >
-          {/* TITULAR */}
           <h2
             id="cta-title"
             className="
@@ -34,7 +34,6 @@ export default function CtaSection() {
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </h2>
 
-          {/* SUBTÍTULO */}
           <p className="text-white/90 text-base sm:text-lg md:text-xl">
             {tr(
               "cta.subtitle",
@@ -42,27 +41,39 @@ export default function CtaSection() {
             )}
           </p>
 
-          {/* BOTÓN BLANCO (más pequeño) */}
+          {/* Botón blanco estilo referencia */}
           <div className="pt-2">
             <Link
               to="/pricing"
               className="
-                inline-flex items-center justify-center gap-2
-                bg-white hover:bg-blue-50
-                text-blue-700 font-semibold text-base md:text-lg
-                px-7 md:px-8 py-2.5 md:py-3 rounded-xl
-                shadow-[0_6px_16px_rgba(255,255,255,0.25)]
-                hover:shadow-[0_8px_20px_rgba(255,255,255,0.35)]
-                transition-all duration-300
+                inline-flex items-center gap-2
+                bg-white hover:bg-white/90
+                text-blue-700 font-medium
+                text-base md:text-[17px]
+                px-6 md:px-7 py-3 md:py-3.5
+                rounded-[12px]
+                shadow-[0_6px_14px_rgba(0,0,0,0.08)]
+                transition-all duration-200
+                focus:outline-none focus:ring-4 focus:ring-white/40
               "
               aria-label={tr("cta.button", "Hasi doain")}
             >
-              {tr("cta.button", "Hasi doain")} →
+              <span>{tr("cta.button", "Hasi doain")}</span>
+              {/* Flecha fina como en el ejemplo */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 md:h-4.5 md:w-4.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
-        </div> 
+        </div>
       </div>
     </section>
   );
 }
-R
