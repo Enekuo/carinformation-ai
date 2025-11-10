@@ -42,17 +42,17 @@ export default function CtaSection() {
             )}
           </p>
 
-          {/* BOTÓN BLANCO */}
+          {/* BOTÓN BLANCO (más pequeño) */}
           <div className="pt-2">
             <Link
               to="/pricing"
               className="
                 inline-flex items-center justify-center gap-2
                 bg-white hover:bg-blue-50
-                text-blue-700 font-semibold text-lg md:text-xl
-                px-10 md:px-12 py-4 rounded-2xl
-                shadow-[0_8px_20px_rgba(255,255,255,0.25)]
-                hover:shadow-[0_10px_24px_rgba(255,255,255,0.35)]
+                text-blue-700 font-semibold text-base md:text-lg
+                px-7 md:px-8 py-2.5 md:py-3 rounded-xl
+                shadow-[0_6px_16px_rgba(255,255,255,0.25)]
+                hover:shadow-[0_8px_20px_rgba(255,255,255,0.35)]
                 transition-all duration-300
               "
               aria-label={tr("cta.button", "Hasi doain")}
@@ -60,8 +60,9 @@ export default function CtaSection() {
               {tr("cta.button", "Hasi doain")} →
             </Link>
           </div>
-        </div>
+        </div> 
       </div>
     </section>
   );
 }
+R
