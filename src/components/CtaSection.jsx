@@ -10,25 +10,25 @@ export default function CtaSection() {
   const prefersReduced = useReducedMotion();
   const controls = useAnimation();
 
-  // Contenedor: controla el delay entre elementos
+  // Contenedor: más separación entre entradas
   const container = {
     hidden: {},
     show: {
       transition: {
-        staggerChildren: 0.35,
-        delayChildren: 0.25,
+        staggerChildren: 0.40,
+        delayChildren: 0.30,
       },
     },
   };
 
-  // Elementos individuales
+  // Elementos: mucho más lento y más abajo
   const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 120 },
+    hidden: { opacity: 0, y: prefersReduced ? 0 : 140 },
     show: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 2.2, // MUY LENTO
+        duration: 3.0,                 // MUCHO más lento
         ease: [0.16, 1, 0.3, 1],
       },
     },
@@ -59,7 +59,6 @@ export default function CtaSection() {
           viewport={{ once: false, amount: 0.3 }}
           onViewportLeave={() => controls.set("hidden")}
         >
-          {/* Título */}
           <motion.h2
             id="cta-title"
             className="
@@ -71,7 +70,6 @@ export default function CtaSection() {
             {tr("cta.title", "Lleva tu experiencia Euskalia al siguiente nivel")}
           </motion.h2>
 
-          {/* Subtítulo */}
           <motion.p
             className="text-white/90 text-base sm:text-lg md:text-xl"
             variants={item}
@@ -82,7 +80,6 @@ export default function CtaSection() {
             )}
           </motion.p>
 
-          {/* Botón */}
           <motion.div className="pt-4" variants={item}>
             <Link
               to="/pricing"
@@ -100,7 +97,7 @@ export default function CtaSection() {
               "
               aria-label={tr("cta.button", "Hasi doain")}
             >
-              <span className="text-sm md:text-base" aria-hidden>🚀</span>
+              {/* cohete eliminado */}
               <span>{tr("cta.button", "Hasi doain")}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
