@@ -4,9 +4,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import { Toaster } from '@/components/ui/toaster';
-import UsersPage from '@/pages/UsersPage';
-import CompaniesPage from '@/pages/CompaniesPage';
-import CreatorsPage from '@/pages/CreatorsPage';
 import AuthPage from '@/pages/AuthPage';
 import SupportPage from '@/pages/SupportPage';
 import Resumen from "@/components/Resumen";
@@ -38,9 +35,6 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Hero />} />
                         <Route path="/iniciar-sesion" element={<AuthPage />} />
-                        <Route path="/usuarios" element={<UsersPage />} />
-                        <Route path="/empresas" element={<CompaniesPage />} />
-                        <Route path="/creadores" element={<CreatorsPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
                         <Route path="/resumen" element={<Resumen />} />
                         <Route path="/aviso-legal" element={<LegalNoticePage />} />
