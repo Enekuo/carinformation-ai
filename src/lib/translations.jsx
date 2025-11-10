@@ -273,15 +273,15 @@ export const translations = {
 cta: {
   title: {
     ES: "✨ Lleva tu experiencia Euskalia al siguiente nivel",
-    EUS: "✨ Euskalia esperientzia hurrengo mailara eraman",
+    EUS: "✨ Eraman Euskaliako esperientzia hurrengo mailara",
   },
   subtitle: {
     ES: "Guarda tus textos, elimina los anuncios y disfruta sin límites.",
     EUS: "Gorde zure testuak, kendu iragarkiak eta gozatu mugarik gabe.",
   },
   button: {
-    ES: "🚀 Crear cuenta",
-    EUS: "🚀 Kontua sortu",
+    ES: "🚀 Empieza gratis",
+    EUS: "🚀 Hasi doain",
   },
 },
 
