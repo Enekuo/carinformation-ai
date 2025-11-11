@@ -489,7 +489,7 @@ export default function Translaitor() {
           </div>
         </div>
       </section>
-
+ 
       {/* CTA */}
       <CtaSection />
       {/* FOOTER */}
