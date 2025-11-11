@@ -41,6 +41,11 @@ export default function Hero() {
   const leftTA   = useRef(null);
   const rightTA  = useRef(null);
 
+  // === refs para grabación ===
+  const mediaRecorderRef = useRef(null);
+  const mediaStreamRef   = useRef(null);
+  const micChunksRef     = useRef([]);
+
   useEffect(() => () => {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
   }, []);
@@ -158,16 +163,120 @@ export default function Hero() {
     );
   };
 
-  // ===== Acciones: escuchar, copiar, PDF =====
-  const handleSpeak = () => {
-    const text = rightText?.trim();
-    if (!text) return;
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = dst === "eus" ? "eu-ES" : "es-ES";
-    window.speechSynthesis.speak(utter);
+  // ====== ALTAVOZ (TTS backend) ======
+  const handleSpeak = async () => {
+    try {
+      const text = rightText?.trim();
+      if (!text) return;
+
+      const resp = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          voice: "alloy",      // puedes cambiar la voz aquí
+          format: "mp3",       // mp3 | wav | pcm
+        }),
+      });
+
+      if (!resp.ok) {
+        const raw = await resp.text().catch(() => "");
+        console.error("API /api/tts error:", resp.status, raw);
+        return;
+      }
+
+      const blob = await resp.blob();
+      const url  = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.play();
+    } catch (e) {
+      console.error("tts error:", e);
+    }
   };
 
+  // ====== MIC (grabar → /api/transcribe) ======
+  const stopRecording = () => {
+    try {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+        mediaRecorderRef.current.stop();
+      }
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((t) => t.stop());
+        mediaStreamRef.current = null;
+      }
+    } catch {}
+  };
+
+  const handleToggleMic = async () => {
+    try {
+      // si ya está grabando, detenemos y transcribimos
+      if (listening) {
+        setListening(false);
+        stopRecording();
+        return;
+      }
+
+      // iniciar grabación
+      if (!navigator.mediaDevices?.getUserMedia) {
+        console.warn("getUserMedia no disponible");
+        return;
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      micChunksRef.current = [];
+
+      const rec = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      mediaRecorderRef.current = rec;
+
+      rec.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) micChunksRef.current.push(e.data);
+      };
+
+      rec.onstop = async () => {
+        try {
+          const blob = new Blob(micChunksRef.current, { type: "audio/webm" });
+          micChunksRef.current = [];
+
+          // -> enviamos a /api/transcribe como FormData (Whisper)
+          const form = new FormData();
+          form.append("file", blob, "audio.webm");
+          form.append("model", "whisper-1");
+
+          const r = await fetch("/api/transcribe", { method: "POST", body: form });
+          const data = await r.json().catch(() => null);
+          if (data?.ok && typeof data.text === "string") {
+            const txt = data.text.trim();
+            if (txt) {
+              setLeftText((prev) => (prev ? (prev + "\n" + txt).slice(0, MAX_CHARS) : txt.slice(0, MAX_CHARS)));
+            }
+          } else {
+            console.error("transcribe fail:", data);
+          }
+        } catch (e) {
+          console.error("transcribe error:", e);
+        } finally {
+          // limpiar stream
+          if (mediaStreamRef.current) {
+            mediaStreamRef.current.getTracks().forEach((t) => t.stop());
+            mediaStreamRef.current = null;
+          }
+        }
+      };
+
+      rec.start(); // comienza a grabar
+      setListening(true);
+    } catch (e) {
+      console.error("mic error:", e);
+      setListening(false);
+      stopRecording();
+    }
+  };
+
+  // ===== Borrar (BORRA LA IZQUIERDA) =====
+  const handleClearLeft = () => setLeftText("");
+
+  // ===== Acciones: copiar / PDF =====
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(rightText || "");
@@ -177,7 +286,6 @@ export default function Hero() {
     } catch (_) {}
   };
 
-  // Abre una ventana imprimible (el usuario puede "Guardar como PDF")
   const handleDownloadPdf = () => {
     const text = (rightText || "").replace(/\n/g, "<br/>");
     const w = window.open("", "_blank", "noopener,noreferrer");
@@ -198,39 +306,6 @@ export default function Hero() {
     w.focus();
     w.print();
   };
-
-  // ===== Mic dictado (izquierda) =====
-  let recognitionRef = useRef(null);
-  const handleToggleMic = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
-    if (!recognitionRef.current) {
-      const rec = new SpeechRecognition();
-      rec.lang = src === "eus" ? "eu-ES" : "es-ES";
-      rec.interimResults = true;
-      rec.continuous = true;
-      rec.onresult = (e) => {
-        let finalText = "";
-        for (let i = e.resultIndex; i < e.results.length; i++) {
-          finalText += e.results[i][0].transcript;
-        }
-        setLeftText((prev) => (prev + " " + finalText).slice(0, MAX_CHARS));
-      };
-      rec.onend = () => setListening(false);
-      recognitionRef.current = rec;
-    }
-    if (!listening) {
-      recognitionRef.current.lang = src === "eus" ? "eu-ES" : "es-ES";
-      recognitionRef.current.start();
-      setListening(true);
-    } else {
-      recognitionRef.current.stop();
-      setListening(false);
-    }
-  };
-
-  // ===== Borrar (BORRA LA IZQUIERDA) =====
-  const handleClearLeft = () => setLeftText("");
 
   return (
     <>
@@ -323,7 +398,7 @@ export default function Hero() {
                     aria-label={t("translator.dictate")}
                     className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
                   >
-                    <Mic className="w-5 h-5 text-slate-600" />
+                    <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
                     <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
                       {listening ? t("translator.listening") : t("translator.dictate")}
                     </span>
@@ -369,7 +444,7 @@ export default function Hero() {
 
                 {/* Acciones abajo a la derecha */}
                 <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
-                  {/* Escuchar */}
+                  {/* Escuchar (TTS backend) */}
                   <button
                     type="button"
                     onClick={handleSpeak}
