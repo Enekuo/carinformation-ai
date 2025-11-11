@@ -328,6 +328,59 @@ authPage: {
 
 
 
+// PRICING PAGE //
+pricing: {
+  title:    { ES: "Elige Tu Plan Perfecto", EUS: "Aukeratu Zure Plan Perfectua" },
+  subtitle: { ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.", EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin." },
+
+  plan: {
+    free:  { ES: "Prueba Gratis",  EUS: "Probatu Doan" },
+    basic: { ES: "Plan Básico",    EUS: "Oinarrizko Plana" },
+    pro:   { ES: "Plan Premium",   EUS: "Premium Plana" },
+  },
+
+  perMonth: { ES: "/ mes", EUS: "/ hilean" },
+  perDay: {
+    basic:   { ES: "≈ 0,17 € al día", EUS: "≈ 0,17 € egunean" },
+    premium: { ES: "≈ 0,33 € al día", EUS: "≈ 0,33 € egunean" },
+  },
+
+  mostPopular: { ES: "Más popular", EUS: "Ezagunenak" },
+
+  cta: {
+    free:  { ES: "Empieza gratis",   EUS: "Hasi doan" },
+    basic: { ES: "Elegir Básico",    EUS: "Aukeratu Oinarrizkoa" },
+    pro:   { ES: "Elegir Premium",   EUS: "Aukeratu Premium" },
+  },
+
+  features: {
+    // FREE
+    library_free: { ES: "Sin biblioteca (no guarda documentos)", EUS: "Liburutegirik ez (ez ditu dokumentuak gordetzen)" },
+    export_free:  { ES: "Exportación solo en TXT",                EUS: "Esportazioa TXT formatuan bakarrik" },
+    audio_free:   { ES: "Audio (TTS) hasta 10 min/día",           EUS: "Audioa (TTS) egunean 10 minutu" },
+    ai_free:      { ES: "Generaciones con límites funcionales",   EUS: "Sorkuntzak funtzio-mugekin" },
+    file_free:    { ES: "Tamaño de archivo hasta 5 MB",           EUS: "Fitxategi tamaina gehienez 5 MB" },
+    speed_free:   { ES: "Velocidad de procesamiento normal",      EUS: "Prozesatzeko abiadura normala" },
+
+    // BASIC
+    library_basic: { ES: "Biblioteca con hasta 20 documentos guardados", EUS: "Liburutegia 20 dokumentu arte gordeta" },
+    export_basic:  { ES: "Exportación en TXT y MP3 (calidad estándar)",  EUS: "Esportazioa TXT eta MP3 (kalitate estandarra)" },
+    audio_basic:   { ES: "Audio (TTS) 200 min/mes",                       EUS: "Audioa (TTS) hilean 200 minutu" },
+    ai_basic:      { ES: "Hasta 300 generaciones al mes",                 EUS: "Hilean 300 sorkuntza arte" },
+    file_basic:    { ES: "Tamaño de archivo hasta 20 MB",                 EUS: "Fitxategi tamaina gehienez 20 MB" },
+    speed_basic:   { ES: "Velocidad rápida y prioridad media",            EUS: "Abiadura azkarra eta lehentasun ertaina" },
+
+    // PREMIUM
+    library_premium: { ES: "Biblioteca ilimitada + favoritos + buscador", EUS: "Liburutegi mugagabea + gogokoak + bilatzailea" },
+    export_premium:  { ES: "Exportación en TXT y MP3 (alta calidad)",     EUS: "Esportazioa TXT eta MP3 (kalitate altua)" },
+    audio_premium:   { ES: "Audio (TTS) 1.000 min/mes",                   EUS: "Audioa (TTS) hilean 1.000 minutu" },
+    ai_premium:      { ES: "Uso alto con política de uso justo",          EUS: "Erabilera handia erabilera-zuzentasun politikarekin" },
+    file_premium:    { ES: "Tamaño de archivo hasta 100 MB",              EUS: "Fitxategi tamaina gehienez 100 MB" },
+    speed_premium:   { ES: "Máxima velocidad y prioridad alta",           EUS: "Abiadura maximoa eta lehentasun handia" },
+  },
+},
+
+
   // Toast genérico usado en el Footer (iconos sociales, etc.)
   eusToastFeatureNotImplementedTitle: {
     ES: "🚧 Funcionalidad no implementada",
