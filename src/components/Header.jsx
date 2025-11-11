@@ -216,20 +216,20 @@ export default function Header() {
                 <ResourcesDropdownContent />
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Precios / Prezioak */}
-            <Link
-              to="/pricing"
-              className="text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
-            >
-              {t("header.pricing")}
-            </Link>
           </nav>
           {/* <-- IMPORTANTE: aquí sí cerramos el </nav> */}
         </div>
 
         {/* DERECHA (desktop) */}
         <div className="hidden lg:flex items-center gap-4">
+          {/* Prezioak como botón destacado */}
+          <Link
+            to="/pricing"
+            className="h-9 px-4 rounded-full border border-slate-300 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+          >
+            {t("header.pricing")}
+          </Link>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-slate-900">
