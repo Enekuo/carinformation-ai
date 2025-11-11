@@ -31,8 +31,6 @@ const languages = [
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
-  // Estados separados para cada dropdown
   const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false);
 
@@ -45,7 +43,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Forzar euskera en primera carga
   useEffect(() => {
     try {
       if (typeof window !== "undefined" && !sessionStorage.getItem("lang-init")) {
@@ -56,27 +53,13 @@ export default function Header() {
   }, [setLanguage]);
 
   const handleFeatureClick = () => {
-    toast({
-      title: t("not_implemented_title"),
-      description: t("not_implemented_subtitle"),
-    });
+    toast({ title: t("not_implemented_title"), description: t("not_implemented_subtitle") });
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
-  // --- Contenidos de los menús ---
   const tools = [
-    {
-      name: "Traductor",
-      subtitle: "Euskera ↔ Español",
-      icon: <Languages size={16} className="mr-2 text-slate-500" />,
-      path: "/",
-    },
-    {
-      name: "Resumen",
-      subtitle: "Resúmenes con IA",
-      icon: <FileText size={16} className="mr-2 text-slate-500" />,
-      path: "/resumen",
-    },
+    { name: "Traductor", subtitle: "Euskera ↔ Español", icon: <Languages size={16} className="mr-2 text-slate-500" />, path: "/" },
+    { name: "Resumen", subtitle: "Resúmenes con IA", icon: <FileText size={16} className="mr-2 text-slate-500" />, path: "/resumen" },
   ];
 
   const ToolsDropdownContent = ({ inMobileMenu = false }) => (
@@ -93,9 +76,7 @@ export default function Header() {
           </span>
           <div className="flex flex-col">
             <span className="font-medium">{item.name}</span>
-            {item.subtitle && (
-              <span className="text-xs text-slate-500">{item.subtitle}</span>
-            )}
+            {item.subtitle && <span className="text-xs text-slate-500">{item.subtitle}</span>}
           </div>
         </Link>
       ))}
@@ -103,17 +84,8 @@ export default function Header() {
   );
 
   const resources = [
-    {
-      name: t("resourcesMenu.support"),
-      icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
-      isLink: true,
-      path: "/soporte",
-    },
-    {
-      name: t("resourcesMenu.aiChat"),
-      icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
-      isLink: false,
-    },
+    { name: t("resourcesMenu.support"), icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />, isLink: true, path: "/soporte" },
+    { name: t("resourcesMenu.aiChat"), icon: <MessageSquare size={16} className="mr-2 text-slate-500" />, isLink: false },
   ];
 
   const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
@@ -156,13 +128,9 @@ export default function Header() {
               src="/euskalia-logo.svg"
               alt="Euskalia"
               className="h-6 mr-2"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
             />
-            <span className="text-xl font-bold text-slate-900 tracking-tight">
-              Euskalia
-            </span>
+            <span className="text-xl font-bold text-slate-900 tracking-tight">Euskalia</span>
           </Link>
 
           {/* NAV DESKTOP */}
@@ -175,10 +143,7 @@ export default function Header() {
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
                 >
                   {t("header.tools")}
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${isToolsMenuOpen ? "rotate-180" : ""}`}
-                  />
+                  <ChevronDown size={16} className={`transition-transform ${isToolsMenuOpen ? "rotate-180" : ""}`} />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -200,10 +165,7 @@ export default function Header() {
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
                 >
                   {t("header.resources")}
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${isResourcesMenuOpen ? "rotate-180" : ""}`}
-                  />
+                  <ChevronDown size={16} className={`transition-transform ${isResourcesMenuOpen ? "rotate-180" : ""}`} />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -216,20 +178,19 @@ export default function Header() {
                 <ResourcesDropdownContent />
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Prezioak (ligeramente más abajo) */}
+            <Link
+              to="/pricing"
+              className="relative top-[2px] text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
+            >
+              {t("header.pricing")}
+            </Link>
           </nav>
-          {/* <-- IMPORTANTE: aquí sí cerramos el </nav> */}
         </div>
 
         {/* DERECHA (desktop) */}
         <div className="hidden lg:flex items-center gap-4">
-          {/* Prezioak como botón destacado */}
-          <Link
-            to="/pricing"
-            className="h-9 px-4 rounded-full border border-slate-300 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-          >
-            {t("header.pricing")}
-          </Link>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-slate-900">
@@ -238,10 +199,7 @@ export default function Header() {
                 <ChevronDown size={16} className="opacity-70" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-40 bg-white rounded-lg shadow-lg border border-slate-200 mt-2"
-            >
+            <DropdownMenuContent align="end" className="w-40 bg-white rounded-lg shadow-lg border border-slate-200 mt-2">
               {languages.map((lang) => (
                 <DropdownMenuItem
                   key={lang.code}
@@ -297,27 +255,14 @@ export default function Header() {
 
             <div className="p-4 flex flex-col h-[calc(100%-64px)]">
               <div className="flex flex-col gap-1">
-                {/* Herramientas */}
-                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
-                  {t("header.tools")}
-                </p>
-                <div className="px-2">
-                  <ToolsDropdownContent inMobileMenu />
-                </div>
+                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">{t("header.tools")}</p>
+                <div className="px-2"><ToolsDropdownContent inMobileMenu /></div>
 
-                <div className="px-2 my-2">
-                  <DropdownMenuSeparator />
-                </div>
+                <div className="px-2 my-2"><DropdownMenuSeparator /></div>
 
-                {/* Recursos */}
-                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">
-                  {t("header.resources")}
-                </p>
-                <div className="px-2">
-                  <ResourcesDropdownContent inMobileMenu />
-                </div>
+                <p className="px-2 text-sm font-semibold text-slate-500 mt-2 mb-1">{t("header.resources")}</p>
+                <div className="px-2"><ResourcesDropdownContent inMobileMenu /></div>
 
-                {/* Precios (móvil) */}
                 <Link
                   to="/pricing"
                   onClick={() => setIsMobileMenuOpen(false)}
