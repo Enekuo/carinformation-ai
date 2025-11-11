@@ -179,10 +179,10 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Prezioak (ligeramente más abajo) */}
+            {/* Prezioak — misma altura que los demás */}
             <Link
               to="/pricing"
-              className="relative top-[2px] text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
+              className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
             >
               {t("header.pricing")}
             </Link>
