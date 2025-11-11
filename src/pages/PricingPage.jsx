@@ -7,6 +7,7 @@ export default function PricingPage() {
   const tr = (k) => t(k) || k; // mostramos la clave si no hay traducción
 
   const plans = [
+    // FREE
     {
       id: "free",
       titleKey: "pricing.plan.free",
@@ -32,6 +33,8 @@ export default function PricingPage() {
       tint: "",
       badgeKey: null,
     },
+
+    // BASIC (Más popular)
     {
       id: "basic",
       titleKey: "pricing.plan.basic",
@@ -57,6 +60,8 @@ export default function PricingPage() {
       tint: "",
       badgeKey: "pricing.mostPopular",
     },
+
+    // PREMIUM (colores calcados a la otra web)
     {
       id: "premium",
       titleKey: "pricing.plan.pro",
@@ -72,21 +77,30 @@ export default function PricingPage() {
         "pricing.features.speed_premium",
       ],
       buttonKey: "pricing.cta.pro",
-      icon: <Gem className="h-8 w-8 text-primary mb-4" />,
-      borderColor: "border-primary",
-      priceColor: "text-primary",
-      checkColor: "text-primary",
-      buttonGradient:
-        "bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90",
+
+      // === Azul principal exacto ===
+      icon: <Gem className="h-8 w-8 mb-4" style={{ color: "#2563eb" }} />,
+      borderColor: "border-[#2563eb]",
+      priceColor: "text-[#2563eb]",
+      checkColor: "text-[#2563eb]",
+
+      // Tinte de fondo suave
+      tint: "bg-gradient-to-br from-[#dbeafe] to-[#bfdbfe]",
+
+      // Brillo exterior
       glow: true,
-      tint: "bg-gradient-to-br from-blue-50 to-blue-100",
+
+      // Botón con el mismo gradiente
+      buttonGradient:
+        "bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1e4fdc] hover:to-[#1b46c7]",
+
       badgeKey: null,
     },
   ];
 
   return (
     <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center relative bg-gradient-to-br from-slate-100 via-sky-50 to-blue-100 p-6 pt-12 md:pt-20">
-      {/* Título/subtítulo idénticos */}
+      {/* Título / subtítulo (claves intactas) */}
       <div className="text-center mb-10 md:mb-16">
         <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-3">
           {tr("pricing.title")}
@@ -102,14 +116,15 @@ export default function PricingPage() {
           <div
             key={p.id}
             className={[
-              "group relative bg-white rounded-2xl border-2", p.borderColor,
-              "shadow-pricing hover:shadow-2xl",
+              "group relative bg-white rounded-2xl border-2",
+              p.borderColor,
+              "shadow-[0_10px_30px_rgba(2,6,23,0.08)] hover:shadow-2xl",
               "p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.01]",
               p.tint,
             ].join(" ")}
           >
             {p.glow && (
-              <div className="pointer-events-none absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 blur opacity-30 group-hover:opacity-50 transition" />
+              <div className="pointer-events-none absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-[#60a5fa] to-[#2563eb] blur opacity-30 group-hover:opacity-50 transition" />
             )}
 
             {p.badgeKey && (
