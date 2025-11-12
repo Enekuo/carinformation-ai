@@ -33,7 +33,7 @@ function App() {
                 {showHeader && <Header />}
                 <main>
                     <Routes>
-                        <Route path="/" element={<Hero />} />
+                        <Route path="/" element={<Translator />} />
                         <Route path="/iniciar-sesion" element={<AuthPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
                         <Route path="/resumen" element={<Resumen />} />
