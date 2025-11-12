@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
-import Hero from '@/components/Translaitor';
+import Translation from '@/components/Translaitor';
 import { Toaster } from '@/components/ui/toaster';
 import AuthPage from '@/pages/AuthPage';
 import SupportPage from '@/pages/SupportPage';
