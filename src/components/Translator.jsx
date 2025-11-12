@@ -569,7 +569,7 @@ export default function Translator() {
             </div>
           </div>
         </div>
-      </section>
+      </section> 
 
       {/* CTA */}
       <CtaSection />
