@@ -1,4 +1,3 @@
-// src/pages/Translaitor.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
 import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check } from "lucide-react";
@@ -19,7 +18,7 @@ const directionText = (src, dst) => {
   return "Traduce manteniendo el sentido y el formato";
 };
 
-export default function Translaitor() {
+export default function Translator() {
   const { t } = useTranslation();
 
   const [src, setSrc] = useState("eus");
