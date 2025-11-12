@@ -46,8 +46,33 @@ export default function Translator() {
   const mediaStreamRef   = useRef(null);
   const micChunksRef     = useRef([]);
 
+  // === refs para TTS (evitar “doblado”) ===
+  const audioRef = useRef(null);              // una sola instancia de Audio
+  const audioUrlRef = useRef(null);           // último ObjectURL creado
+  const ttsControllerRef = useRef(null);      // abortar fetch previo
+  const [ttsLoading, setTtsLoading] = useState(false);
+
   useEffect(() => () => {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+  }, []);
+
+  // Limpieza al desmontar: parar audio y abortar TTS en curso
+  useEffect(() => {
+    return () => {
+      try {
+        if (ttsControllerRef.current) ttsControllerRef.current.abort();
+      } catch {}
+      try {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.src = "";
+        }
+        if (audioUrlRef.current) {
+          URL.revokeObjectURL(audioUrlRef.current);
+          audioUrlRef.current = null;
+        }
+      } catch {}
+    };
   }, []);
 
   const swap = () => {
@@ -167,15 +192,33 @@ export default function Translator() {
   const handleSpeak = async () => {
     try {
       const text = rightText?.trim();
-      if (!text) return;
+      if (!text || ttsLoading) return;
+
+      // 1) Parar audio anterior si estuviera sonando
+      try {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+      } catch {}
+
+      // 2) Abortar petición TTS anterior
+      try {
+        if (ttsControllerRef.current) ttsControllerRef.current.abort();
+      } catch {}
+
+      const controller = new AbortController();
+      ttsControllerRef.current = controller;
+      setTtsLoading(true);
 
       const resp = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           text,
-          voice: "alloy",      // puedes cambiar la voz aquí
-          format: "mp3",       // mp3 | wav | pcm
+          voice: "alloy",
+          format: "mp3",
         }),
       });
 
@@ -185,12 +228,42 @@ export default function Translator() {
         return;
       }
 
+      // 3) Limpiar URL anterior
+      try {
+        if (audioUrlRef.current) {
+          URL.revokeObjectURL(audioUrlRef.current);
+          audioUrlRef.current = null;
+        }
+      } catch {}
+
+      // 4) Crear / reproducir
       const blob = await resp.blob();
       const url  = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audio.play();
+      audioUrlRef.current = url;
+
+      if (!audioRef.current) {
+        audioRef.current = new Audio();
+      }
+      audioRef.current.src = url;
+      audioRef.current.onended = () => {
+        // liberar URL cuando termine
+        try {
+          if (audioUrlRef.current) {
+            URL.revokeObjectURL(audioUrlRef.current);
+            audioUrlRef.current = null;
+          }
+        } catch {}
+      };
+
+      await audioRef.current.play().catch((e) => {
+        console.error("audio play error:", e);
+      });
     } catch (e) {
-      console.error("tts error:", e);
+      if (e.name !== "AbortError") {
+        console.error("tts error:", e);
+      }
+    } finally {
+      setTtsLoading(false);
     }
   };
 
@@ -449,7 +522,8 @@ export default function Translator() {
                     type="button"
                     onClick={handleSpeak}
                     aria-label={t("translator.listen")}
-                    className="group relative p-2 rounded-md hover:bg-slate-100"
+                    disabled={ttsLoading || !rightText.trim()}
+                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${ttsLoading ? "opacity-60 cursor-not-allowed" : ""}`}
                   >
                     <Volume2 className="w-5 h-5" />
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
