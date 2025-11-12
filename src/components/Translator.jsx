@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
-import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check } from "lucide-react";
+import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check, Square } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -33,6 +33,12 @@ export default function Translator() {
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
 
+  // === TTS: nuevos estados/refs ===
+  const [speaking, setSpeaking] = useState(false);     // altavoz ↔ cuadrado
+  const [audioUrl, setAudioUrl] = useState(null);      // ObjectURL del audio
+  const audioElRef = useRef(null);                     // <audio> interno
+  const ttsAbortRef = useRef(null);                    // AbortController para /api/tts
+
   const [copied, setCopied] = useState(false);
   const copyTimerRef = useRef(null);
 
@@ -46,33 +52,8 @@ export default function Translator() {
   const mediaStreamRef   = useRef(null);
   const micChunksRef     = useRef([]);
 
-  // === refs para TTS (evitar “doblado”) ===
-  const audioRef = useRef(null);              // una sola instancia de Audio
-  const audioUrlRef = useRef(null);           // último ObjectURL creado
-  const ttsControllerRef = useRef(null);      // abortar fetch previo
-  const [ttsLoading, setTtsLoading] = useState(false);
-
   useEffect(() => () => {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
-  }, []);
-
-  // Limpieza al desmontar: parar audio y abortar TTS en curso
-  useEffect(() => {
-    return () => {
-      try {
-        if (ttsControllerRef.current) ttsControllerRef.current.abort();
-      } catch {}
-      try {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.src = "";
-        }
-        if (audioUrlRef.current) {
-          URL.revokeObjectURL(audioUrlRef.current);
-          audioUrlRef.current = null;
-        }
-      } catch {}
-    };
   }, []);
 
   const swap = () => {
@@ -189,81 +170,111 @@ export default function Translator() {
   };
 
   // ====== ALTAVOZ (TTS backend) ======
-  const handleSpeak = async () => {
+  const stopPlayback = () => {
+    // cancelar fetch si estaba descargando
+    if (speaking && ttsAbortRef.current) {
+      try { ttsAbortRef.current.abort(); } catch {}
+    }
+    // parar audio si estaba sonando
+    const el = audioElRef.current;
+    if (el) {
+      try {
+        el.pause();
+        el.currentTime = 0;
+      } catch {}
+    }
+    // liberar URL
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null);
+    }
+    setSpeaking(false);
+  };
+
+  const handleSpeakToggle = async () => {
+    // si está en modo cuadrado → parar
+    if (speaking) {
+      stopPlayback();
+      return;
+    }
+
+    // no hay texto a leer
+    const text = rightText?.trim();
+    if (!text) return;
+
+    setSpeaking(true); // cambia icono a cuadrado de inmediato
+
+    // preparar <audio> (lo creo una sola vez)
+    if (!audioElRef.current) {
+      audioElRef.current = new Audio();
+      audioElRef.current.preload = "auto";
+      audioElRef.current.onended = () => setSpeaking(false);
+      audioElRef.current.onpause  = () => {/* no cambiamos speaking aquí para respetar el toggle */};
+    }
+
+    // abort controller para poder cancelar si vuelven a pulsar
+    const ctrl = new AbortController();
+    ttsAbortRef.current = ctrl;
+
     try {
-      const text = rightText?.trim();
-      if (!text || ttsLoading) return;
-
-      // 1) Parar audio anterior si estuviera sonando
-      try {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        }
-      } catch {}
-
-      // 2) Abortar petición TTS anterior
-      try {
-        if (ttsControllerRef.current) ttsControllerRef.current.abort();
-      } catch {}
-
-      const controller = new AbortController();
-      ttsControllerRef.current = controller;
-      setTtsLoading(true);
-
+      // ⚠️ usa formato WAV para empezar antes
       const resp = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
+        signal: ctrl.signal,
         body: JSON.stringify({
           text,
           voice: "alloy",
-          format: "mp3",
+          format: "wav"   // <- menor latencia que mp3
         }),
       });
 
       if (!resp.ok) {
         const raw = await resp.text().catch(() => "");
         console.error("API /api/tts error:", resp.status, raw);
+        setSpeaking(false);
         return;
       }
 
-      // 3) Limpiar URL anterior
-      try {
-        if (audioUrlRef.current) {
-          URL.revokeObjectURL(audioUrlRef.current);
-          audioUrlRef.current = null;
-        }
-      } catch {}
-
-      // 4) Crear / reproducir
       const blob = await resp.blob();
       const url  = URL.createObjectURL(blob);
-      audioUrlRef.current = url;
 
-      if (!audioRef.current) {
-        audioRef.current = new Audio();
-      }
-      audioRef.current.src = url;
-      audioRef.current.onended = () => {
-        // liberar URL cuando termine
-        try {
-          if (audioUrlRef.current) {
-            URL.revokeObjectURL(audioUrlRef.current);
-            audioUrlRef.current = null;
-          }
-        } catch {}
+      // liberar anterior si existe
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+      setAudioUrl(url);
+
+      // reproducir
+      const el = audioElRef.current;
+      el.src = url;
+      el.oncanplay = null;
+      el.oncanplaythrough = null;
+
+      // minimizar el “delay” de arranque: reproducir al primer canplay
+      const start = () => {
+        // algunos navegadores requieren resume del audio context; probar play
+        el.play().catch((e) => {
+          // si el navegador bloquea, al menos mantenemos el estado cuadrado hasta que el usuario interactúe
+          console.warn("Autoplay blocked:", e);
+        });
       };
 
-      await audioRef.current.play().catch((e) => {
-        console.error("audio play error:", e);
-      });
+      // si ya está listo, arranca; si no, espera a que esté listo
+      if (el.readyState >= 3) {
+        start();
+      } else {
+        el.addEventListener("canplay", start, { once: true });
+      }
+
+      // al terminar, vuelve al altavoz
+      el.onended = () => {
+        setSpeaking(false);
+      };
+
     } catch (e) {
       if (e.name !== "AbortError") {
-        console.error("tts error:", e);
+        console.error("tts fetch error:", e);
       }
-    } finally {
-      setTtsLoading(false);
+      setSpeaking(false);
     }
   };
 
@@ -281,15 +292,14 @@ export default function Translator() {
   };
 
   const handleToggleMic = async () => {
-    try {
-      // si ya está grabando, detenemos y transcribimos
-      if (listening) {
-        setListening(false);
-        stopRecording();
-        return;
-      }
+    // si está grabando, pare
+    if (listening) {
+      setListening(false);
+      stopRecording();
+      return;
+    }
 
-      // iniciar grabación
+    try {
       if (!navigator.mediaDevices?.getUserMedia) {
         console.warn("getUserMedia no disponible");
         return;
@@ -311,7 +321,6 @@ export default function Translator() {
           const blob = new Blob(micChunksRef.current, { type: "audio/webm" });
           micChunksRef.current = [];
 
-          // -> enviamos a /api/transcribe como FormData (Whisper)
           const form = new FormData();
           form.append("file", blob, "audio.webm");
           form.append("model", "whisper-1");
@@ -329,7 +338,6 @@ export default function Translator() {
         } catch (e) {
           console.error("transcribe error:", e);
         } finally {
-          // limpiar stream
           if (mediaStreamRef.current) {
             mediaStreamRef.current.getTracks().forEach((t) => t.stop());
             mediaStreamRef.current = null;
@@ -337,7 +345,7 @@ export default function Translator() {
         }
       };
 
-      rec.start(); // comienza a grabar
+      rec.start();
       setListening(true);
     } catch (e) {
       console.error("mic error:", e);
@@ -520,14 +528,14 @@ export default function Translator() {
                   {/* Escuchar (TTS backend) */}
                   <button
                     type="button"
-                    onClick={handleSpeak}
-                    aria-label={t("translator.listen")}
-                    disabled={ttsLoading || !rightText.trim()}
-                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${ttsLoading ? "opacity-60 cursor-not-allowed" : ""}`}
+                    onClick={handleSpeakToggle}
+                    aria-label={speaking ? t("translator.stop") : t("translator.listen")}
+                    aria-pressed={speaking}
+                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${speaking ? "text-slate-900" : ""}`}
                   >
-                    <Volume2 className="w-5 h-5" />
+                    {speaking ? <Square className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {t("translator.listen")}
+                      {speaking ? t("translator.stop") : t("translator.listen")}
                     </span>
                   </button>
 
@@ -562,7 +570,7 @@ export default function Translator() {
           </div>
         </div>
       </section>
- 
+
       {/* CTA */}
       <CtaSection />
       {/* FOOTER */}
