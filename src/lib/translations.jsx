@@ -580,13 +580,12 @@ legal_notice_section10_contact_email: {
 legal_notice_section10_contact_address: {
   ES: "📍 Dirección postal: []",
   EUS: "📍 Posta helbidea: []",
-  
-  legal_notice_footer_note: {
+},
+
+legal_notice_footer_note: {
   ES: "Este Aviso Legal está actualizado a fecha [__________].",
   EUS: "Lege ohar hau eguneratuta dago honako data honetan: [__________].",
 },
-},
-  
   
 // POLITÍCA DE PRIVACIDAD // 
 privacyPolicy: {
@@ -909,8 +908,8 @@ cookies_section5_p1: {
   EUS: "Euskaliak Cookieen Politika hau eguneratu ahal izango du beharrezkoa denean, araudi-aldaketak, aldaketa teknikoak edo plataforman egindako hobekuntzak direla medio. Aldaketa garrantzitsuak eginez gero, erabiltzaileei webgunearen bidez emango zaie horren berri.",
 },
 cookies_last_update: {
-  ES: "Esta Política de Cookies está actualizada a fecha 27 de julio de 2025.",
-  EUS: "Cookieen politika hau 2025eko uztailaren 27an eguneratu da.",
+  ES: "Esta Política de Privacidad está actualizada a fecha [__________].",
+    EUS: "Pribatutasun-politika hau eguneratuta dago honako data honetan: [__________].",
 },
   };
 
