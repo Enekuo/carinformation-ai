@@ -589,10 +589,7 @@ privacyPolicy: {
     ES: "Política de privacidad",
     EUS: "Pribatutasun politika",
   },
-  updated: {
-    ES: "Última actualización: [__________]",
-    EUS: "Azken eguneraketa: [__________]",
-  },
+  
   intro: {
     ES: "Esta Política de Privacidad explica cómo se tratan los datos personales en Euskalia y qué derechos tienen las personas usuarias cuando utilizan la plataforma.",
     EUS: "Pribatutasun politika honek azaltzen du Euskalian datu pertsonalak nola tratatzen diren eta erabiltzaileek zer eskubide dituzten plataforma erabiltzen dutenean.",
@@ -690,6 +687,10 @@ privacyPolicy: {
   section10Body: {
     ES: "Euskalia se reserva el derecho de modificar esta Política de Privacidad para adaptarla a cambios legislativos, criterios de las autoridades de control o mejoras técnicas del servicio. La versión vigente estará siempre disponible en el sitio web y, en caso de cambios relevantes, se informará a las personas usuarias y se recabará de nuevo el consentimiento cuando sea necesario.",
     EUS: "Euskaliak eskubidea du Pribatutasun politika hau aldatzeko, lege-aldaketetara, kontrol-agintarien irizpideetara edo zerbitzuaren hobekuntza teknikoetara egokitzeko. Indarrean dagoen bertsioa beti egongo da webgunean eskuragarri, eta aldaketa esanguratsuak eginez gero, erabiltzaileei jakinaraziko zaie eta, beharrezkoa bada, baimena berriro eskatuko da.",
+  },
+  footerNote: {
+    ES: "Esta Política de Privacidad está actualizada a fecha [__________].",
+    EUS: "Pribatutasun-politika hau eguneratuta dago honako data honetan: [__________].",
   },
 },
 
