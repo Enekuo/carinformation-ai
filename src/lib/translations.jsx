@@ -363,8 +363,12 @@ export const translations = {
     EUS: "Funtzio hau oraindik ez dago martxan. Eskatu hurrengo mezua bidaltzean! 🚀"
   },
 
-  // ========= LEGAL ========= //
- 
+
+
+
+
+                                      // ========= LEGAL ========= //
+// AVISO LEGAL //
 legal_notice_title: {
   ES: "Aviso Legal",
   EUS: "Lege-oharra",
@@ -374,8 +378,6 @@ legal_notice_last_update: {
   ES: "Última actualización: [__________]",
   EUS: "Azken eguneratzea: [__________]",
 },
-
-/* === 1. Información general (nuevo texto y estructura) === */
 
 legal_notice_section1_title: {
   ES: "1. Información general",
@@ -411,9 +413,6 @@ legal_notice_section1_p2: {
   ES: "El acceso y uso del sitio web atribuye la condición de usuario, e implica la aceptación plena y sin reservas del presente Aviso Legal y de las condiciones aquí establecidas.",
   EUS: "Webgunera sartzeak eta hura erabiltzeak erabiltzaile izaera ematen du, eta lege-ohar hau eta hemen ezarritako baldintzak osorik eta erreserbarik gabe onartzea dakar.",
 },
-
-/* === 2. Objeto === */
-
 legal_notice_section2_title: {
   ES: "2. Objeto",
   EUS: "2. Xedea",
@@ -428,8 +427,6 @@ legal_notice_section2_p2: {
   ES: "A través de esta plataforma, los usuarios pueden introducir textos, documentos o enlaces para obtener traducciones o resúmenes generados por IA, siempre dentro de los límites de uso establecidos.",
   EUS: "Plataforma honen bidez, erabiltzaileek testuak, dokumentuak edo estekak sar ditzakete IA bidez sortutako itzulpenak edo laburpenak lortzeko, ezarritako erabilera-mugen barruan.",
 },
-
-/* === 3. Condiciones de uso === */
 
 legal_notice_section3_title: {
   ES: "3. Condiciones de uso",
@@ -466,8 +463,6 @@ legal_notice_section3_p2: {
   EUS: "Euskaliak eskubidea du baldintza hauek betetzen ez dituzten erabiltzaileei sarbidea eteteko edo kentzeko.",
 },
 
-/* === 4. Propiedad intelectual e industrial === */
-
 legal_notice_section4_title: {
   ES: "4. Propiedad intelectual e industrial",
   EUS: "4. Jabetza intelektuala eta industriala",
@@ -487,9 +482,6 @@ legal_notice_section4_p3: {
   ES: "El uso de la marca Euskalia y su logotipo queda limitado exclusivamente a fines informativos y no puede utilizarse sin consentimiento previo.",
   EUS: "Euskalia marka eta logotipoaren erabilera helburu informatiboetara mugatzen da soilik, eta ezin da erabili titularraren aldez aurreko baimenik gabe.",
 },
-
-/* === 5. Responsabilidad === */
-
 legal_notice_section5_title: {
   ES: "5. Responsabilidad",
   EUS: "5. Erantzukizuna",
@@ -510,8 +502,6 @@ legal_notice_section5_p3: {
   EUS: "Euskalia ez da erantzule izango plataforma desegoki erabiltzetik sortutako kalteen aurrean.",
 },
 
-/* === 6. Política de enlaces === */
-
 legal_notice_section6_title: {
   ES: "6. Política de enlaces",
   EUS: "6. Esteken politika",
@@ -527,8 +517,6 @@ legal_notice_section6_p2: {
   EUS: "Euskaliak ez ditu kontrolatzen eta ez da erantzule izango hirugarrenen webguneetatik eratorritako edukien edo politikaren aurrean.",
 },
 
-/* === 7. Protección de datos personales === */
-
 legal_notice_section7_title: {
   ES: "7. Protección de datos personales",
   EUS: "7. Datu pertsonalen babesa",
@@ -538,8 +526,6 @@ legal_notice_section7_p1: {
   ES: "Los datos personales serán tratados conforme a la Política de Privacidad disponible en el sitio web.",
   EUS: "Datu pertsonalak webgunean eskuragarri dagoen Pribatutasun Politikaren arabera tratatuko dira.",
 },
-
-/* === 8. Uso de cookies === */
 
 legal_notice_section8_title: {
   ES: "8. Uso de cookies",
@@ -561,8 +547,6 @@ legal_notice_section8_p3: {
   EUS: "Informazio gehiago lortzeko, kontsultatu Cookieen Politika.",
 },
 
-/* === 9. Legislación aplicable y jurisdicción === */
-
 legal_notice_section9_title: {
   ES: "9. Legislación aplicable y jurisdicción",
   EUS: "9. Aplikatu beharreko legeria eta jurisdikzioa",
@@ -577,8 +561,6 @@ legal_notice_section9_p2: {
   ES: "En caso de conflicto, las partes se someten a los Juzgados y Tribunales de [__________].",
   EUS: "Gatazka izanez gero, aldeek [__________]-ko epaitegi eta auzitegien jurisdikzioari men egingo diote.",
 },
-
-/* === 10. Contacto === */
 
 legal_notice_section10_title: {
   ES: "10. Contacto",
@@ -601,6 +583,267 @@ legal_notice_section10_contact_address: {
 },
   
   
+// POLITÍCA DE PRIVACIDAD // 
+privacyPolicy: {
+  title: {
+    ES: "Política de privacidad",
+    EUS: "Pribatutasun politika",
+  },
+  updated: {
+    ES: "Última actualización: [__________]",
+    EUS: "Azken eguneraketa: [__________]",
+  },
+  intro: {
+    ES: "Esta Política de Privacidad explica cómo se tratan los datos personales en Euskalia y qué derechos tienen las personas usuarias cuando utilizan la plataforma.",
+    EUS: "Pribatutasun politika honek azaltzen du Euskalian datu pertsonalak nola tratatzen diren eta erabiltzaileek zer eskubide dituzten plataforma erabiltzen dutenean.",
+  },
+
+  section1Title: {
+    ES: "1. Ámbito de aplicación",
+    EUS: "1. Aplikazio-eremua",
+  },
+  section1Body: {
+    ES: "Euskalia se compromete a respetar la privacidad de quienes visitan y utilizan su web. Esta Política de Privacidad informa sobre el tratamiento de los datos personales recogidos a través del sitio y de los servicios ofrecidos en él. El uso del sitio web implica la aceptación de esta Política y del tratamiento de los datos conforme a la normativa vigente.",
+    EUS: "Euskaliak bere webgunea bisitatzen eta erabiltzen duten pertsonen pribatutasuna errespetatzeko konpromisoa hartzen du. Pribatutasun politika honek webgunearen eta bertan eskaintzen diren zerbitzuen bidez jasotako datu pertsonalen tratamendua azaltzen du. Webgunea erabiltzeak politika hau eta indarreko araudia onartzea dakar.",
+  },
+
+  section2Title: {
+    ES: "2. Responsable del tratamiento de los datos",
+    EUS: "2. Datuen tratamenduaren arduraduna",
+  },
+  section2Body: {
+    ES: "Los datos personales facilitados a través de Euskalia se integran en un tratamiento gestionado por el titular del proyecto.",
+    EUS: "Euskaliaren bidez emandako datu pertsonalak proiektuaren titularrak kudeatutako tratamendu batean sartzen dira.",
+  },
+  section2Details: {
+    ES: "Titular del sitio: [__________]\nNombre comercial: Euskalia\nActividad: Servicios digitales de traducción y resumen de textos con apoyo de inteligencia artificial.\nCorreo electrónico de contacto: [__________]\nDominio web: https://euskalia.ai",
+    EUS: "Webgunearen titularra: [__________]\nIzen komertziala: Euskalia\nJarduera: Testuen itzulpena eta laburpena egiteko zerbitzu digitalak, adimen artifizialaren laguntzarekin.\nHarremanetarako posta elektronikoa: [__________]\nWebgunearen domeinua: https://euskalia.ai",
+  },
+
+  section3Title: {
+    ES: "3. Finalidades del tratamiento",
+    EUS: "3. Tratamenduaren helburuak",
+  },
+  section3Body: {
+    ES: "Los datos podrán utilizarse para: facilitar información sobre el uso de la plataforma, responder consultas o solicitudes de soporte, enviar comunicaciones informativas o novedades (si se ha dado el consentimiento) y mejorar la experiencia de uso mediante análisis estadísticos agregados. La persona usuaria puede darse de baja de estas comunicaciones en cualquier momento a través de los enlaces de cancelación o escribiendo al correo de contacto indicado.",
+    EUS: "Datuak honako helburu hauekin erabili ahal izango dira: plataformaren erabilerari buruzko informazioa ematea, kontsultei edo laguntza-eskaerei erantzutea, informazio- edo berritasun-komunikazioak bidaltzea (baimena eman bada) eta esperientzia hobetzea, estatistika-analisien bidez. Erabiltzaileak edozein unetan baja eman dezake komunikazio horietatik, mezuetan agertzen den baja-estekaren bidez edo adierazitako kontaktu-helbidera idatziz.",
+  },
+
+  section4Title: {
+    ES: "4. Sobre esta Política de Privacidad",
+    EUS: "4. Pribatutasun politika honi buruz",
+  },
+  section4Body: {
+    ES: "Euskalia mantiene un compromiso firme con la protección de los datos personales de sus usuarios. Esta Política busca ser clara y sencilla, para que cada persona pueda decidir de forma informada qué información facilita y con qué finalidad se utilizará.",
+    EUS: "Euskaliak konpromiso sendoa du bere erabiltzaileen datu pertsonalen babesarekin. Politika honek argia eta ulerterraza izan nahi du, pertsona bakoitzak modu informatuan erabaki ahal izan dezan zer informazio ematen duen eta zertarako erabiliko den.",
+  },
+
+  section5Title: {
+    ES: "5. Confidencialidad y seguridad",
+    EUS: "5. Konfidentzialtasuna eta segurtasuna",
+  },
+  section5Body: {
+    ES: "Los datos personales se tratarán de forma confidencial y se aplicarán medidas técnicas y organizativas razonables para evitar accesos no autorizados, pérdidas o alteraciones. No obstante, ningún sistema es completamente infalible y no se puede garantizar una seguridad absoluta frente a incidentes externos.",
+    EUS: "Datu pertsonalak modu konfidentzialean tratatuko dira, eta neurri tekniko eta antolaketa-neurri egokiak aplikatuko dira sartze ez-baimenduak, galerak edo aldaketak saihesteko. Hala ere, ez dago erabat hutsik egiten ez duen sistemarik, eta ezin da kanpoko gertaeren aurkako segurtasun absolutua bermatu.",
+  },
+
+  section6Title: {
+    ES: "6. Derechos de las personas usuarias",
+    EUS: "6. Erabiltzaileen eskubideak",
+  },
+  section6Body: {
+    ES: "De acuerdo con la normativa aplicable, las personas usuarias pueden ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de sus datos. Para ello, pueden dirigirse al correo de contacto indicado, señalando de forma clara el derecho que desean ejercer. En caso necesario, también podrán presentar una reclamación ante la autoridad de control competente.",
+    EUS: "Aplikatu beharreko araudiaren arabera, erabiltzaileek honako eskubideak erabil ditzakete: datuetara sartzea, zuzentzea, ezabatzea, aurka egitea, tratamendua mugatzea eta datuen eramangarritasuna. Horretarako, adierazitako kontaktu-helbidera jo dezakete, erabili nahi duten eskubidea argi adieraziz. Beharrezkoa bada, kontrol-agintari eskudunaren aurrean erreklamazioa ere aurkez dezakete.",
+  },
+
+  section7Title: {
+    ES: "7. Envíos comerciales y comunicaciones",
+    EUS: "7. Merkataritza-mezuak eta komunikazioak",
+  },
+  section7Body: {
+    ES: "Euskalia no realiza prácticas de envío masivo de correos electrónicos no solicitados (spam). Cualquier comunicación informativa o promocional se enviará únicamente cuando exista una base legítima o se haya obtenido el consentimiento previo, e incluirá siempre un mecanismo claro para cancelar la suscripción.",
+    EUS: "Euskaliak ez du nahi ez diren posta elektroniko masiborik bidaltzen (spam). Edozein komunikazio informatibo edo sustapen-mezu legitimazio egokiarekin edo aldez aurreko baimenarekin bakarrik bidaliko da, eta beti izango du harpidetza uzteko mekanismo argia.",
+  },
+
+  section8Title: {
+    ES: "8. Publicidad",
+    EUS: "8. Publizitatea",
+  },
+  section8Body: {
+    ES: "En la versión gratuita de Euskalia podrían mostrarse anuncios. En ningún caso se cederán datos personales a terceros con fines publicitarios sin una base legal adecuada o sin el consentimiento expreso de la persona usuaria.",
+    EUS: "Euskaliaren doako bertsioan iragarkiak erakutsi daitezke. Inolaz ere ez zaizkie datu pertsonalak hirugarrenei emango helburu publizitarioekin, baimen espliziturik edo lege-oinarri egokirik gabe.",
+  },
+
+  section9Title: {
+    ES: "9. Comentarios y opiniones de terceros",
+    EUS: "9. Hirugarrenen iritziak eta iruzkinak",
+  },
+  section9Body: {
+    ES: "Euskalia no se hace responsable de las opiniones, valoraciones o comentarios que terceras personas puedan publicar sobre el servicio en redes sociales, plataformas externas o sitios web ajenos al control del proyecto.",
+    EUS: "Euskalia ez da erantzule izango hirugarren pertsonek sare sozialetan, kanpoko plataformetan edo proiektuaren kontrolpean ez dauden webguneetan zerbitzuari buruz argitaratu ditzaketen iritzi, balorazio edo iruzkinengatik.",
+  },
+
+  section10Title: {
+    ES: "10. Modificaciones de la Política",
+    EUS: "10. Politikaren aldaketak",
+  },
+  section10Body: {
+    ES: "Euskalia se reserva el derecho de modificar esta Política de Privacidad para adaptarla a cambios legislativos, criterios de las autoridades de control o mejoras técnicas del servicio. La versión vigente estará siempre disponible en el sitio web y, en caso de cambios relevantes, se informará a las personas usuarias y se recabará de nuevo el consentimiento cuando sea necesario.",
+    EUS: "Euskaliak eskubidea du Pribatutasun politika hau aldatzeko, lege-aldaketetara, kontrol-agintarien irizpideetara edo zerbitzuaren hobekuntza teknikoetara egokitzeko. Indarrean dagoen bertsioa beti egongo da webgunean eskuragarri, eta aldaketa esanguratsuak eginez gero, erabiltzaileei jakinaraziko zaie eta, beharrezkoa bada, baimena berriro eskatuko da.",
+  },
+},
+
+
+// ====== TÉRMINOS Y CONDICIONES – EUSKALIA ====== //
+
+terms_title: {
+  ES: "Términos y Condiciones de Uso",
+  EUS: "Erabilera-baldintzak",
+},
+
+terms_section1_title: {
+  ES: "1. Objeto y aceptación",
+  EUS: "1. Xedea eta onarpena",
+},
+
+terms_section1_p1: {
+  ES: "Los presentes Términos y Condiciones regulan el acceso, navegación y uso de la plataforma Euskalia, así como la contratación de los servicios ofrecidos a través de la misma. El uso del sitio web implica la aceptación plena de estas condiciones por parte de la persona usuaria. En caso de no estar de acuerdo, deberá abstenerse de utilizar la plataforma.",
+  EUS: "Erabilera-baldintza hauek Euskalia plataformara sartzea, nabigatzea eta hura erabiltzea arautzen dute, baita bertan eskaintzen diren zerbitzuen kontratazioa ere. Webgunea erabiltzeak baldintza hauek osorik onartzea dakar. Ados ez badago, erabiltzaileak plataformaren erabilerari uko egin beharko dio.",
+},
+
+terms_section2_title: {
+  ES: "2. Identidad del responsable",
+  EUS: "2. Arduradunaren identitatea",
+},
+
+terms_section2_p1: {
+  ES: "El responsable de la plataforma es Euskalia, en adelante \"el Prestador\", accesible a través del dominio principal https://euskalia.ai.",
+  EUS: "Plataformaren arduraduna Euskalia da, aurrerantzean \"Zerbitzu-emailea\", https://euskalia.ai domeinu nagusiaren bidez eskuragarria.",
+},
+
+terms_section3_title: {
+  ES: "3. Servicios ofrecidos",
+  EUS: "3. Eskaintzen diren zerbitzuak",
+},
+
+terms_section3_p1: {
+  ES: "Euskalia permite a las personas usuarias introducir textos, documentos o enlaces en euskera, castellano eta beste hizkuntza batzuetan para obtener traducciones y resúmenes generados mediante inteligencia artificial.",
+  EUS: "Euskaliak aukera ematen die erabiltzaileei testuak, dokumentuak edo estekak sartzeko, euskaraz, gaztelaniaz eta beste hizkuntza batzuetan, eta horien itzulpenak eta laburpenak lortzeko adimen artifiziala erabiliz.",
+},
+
+terms_section3_p2: {
+  ES: "Podrá existir un acceso gratuito y uno o varios planes de pago con prestaciones ampliadas. Los planes de pago se contratan mediante suscripción con renovación automática, salvo cancelación previa por parte de la persona usuaria.",
+  EUS: "Sarbide mota desberdinak izan daitezke: doako sarbidea eta ezaugarri zabalduak dituzten ordainpeko planak. Ordainpeko planak harpidetzaren bidez kontratatzen dira eta automatikoki berritzen dira, erabiltzaileak aldez aurretik ezeztatzen ez baditu.",
+},
+
+terms_section4_title: {
+  ES: "4. Registro de usuarios",
+  EUS: "4. Erabiltzaileen erregistroa",
+},
+
+terms_section4_p1: {
+  ES: "Para contratar cualquiera de los planes de pago, la persona usuaria deberá registrarse facilitando información veraz y actualizada. La cuenta es personal e intransferible.",
+  EUS: "Ordainpeko planetako edozein kontratatzeko, erabiltzaileak erregistratu beharko du, egiazko eta eguneratutako informazioa emanez. Kontua pertsonala eta besterenezinakoa da.",
+},
+
+terms_section5_title: {
+  ES: "5. Condiciones económicas y facturación",
+  EUS: "5. Baldintza ekonomikoak eta fakturazioa",
+},
+
+terms_section5_p1: {
+  ES: "El precio de cada plan de pago se mostrará en el momento de la contratación. Los pagos se realizan mediante los métodos habilitados en la web. Las suscripciones se renuevan automáticamente cada periodo de facturación, salvo que la persona usuaria cancele su plan antes de la fecha de renovación. En caso de impago, el Prestador podrá suspender o cancelar el acceso al servicio.",
+  EUS: "Ordainpeko plan bakoitzaren prezioa kontratazio unean erakutsiko da. Ordainketak webgunean gaitutako metodoen bidez egingo dira. Harpidetzak automatikoki berritzen dira fakturazio epe bakoitzean, erabiltzaileak berritze-data baino lehen plana ezeztatzen ez badu. Ordainketarik ez badago, Zerbitzu-emaileak zerbitzua eteteko edo bertan behera uzteko eskubidea izango du.",
+},
+
+terms_section6_title: {
+  ES: "6. Uso permitido y prohibido",
+  EUS: "6. Onartutako eta debekatutako erabilera",
+},
+
+terms_section6_p1: {
+  ES: "La persona usuaria se compromete a utilizar Euskalia conforme a la ley, la moral y el orden público. En particular, queda prohibido:",
+  EUS: "Erabiltzaileak Euskalia legearen, moralaren eta ordena publikoaren arabera erabiltzeko konpromisoa hartzen du. Bereziki, debekatuta dago:",
+},
+
+terms_section6_li1: {
+  ES: "Utilizar la plataforma para crear, difundir o almacenar contenidos ilícitos, difamatorios, ofensivos, bortitzak, diskriminatzaileak edo hirugarrenen eskubideen aurkakoak.",
+  EUS: "Plataforma edukirik ez-legala, iraingarria, bortitza, diskriminatzailea edo hirugarrenen eskubideen aurkakoa sortu, zabaldu edo gordetzeko erabiltzea.",
+},
+
+terms_section6_li2: {
+  ES: "Utilizar la plataforma con fines de spam, fraude o manipulación de datos.",
+  EUS: "Plataforma spam egiteko, iruzurra burutzeko edo datuak modu desegokian manipulatzeko erabiltzea.",
+},
+
+terms_section6_li3: {
+  ES: "Intentar kaltetzea, aldatzea edo gainkargatzea Euskaliaren sistemak edo segurtasun-neurriak.",
+  EUS: "Euskaliaren sistemak edo segurtasun-neurriak kaltetzen, aldatzen edo gainkargatzen saiatzea.",
+},
+
+terms_section6_p2: {
+  ES: "El incumplimiento de estas obligaciones podrá dar lugar a la suspensión inmediata de la cuenta sin derecho a reembolso.",
+  EUS: "Baldintza hauek ez betetzeak kontua berehala etetea ekar dezake, inolako itzulketarik egiteko eskubiderik gabe.",
+},
+
+terms_section7_title: {
+  ES: "7. Propiedad intelectual",
+  EUS: "7. Jabetza intelektuala",
+},
+
+terms_section7_p1: {
+  ES: "Todos los elementos que conforman Euskalia (kodea, diseinua, testuak, sortutako audioak, logotipoa, eta abar) son propiedad del Prestador o cuentan con las licencias correspondientes. El uso de la plataforma no otorga a la persona usuaria ningún derecho de propiedad intelectual sobre dichos elementos.",
+  EUS: "Euskalia osatzen duten elementu guztiak (kodea, diseinua, testuak, sortutako audioak, logotipoa eta abar) Zerbitzu-emailearen jabetzakoak dira edo dagokien lizentzia dute. Plataformaren erabilerak ez dio erabiltzaileari jabetza intelektualeko eskubiderik ematen elementu horien gainean.",
+},
+
+terms_section8_title: {
+  ES: "8. Responsabilidad",
+  EUS: "8. Erantzukizuna",
+},
+
+terms_section8_p1: {
+  ES: "Euskalia no garantiza la disponibilidad continua de la plataforma, aunque adoptará medidas razonables para asegurar un servicio estable.",
+  EUS: "Euskaliak ez du bermatzen plataformaren etengabeko erabilgarritasuna, nahiz eta zerbitzu egonkorra eskaintzeko neurri arrazoizkoak hartuko diren.",
+},
+
+terms_section8_p2: {
+  ES: "El Prestador no se responsabiliza del uso indebido de los textos, itzulpenak o laburpenak generados por la persona usuaria, eta erabiltzaileak sartzen dituen eduki, testu edo fitxategien erantzule bakarra izango da.",
+  EUS: "Zerbitzu-emailea ez da erantzule izango erabiltzaileak sortutako testu, itzulpen edo laburpenen erabilera desegokiaren aurrean, eta erabiltzailea izango da plataforman sartzen dituen eduki, testu eta fitxategien erantzule bakarra.",
+},
+
+terms_section9_title: {
+  ES: "9. Cancelación y desistimiento",
+  EUS: "9. Baliogabetzea eta atzera egitea",
+},
+
+terms_section9_p1: {
+  ES: "La persona usuaria podrá cancelar su suscripción en cualquier momento desde su cuenta. La cancelación evitará renovaciones futuras, baina ez da itzulketarik egingo dagoeneko hasitako fakturazio epeei dagokienez, legez kontrakoa ez bada behintzat.",
+  EUS: "Erabiltzaileak bere harpidetza edozein unetan baliogabetu ahal izango du bere kontutik. Baliogabetzeak etorkizuneko berritzeak ekidinen ditu, baina ez da itzulketarik egingo dagoeneko hasitako fakturazio epeengatik, legeak kontrakoa agintzen ez badu.",
+},
+
+terms_section10_title: {
+  ES: "10. Modificaciones",
+  EUS: "10. Aldaketak",
+},
+
+terms_section10_p1: {
+  ES: "Euskalia se reserva el derecho de modificar en cualquier momento los presentes Términos y Condiciones. Las modificaciones se publicarán en el sitio web y serán aplicables desde el momento de su publicación.",
+  EUS: "Euskaliak eskubidea du erabilera-baldintza hauek edozein unetan aldatzeko. Aldaketak webgunean argitaratuko dira eta argitaratzen diren unetik aurrera izango dira aplikagarriak.",
+},
+
+terms_section11_title: {
+  ES: "11. Legislación aplicable y jurisdicción",
+  EUS: "11. Aplikatu beharreko legeria eta jurisdikzioa",
+},
+
+terms_section11_p1: {
+  ES: "Los presentes Términos y Condiciones se rigen por la legislación española. En caso de conflicto, las partes se someterán a los Juzgados y Tribunales que correspondan conforme a la normativa aplicable.",
+  EUS: "Erabilera-baldintza hauek Espainiako legeriarekin bat etorriz arautzen dira. Gatazkarik izanez gero, alderdiak aplikatu beharreko araudiaren arabera dagokien epaitegi eta auzitegien jurisdikzioari men egingo diote.",
+},
+
+
+
+
   };
 
 
