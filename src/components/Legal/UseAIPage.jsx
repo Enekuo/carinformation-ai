@@ -7,12 +7,9 @@ export default function UseAIPage() {
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-12">
-      {/* Título principal (alineado a la izquierda, como en la captura) */}
-      <h1 className="text-3xl font-semibold mb-4">
-        {tr(
-          "aiApiUsage.title",
-          "Uso de APIs de Inteligencia Artificial"
-        )}
+      {/* Título principal (centrado) */}
+      <h1 className="text-3xl font-semibold mb-4 text-center">
+        {tr("aiApiUsage.title", "Uso de APIs de Inteligencia Artificial")}
       </h1>
 
       {/* Intro corta */}
