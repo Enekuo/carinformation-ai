@@ -850,6 +850,115 @@ terms_footer_note: {
   EUS: "Erabilera-baldintza hauek eguneratuta daude honako data honetan: [__________].",
 },
 
+
+
+  //USO DE APIS DE INTELIGENCIA ARTIFICIAL //
+aiApiUsage: {
+  title: {
+    ES: "Uso de APIs de Inteligencia Artificial",
+    EUS: "Adimen Artifizialaren APIen erabilera",
+  },
+
+  intro: {
+    ES: "En esta página te explicamos cómo utiliza Euskalia las APIs de inteligencia artificial para traducir y resumir textos, qué datos se envían a estos proveedores y qué recomendaciones debes seguir para usar la herramienta de forma segura.",
+    EUS: "Orrialde honetan azaltzen dugu Euskaliak nola erabiltzen dituen adimen artifizialaren APIak testuak itzuli eta laburtzeko, zer datu bidaltzen diren hornitzaileei eta zein gomendio jarraitu behar diren tresna modu seguruan erabiltzeko.",
+  },
+  section1Title: {
+    ES: "1. Qué APIs de IA utiliza Euskalia",
+    EUS: "1. Euskaliak erabiltzen dituen AA APIak",
+  },
+  section1Body: {
+    ES: "Para generar traducciones y resúmenes, Euskalia se conecta a servicios de inteligencia artificial ofrecidos por proveedores externos especializados. Estos procesan el texto enviado y devuelven una respuesta generada automáticamente.",
+    EUS: "Itzulpenak eta laburpenak sortzeko, Euskalia kanpoko hornitzaile espezializatuen adimen artifizialeko zerbitzuekin konektatzen da. Haiek jasotako testua prozesatu eta erantzun automatikoa itzultzen dute.",
+  },
+  section1Body2: {
+    ES: "Los modelos de IA pueden actualizarse con el tiempo. Cuando esto ocurra, Euskalia mantendrá esta página actualizada para que conozcas qué tecnología está en uso.",
+    EUS: "AAko ereduak denborarekin eguneratu daitezke. Hori gertatzen denean, Euskaliak orrialde hau eguneratuta mantenduko du erabiltzen den teknologiari buruzko informazioa eskaintzeko.",
+  },
+  section2Title: {
+    ES: "2. Qué datos se envían a las APIs",
+    EUS: "2. Zer datu bidaltzen zaizkien APIei",
+  },
+  section2Body: {
+    ES: "Cuando utilizas Euskalia, el texto que escribes o pegas (o fragmentos de documentos o URLs) se envía al proveedor de IA para generar la traducción o el resumen.",
+    EUS: "Euskalia erabiltzen duzunean, idazten edo itsasten duzun testua (edo dokumentuetako zatiak edo URLak) AA hornitzailera bidaltzen da itzulpena edo laburpena sortzeko.",
+  },
+  section2Li1: {
+    ES: "Texto introducido para traducir o resumir.",
+    EUS: "Itzultzeko edo laburtzeko sartutako testua.",
+  },
+  section2Li2: {
+    ES: "Idiomen arteko konbinazioa (adibidez, euskera → castellano).",
+    EUS: "Hizkuntzen arteko konbinazioa (adibidez, euskara → gaztelania).",
+  },
+  section2Li3: {
+    ES: "Instrucciones técnicas necesarias para que el modelo genere la respuesta.",
+    EUS: "Ereduak erantzuna sortzeko behar dituen jarraibide teknikoak.",
+  },
+  section2Body2: {
+    ES: "Evita incluir datos personales o sensibles siempre que sea posible.",
+    EUS: "Ahal den guztietan, saihestu datu pertsonalak edo bereziki sentikorrak sartzea.",
+  },
+  section3Title: {
+    ES: "3. Tratamiento, conservación y seguridad de los datos",
+    EUS: "3. Datuen tratamendua, kontserbazioa eta segurtasuna",
+  },
+  section3Body: {
+    ES: "Los textos enviados se usan solo para generar la respuesta solicitada. Euskalia no vende tus textos ni los comparte con fines comerciales.",
+    EUS: "Bidaltzen diren testuak soilik eskatutako erantzuna sortzeko erabiltzen dira. Euskaliak ez ditu zure testuak saltzen edo helburu komertzialekin partekatzen.",
+  },
+  section3Body2: {
+    ES: "Los proveedores pueden conservar ciertos registros técnicos por seguridad y estabilidad del servicio.",
+    EUS: "Hornitzaileek zenbait erregistro tekniko gorde ditzakete zerbitzuaren segurtasuna eta egonkortasuna bermatzeko.",
+  },
+  section3Body3: {
+    ES: "Euskalia utiliza conexiones cifradas y minimiza la información enviada.",
+    EUS: "Euskaliak konexio enkriptatuak erabiltzen ditu eta bidaltzen den informazioa ahalik eta gehien murrizten du.",
+  },
+  section4Title: {
+    ES: "4. Recomendaciones de uso responsable",
+    EUS: "4. Erabilera arduratsurako gomendioak",
+  },
+  section4Body: {
+    ES: "Para garantizar un uso seguro, sigue estas recomendaciones:",
+    EUS: "Erabilera segurua bermatzeko, jarraitu gomendio hauek:",
+  },
+  section4Li1: {
+    ES: "Evita datos personales identificables.",
+    EUS: "Saihestu datu pertsonal identifikagarriak.",
+  },
+  section4Li2: {
+    ES: "No incluyas información sensible (salud, finanzas, ideología...).",
+    EUS: "Ez sartu informazio sentikorra (osasuna, finantzak, ideologia...).",
+  },
+  section4Li3: {
+    ES: "Revisa siempre la respuesta antes de usarla en contextos importantes.",
+    EUS: "Beti berrikusi erantzuna erabilera garrantzitsuetan erabili aurretik.",
+  },
+  section4Li4: {
+    ES: "Respeta la ley y los derechos de terceros.",
+    EUS: "Errespetatu legea eta hirugarrenen eskubideak.",
+  },
+  section5Title: {
+    ES: "5. Relación con otras políticas",
+    EUS: "5. Beste politika batzuekin harremana",
+  },
+  section5Body: {
+    ES: "Esta información complementa la Política de Privacidad, el Aviso Legal y los Términos de Euskalia.",
+    EUS: "Informazio honek Pribatutasun Politika, Lege Oharra eta Euskaliaren Baldintzak osatzen ditu.",
+  },
+  section5Body2: {
+    ES: "Cada proveedor dispone de sus propias políticas, que recomendamos consultar.",
+    EUS: "Hornitzaile bakoitzak bere politika propioak ditu; gomendagarria da horiek kontsultatzea.",
+  },
+  lastUpdate: {
+    ES: "Esta información sobre el uso de APIs de IA está actualizada a fecha [________].",
+    EUS: "AA APIen erabilerari buruzko informazio hau [________] eguneratu da.",
+  },
+},
+
+
+
 // ====== POLÍTICA DE COOKIES – EUSKALIA ====== //
 
 cookies_title: {
