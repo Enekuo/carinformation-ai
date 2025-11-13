@@ -138,7 +138,11 @@ export default function TermsConditionsPage() {
           {tr("terms_section11_p1", "terms_section11_p1")}
         </p>
       </section>
+
+      {/* Nota de fecha al final (misma estética, fecha vacía) */}
+      <p className="mt-8 text-sm text-slate-500 italic">
+        {tr("terms_footer_note", "terms_footer_note")}
+      </p>
     </main>
   );
 }
-

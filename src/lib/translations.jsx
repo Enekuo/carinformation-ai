@@ -845,7 +845,10 @@ terms_section11_p1: {
   ES: "Los presentes Términos y Condiciones se rigen por la legislación española. En caso de conflicto, las partes se someterán a los Juzgados y Tribunales que correspondan conforme a la normativa aplicable.",
   EUS: "Erabilera-baldintza hauek Espainiako legeriarekin bat etorriz arautzen dira. Gatazkarik izanez gero, alderdiak aplikatu beharreko araudiaren arabera dagokien epaitegi eta auzitegien jurisdikzioari men egingo diote.",
 },
-
+terms_footer_note: {
+  ES: "Estos Términos y Condiciones están actualizados a fecha [__________].",
+  EUS: "Erabilera-baldintza hauek eguneratuta daude honako data honetan: [__________].",
+},
 
 // ====== POLÍTICA DE COOKIES – EUSKALIA ====== //
 
