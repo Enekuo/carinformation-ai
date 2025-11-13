@@ -12,11 +12,7 @@ export default function PrivacyPolicyPage() {
         {tr("privacyPolicy.title", "Política de privacidad")}
       </h1>
 
-      {/* Línea de última actualización */}
-      <p className="text-sm text-gray-500 mb-8">
-        {tr("privacyPolicy.updated", "Última actualización: [__________]")}
-      </p>
-
+    
       {/* Intro general */}
       <section className="mb-6">
         <p className="text-gray-700 leading-relaxed">

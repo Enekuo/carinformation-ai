@@ -580,6 +580,11 @@ legal_notice_section10_contact_email: {
 legal_notice_section10_contact_address: {
   ES: "📍 Dirección postal: []",
   EUS: "📍 Posta helbidea: []",
+  
+  legal_notice_footer_note: {
+  ES: "Este Aviso Legal está actualizado a fecha [__________].",
+  EUS: "Lege ohar hau eguneratuta dago honako data honetan: [__________].",
+},
 },
   
   
@@ -843,8 +848,70 @@ terms_section11_p1: {
 },
 
 
+// ====== POLÍTICA DE COOKIES – EUSKALIA ====== //
 
+cookies_title: {
+  ES: "Política de Cookies",
+  EUS: "Cookieen Politika",
+},
+cookies_section1_title: {
+  ES: "1. ¿Qué son las cookies?",
+  EUS: "1. Zer dira cookieak?",
+},
 
+cookies_section1_p1: {
+  ES: "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo (ordenador, tableta edo telefono mugikorra) cuando visitas un sitio web. Permiten que la página recuerde determinadas acciones y preferencias, hala nola hizkuntza edo oinarrizko konfigurazioak, zure nabigazio esperientzia hobetzeko eta ez dezazun berriro konfiguratu behar bisita bakoitzean.",
+  EUS: "Cookieak testu fitxategi txikiak dira, eta zure gailuan (ordenagailuan, tabletan edo telefono mugikorrean) gordetzen dira webgune bat bisitatzen duzunean. Webguneak zure ekintza eta lehentasun jakin batzuk gogoratzeko balio dute, hala nola hizkuntza edo oinarrizko ezarpenak, nabigazio esperientzia hobetzeko eta bisita bakoitzean berriro konfiguratu beharrik izan ez dezazun.",
+},
+
+cookies_section2_title: {
+  ES: "2. Tipos de cookies utilizadas por Euskalia",
+  EUS: "2. Euskaliak erabiltzen dituen cookie motak",
+},
+
+cookies_section2_p1: {
+  ES: "Euskalia utiliza únicamente cookies técnicas esentziales, behar-beharrezkoak plataformaren funtzionamendu egokia bermatzeko. Cookie horiei esker, webgunean nabigatu eta eskaintzen diren funtzio oinarrizkoak erabil daitezke.",
+  EUS: "Euskaliak cookie tekniko esentzialak baino ez ditu erabiltzen, plataformaren funtzionamendu egokia bermatzeko beharrezkoak direnak. Cookie horiei esker, webgunean nabigatu eta eskaintzen diren funtzio oinarrizkoak erabili daitezke.",
+},
+
+cookies_section2_p2: {
+  ES: "Euskalia NO utiliza cookies de publizitatea, analisi aurreratua, pertsonalizazio maila altua, jokabidearen jarraipena edo helburu komertzialeko hirugarrenen cookieak.",
+  EUS: "Euskaliak EZ ditu erabiltzen publizitate cookieak, analisi aurreratukoak, pertsonalizazio maila handikoak, portaeraren jarraipeneko cookieak edo helburu komertzialeko hirugarrenen cookieak.",
+},
+
+cookies_section3_title: {
+  ES: "3. Finalidad de las cookies",
+  EUS: "3. Cookieen helburua",
+},
+
+cookies_section3_p1: {
+  ES: "Euskaliak erabiltzen dituen cookie teknikoek helburu bakarra dute: plataforma behar bezala eta modu egonkorrean funtziona dezan bermatzea, oinarrizko konfigurazio batzuk gogoratuz eta webgunea behar bezala jardun dezan bisitan zehar.",
+  EUS: "Euskaliak erabiltzen dituen cookie teknikoen helburu bakarra da plataforma behar bezala eta modu egonkorrean funtziona dezan bermatzea, oinarrizko konfigurazio batzuk gogoratuz eta nabigazioan zehar webgunea ongi ibil dadin.",
+},
+
+cookies_section4_title: {
+  ES: "4. Cómo gestionar las cookies",
+  EUS: "4. Nola kudeatu cookieak",
+},
+
+cookies_section4_p1: {
+  ES: "Zure nabigatzailearen ezarpenen bidez baimendu, blokeatu edo ezaba ditzakezu zure gailuan instalatutako cookieak. Kontuan izan cookie teknikoak blokeatzen badituzu, baliteke webguneko zerbitzu edo funtzionalitate batzuk ez egotea erabilgarri edo behar bezala ez funtzionatzea.",
+  EUS: "Zure nabigatzailearen konfigurazioan, zure gailuan instalatutako cookieak baimendu, blokeatu edo ezaba ditzakezu. Gogoratu cookie teknikoak blokeatzen badituzu, baliteke webguneko zerbitzu edo funtzio batzuk ez egotea eskuragarri edo behar bezala ez ibiltzea.",
+},
+
+cookies_section5_title: {
+  ES: "5. Actualizaciones de la Política de Cookies",
+  EUS: "5. Cookieen Politika eguneratzea",
+},
+
+cookies_section5_p1: {
+  ES: "Euskaliak Cookieen Politika hau eguneratu ahal izango du beharrezkoa denean, bai araudi-aldaketen ondorioz, bai aldaketa teknikoengatik edo plataforman egindako hobekuntzengatik. Aldaketa esanguratsuak egiten badira, erabiltzaileei webgunearen bidez jakinaraziko zaie.",
+  EUS: "Euskaliak Cookieen Politika hau eguneratu ahal izango du beharrezkoa denean, araudi-aldaketak, aldaketa teknikoak edo plataforman egindako hobekuntzak direla medio. Aldaketa garrantzitsuak eginez gero, erabiltzaileei webgunearen bidez emango zaie horren berri.",
+},
+cookies_last_update: {
+  ES: "Esta Política de Cookies está actualizada a fecha 27 de julio de 2025.",
+  EUS: "Cookieen politika hau 2025eko uztailaren 27an eguneratu da.",
+},
   };
 
 

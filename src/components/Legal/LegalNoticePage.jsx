@@ -12,10 +12,6 @@ export default function LegalNoticePage() {
         {tr("legal_notice_title", "legal_notice_title")}
       </h1>
 
-      {/* Última actualización */}
-      <p className="text-sm text-slate-500 mb-6 text-center">
-        {tr("legal_notice_last_update", "legal_notice_last_update")}
-      </p>
 
       {/* 1. Información general */}
       <section className="mt-8">
@@ -201,6 +197,14 @@ export default function LegalNoticePage() {
           </p>
         </div>
       </section>
+
+      {/* Nota de fecha al final (misma estética que la de privacidad / Olondo) */}
+      <p className="mt-8 text-sm text-slate-500 italic">
+        {tr(
+          "legal_notice_footer_note",
+          "legal_notice_footer_note"
+        )}
+      </p>
     </main>
   );
 }
