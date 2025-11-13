@@ -363,82 +363,214 @@ export const translations = {
     EUS: "Funtzio hau oraindik ez dago martxan. Eskatu hurrengo mezua bidaltzean! 🚀"
   },
 
-  // ========= LEGAL (DENTRO de translations) =========
-  legalNotice: {
-    title: {
-      ES: "Aviso legal",
-      EUS: "Lege oharra",
-    },
-    updated: {
-      ES: "Última actualización: [__________]",
-      EUS: "Azken eguneraketa: [__________]",
-    },
-    intro: {
-      ES: "En cumplimiento de la Ley 34/2002 (LSSI-CE), este Aviso Legal regula el acceso y uso del sitio web Euskalia. El acceso al sitio implica la aceptación plena de este Aviso.",
-      EUS: "34/2002 Legeari (LSSI-CE) jarraituz, Lege Ohar honek Euskalia webgunearen sarbidea eta erabilera arautzen du. Webgunera sartzeak ohar hau oso-osorik onartzea dakar.",
-    },
+  // ========= LEGAL ========= //
+ 
 
-    section1Title: { ES: "1. Información general", EUS: "1. Informazio orokorra" },
-    section1Body: {
-      ES: "Titular del sitio: [__________]. Nombre comercial: Euskalia. NIF/CIF: [__________]. Domicilio social: [__________]. Correo electrónico: [__________].",
-      EUS:"Webgunearen titularra: [__________]. Izen komertziala: Euskalia. IFZ/Z: [__________]. Helbide soziala: [__________]. Helbide elektronikoa: [__________].",
-    },
+  legal_notice_title: {
+    ES: "🧾 Aviso Legal – Euskalia",
+    EUS: "🧾 Lege-oharra – Euskalia",
+  },
 
-    section2Title: { ES: "2. Objeto del sitio", EUS: "2. Webgunearen xedea" },
-    section2Body: {
-      ES: "Euskalia ofrece herramientas de traducción y resumen de textos. Algunos servicios pueden requerir condiciones adicionales.",
-      EUS:"Euskaliak testuen itzulpena eta laburpena egiteko tresnak eskaintzen ditu. Zerbitzu batzuek baldintza gehigarriak izan ditzakete.",
-    },
+  legal_notice_last_update: {
+    ES: "Última actualización: [__________]",
+    EUS: "Azken eguneratzea: [__________]",
+  },
 
-    section3Title: { ES: "3. Condiciones de uso", EUS: "3. Erabilera-baldintzak" },
-    section3Body: {
-      ES: "El usuario se compromete a usar el sitio de forma lícita, sin vulnerar derechos de terceros ni la normativa vigente.",
-      EUS:"Erabiltzaileak webgunea legez erabiltzeko konpromisoa hartzen du, hirugarrenen eskubideak ez urratuz eta indarreko araudia errespetatuz.",
-    },
+  // 1. Información general
+  legal_notice_section1_title: {
+    ES: "1. Información general",
+    EUS: "1. Informazio orokorra",
+  },
+  legal_notice_section1_p1: {
+    ES: "En cumplimiento con el deber de información establecido en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se facilitan a continuación los datos generales de este sitio web:",
+    EUS: "Informazioaren gizarteko zerbitzuei eta merkataritza elektronikoari buruzko uztailaren 11ko 34/2002 Legeak (LSSI-CE) ezarritako informazio betebeharra betez, ondoren ematen dira webgune honi buruzko datu orokorrak:",
+  },
+  legal_notice_section1_field_owner: {
+    ES: "Titular del sitio web: [__________]",
+    EUS: "Webgunearen titularra: [__________]",
+  },
+  legal_notice_section1_field_trade_name: {
+    ES: "Nombre comercial: Euskalia",
+    EUS: "Izen komertziala: Euskalia",
+  },
+  legal_notice_section1_field_tax_id: {
+    ES: "NIF/CIF: [__________]",
+    EUS: "IFK: [__________]",
+  },
+  legal_notice_section1_field_address: {
+    ES: "Domicilio social: [__________]",
+    EUS: "Egoitza soziala: [__________]",
+  },
+  legal_notice_section1_field_email: {
+    ES: "Correo electrónico de contacto: [__________]",
+    EUS: "Harremanetarako posta elektronikoa: [__________]",
+  },
+  legal_notice_section1_field_domain: {
+    ES: "Dominio web: https://euskalia.ai",
+    EUS: "Web-domeinua: https://euskalia.ai",
+  },
+  legal_notice_section1_p2: {
+    ES: "El acceso y uso de este sitio web atribuye la condición de usuario, implicando la aceptación plena y sin reservas de las condiciones aquí contenidas.",
+    EUS: "Webgune honetara sartzeak eta hura erabiltzeak erabiltzailearen izaera ematen du, eta hemen jasotako baldintzak osorik eta erreserbarik gabe onartzea dakar.",
+  },
 
-    section4Title: { ES: "4. Propiedad intelectual", EUS: "4. Jabetza intelektuala" },
-    section4Body: {
-      ES: "Los contenidos propios de Euskalia están protegidos. No se permite su reproducción, distribución o transformación salvo autorización.",
-      EUS:"Euskaliaren eduki propioak babestuta daude. Baimenik gabe ezin da eduki horien erreprodukzioa, banaketa edo eraldaketa egin.",
-    },
+  // 2. Objeto
+  legal_notice_section2_title: {
+    ES: "2. Objeto",
+    EUS: "2. Xedea",
+  },
+  legal_notice_section2_p1: {
+    ES: "El presente aviso legal regula el uso del sitio web Euskalia, cuyo propósito principal es ofrecer herramientas de traducción y resumen de textos entre euskera, castellano y otros idiomas, apoyadas en inteligencia artificial.",
+    EUS: "Lege-ohar honek Euskalia webgunearen erabilera arautzen du. Euskalia-ren helburu nagusia da euskararen, gaztelaniaren eta beste hizkuntza batzuen arteko itzulpen eta testu-laburpen tresnak eskaintzea, adimen artifizialaren laguntzarekin.",
+  },
+  legal_notice_section2_p2: {
+    ES: "A través de esta plataforma, los usuarios pueden introducir textos, documentos o enlaces para obtener traducciones o resúmenes generados por IA, siempre dentro de los límites de uso establecidos.",
+    EUS: "Plataforma honen bidez, erabiltzaileek testuak, dokumentuak edo estekak sar ditzakete, eta IA bidez sortutako itzulpenak edo laburpenak jaso, ezarritako erabilera-mugen barruan betiere.",
+  },
 
-    section5Title: { ES: "5. Responsabilidad", EUS: "5. Erantzukizuna" },
-    section5Body: {
-      ES: "Euskalia no garantiza la disponibilidad continua del servicio ni se hace responsable del uso que el usuario haga de los contenidos.",
-      EUS:"Euskaliak ez du bermatzen zerbitzuaren etengabeko eskuragarritasuna ezta erabiltzaileak edukiak nola erabiltzen dituenengatik erantzukizunik hartzen.",
-    },
+  // 3. Condiciones de uso
+  legal_notice_section3_title: {
+    ES: "3. Condiciones de uso",
+    EUS: "3. Erabilera-baldintzak",
+  },
+  legal_notice_section3_p1: {
+    ES: "El usuario se compromete a:",
+    EUS: "Erabiltzaileak honako hauek betetzeko konpromisoa hartzen du:",
+  },
+  legal_notice_section3_li1: {
+    ES: "Hacer un uso adecuado y lícito del sitio web.",
+    EUS: "Webgunea behar bezala eta legez erabiltea.",
+  },
+  legal_notice_section3_li2: {
+    ES: "No utilizar el contenido con fines ilícitos o contrarios a la buena fe.",
+    EUS: "Edukia legez kontrako edo fede onaren aurkako helburuetarako ez erabiltzea.",
+  },
+  legal_notice_section3_li3: {
+    ES: "No provocar daños en los sistemas de Euskalia ni intentar acceder de forma no autorizada a las áreas restringidas.",
+    EUS: "Euskalia-ren sistemetan kalterik ez eragitea eta baimenik gabe ez saiatzea sarbide mugatuko eremuetara sartzen.",
+  },
+  legal_notice_section3_li4: {
+    ES: "No introducir ni difundir virus informáticos u otros sistemas que puedan causar daños.",
+    EUS: "Ez sartzea eta ez hedatzea kalteak eragin ditzaketen birus informatikoak edo antzeko beste sistema batzuk.",
+  },
+  legal_notice_section3_p2: {
+    ES: "Euskalia se reserva el derecho de suspender o retirar el acceso a los usuarios que incumplan estas condiciones.",
+    EUS: "Euskalia-k eskubidea izango du baldintza hauek betetzen ez dituzten erabiltzaileei sarbidea eteteko edo kentzeko.",
+  },
 
-    section6Title: { ES: "6. Enlaces externos", EUS: "6. Kanpo estekak" },
-    section6Body: {
-      ES: "El sitio puede incluir enlaces a terceros. Euskalia no se hace responsable de los contenidos o políticas de dichos sitios.",
-      EUS:"Webguneak hirugarrenen estekak izan ditzake. Euskaliak ez du lotutako guneen eduki edo politiken erantzukizunik hartzen.",
-    },
+  // 4. Propiedad intelectual e industrial
+  legal_notice_section4_title: {
+    ES: "4. Propiedad intelectual e industrial",
+    EUS: "4. Jabetza intelektuala eta industriala",
+  },
+  legal_notice_section4_p1: {
+    ES: "Todos los elementos que forman el sitio web (diseño, logotipos, textos, imágenes, software, código fuente, etc.) son propiedad de Euskalia o cuentan con las licencias necesarias para su uso.",
+    EUS: "Webgunea osatzen duten elementu guztiak (diseinua, logotipoak, testuak, irudiak, softwarea, iturburu-kodea eta abar) Euskalia-ren jabetzakoak dira edo beharrezko lizentziak dituzte.",
+  },
+  legal_notice_section4_p2: {
+    ES: "Queda prohibida la reproducción total o parcial de los contenidos sin autorización expresa y por escrito del titular.",
+    EUS: "Debekatuta dago edukien erreprodukzio osoa edo partziala titularraren baimen idatzi eta espresurik gabe.",
+  },
+  legal_notice_section4_p3: {
+    ES: "El uso de la marca Euskalia y su logotipo queda limitado exclusivamente a los fines informativos y no puede utilizarse sin consentimiento previo del titular.",
+    EUS: "Euskalia marka eta haren logotipoaren erabilera helburu informatiboetara mugatzen da soilik, eta ezin da erabili titularraren aldez aurreko baimenik gabe.",
+  },
 
-    section7Title: { ES: "7. Protección de datos", EUS: "7. Datuen babesa" },
-    section7Body: {
-      ES: "El tratamiento de datos personales se describe en la Política de Privacidad. El usuario debe leerla antes de facilitar datos.",
-      EUS:"Datu pertsonalen tratamendua Pribatutasun Politikan zehazten da. Erabiltzaileak datuak eman aurretik irakurri behar du.",
-    },
+  // 5. Responsabilidad
+  legal_notice_section5_title: {
+    ES: "5. Responsabilidad",
+    EUS: "5. Erantzukizuna",
+  },
+  legal_notice_section5_p1: {
+    ES: "Euskalia no garantiza la disponibilidad continua del sitio ni la ausencia de errores en sus servicios.",
+    EUS: "Euskalia-k ez du bermatzen webgunearen etengabeko erabilgarritasuna, ez eta bere zerbitzuetan akatsik ez egotea ere.",
+  },
+  legal_notice_section5_p2: {
+    ES: "El uso de herramientas de inteligencia artificial implica que los resultados (traducciones, resúmenes o textos generados) pueden contener imprecisiones, por lo que el usuario es el único responsable del uso que haga de los mismos.",
+    EUS: "Adimen artifizialeko tresnen erabilerak esan nahi du emaitzek (itzulpenek, laburpenek edo sortutako testuek) zehaztasun faltak izan ditzaketela; beraz, emaitza horien erabileraren erantzukizun bakarra erabiltzailearena da.",
+  },
+  legal_notice_section5_p3: {
+    ES: "Euskalia no se hace responsable de los daños o perjuicios derivados del uso indebido de la plataforma.",
+    EUS: "Euskalia ez da erantzule izango plataforma desegoki erabiltzetik eratorritako kalte edo galerengatik.",
+  },
 
-    section8Title: { ES: "8. Cookies", EUS: "8. Cookieak" },
-    section8Body: {
-      ES: "Este sitio utiliza cookies propias y de terceros con fines técnicos y analíticos. El usuario puede configurar o rechazar el uso de cookies según lo indicado en la Política de Cookies.",
-      EUS:"Gune honek cookie propioak eta hirugarrenenak erabiltzen ditu helburu tekniko eta analitikoekin. Erabiltzaileak cookieen erabilera konfiguratu edo baztertu dezake Cookieen Politikan adierazitakoaren arabera.",
-    },
+  // 6. Política de enlaces
+  legal_notice_section6_title: {
+    ES: "6. Política de enlaces",
+    EUS: "6. Esteken politika",
+  },
+  legal_notice_section6_p1: {
+    ES: "El sitio web puede contener enlaces a páginas de terceros.",
+    EUS: "Webguneak hirugarrenen orrietarako estekak izan ditzake.",
+  },
+  legal_notice_section6_p2: {
+    ES: "Euskalia no controla ni responde de los contenidos, políticas o prácticas de dichas páginas, por lo que el usuario accede bajo su propia responsabilidad.",
+    EUS: "Euskalia-k ez ditu kontrolatzen, ez eta erantzuten ere, orri horien eduki, politika edo praktiken gainean; beraz, erabiltzaileak bere erantzukizunpean sartzen dira haietan.",
+  },
 
-    section9Title: { ES: "9. Legislación y jurisdicción", EUS: "9. Aplikatu beharreko legea eta jurisdikzioa" },
-    section9Body: {
-      ES: "Este Aviso Legal se rige por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales de [__________].",
-      EUS:"Lege Ohar hau Espainiako legeriarekin bat etorriz interpretatuko da. Edozein auziren kasuan, aldeek [__________]-ko Epaitegi eta Auzitegien jurisdikzioari men egingo diote.",
-    },
+  // 7. Protección de datos personales
+  legal_notice_section7_title: {
+    ES: "7. Protección de datos personales",
+    EUS: "7. Datu pertsonalen babesa",
+  },
+  legal_notice_section7_p1: {
+    ES: "Los datos personales recabados a través del sitio web serán tratados conforme a la Política de Privacidad disponible en https://euskalia.ai/politica-privacidad.",
+    EUS: "Webgunearen bidez biltzen diren datu pertsonalak https://euskalia.ai/politica-privacidad helbidean eskuragarri dagoen Pribatutasun Politikan xedatutakoaren arabera tratatuko dira.",
+  },
 
-    section10Title: { ES: "10. Contacto", EUS: "10. Harremana" },
-    section10Body: {
-      ES: "Para consultas o reclamaciones: correo electrónico [__________] y dirección postal [__________].",
-      EUS:"Kontsulta edo erreklamazioetarako: harremanetarako e-posta [__________] eta helbide postala [__________].",
-    }
-  }
-};
+  // 8. Uso de cookies
+  legal_notice_section8_title: {
+    ES: "8. Uso de cookies",
+    EUS: "8. Cookie-en erabilera",
+  },
+  legal_notice_section8_p1: {
+    ES: "Este sitio web utiliza cookies propias y de terceros con fines técnicos y analíticos.",
+    EUS: "Webgune honek berezko cookieak eta hirugarrenen cookieak erabiltzen ditu helburu tekniko eta analitikoekin.",
+  },
+  legal_notice_section8_p2: {
+    ES: "El usuario puede configurar o rechazar las cookies a través del banner correspondiente o del apartado de configuración disponible en la web.",
+    EUS: "Erabiltzaileak cookieak konfiguratu edo baztertu ditzake dagokion banner-aren bidez edo webgunean eskuragarri dagoen konfigurazio-atalean.",
+  },
+  legal_notice_section8_p3: {
+    ES: "Para más información, consulte la Política de Cookies en https://euskalia.ai/politica-cookies.",
+    EUS: "Informazio gehiago lortzeko, kontsultatu Cookie-en Politika hemen: https://euskalia.ai/politica-cookies.",
+  },
+
+  // 9. Legislación aplicable y jurisdicción
+  legal_notice_section9_title: {
+    ES: "9. Legislación aplicable y jurisdicción",
+    EUS: "9. Aplikatu beharreko legeria eta jurisdikzioa",
+  },
+  legal_notice_section9_p1: {
+    ES: "Las presentes condiciones se rigen por la legislación española.",
+    EUS: "Baldintza hauek Espainiako legeen arabera arautzen dira.",
+  },
+  legal_notice_section9_p2: {
+    ES: "En caso de conflicto o controversia, las partes se someten a los Juzgados y Tribunales de [__________], salvo que la normativa aplicable disponga otra cosa.",
+    EUS: "Gatazka edo eztabaidaren bat izanez gero, aldeek [__________]-ko epaitegi eta auzitegien jurisdikzioari men egingo diote, aplikatu beharreko araudiak bestelakorik ezartzen ez badu.",
+  },
+
+  // 10. Contacto
+  legal_notice_section10_title: {
+    ES: "10. Contacto",
+    EUS: "10. Harremana",
+  },
+  legal_notice_section10_p1: {
+    ES: "Para cualquier duda, sugerencia o reclamación relacionada con este aviso legal, puede ponerse en contacto con nosotros en:",
+    EUS: "Lege-ohar honekin lotutako edozein zalantza, iradokizun edo erreklamazioren inguruan, gurekin harremanetan jar zaitezke:",
+  },
+  legal_notice_section10_contact_email: {
+    ES: "📧 Correo electrónico: []",
+    EUS: "📧 Posta elektronikoa: []",
+  },
+  legal_notice_section10_contact_address: {
+    ES: "📍 Dirección postal: []",
+    EUS: "📍 Posta-helbidea: []",
+  },
+  };
+
+
+
 
 /* ====== i18n runtime ====== */
 export const SUPPORTED_LANGS = ["ES", "EUS"]; // Si en el selector usas "EN", el sistema hace fallback a ES automáticamente.
