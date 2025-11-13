@@ -366,8 +366,8 @@ export const translations = {
   // ========= LEGAL ========= //
  
 legal_notice_title: {
-  ES: "🧾 Aviso Legal – Euskalia",
-  EUS: "🧾 Lege-oharra – Euskalia",
+  ES: "Aviso Legal",
+  EUS: "Lege-oharra",
 },
 
 legal_notice_last_update: {
@@ -375,7 +375,7 @@ legal_notice_last_update: {
   EUS: "Azken eguneratzea: [__________]",
 },
 
-/* === 1. Información general === */
+/* === 1. Información general (nuevo texto y estructura) === */
 
 legal_notice_section1_title: {
   ES: "1. Información general",
@@ -383,43 +383,33 @@ legal_notice_section1_title: {
 },
 
 legal_notice_section1_p1: {
-  ES: "En cumplimiento con el deber de información establecido en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se facilitan a continuación los datos generales de este sitio web:",
-  EUS: "Informazioaren gizarteko zerbitzuei eta merkataritza elektronikoari buruzko uztailaren 11ko 34/2002 Legeak (LSSI-CE) ezarritako informazio betebeharra betez, ondoren ematen dira webgune honi buruzko datu orokorrak:",
+  ES: "De conformidad con el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa que la entidad responsable de la gestión y funcionamiento de este sitio web es:",
+  EUS: "Uztailaren 11ko 34/2002 Legearen 10. artikuluarekin bat etorriz, Informazioaren Gizarteko Zerbitzuei eta Merkataritza Elektronikoari buruzko Legeak (LSSI-CE) xedatutakoa betez, honako hau jakinarazten da: webgune honen kudeaketaz eta funtzionamenduaz arduratzen den erakundea hau da:",
 },
 
-legal_notice_section1_field_owner: {
-  ES: "Titular del sitio web: [__________]",
-  EUS: "Webgunearen titularra: [__________]",
-},
-
-legal_notice_section1_field_trade_name: {
-  ES: "Nombre comercial: Euskalia",
-  EUS: "Izen komertziala: Euskalia",
-},
-
-legal_notice_section1_field_tax_id: {
-  ES: "NIF/CIF: [__________]",
-  EUS: "IFK: [__________]",
-},
-
-legal_notice_section1_field_address: {
-  ES: "Domicilio social: [__________]",
-  EUS: "Egoitza soziala: [__________]",
-},
-
-legal_notice_section1_field_email: {
-  ES: "Correo electrónico de contacto: [__________]",
-  EUS: "Harremanetarako posta elektronikoa: [__________]",
+legal_notice_section1_field_name: {
+  ES: "Nombre: Euskalia",
+  EUS: "Izena: Euskalia",
 },
 
 legal_notice_section1_field_domain: {
-  ES: "Dominio web: https://euskalia.ai",
-  EUS: "Web domeinua: https://euskalia.ai",
+  ES: "Dominio: https://euskalia.ai",
+  EUS: "Domeinua: https://euskalia.ai",
+},
+
+legal_notice_section1_field_email: {
+  ES: "Email: [__________]",
+  EUS: "Emaila: [__________]",
+},
+
+legal_notice_section1_field_activity: {
+  ES: "Actividad: Servicios digitales de traducción y resumen basados en Inteligencia Artificial.",
+  EUS: "Jarduera: Itzulpen eta laburpen digitalen zerbitzuak, adimen artifizialean oinarrituak.",
 },
 
 legal_notice_section1_p2: {
-  ES: "El acceso y uso de este sitio web atribuye la condición de usuario, implicando la aceptación plena y sin reservas de las condiciones aquí contenidas.",
-  EUS: "Webgune honetara sartzeak eta hura erabiltzeak erabiltzailearen izaera ematen du, eta hemen jasotako baldintzak osorik eta erreserbarik gabe onartzea dakar.",
+  ES: "El acceso y uso del sitio web atribuye la condición de usuario, e implica la aceptación plena y sin reservas del presente Aviso Legal y de las condiciones aquí establecidas.",
+  EUS: "Webgunera sartzeak eta hura erabiltzeak erabiltzaile izaera ematen du, eta lege-ohar hau eta hemen ezarritako baldintzak osorik eta erreserbarik gabe onartzea dakar.",
 },
 
 /* === 2. Objeto === */
@@ -431,7 +421,7 @@ legal_notice_section2_title: {
 
 legal_notice_section2_p1: {
   ES: "El presente aviso legal regula el uso del sitio web Euskalia, cuyo propósito principal es ofrecer herramientas de traducción y resumen de textos entre euskera, castellano y otros idiomas, apoyadas en inteligencia artificial.",
-  EUS: "Lege-ohar honek Euskalia webgunearen erabilera arautzen du. Euskaliaren helburu nagusia da euskararen, gaztelaniaren eta beste hizkuntzen arteko itzulpen eta testu-laburpen tresnak eskaintzea, adimen artifizialaren laguntzarekin.",
+  EUS: "Lege-ohar honek Euskalia webgunearen erabilera arautzen du. Euskaliaren helburu nagusia da euskararen, gaztelaniaren eta beste hizkuntza batzuen arteko itzulpen eta testu-laburpen tresnak eskaintzea, adimen artifizialaren laguntzarekin.",
 },
 
 legal_notice_section2_p2: {
@@ -463,7 +453,7 @@ legal_notice_section3_li2: {
 
 legal_notice_section3_li3: {
   ES: "No provocar daños en los sistemas de Euskalia ni intentar acceder de forma no autorizada a las áreas restringidas.",
-  EUS: "Euskaliaren sistemetan kalterik ez eragitea eta baimenik gabe ez sarbide mugatuko eremuetara sartzen saiatzea.",
+  EUS: "Euskaliaren sistemetan kalterik ez eragitea eta baimenik gabe sarbide mugatuko eremuetara sartzen saiatzea.",
 },
 
 legal_notice_section3_li4: {
@@ -495,7 +485,7 @@ legal_notice_section4_p2: {
 
 legal_notice_section4_p3: {
   ES: "El uso de la marca Euskalia y su logotipo queda limitado exclusivamente a fines informativos y no puede utilizarse sin consentimiento previo.",
-  EUS: "Euskalia marka eta logotipoaren erabilera helburu informatiboetara mugatzen da soilik, eta ezin da erabili titularraren baimenik gabe.",
+  EUS: "Euskalia marka eta logotipoaren erabilera helburu informatiboetara mugatzen da soilik, eta ezin da erabili titularraren aldez aurreko baimenik gabe.",
 },
 
 /* === 5. Responsabilidad === */

@@ -8,12 +8,12 @@ export default function LegalNoticePage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12">
       {/* Título */}
-      <h1 className="text-3xl font-semibold mb-2">
+      <h1 className="text-3xl font-semibold mb-2 text-center">
         {tr("legal_notice_title", "legal_notice_title")}
       </h1>
 
       {/* Última actualización */}
-      <p className="text-sm text-slate-500 mb-6">
+      <p className="text-sm text-slate-500 mb-6 text-center">
         {tr("legal_notice_last_update", "legal_notice_last_update")}
       </p>
 
@@ -27,44 +27,32 @@ export default function LegalNoticePage() {
           {tr("legal_notice_section1_p1", "legal_notice_section1_p1")}
         </p>
 
-        <div className="space-y-1 text-slate-700 leading-relaxed mb-4">
-          <p>
+        <ul className="list-disc list-inside text-slate-700 leading-relaxed mb-4 space-y-1">
+          <li>
             {tr(
-              "legal_notice_section1_field_owner",
-              "legal_notice_section1_field_owner"
+              "legal_notice_section1_field_name",
+              "legal_notice_section1_field_name"
             )}
-          </p>
-          <p>
-            {tr(
-              "legal_notice_section1_field_trade_name",
-              "legal_notice_section1_field_trade_name"
-            )}
-          </p>
-          <p>
-            {tr(
-              "legal_notice_section1_field_tax_id",
-              "legal_notice_section1_field_tax_id"
-            )}
-          </p>
-          <p>
-            {tr(
-              "legal_notice_section1_field_address",
-              "legal_notice_section1_field_address"
-            )}
-          </p>
-          <p>
-            {tr(
-              "legal_notice_section1_field_email",
-              "legal_notice_section1_field_email"
-            )}
-          </p>
-          <p>
+          </li>
+          <li>
             {tr(
               "legal_notice_section1_field_domain",
               "legal_notice_section1_field_domain"
             )}
-          </p>
-        </div>
+          </li>
+          <li>
+            {tr(
+              "legal_notice_section1_field_email",
+              "legal_notice_section1_field_email"
+            )}
+          </li>
+          <li>
+            {tr(
+              "legal_notice_section1_field_activity",
+              "legal_notice_section1_field_activity"
+            )}
+          </li>
+        </ul>
 
         <p className="text-slate-700 leading-relaxed">
           {tr("legal_notice_section1_p2", "legal_notice_section1_p2")}
