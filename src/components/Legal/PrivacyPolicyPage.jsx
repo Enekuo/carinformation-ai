@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12">
       {/* Título principal */}
-      <h1 className="text-3xl font-semibold mb-2">
+      <h1 className="text-3xl font-semibold mb-2 text-center">
         {tr("privacyPolicy.title", "Política de privacidad")}
       </h1>
 
@@ -169,7 +169,7 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* 10. Modificaciones de la Política */}
-      <section className="mb-4">
+      <section className="mb-6">
         <h2 className="text-xl font-semibold mb-3">
           {tr(
             "privacyPolicy.section10Title",
@@ -183,7 +183,14 @@ export default function PrivacyPolicyPage() {
           )}
         </p>
       </section>
+
+      {/* Nota final con la fecha (abajo del todo) */}
+      <p className="text-sm text-gray-500 italic">
+        {tr(
+          "privacyPolicy.footerNote",
+          "Esta Política de Privacidad está actualizada a fecha 27 de julio de 2025."
+        )}
+      </p>
     </main>
   );
 }
-   
