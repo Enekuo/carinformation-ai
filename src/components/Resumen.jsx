@@ -917,7 +917,7 @@ export default function Resumen() {
                     disabled={!(sourceMode === "text" && textValue)}
                   >
                     <Trash className="w-4 h-4" />
-                  </button>
+                  </button> 
                 </div>
               </div>
 
