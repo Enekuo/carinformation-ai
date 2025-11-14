@@ -533,7 +533,11 @@ export default function Translator() {
                     aria-pressed={speaking}
                     className={`group relative p-2 rounded-md hover:bg-slate-100 ${speaking ? "text-slate-900" : ""}`}
                   >
-                    {speaking ? <Square className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                    {speaking ? (
+                      <span className="inline-block w-[10px] h-[10px] rounded-[2px] bg-slate-600" />
+                    ) : (
+                      <Volume2 className="w-5 h-5" />
+                    )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
                       {speaking ? t("translator.stop") : t("translator.listen")}
                     </span>
