@@ -8,11 +8,10 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12">
       {/* Título principal */}
-      <h1 className="text-3xl font-semibold mb-2 text-center">
+      <h1 className="text-3xl font-semibold mb-8 text-center">
         {tr("privacyPolicy.title", "Política de privacidad")}
       </h1>
 
-    
       {/* Intro general */}
       <section className="mb-6">
         <p className="text-gray-700 leading-relaxed">
