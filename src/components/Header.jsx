@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -139,7 +138,6 @@ export default function Header() {
             <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
-                  onPointerEnter={() => setIsToolsMenuOpen(true)}
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
                 >
                   {t("header.tools")}
@@ -147,7 +145,6 @@ export default function Header() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                onPointerLeave={() => setIsToolsMenuOpen(false)}
                 className="bg-white rounded-xl shadow-lg border border-slate-200 mt-2"
                 align="start"
                 sideOffset={8}
@@ -161,7 +158,6 @@ export default function Header() {
             <DropdownMenu open={isResourcesMenuOpen} onOpenChange={setIsResourcesMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
-                  onPointerEnter={() => setIsResourcesMenuOpen(true)}
                   className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
                 >
                   {t("header.resources")}
@@ -169,7 +165,6 @@ export default function Header() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                onPointerLeave={() => setIsResourcesMenuOpen(false)}
                 className="bg-white rounded-xl shadow-lg border border-slate-200 mt-2"
                 align="start"
                 sideOffset={8}
