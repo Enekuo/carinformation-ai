@@ -138,7 +138,7 @@ export default function Header() {
             <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
+                  className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md focus:outline-none focus-visible:outline-none focus-visible:ring-0"
                 >
                   {t("header.tools")}
                   <ChevronDown size={16} className={`transition-transform ${isToolsMenuOpen ? "rotate-180" : ""}`} />
@@ -158,7 +158,7 @@ export default function Header() {
             <DropdownMenu open={isResourcesMenuOpen} onOpenChange={setIsResourcesMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
+                  className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md focus:outline-none focus-visible:outline-none focus-visible:ring-0"
                 >
                   {t("header.resources")}
                   <ChevronDown size={16} className={`transition-transform ${isResourcesMenuOpen ? "rotate-180" : ""}`} />
