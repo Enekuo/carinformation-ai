@@ -31,7 +31,6 @@ const directionText = (src, dst) => {
 
 export default function Translator() {
   const { t } = useTranslation();
-  const tr = (k, f) => t(k) || f;
 
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
@@ -400,11 +399,6 @@ export default function Translator() {
     w.print();
   };
 
-  // ===== etiquetas de los tres botones (mismas claves que Resumen) =====
-  const labelTabText = tr("summary.sources_tab_text", "Testua");
-  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
-  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
-
   return (
     <>
       {/* CAMBIO: solo alargamos el fondo con más padding inferior */}
@@ -475,15 +469,15 @@ export default function Translator() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-                {/* Tabs: Testua / Dokumentua / URLa (mismas claves que Resumen) */}
-                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4 -mt-8 md:-mt-10">
-                  {/* Testua (activo) */}
+                {/* Tabs: Testua / Dokumentua / URLa */}
+                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4 -mt-6 md:-mt-8">
+                  {/* Testua */}
                   <button
                     type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-[#2563eb]"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
                   >
-                    <FileText className="w-4 h-4 text-[#2563eb]" />
-                    <span>{labelTabText}</span>
+                    <FileText className="w-4 h-4" />
+                    <span>Testua</span>
                   </button>
 
                   {/* Separador */}
@@ -494,8 +488,8 @@ export default function Translator() {
                     type="button"
                     className="flex items-center gap-2 text-sm font-medium text-slate-600"
                   >
-                    <FileIcon className="w-4 h-4 text-slate-500" />
-                    <span>{labelTabDocument}</span>
+                    <FileIcon className="w-4 h-4" />
+                    <span>Dokumentua</span>
                   </button>
 
                   {/* Separador */}
@@ -506,8 +500,8 @@ export default function Translator() {
                     type="button"
                     className="flex items-center gap-2 text-sm font-medium text-slate-600"
                   >
-                    <UrlIcon className="w-4 h-4 text-slate-500" />
-                    <span>{labelTabUrl}</span>
+                    <UrlIcon className="w-4 h-4" />
+                    <span>URLa</span>
                   </button>
                 </div>
 
