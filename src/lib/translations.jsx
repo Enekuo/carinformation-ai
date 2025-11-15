@@ -366,6 +366,10 @@ export const translations = {
 
 
   /* === Mensajes de error del traductor === */
+   blocked_message: {
+    ES: "Lo siento, no puedo ayudar con eso.",
+    EUS: "Barkatu, ezin dizut horretan lagundu.",
+  },
   error_text: {
     ES: "Se ha producido un error al traducir el texto.",
     EUS: "Errorea gertatu da testua itzultzean.",
