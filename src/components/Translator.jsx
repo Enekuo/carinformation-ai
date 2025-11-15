@@ -1196,7 +1196,7 @@ export default function Translator() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
         </div>
       </section>
 
