@@ -48,15 +48,15 @@ export default function Translator() {
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
 
-  // ===== tabs (Testua / Dokumentua / URL) =====
+  // ===== tabs (Texto / Documento / URL) =====
   const [sourceMode, setSourceMode] = useState("text"); // "text" | "document" | "url"
 
-  // Documentos (solo UI, como en Resumen)
+  // Documentos (solo UI)
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
-  // URLs (solo UI, como en Resumen)
+  // URLs (solo UI)
   const [urlInputOpen, setUrlInputOpen] = useState(false);
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
@@ -117,7 +117,7 @@ export default function Translator() {
     autoResize(rightTA.current);
   }, [rightText]);
 
-  // ==== Traducción con OpenAI vía /api/chat (debounced) ====
+  // ==== Traducción con OpenAI vía /api/chat (modo TEXTO, debounced) ====
   useEffect(() => {
     if (sourceMode !== "text") return; // solo traducimos cuando está en modo texto
 
@@ -150,6 +150,10 @@ export default function Translator() {
           body: JSON.stringify({
             model: "gpt-4o-mini",
             temperature: 0.2,
+            mode: "translate_text",
+            src,
+            dst,
+            text: leftText,
             messages: [
               { role: "system", content: system },
               { role: "user", content: leftText },
@@ -164,7 +168,7 @@ export default function Translator() {
         }
 
         const data = await res.json();
-        setRightText(data?.content ?? "");
+        setRightText(data?.content ?? data?.translation ?? "");
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate error:", e);
@@ -180,6 +184,75 @@ export default function Translator() {
       controller.abort();
     };
   }, [leftText, src, dst, sourceMode]);
+
+  // ==== Traducción desde URLs (modo URL, automática al subir URLs) ====
+  useEffect(() => {
+    if (sourceMode !== "url") return;
+
+    if (!urlItems.length) {
+      setRightText("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const run = async () => {
+      try {
+        setLoading(true);
+        setErr("");
+
+        const urls = urlItems.map((u) => u.url);
+
+        const system = `${directionText(
+          src,
+          dst
+        )}. Tienes que traducir el contenido de las siguientes páginas web. Devuelve SOLO el texto traducido final, en el idioma de destino. Mantén en la medida de lo posible la estructura (párrafos, listas, títulos).`;
+
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            mode: "translate_urls",
+            src,
+            dst,
+            urls,
+            model: "gpt-4o-mini",
+            temperature: 0.2,
+            messages: [
+              { role: "system", content: system },
+              {
+                role: "user",
+                content: urls.join("\n"),
+              },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          const raw = await res.text().catch(() => "");
+          console.error("API /api/chat (urls) error:", res.status, raw);
+          throw new Error(`API /api/chat (urls) ${res.status}`);
+        }
+
+        const data = await res.json();
+        setRightText(data?.content ?? data?.translation ?? "");
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          console.error("translate urls error:", e);
+          setErr("No se pudo traducir la URL ahora mismo.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+
+    return () => {
+      controller.abort();
+    };
+  }, [sourceMode, src, dst, urlItems]);
 
   const Item = ({ active, label, onClick }) => (
     <button
@@ -629,11 +702,11 @@ export default function Translator() {
                   <span className="ml-4 h-5 w-px bg-slate-200" />
                 </div>
 
-                {/* selector de idioma perfectamente centrado respecto a la línea del medio */}
-                <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                 <div className="grid grid-cols-[auto_auto_auto] items-center gap-12 pointer-events-auto"> 
-                    {/* izquierda */}
-                    <div className="relative" ref={leftRef}>
+                {/* selector: solo las flechas centradas */}
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <div className="relative pointer-events-auto flex items-center">
+                    {/* idioma izquierda */}
+                    <div className="relative mr-16" ref={leftRef}>
                       <button
                         type="button"
                         onClick={() => {
@@ -671,12 +744,12 @@ export default function Translator() {
                       />
                     </div>
 
-                    {/* swap */}
+                    {/* flechas EXACTAMENTE centradas */}
                     <button
                       type="button"
                       aria-label="Intercambiar idiomas"
                       onClick={swap}
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
+                      className="absolute left-1/2 -translate-x-1/2 inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
                     >
                       <svg
                         width="18"
@@ -701,8 +774,8 @@ export default function Translator() {
                       </svg>
                     </button>
 
-                    {/* derecha */}
-                    <div className="relative" ref={rightRef}>
+                    {/* idioma derecha */}
+                    <div className="relative ml-16" ref={rightRef}>
                       <button
                         type="button"
                         onClick={() => {
