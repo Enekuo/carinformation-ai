@@ -86,12 +86,11 @@ export default function Translator() {
   const mediaRecorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
   const micChunksRef = useRef([]);
- 
+
   // Error Texto, Documento o URL //
   const labelErrorText = tr("translator.error_text");
   const labelErrorDocument = tr("translator.error_document");
   const labelErrorUrlAccess = tr("translator.error_url_access");
-
 
   useEffect(
     () => () => {
@@ -175,11 +174,33 @@ export default function Translator() {
     "Lo siento, no puedo ayudar con eso."
   );
 
+  // === Normalización de texto devuelto por la API (claves → traducción) ===
   const normalizeApiText = (raw) => {
     if (!raw) return "";
     const trimmed = raw.trim();
     const lower = trimmed.toLowerCase();
 
+    // 1) Claves que puede devolver la API
+    if (trimmed === "translator.blocked_message") {
+      return labelBlockedMessage;
+    }
+    if (
+      trimmed === "translator.error_text" ||
+      trimmed === "translator.error_generic"
+    ) {
+      return labelErrorText;
+    }
+    if (trimmed === "translator.error_document") {
+      return labelErrorDocument;
+    }
+    if (
+      trimmed === "translator.error_url_access" ||
+      trimmed === "translator.error_url"
+    ) {
+      return labelErrorUrlAccess;
+    }
+
+    // 2) Frases literales típicas que ya hemos visto en castellano
     if (
       trimmed === "Lo siento no puedo ayudar con eso." ||
       trimmed === "Lo siento, no puedo ayudar con eso." ||
@@ -187,6 +208,7 @@ export default function Translator() {
     ) {
       return labelBlockedMessage;
     }
+
     return raw;
   };
 
@@ -419,7 +441,7 @@ export default function Translator() {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRef.current.onpause = () => {};
+      audioElRefRef.current.onpause = () => {};
     }
 
     const ctrl = new AbortController();
