@@ -7,7 +7,6 @@ import {
   Mic,
   Trash2,
   Check,
-  Square,
   FileText,
   File as FileIcon,
   Link2 as UrlIcon,
@@ -36,6 +35,7 @@ export default function Translator() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
+  // ===== estado idioma / texto =====
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
@@ -48,15 +48,15 @@ export default function Translator() {
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
 
-  // ===== fuente (Testua / Dokumentua / URLa) =====
+  // ===== tabs (Testua / Dokumentua / URL) =====
   const [sourceMode, setSourceMode] = useState("text"); // "text" | "document" | "url"
 
-  // Documentos
+  // Documentos (solo UI, como en Resumen)
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
-  // URLs
+  // URLs (solo UI, como en Resumen)
   const [urlInputOpen, setUrlInputOpen] = useState(false);
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
@@ -92,7 +92,7 @@ export default function Translator() {
     setDst(src);
   };
 
-  // cerrar dropdowns
+  // cerrar dropdowns de idioma
   useEffect(() => {
     const onDown = (e) => {
       if (leftRef.current && !leftRef.current.contains(e.target))
@@ -119,6 +119,8 @@ export default function Translator() {
 
   // ==== Traducción con OpenAI vía /api/chat (debounced) ====
   useEffect(() => {
+    if (sourceMode !== "text") return; // solo traducimos cuando está en modo texto
+
     if (leftText.length < MAX_CHARS) setErr("");
 
     if (!leftText.trim()) {
@@ -177,7 +179,7 @@ export default function Translator() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [leftText, src, dst]);
+  }, [leftText, src, dst, sourceMode]);
 
   const Item = ({ active, label, onClick }) => (
     <button
@@ -227,10 +229,11 @@ export default function Translator() {
     );
   };
 
-  // ===== labels compartidos con Resumen =====
-  const labelTabText = tr("summary.sources_tab_text", "Texto");
-  const labelTabDocument = tr("summary.sources_tab_document", "Documento");
-  const labelTabUrl = tr("summary.sources_tab_url", "URL");
+  // ===== etiquetas i18n de los tabs (reutilizamos claves de Resumen) =====
+  const labelTabText = tr("summary.sources_tab_text", "Testua");
+  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
+  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
+
   const labelChooseFileTitle = tr(
     "summary.choose_file_title",
     "Elige tu archivo o carpeta"
@@ -257,88 +260,15 @@ export default function Translator() {
   );
   const labelRemove = tr("summary.remove", "Quitar");
 
-  // ===== helpers documentos / urls (como en Resumen) =====
-  const parseUrlsFromText = (text) => {
-    const raw = text
-      .split(/[\s\n]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const valid = [];
-    for (const u of raw) {
-      try {
-        const url = new URL(u);
-        valid.push({ href: url.href, host: url.host });
-      } catch {}
-    }
-    const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
-  };
-
-  const triggerPick = () => fileInputRef.current?.click();
-
-  const addFiles = async (list) => {
-    if (!list?.length) return;
-    const arr = Array.from(list);
-    const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
-    setDocuments((prev) => [...prev, ...withIds]);
-  };
-
-  const onFiles = async (e) => {
-    await addFiles(e.target.files);
-    e.target.value = "";
-  };
-
-  const onDragEnter = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(true);
-  };
-  const onDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(true);
-  };
-  const onDragLeave = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-  };
-  const onDrop = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    const dt = e.dataTransfer;
-    if (dt?.files?.length) await addFiles(dt.files);
-  };
-
-  const removeDocument = (id) => {
-    setDocuments((prev) => prev.filter((d) => d.id !== id));
-  };
-
-  const addUrlsFromTextarea = () => {
-    const parsed = parseUrlsFromText(urlsTextarea);
-    if (!parsed.length) return;
-    const newItems = parsed.map((p) => ({
-      id: crypto.randomUUID(),
-      url: p.href,
-      host: p.host,
-    }));
-    setUrlItems((prev) => [...prev, ...newItems]);
-    setUrlsTextarea("");
-    setUrlInputOpen(false);
-  };
-  const removeUrl = (id) =>
-    setUrlItems((prev) => prev.filter((u) => u.id !== id));
-
   // ====== ALTAVOZ (TTS backend) ======
   const stopPlayback = () => {
+    // cancelar fetch si estaba descargando
     if (speaking && ttsAbortRef.current) {
       try {
         ttsAbortRef.current.abort();
       } catch {}
     }
+    // parar audio si estaba sonando
     const el = audioElRef.current;
     if (el) {
       try {
@@ -346,6 +276,7 @@ export default function Translator() {
         el.currentTime = 0;
       } catch {}
     }
+    // liberar URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
@@ -354,23 +285,29 @@ export default function Translator() {
   };
 
   const handleSpeakToggle = async () => {
+    // si está en modo cuadrado → parar
     if (speaking) {
       stopPlayback();
       return;
     }
 
+    // no hay texto a leer
     const text = rightText?.trim();
     if (!text) return;
 
-    setSpeaking(true);
+    setSpeaking(true); // cambia icono a cuadrado de inmediato
 
+    // preparar <audio> (lo creo una sola vez)
     if (!audioElRef.current) {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRef.current.onpause = () => {};
+      audioElRef.current.onpause = () => {
+        /* no cambiamos speaking aquí */
+      };
     }
 
+    // abort controller para poder cancelar si vuelven a pulsar
     const ctrl = new AbortController();
     ttsAbortRef.current = ctrl;
 
@@ -382,7 +319,7 @@ export default function Translator() {
         body: JSON.stringify({
           text,
           voice: "alloy",
-          format: "wav",
+          format: "wav", // menor latencia que mp3
         }),
       });
 
@@ -396,9 +333,11 @@ export default function Translator() {
       const blob = await resp.blob();
       const url = URL.createObjectURL(blob);
 
+      // liberar anterior si existe
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       setAudioUrl(url);
 
+      // reproducir
       const el = audioElRef.current;
       el.src = url;
       el.oncanplay = null;
@@ -444,6 +383,7 @@ export default function Translator() {
   };
 
   const handleToggleMic = async () => {
+    // si está grabando, pare
     if (listening) {
       setListening(false);
       stopRecording();
@@ -485,9 +425,7 @@ export default function Translator() {
             const txt = data.text.trim();
             if (txt) {
               setLeftText((prev) =>
-                prev
-                  ? (prev + "\n" + txt).slice(0, MAX_CHARS)
-                  : txt.slice(0, MAX_CHARS)
+                (prev ? prev + "\n" + txt : txt).slice(0, MAX_CHARS)
               );
             }
           } else {
@@ -546,118 +484,264 @@ export default function Translator() {
     w.print();
   };
 
+  // ===== helpers Documentos / URLs (solo UI) =====
+  const addFiles = async (list) => {
+    if (!list?.length) return;
+    const arr = Array.from(list);
+    const withIds = arr.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+    }));
+    setDocuments((prev) => [...prev, ...withIds]);
+  };
+
+  const onFiles = async (e) => {
+    await addFiles(e.target.files);
+    e.target.value = "";
+  };
+
+  const onDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+  const onDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+  const onDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+  const onDrop = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    const dt = e.dataTransfer;
+    if (dt?.files?.length) await addFiles(dt.files);
+  };
+
+  const removeDocument = (id) => {
+    setDocuments((prev) => prev.filter((d) => d.id !== id));
+  };
+
+  const parseUrlsFromText = (text) => {
+    const raw = text
+      .split(/[\s\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const valid = [];
+    for (const u of raw) {
+      try {
+        const url = new URL(u);
+        valid.push({ href: url.href, host: url.host });
+      } catch {}
+    }
+    const seen = new Set();
+    return valid.filter((v) =>
+      seen.has(v.href) ? false : (seen.add(v.href), true)
+    );
+  };
+
+  const addUrlsFromTextarea = () => {
+    const parsed = parseUrlsFromText(urlsTextarea);
+    if (!parsed.length) return;
+    const newItems = parsed.map((p) => ({
+      id: crypto.randomUUID(),
+      url: p.href,
+      host: p.host,
+    }));
+    setUrlItems((prev) => [...prev, ...newItems]);
+    setUrlsTextarea("");
+    setUrlInputOpen(false);
+  };
+
+  const removeUrl = (id) =>
+    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+
   return (
     <>
-      {/* CAMBIO: solo alargamos el fondo con más padding inferior */}
       <section className="w-full bg-[#F4F8FF] pt-10 pb-24 md:pb-40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
-            {/* barra superior */}
+            {/* barra superior: tabs a la izquierda + selector de idioma centrado */}
             <div className="relative h-12 border-b border-slate-200">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
-                  {/* izquierda */}
-                  <div className="relative" ref={leftRef}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOpenLeft((v) => !v);
-                        setOpenRight(false);
-                      }}
-                      className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
-                    >
-                      <span>{OPTIONS.find((o) => o.value === src)?.label}</span>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M6 9l6 6 6-6"
-                          stroke="#334155"
-                          strokeWidth="1.7"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                    <Dropdown
-                      open={openLeft}
-                      selected={src}
-                      onSelect={(val) => {
-                        setSrc(val);
-                        setOpenLeft(false);
-                      }}
-                      align="left"
-                    />
-                  </div>
-
-                  {/* swap */}
+              <div className="absolute inset-0 flex items-center justify-between px-6">
+                {/* Tabs a la izquierda (misma posición que antes) */}
+                <div className="flex items-center gap-4">
+                  {/* Testua */}
                   <button
                     type="button"
-                    aria-label="Intercambiar idiomas"
-                    onClick={swap}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
+                    onClick={() => setSourceMode("text")}
+                    className={`inline-flex items-center gap-2 text-sm font-medium ${
+                      sourceMode === "text"
+                        ? "text-blue-600"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
                   >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M7 7h11M7 7l3-3M7 7l3 3"
-                        stroke="#475569"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M17 17H6M17 17l-3-3M17 17l-3 3"
-                        stroke="#475569"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <FileText
+                      className={`w-4 h-4 ${
+                        sourceMode === "text"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabText}</span>
                   </button>
 
-                  {/* derecha */}
-                  <div className="relative" ref={rightRef}>
+                  {/* Dokumentua */}
+                  <button
+                    type="button"
+                    onClick={() => setSourceMode("document")}
+                    className={`inline-flex items-center gap-2 text-sm font-medium ${
+                      sourceMode === "document"
+                        ? "text-blue-600"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <FileIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "document"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabDocument}</span>
+                  </button>
+
+                  {/* URL */}
+                  <button
+                    type="button"
+                    onClick={() => setSourceMode("url")}
+                    className={`inline-flex items-center gap-2 text-sm font-medium ${
+                      sourceMode === "url"
+                        ? "text-blue-600"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <UrlIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "url"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabUrl}</span>
+                  </button>
+                </div>
+
+                {/* selector de idioma centrado como antes */}
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
+                    {/* izquierda */}
+                    <div className="relative" ref={leftRef}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpenLeft((v) => !v);
+                          setOpenRight(false);
+                        }}
+                        className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                      >
+                        <span>
+                          {OPTIONS.find((o) => o.value === src)?.label}
+                        </span>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M6 9l6 6 6-6"
+                            stroke="#334155"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <Dropdown
+                        open={openLeft}
+                        selected={src}
+                        onSelect={(val) => {
+                          setSrc(val);
+                          setOpenLeft(false);
+                        }}
+                        align="left"
+                      />
+                    </div>
+
+                    {/* swap */}
                     <button
                       type="button"
-                      onClick={() => {
-                        setOpenRight((v) => !v);
-                        setOpenLeft(false);
-                      }}
-                      className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                      aria-label="Intercambiar idiomas"
+                      onClick={swap}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
                     >
-                      <span>{OPTIONS.find((o) => o.value === dst)?.label}</span>
                       <svg
-                        width="14"
-                        height="14"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
                         fill="none"
                       >
                         <path
-                          d="M6 9l6 6 6-6"
-                          stroke="#334155"
+                          d="M7 7h11M7 7l3-3M7 7l3 3"
+                          stroke="#475569"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M17 17H6M17 17l-3-3M17 17l-3 3"
+                          stroke="#475569"
                           strokeWidth="1.7"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                       </svg>
                     </button>
-                    <Dropdown
-                      open={openRight}
-                      selected={dst}
-                      onSelect={(val) => {
-                        setDst(val);
-                        setOpenRight(false);
-                      }}
-                      align="right"
-                    />
+
+                    {/* derecha */}
+                    <div className="relative" ref={rightRef}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpenRight((v) => !v);
+                          setOpenLeft(false);
+                        }}
+                        className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                      >
+                        <span>
+                          {OPTIONS.find((o) => o.value === dst)?.label}
+                        </span>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M6 9l6 6 6-6"
+                            stroke="#334155"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <Dropdown
+                        open={openRight}
+                        selected={dst}
+                        onSelect={(val) => {
+                          setDst(val);
+                          setOpenRight(false);
+                        }}
+                        align="right"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -665,72 +749,8 @@ export default function Translator() {
 
             {/* paneles */}
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              {/* IZQUIERDA: entrada */}
+              {/* IZQUIERDA: entrada / documentos / URL según tab */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-                {/* Tabs: Testua / Dokumentua / URLa */}
-                <div className="flex items-center gap-4 border-b border-slate-200 pb-2 mb-4">
-                  {/* Testua */}
-                  <button
-                    type="button"
-                    onClick={() => setSourceMode("text")}
-                    className={`flex items-center gap-2 text-sm font-medium ${
-                      sourceMode === "text"
-                        ? "text-sky-600"
-                        : "text-slate-600 hover:text-slate-800"
-                    }`}
-                  >
-                    <FileText
-                      className={`w-4 h-4 ${
-                        sourceMode === "text" ? "text-sky-600" : ""
-                      }`}
-                    />
-                    <span>{labelTabText}</span>
-                  </button>
-
-                  <span className="h-5 w-px bg-slate-200" />
-
-                  {/* Dokumentua */}
-                  <button
-                    type="button"
-                    onClick={() => setSourceMode("document")}
-                    className={`flex items-center gap-2 text-sm font-medium ${
-                      sourceMode === "document"
-                        ? "text-sky-600"
-                        : "text-slate-600 hover:text-slate-800"
-                    }`}
-                  >
-                    <FileIcon
-                      className={`w-4 h-4 ${
-                        sourceMode === "document" ? "text-sky-600" : ""
-                      }`}
-                    />
-                    <span>{labelTabDocument}</span>
-                  </button>
-
-                  <span className="h-5 w-px bg-slate-200" />
-
-                  {/* URLa */}
-                  <button
-                    type="button"
-                    onClick={() => setSourceMode("url")}
-                    className={`flex items-center gap-2 text-sm font-medium ${
-                      sourceMode === "url"
-                        ? "text-sky-600"
-                        : "text-slate-600 hover:text-slate-800"
-                    }`}
-                  >
-                    <UrlIcon
-                      className={`w-4 h-4 ${
-                        sourceMode === "url" ? "text-sky-600" : ""
-                      }`}
-                    />
-                    <span>{labelTabUrl}</span>
-                  </button>
-                </div>
-
-                {/* CONTENIDO SEGÚN TAB */}
-
-                {/* 1) TEXTO */}
                 {sourceMode === "text" && (
                   <>
                     <textarea
@@ -774,7 +794,6 @@ export default function Translator() {
                   </>
                 )}
 
-                {/* 2) DOCUMENTO */}
                 {sourceMode === "document" && (
                   <div
                     className={`h-full w-full flex flex-col relative ${
@@ -795,7 +814,7 @@ export default function Translator() {
                     />
                     <button
                       type="button"
-                      onClick={triggerPick}
+                      onClick={() => fileInputRef.current?.click()}
                       className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label={labelChooseFileTitle}
                       title={labelChooseFileTitle}
@@ -849,7 +868,6 @@ export default function Translator() {
                   </div>
                 )}
 
-                {/* 3) URL */}
                 {sourceMode === "url" && (
                   <div className="h-full w-full flex flex-col">
                     <div className="mb-3 flex items-center justify-between">
@@ -991,7 +1009,9 @@ export default function Translator() {
                     type="button"
                     onClick={handleSpeakToggle}
                     aria-label={
-                      speaking ? t("translator.stop") : t("translator.listen")
+                      speaking
+                        ? t("translator.stop")
+                        : t("translator.listen")
                     }
                     aria-pressed={speaking}
                     className={`group relative p-2 rounded-md hover:bg-slate-100 ${
@@ -1004,7 +1024,9 @@ export default function Translator() {
                       <Volume2 className="w-5 h-5" />
                     )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {speaking ? t("translator.stop") : t("translator.listen")}
+                      {speaking
+                        ? t("translator.stop")
+                        : t("translator.listen")}
                     </span>
                   </button>
 
@@ -1021,7 +1043,9 @@ export default function Translator() {
                       <CopyIcon className="w-5 h-5" />
                     )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copied ? t("translator.copied") : t("translator.copy")}
+                      {copied
+                        ? t("translator.copied")
+                        : t("translator.copy")}
                     </span>
                   </button>
 
