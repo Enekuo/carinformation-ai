@@ -568,9 +568,9 @@ export default function Translator() {
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior: tabs a la izquierda + selector de idioma centrado */}
             <div className="relative h-12 border-b border-slate-200">
-              <div className="absolute inset-0 flex items-center justify-between px-6">
-                {/* Tabs a la izquierda (misma posición que antes) */}
-                <div className="flex items-center gap-4">
+              <div className="flex items-center h-full px-6">
+                {/* Tabs a la izquierda */}
+                <div className="flex items-center gap-6">
                   {/* Testua */}
                   <button
                     type="button"
@@ -632,9 +632,9 @@ export default function Translator() {
                   </button>
                 </div>
 
-                {/* selector de idioma centrado como antes */}
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
+                {/* selector de idioma centrado respecto a la línea del medio */}
+                <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <div className="grid grid-cols-[auto_auto_auto] items-center gap-12 pointer-events-auto">
                     {/* izquierda */}
                     <div className="relative" ref={leftRef}>
                       <button
