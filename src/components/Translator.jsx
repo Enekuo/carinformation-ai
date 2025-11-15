@@ -630,8 +630,8 @@ export default function Translator() {
                 </div>
 
                 {/* selector de idioma perfectamente centrado respecto a la línea del medio */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                 <div className="relative pointer-events-auto flex items-center">
+                <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                 <div className="grid grid-cols-[auto_auto_auto] items-center gap-12 pointer-events-auto"> 
                     {/* izquierda */}
                     <div className="relative" ref={leftRef}>
                       <button
