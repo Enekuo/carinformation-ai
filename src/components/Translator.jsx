@@ -262,13 +262,11 @@ export default function Translator() {
 
   // ====== ALTAVOZ (TTS backend) ======
   const stopPlayback = () => {
-    // cancelar fetch si estaba descargando
     if (speaking && ttsAbortRef.current) {
       try {
         ttsAbortRef.current.abort();
       } catch {}
     }
-    // parar audio si estaba sonando
     const el = audioElRef.current;
     if (el) {
       try {
@@ -276,7 +274,6 @@ export default function Translator() {
         el.currentTime = 0;
       } catch {}
     }
-    // liberar URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
@@ -285,29 +282,23 @@ export default function Translator() {
   };
 
   const handleSpeakToggle = async () => {
-    // si está en modo cuadrado → parar
     if (speaking) {
       stopPlayback();
       return;
     }
 
-    // no hay texto a leer
     const text = rightText?.trim();
     if (!text) return;
 
-    setSpeaking(true); // cambia icono a cuadrado de inmediato
+    setSpeaking(true);
 
-    // preparar <audio> (lo creo una sola vez)
     if (!audioElRef.current) {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRef.current.onpause = () => {
-        /* no cambiamos speaking aquí */
-      };
+      audioElRef.current.onpause = () => {};
     }
 
-    // abort controller para poder cancelar si vuelven a pulsar
     const ctrl = new AbortController();
     ttsAbortRef.current = ctrl;
 
@@ -319,7 +310,7 @@ export default function Translator() {
         body: JSON.stringify({
           text,
           voice: "alloy",
-          format: "wav", // menor latencia que mp3
+          format: "wav",
         }),
       });
 
@@ -333,11 +324,9 @@ export default function Translator() {
       const blob = await resp.blob();
       const url = URL.createObjectURL(blob);
 
-      // liberar anterior si existe
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       setAudioUrl(url);
 
-      // reproducir
       const el = audioElRef.current;
       el.src = url;
       el.oncanplay = null;
@@ -383,7 +372,6 @@ export default function Translator() {
   };
 
   const handleToggleMic = async () => {
-    // si está grabando, pare
     if (listening) {
       setListening(false);
       stopRecording();
@@ -569,16 +557,16 @@ export default function Translator() {
             {/* barra superior: tabs a la izquierda + selector de idioma centrado */}
             <div className="relative h-12 border-b border-slate-200">
               <div className="flex items-center h-full px-6">
-                {/* Tabs a la izquierda */}
-                <div className="flex items-center gap-6">
-                  {/* Testua */}
+                {/* Tabs a la izquierda como en la tercera imagen */}
+                <div className="flex items-center text-sm font-medium text-slate-600">
+                  {/* Texto */}
                   <button
                     type="button"
                     onClick={() => setSourceMode("text")}
-                    className={`inline-flex items-center gap-2 text-sm font-medium ${
+                    className={`inline-flex items-center gap-2 ${
                       sourceMode === "text"
                         ? "text-blue-600"
-                        : "text-slate-600 hover:text-slate-900"
+                        : "text-slate-700 hover:text-slate-900"
                     }`}
                   >
                     <FileText
@@ -591,14 +579,17 @@ export default function Translator() {
                     <span>{labelTabText}</span>
                   </button>
 
-                  {/* Dokumentua */}
+                  {/* línea separadora */}
+                  <span className="mx-4 h-5 w-px bg-slate-200" />
+
+                  {/* Documento */}
                   <button
                     type="button"
                     onClick={() => setSourceMode("document")}
-                    className={`inline-flex items-center gap-2 text-sm font-medium ${
+                    className={`inline-flex items-center gap-2 ${
                       sourceMode === "document"
                         ? "text-blue-600"
-                        : "text-slate-600 hover:text-slate-900"
+                        : "text-slate-700 hover:text-slate-900"
                     }`}
                   >
                     <FileIcon
@@ -611,14 +602,17 @@ export default function Translator() {
                     <span>{labelTabDocument}</span>
                   </button>
 
+                  {/* línea separadora */}
+                  <span className="mx-4 h-5 w-px bg-slate-200" />
+
                   {/* URL */}
                   <button
                     type="button"
                     onClick={() => setSourceMode("url")}
-                    className={`inline-flex items-center gap-2 text-sm font-medium ${
+                    className={`inline-flex items-center gap-2 ${
                       sourceMode === "url"
                         ? "text-blue-600"
-                        : "text-slate-600 hover:text-slate-900"
+                        : "text-slate-700 hover:text-slate-900"
                     }`}
                   >
                     <UrlIcon
@@ -630,9 +624,12 @@ export default function Translator() {
                     />
                     <span>{labelTabUrl}</span>
                   </button>
+
+                  {/* línea final después de URL */}
+                  <span className="ml-4 h-5 w-px bg-slate-200" />
                 </div>
 
-                {/* selector de idioma centrado respecto a la línea del medio */}
+                {/* selector de idioma perfectamente centrado respecto a la línea del medio */}
                 <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                   <div className="grid grid-cols-[auto_auto_auto] items-center gap-12 pointer-events-auto">
                     {/* izquierda */}
@@ -763,13 +760,10 @@ export default function Translator() {
                       placeholder={t("translator.left_placeholder")}
                       className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
                     />
-                    {/* contador abajo a la derecha */}
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                       {leftText.length.toLocaleString()} /{" "}
                       {MAX_CHARS.toLocaleString()}
                     </div>
-
-                    {/* MIC abajo a la izquierda */}
                     <div className="absolute bottom-4 left-6">
                       <button
                         type="button"
@@ -966,7 +960,6 @@ export default function Translator() {
 
               {/* DERECHA: salida */}
               <div className="p-8 md:p-10 relative">
-                {/* Botón BORRAR arriba-derecha (borra la IZQUIERDA) */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -993,18 +986,14 @@ export default function Translator() {
                     loading ? "italic text-slate-500" : ""
                   }`}
                 />
-                {/* error arriba (ya existente) */}
                 {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
-                {/* error abajo alineado al contador */}
                 {err && (
                   <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                     {err}
                   </div>
                 )}
 
-                {/* Acciones abajo a la derecha */}
                 <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
-                  {/* Escuchar (TTS backend) */}
                   <button
                     type="button"
                     onClick={handleSpeakToggle}
@@ -1030,7 +1019,6 @@ export default function Translator() {
                     </span>
                   </button>
 
-                  {/* Copiar (con ✓ al pulsar) */}
                   <button
                     type="button"
                     onClick={handleCopy}
@@ -1049,7 +1037,6 @@ export default function Translator() {
                     </span>
                   </button>
 
-                  {/* PDF */}
                   <button
                     type="button"
                     onClick={handleDownloadPdf}
@@ -1068,9 +1055,7 @@ export default function Translator() {
         </div>
       </section>
 
-      {/* CTA */}
       <CtaSection />
-      {/* FOOTER */}
       <Footer />
     </>
   );
