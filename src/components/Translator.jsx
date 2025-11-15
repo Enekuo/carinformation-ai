@@ -31,6 +31,13 @@ const directionText = (src, dst) => {
   return "Traduce manteniendo el sentido y el formato";
 };
 
+// Nombre legible de idioma para el prompt
+const languageNameForPrompt = (code) => {
+  if (code === "es") return "español";
+  if (code === "eus") return "euskera";
+  return "el idioma de destino";
+};
+
 export default function Translator() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
@@ -165,9 +172,12 @@ export default function Translator() {
   const normalizeApiText = (raw) => {
     if (!raw) return "";
     const trimmed = raw.trim();
+    const lower = trimmed.toLowerCase();
+
     if (
       trimmed === "Lo siento no puedo ayudar con eso." ||
-      trimmed === "Lo siento, no puedo ayudar con eso."
+      trimmed === "Lo siento, no puedo ayudar con eso." ||
+      lower.includes("no puedo acceder a contenido de páginas web externas")
     ) {
       return labelBlockedMessage;
     }
@@ -198,7 +208,9 @@ export default function Translator() {
         const system = `${directionText(
           src,
           dst
-        )}. Responde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
+        )}. Responde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios. Responde SIEMPRE en ${languageNameForPrompt(
+          dst
+        )}, incluso si no puedes realizar la tarea o hay algún problema. Explica el problema en ese idioma.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -265,7 +277,9 @@ export default function Translator() {
         const system = `${directionText(
           src,
           dst
-        )}. Tienes que traducir el contenido de las siguientes páginas web. Devuelve SOLO el texto traducido final, en el idioma de destino. Mantén en la medida de lo posible la estructura (párrafos, listas, títulos).`;
+        )}. Tienes que traducir el contenido de las siguientes páginas web. Devuelve SOLO el texto traducido final, en el idioma de destino. Mantén en la medida de lo posible la estructura (párrafos, listas, títulos). Responde SIEMPRE en ${languageNameForPrompt(
+          dst
+        )}, incluso si no puedes acceder al contenido de las páginas o hay algún problema. Explica el problema en ese idioma.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
