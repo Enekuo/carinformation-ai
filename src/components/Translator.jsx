@@ -1,6 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/lib/translations";
-import { Volume2, Copy as CopyIcon, FileDown, Mic, Trash2, Check, Square } from "lucide-react";
+import {
+  Volume2,
+  Copy as CopyIcon,
+  FileDown,
+  Mic,
+  Trash2,
+  Check,
+  Square,
+  FileText,
+  File as FileIcon,
+  Link2 as UrlIcon,
+} from "lucide-react";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -458,6 +469,42 @@ export default function Translator() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
+                {/* Tabs: Testua / Dokumentua / URLa */}
+                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4">
+                  {/* Testua */}
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Testua</span>
+                  </button>
+
+                  {/* Separador */}
+                  <span className="h-5 w-px bg-slate-200" />
+
+                  {/* Dokumentua */}
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                  >
+                    <FileIcon className="w-4 h-4" />
+                    <span>Dokumentua</span>
+                  </button>
+
+                  {/* Separador */}
+                  <span className="h-5 w-px bg-slate-200" />
+
+                  {/* URLa */}
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                  >
+                    <UrlIcon className="w-4 h-4" />
+                    <span>URLa</span>
+                  </button>
+                </div>
+
                 <textarea
                   ref={leftTA}
                   value={leftText}
