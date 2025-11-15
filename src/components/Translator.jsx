@@ -174,13 +174,14 @@ export default function Translator() {
     "Lo siento, no puedo ayudar con eso."
   );
 
-  // === Normalización de texto devuelto por la API (claves → traducción) ===
+  // === Normalización de texto devuelto por la API (claves → mensaje según idioma) ===
   const normalizeApiText = (raw) => {
     if (!raw) return "";
-    const trimmed = raw.trim();
+
+    const trimmed = String(raw).trim();
     const lower = trimmed.toLowerCase();
 
-    // 1) Claves que puede devolver la API
+    // 1) La API puede devolver directamente claves internas
     if (trimmed === "translator.blocked_message") {
       return labelBlockedMessage;
     }
@@ -200,7 +201,7 @@ export default function Translator() {
       return labelErrorUrlAccess;
     }
 
-    // 2) Frases literales típicas que ya hemos visto en castellano
+    // 2) Frases literales en castellano que ya vimos antes
     if (
       trimmed === "Lo siento no puedo ayudar con eso." ||
       trimmed === "Lo siento, no puedo ayudar con eso." ||
@@ -209,7 +210,8 @@ export default function Translator() {
       return labelBlockedMessage;
     }
 
-    return raw;
+    // 3) En cualquier otro caso, devolvemos el texto tal cual
+    return trimmed;
   };
 
   // ==== Traducción con OpenAI vía /api/chat (modo TEXTO, debounced) ====
@@ -441,7 +443,7 @@ export default function Translator() {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRefRef.current.onpause = () => {};
+      audioElRef.current.onpause = () => {};
     }
 
     const ctrl = new AbortController();
@@ -1196,7 +1198,7 @@ export default function Translator() {
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
         </div>
       </section>
 
