@@ -117,6 +117,63 @@ export default function Translator() {
     autoResize(rightTA.current);
   }, [rightText]);
 
+  // ===== etiquetas i18n de los tabs (reutilizamos claves de Resumen) =====
+  const labelTabText = tr("summary.sources_tab_text", "Testua");
+  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
+  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
+
+  const labelChooseFileTitle = tr(
+    "summary.choose_file_title",
+    "Elige tu archivo o carpeta"
+  );
+  const labelAcceptedFormats = tr(
+    "summary.accepted_formats",
+    "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…"
+  );
+  const labelFolderHint = tr(
+    "summary.folder_hint",
+    "Puedes arrastrar varios archivos a la vez."
+  );
+  const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("summary.add_url", "Añadir URLs");
+  const labelSaveUrls = tr("summary.save_urls", "Guardar");
+  const labelCancel = tr("summary.cancel", "Cancelar");
+  const labelUrlsNoteVisible = tr(
+    "summary.urls_note_visible",
+    "Solo se importará el texto visible del sitio web."
+  );
+  const labelUrlsNotePaywalled = tr(
+    "summary.urls_note_paywalled",
+    "No se admiten artículos de pago."
+  );
+  const labelRemove = tr("summary.remove", "Quitar");
+
+  // Mensajes de error / bloqueo (multi-idioma)
+  const labelErrorGeneric = tr(
+    "translator.error_generic",
+    "No se pudo traducir ahora mismo."
+  );
+  const labelErrorUrl = tr(
+    "translator.error_url",
+    "No se pudo traducir la URL ahora mismo."
+  );
+  const labelBlockedMessage = tr(
+    "translator.blocked_message",
+    "Lo siento, no puedo ayudar con eso."
+  );
+
+  const normalizeApiText = (raw) => {
+    if (!raw) return "";
+    const trimmed = raw.trim();
+    if (
+      trimmed === "Lo siento no puedo ayudar con eso." ||
+      trimmed === "Lo siento, no puedo ayudar con eso."
+    ) {
+      return labelBlockedMessage;
+    }
+    return raw;
+  };
+
   // ==== Traducción con OpenAI vía /api/chat (modo TEXTO, debounced) ====
   useEffect(() => {
     if (sourceMode !== "text") return; // solo traducimos cuando está en modo texto
@@ -168,11 +225,13 @@ export default function Translator() {
         }
 
         const data = await res.json();
-        setRightText(data?.content ?? data?.translation ?? "");
+        setRightText(
+          normalizeApiText(data?.content ?? data?.translation ?? "")
+        );
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate error:", e);
-          setErr("No se pudo traducir ahora mismo.");
+          setErr(labelErrorGeneric);
         }
       } finally {
         setLoading(false);
@@ -183,7 +242,7 @@ export default function Translator() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [leftText, src, dst, sourceMode]);
+  }, [leftText, src, dst, sourceMode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ==== Traducción desde URLs (modo URL, automática al subir URLs) ====
   useEffect(() => {
@@ -236,11 +295,13 @@ export default function Translator() {
         }
 
         const data = await res.json();
-        setRightText(data?.content ?? data?.translation ?? "");
+        setRightText(
+          normalizeApiText(data?.content ?? data?.translation ?? "")
+        );
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate urls error:", e);
-          setErr("No se pudo traducir la URL ahora mismo.");
+          setErr(labelErrorUrl);
         }
       } finally {
         setLoading(false);
@@ -252,7 +313,7 @@ export default function Translator() {
     return () => {
       controller.abort();
     };
-  }, [sourceMode, src, dst, urlItems]);
+  }, [sourceMode, src, dst, urlItems]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const Item = ({ active, label, onClick }) => (
     <button
@@ -301,37 +362,6 @@ export default function Translator() {
       </div>
     );
   };
-
-  // ===== etiquetas i18n de los tabs (reutilizamos claves de Resumen) =====
-  const labelTabText = tr("summary.sources_tab_text", "Testua");
-  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
-  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
-
-  const labelChooseFileTitle = tr(
-    "summary.choose_file_title",
-    "Elige tu archivo o carpeta"
-  );
-  const labelAcceptedFormats = tr(
-    "summary.accepted_formats",
-    "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…"
-  );
-  const labelFolderHint = tr(
-    "summary.folder_hint",
-    "Puedes arrastrar varios archivos a la vez."
-  );
-  const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("summary.add_url", "Añadir URLs");
-  const labelSaveUrls = tr("summary.save_urls", "Guardar");
-  const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "summary.urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
-  );
-  const labelUrlsNotePaywalled = tr(
-    "summary.urls_note_paywalled",
-    "No se admiten artículos de pago."
-  );
-  const labelRemove = tr("summary.remove", "Quitar");
 
   // ====== ALTAVOZ (TTS backend) ======
   const stopPlayback = () => {
@@ -630,7 +660,7 @@ export default function Translator() {
             {/* barra superior: tabs a la izquierda + selector de idioma centrado */}
             <div className="relative h-12 border-b border-slate-200">
               <div className="flex items-center h-full px-6">
-                {/* Tabs a la izquierda como en la tercera imagen */}
+                {/* Tabs a la izquierda */}
                 <div className="flex items-center text-sm font-medium text-slate-600">
                   {/* Texto */}
                   <button
