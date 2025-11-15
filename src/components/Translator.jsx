@@ -407,13 +407,13 @@ export default function Translator() {
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
-              {/* Tabs Testua / Dokumentua / URLa pegados a la izquierda */}
-              <div className="absolute inset-y-0 left-6 flex items-center">
-                <div className="flex items-center gap-6">
+              {/* Tabs Testua / Dokumentua / URLa más comprimidos y pegados a la izquierda */}
+              <div className="absolute inset-y-0 left-4 flex items-center">
+                <div className="flex items-center gap-4">
                   {/* Testua */}
                   <button
                     type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
+                    className="flex items-center gap-1.5 text-[13px] font-medium text-slate-700"
                   >
                     <FileText className="w-4 h-4" />
                     <span>Testua</span>
@@ -425,7 +425,7 @@ export default function Translator() {
                   {/* Dokumentua */}
                   <button
                     type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                    className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600"
                   >
                     <FileIcon className="w-4 h-4" />
                     <span>Dokumentua</span>
@@ -437,11 +437,14 @@ export default function Translator() {
                   {/* URLa */}
                   <button
                     type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                    className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600"
                   >
                     <UrlIcon className="w-4 h-4" />
                     <span>URLa</span>
                   </button>
+
+                  {/* Separador extra a la derecha de URLa */}
+                  <span className="h-5 w-px bg-slate-200" />
                 </div>
               </div>
 
