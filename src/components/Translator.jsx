@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useTranslation } from "@/lib/translations";
 import {
   Volume2,
@@ -22,6 +22,12 @@ const OPTIONS = [
 
 const MAX_CHARS = 5000;
 
+// mismos colores que en Resumen
+const BLUE = "#2563eb";
+const GRAY_TEXT = "#64748b";
+const GRAY_ICON = "#94a3b8";
+const DIVIDER = "#e5e7eb";
+
 // Texto de dirección para el prompt del sistema
 const directionText = (src, dst) => {
   if (src === "eus" && dst === "es") return "Traduce de Euskera a Español";
@@ -31,6 +37,7 @@ const directionText = (src, dst) => {
 
 export default function Translator() {
   const { t } = useTranslation();
+  const tr = (k, f) => t(k) || f;
 
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
@@ -62,6 +69,25 @@ export default function Translator() {
   const mediaRecorderRef = useRef(null);
   const mediaStreamRef   = useRef(null);
   const micChunksRef     = useRef([]);
+
+  // NUEVO: modo de fuente (tabs Testua / Dokumentua / URLa)
+  const [sourceMode, setSourceMode] = useState("text");
+
+  // Textos y ayuda reutilizando las mismas claves que en Resumen
+  const labelTabText = tr("summary.sources_tab_text", "Texto");
+  const labelTabDocument = tr("summary.sources_tab_document", "Documento");
+  const labelTabUrl = tr("summary.sources_tab_url", "URL");
+
+  const leftRaw = tr(
+    "summary.create_help_left",
+    "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…"
+  );
+  const [leftTitle, leftBody] = useMemo(() => {
+    const parts = (leftRaw || "").split(".");
+    const first = (parts.shift() || leftRaw || "").trim();
+    const rest = parts.join(".").trim();
+    return [first.endsWith(".") ? first : `${first}.`, rest];
+  }, [leftRaw]);
 
   useEffect(() => () => {
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
@@ -262,9 +288,7 @@ export default function Translator() {
 
       // minimizar el “delay” de arranque: reproducir al primer canplay
       const start = () => {
-        // algunos navegadores requieren resume del audio context; probar play
         el.play().catch((e) => {
-          // si el navegador bloquea, al menos mantenemos el estado cuadrado hasta que el usuario interactúe
           console.warn("Autoplay blocked:", e);
         });
       };
@@ -399,6 +423,36 @@ export default function Translator() {
     w.print();
   };
 
+  // ===== TabBtn igual que en Resumen =====
+  const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
+    <div className="relative flex-1 min-w-0 flex items-stretch">
+      <button
+        type="button"
+        onClick={onClick}
+        className="relative inline-flex w-full items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
+        style={{ color: active ? BLUE : GRAY_TEXT }}
+        aria-pressed={active}
+        aria-label={label}
+      >
+        <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
+        <span className="truncate">{label}</span>
+        {active && (
+          <span
+            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
+            style={{ backgroundColor: BLUE }}
+          />
+        )}
+      </button>
+      {showDivider && (
+        <span
+          aria-hidden
+          className="self-center"
+          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
+        />
+      )}
+    </div>
+  );
+
   return (
     <>
       {/* CAMBIO: solo alargamos el fondo con más padding inferior */}
@@ -468,70 +522,85 @@ export default function Translator() {
             {/* paneles */}
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
-              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-                {/* Tabs: Testua / Dokumentua / URLa */}
-                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4">
-                  {/* Testua */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Testua</span>
-                  </button>
-
-                  {/* Separador */}
-                  <span className="h-5 w-px bg-slate-200" />
-
-                  {/* Dokumentua */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
-                  >
-                    <FileIcon className="w-4 h-4" />
-                    <span>Dokumentua</span>
-                  </button>
-
-                  {/* Separador */}
-                  <span className="h-5 w-px bg-slate-200" />
-
-                  {/* URLa */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
-                  >
-                    <UrlIcon className="w-4 h-4" />
-                    <span>URLa</span>
-                  </button>
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative flex flex-col">
+                {/* Tabs igual que en Resumen */}
+                <div className="flex items-center px-2 border-b mb-3" style={{ borderColor: DIVIDER }}>
+                  <TabBtn
+                    active={sourceMode === "text"}
+                    icon={FileText}
+                    label={labelTabText}
+                    onClick={() => setSourceMode("text")}
+                    showDivider
+                  />
+                  <TabBtn
+                    active={sourceMode === "document"}
+                    icon={FileIcon}
+                    label={labelTabDocument}
+                    onClick={() => setSourceMode("document")}
+                    showDivider
+                  />
+                  <TabBtn
+                    active={sourceMode === "url"}
+                    icon={UrlIcon}
+                    label={labelTabUrl}
+                    onClick={() => setSourceMode("url")}
+                    showDivider={false}
+                  />
                 </div>
 
-                <textarea
-                  ref={leftTA}
-                  value={leftText}
-                  onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
-                  onInput={(e) => autoResize(e.currentTarget)}
-                  placeholder={t("translator.left_placeholder")}
-                  className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
-                />
-                {/* contador abajo a la derecha */}
-                <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
-                  {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                <div className="flex-1 overflow-hidden p-1">
+                  {/* Mensaje central por si algún día usas sourceMode = null */}
+                  {!sourceMode && (
+                    <div className="h-full w-full flex items-center justify-center">
+                      <div className="text-center px-2">
+                        <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
+                          <FileText className="w-6 h-6 text-slate-500" />
+                        </div>
+                        <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
+                        {leftBody && (
+                          <p className="mt-1 text-[13px] leading-6 text-slate-500">
+                            {leftBody}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {sourceMode === "text" && (
+                    <textarea
+                      ref={leftTA}
+                      value={leftText}
+                      onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
+                      onInput={(e) => autoResize(e.currentTarget)}
+                      placeholder={t("translator.left_placeholder")}
+                      className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                    />
+                  )}
                 </div>
 
-                {/* MIC abajo a la izquierda */}
-                <div className="absolute bottom-4 left-6">
-                  <button
-                    type="button"
-                    onClick={handleToggleMic}
-                    aria-label={t("translator.dictate")}
-                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
-                  >
-                    <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
-                    <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {listening ? t("translator.listening") : t("translator.dictate")}
-                    </span>
-                  </button>
-                </div>
+                {/* contador abajo a la derecha (solo en modo texto) */}
+                {sourceMode === "text" && (
+                  <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
+                    {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                  </div>
+                )}
+
+                {/* MIC abajo a la izquierda (solo en modo texto) */}
+                {sourceMode === "text" && (
+                  <div className="absolute bottom-4 left-6">
+                    <button
+                      type="button"
+                      onClick={handleToggleMic}
+                      aria-label={t("translator.dictate")}
+                      className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
+                    >
+                      <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
+                      <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {listening ? t("translator.listening") : t("translator.dictate")}
+                      </span>
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* DERECHA: salida */}
