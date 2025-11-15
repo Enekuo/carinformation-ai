@@ -17,7 +17,7 @@ import Footer from "@/components/Footer";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
-  { value: "es",  label: "castellano" },
+  { value: "es", label: "castellano" },
 ];
 
 const MAX_CHARS = 5000;
@@ -25,19 +25,23 @@ const MAX_CHARS = 5000;
 // Texto de dirección para el prompt del sistema
 const directionText = (src, dst) => {
   if (src === "eus" && dst === "es") return "Traduce de Euskera a Español";
-  if (src === "es"  && dst === "eus") return "Traduce de Español a Euskera";
+  if (src === "es" && dst === "eus") return "Traduce de Español a Euskera";
   return "Traduce manteniendo el sentido y el formato";
 };
 
 export default function Translator() {
   const { t } = useTranslation();
+  const tr = (k, f) => t(k) || f;
+
+  // pestañas (texto / documento / url) → por ahora solo afecta al estilo
+  const [sourceMode, setSourceMode] = useState("text"); // "text" | "document" | "url"
 
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
 
-  const [leftText, setLeftText]   = useState("");
+  const [leftText, setLeftText] = useState("");
   const [rightText, setRightText] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -45,27 +49,35 @@ export default function Translator() {
   const [listening, setListening] = useState(false);
 
   // === TTS: nuevos estados/refs ===
-  const [speaking, setSpeaking] = useState(false);     // altavoz ↔ cuadrado
-  const [audioUrl, setAudioUrl] = useState(null);      // ObjectURL del audio
-  const audioElRef = useRef(null);                     // <audio> interno
-  const ttsAbortRef = useRef(null);                    // AbortController para /api/tts
+  const [speaking, setSpeaking] = useState(false); // altavoz ↔ cuadrado
+  const [audioUrl, setAudioUrl] = useState(null); // ObjectURL del audio
+  const audioElRef = useRef(null); // <audio> interno
+  const ttsAbortRef = useRef(null); // AbortController para /api/tts
 
   const [copied, setCopied] = useState(false);
   const copyTimerRef = useRef(null);
 
-  const leftRef  = useRef(null);
+  const leftRef = useRef(null);
   const rightRef = useRef(null);
-  const leftTA   = useRef(null);
-  const rightTA  = useRef(null);
+  const leftTA = useRef(null);
+  const rightTA = useRef(null);
 
   // === refs para grabación ===
   const mediaRecorderRef = useRef(null);
-  const mediaStreamRef   = useRef(null);
-  const micChunksRef     = useRef([]);
+  const mediaStreamRef = useRef(null);
+  const micChunksRef = useRef([]);
 
-  useEffect(() => () => {
-    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
-  }, []);
+  // etiquetas de las pestañas, mismas claves que en Resumen
+  const labelTabText = tr("summary.sources_tab_text", "Testua");
+  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
+  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
+
+  useEffect(
+    () => () => {
+      if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    },
+    []
+  );
 
   const swap = () => {
     setSrc(dst);
@@ -75,8 +87,10 @@ export default function Translator() {
   // cerrar dropdowns
   useEffect(() => {
     const onDown = (e) => {
-      if (leftRef.current  && !leftRef.current.contains(e.target))  setOpenLeft(false);
-      if (rightRef.current && !rightRef.current.contains(e.target)) setOpenRight(false);
+      if (leftRef.current && !leftRef.current.contains(e.target))
+        setOpenLeft(false);
+      if (rightRef.current && !rightRef.current.contains(e.target))
+        setOpenRight(false);
     };
     window.addEventListener("mousedown", onDown);
     return () => window.removeEventListener("mousedown", onDown);
@@ -88,14 +102,21 @@ export default function Translator() {
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   };
-  useEffect(() => { autoResize(leftTA.current);  }, [leftText]);
-  useEffect(() => { autoResize(rightTA.current); }, [rightText]);
+  useEffect(() => {
+    autoResize(leftTA.current);
+  }, [leftText]);
+  useEffect(() => {
+    autoResize(rightTA.current);
+  }, [rightText]);
 
   // ==== Traducción con OpenAI vía /api/chat (debounced) ====
   useEffect(() => {
     if (leftText.length < MAX_CHARS) setErr("");
 
-    if (!leftText.trim()) { setRightText(""); return; }
+    if (!leftText.trim()) {
+      setRightText("");
+      return;
+    }
 
     if (leftText.length >= MAX_CHARS) {
       setErr(`Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres.`);
@@ -107,7 +128,10 @@ export default function Translator() {
       try {
         setLoading(true);
 
-        const system = `${directionText(src, dst)}. Responde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
+        const system = `${directionText(
+          src,
+          dst
+        )}. Responde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -118,8 +142,8 @@ export default function Translator() {
             temperature: 0.2,
             messages: [
               { role: "system", content: system },
-              { role: "user",   content: leftText }
-            ]
+              { role: "user", content: leftText },
+            ],
           }),
         });
 
@@ -141,7 +165,10 @@ export default function Translator() {
       }
     }, 450);
 
-    return () => { clearTimeout(timer); controller.abort(); };
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
   }, [leftText, src, dst]);
 
   const Item = ({ active, label, onClick }) => (
@@ -159,9 +186,18 @@ export default function Translator() {
   const Dropdown = ({ open, selected, onSelect, align = "left" }) => {
     if (!open) return null;
     return (
-      <div className={`absolute top-full mt-2 z-50 ${align === "right" ? "right-0" : "left-0"}`}>
+      <div
+        className={`absolute top-full mt-2 z-50 ${
+          align === "right" ? "right-0" : "left-0"
+        }`}
+      >
         <div className="relative">
-          <svg width="20" height="10" viewBox="0 0 20 10" className="mx-auto block">
+          <svg
+            width="20"
+            height="10"
+            viewBox="0 0 20 10"
+            className="mx-auto block"
+          >
             <path d="M0,10 L10,0 L20,10" className="fill-white" />
             <path d="M0,10 L10,0 L20,10" className="fill-none stroke-slate-200" />
           </svg>
@@ -184,7 +220,9 @@ export default function Translator() {
   const stopPlayback = () => {
     // cancelar fetch si estaba descargando
     if (speaking && ttsAbortRef.current) {
-      try { ttsAbortRef.current.abort(); } catch {}
+      try {
+        ttsAbortRef.current.abort();
+      } catch {}
     }
     // parar audio si estaba sonando
     const el = audioElRef.current;
@@ -220,7 +258,9 @@ export default function Translator() {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRef.current.onpause  = () => {/* no cambiamos speaking aquí para respetar el toggle */};
+      audioElRef.current.onpause = () => {
+        /* no cambiamos speaking aquí para respetar el toggle */
+      };
     }
 
     // abort controller para poder cancelar si vuelven a pulsar
@@ -236,7 +276,7 @@ export default function Translator() {
         body: JSON.stringify({
           text,
           voice: "alloy",
-          format: "wav"   // <- menor latencia que mp3
+          format: "wav", // <- menor latencia que mp3
         }),
       });
 
@@ -248,7 +288,7 @@ export default function Translator() {
       }
 
       const blob = await resp.blob();
-      const url  = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
 
       // liberar anterior si existe
       if (audioUrl) URL.revokeObjectURL(audioUrl);
@@ -280,7 +320,6 @@ export default function Translator() {
       el.onended = () => {
         setSpeaking(false);
       };
-
     } catch (e) {
       if (e.name !== "AbortError") {
         console.error("tts fetch error:", e);
@@ -292,7 +331,10 @@ export default function Translator() {
   // ====== MIC (grabar → /api/transcribe) ======
   const stopRecording = () => {
     try {
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== "inactive"
+      ) {
         mediaRecorderRef.current.stop();
       }
       if (mediaStreamRef.current) {
@@ -336,12 +378,19 @@ export default function Translator() {
           form.append("file", blob, "audio.webm");
           form.append("model", "whisper-1");
 
-          const r = await fetch("/api/transcribe", { method: "POST", body: form });
+          const r = await fetch("/api/transcribe", {
+            method: "POST",
+            body: form,
+          });
           const data = await r.json().catch(() => null);
           if (data?.ok && typeof data.text === "string") {
             const txt = data.text.trim();
             if (txt) {
-              setLeftText((prev) => (prev ? (prev + "\n" + txt).slice(0, MAX_CHARS) : txt.slice(0, MAX_CHARS)));
+              setLeftText((prev) =>
+                prev
+                  ? (prev + "\n" + txt).slice(0, MAX_CHARS)
+                  : txt.slice(0, MAX_CHARS)
+              );
             }
           } else {
             console.error("transcribe fail:", data);
@@ -407,66 +456,114 @@ export default function Translator() {
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
-              {/* Tabs Testua / Dokumentua / URLa más comprimidos y pegados a la izquierda */}
-              <div className="absolute inset-y-0 left-4 flex items-center">
+              {/* pestañas a la izquierda */}
+              <div className="absolute inset-y-0 left-6 flex items-center">
                 <div className="flex items-center gap-4">
                   {/* Testua */}
                   <button
                     type="button"
-                    className="flex items-center gap-1.5 text-[13px] font-medium text-slate-700"
+                    onClick={() => setSourceMode("text")}
+                    className={`flex items-center gap-2 text-[14px] font-medium ${
+                      sourceMode === "text"
+                        ? "text-blue-600"
+                        : "text-slate-600 hover:text-slate-800"
+                    }`}
                   >
-                    <FileText className="w-4 h-4" />
-                    <span>Testua</span>
+                    <FileText
+                      className={`w-4 h-4 ${
+                        sourceMode === "text"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabText}</span>
                   </button>
 
-                  {/* Separador */}
-                  <span className="h-5 w-px bg-slate-200" />
+                  <span className="h-4 w-px bg-slate-200" />
 
                   {/* Dokumentua */}
                   <button
                     type="button"
-                    className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600"
+                    onClick={() => setSourceMode("document")}
+                    className={`flex items-center gap-2 text-[14px] font-medium ${
+                      sourceMode === "document"
+                        ? "text-blue-600"
+                        : "text-slate-600 hover:text-slate-800"
+                    }`}
                   >
-                    <FileIcon className="w-4 h-4" />
-                    <span>Dokumentua</span>
+                    <FileIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "document"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabDocument}</span>
                   </button>
 
-                  {/* Separador */}
-                  <span className="h-5 w-px bg-slate-200" />
+                  <span className="h-4 w-px bg-slate-200" />
 
                   {/* URLa */}
                   <button
                     type="button"
-                    className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600"
+                    onClick={() => setSourceMode("url")}
+                    className={`flex items-center gap-2 text-[14px] font-medium ${
+                      sourceMode === "url"
+                        ? "text-blue-600"
+                        : "text-slate-600 hover:text-slate-800"
+                    }`}
                   >
-                    <UrlIcon className="w-4 h-4" />
-                    <span>URLa</span>
+                    <UrlIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "url"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabUrl}</span>
                   </button>
 
-                  {/* Separador extra a la derecha de URLa */}
-                  <span className="h-5 w-px bg-slate-200" />
+                  {/* línea para “cerrar” el último botón */}
+                  <span className="h-4 w-px bg-slate-200" />
                 </div>
               </div>
 
-              {/* Selector de idiomas centrado (sin cambios) */}
+              {/* selector de idiomas centrado (como estaba) */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
                   {/* izquierda */}
                   <div className="relative" ref={leftRef}>
                     <button
                       type="button"
-                      onClick={() => { setOpenLeft(v => !v); setOpenRight(false); }}
+                      onClick={() => {
+                        setOpenLeft((v) => !v);
+                        setOpenRight(false);
+                      }}
                       className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
                     >
-                      <span>{OPTIONS.find(o => o.value === src)?.label}</span>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                        <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                      <span>{OPTIONS.find((o) => o.value === src)?.label}</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M6 9l6 6 6-6"
+                          stroke="#334155"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </button>
                     <Dropdown
                       open={openLeft}
                       selected={src}
-                      onSelect={(val) => { setSrc(val); setOpenLeft(false); }}
+                      onSelect={(val) => {
+                        setSrc(val);
+                        setOpenLeft(false);
+                      }}
                       align="left"
                     />
                   </div>
@@ -478,9 +575,26 @@ export default function Translator() {
                     onClick={swap}
                     className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M7 7h11M7 7l3-3M7 7l3 3"
+                        stroke="#475569"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M17 17H6M17 17l-3-3M17 17l-3 3"
+                        stroke="#475569"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </button>
 
@@ -488,18 +602,35 @@ export default function Translator() {
                   <div className="relative" ref={rightRef}>
                     <button
                       type="button"
-                      onClick={() => { setOpenRight(v => !v); setOpenLeft(false); }}
+                      onClick={() => {
+                        setOpenRight((v) => !v);
+                        setOpenLeft(false);
+                      }}
                       className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
                     >
-                      <span>{OPTIONS.find(o => o.value === dst)?.label}</span>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                        <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                      <span>{OPTIONS.find((o) => o.value === dst)?.label}</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M6 9l6 6 6-6"
+                          stroke="#334155"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </button>
                     <Dropdown
                       open={openRight}
                       selected={dst}
-                      onSelect={(val) => { setDst(val); setOpenRight(false); }}
+                      onSelect={(val) => {
+                        setDst(val);
+                        setOpenRight(false);
+                      }}
                       align="right"
                     />
                   </div>
@@ -514,14 +645,17 @@ export default function Translator() {
                 <textarea
                   ref={leftTA}
                   value={leftText}
-                  onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
+                  onChange={(e) =>
+                    setLeftText(e.target.value.slice(0, MAX_CHARS))
+                  }
                   onInput={(e) => autoResize(e.currentTarget)}
                   placeholder={t("translator.left_placeholder")}
                   className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
                 />
                 {/* contador abajo a la derecha */}
                 <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
-                  {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                  {leftText.length.toLocaleString()} /{" "}
+                  {MAX_CHARS.toLocaleString()}
                 </div>
 
                 {/* MIC abajo a la izquierda */}
@@ -530,11 +664,19 @@ export default function Translator() {
                     type="button"
                     onClick={handleToggleMic}
                     aria-label={t("translator.dictate")}
-                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
+                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                      listening ? "ring-2 ring-blue-400" : ""
+                    }`}
                   >
-                    <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
+                    <Mic
+                      className={`w-5 h-5 ${
+                        listening ? "text-blue-600" : "text-slate-600"
+                      }`}
+                    />
                     <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {listening ? t("translator.listening") : t("translator.dictate")}
+                      {listening
+                        ? t("translator.listening")
+                        : t("translator.dictate")}
                     </span>
                   </button>
                 </div>
@@ -565,7 +707,9 @@ export default function Translator() {
                   onChange={(e) => setRightText(e.target.value)}
                   onInput={(e) => autoResize(e.currentTarget)}
                   placeholder={t("translator.right_placeholder")}
-                  className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
+                  className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                    loading ? "italic text-slate-500" : ""
+                  }`}
                 />
                 {/* error arriba (ya existente) */}
                 {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
@@ -582,9 +726,13 @@ export default function Translator() {
                   <button
                     type="button"
                     onClick={handleSpeakToggle}
-                    aria-label={speaking ? t("translator.stop") : t("translator.listen")}
+                    aria-label={
+                      speaking ? t("translator.stop") : t("translator.listen")
+                    }
                     aria-pressed={speaking}
-                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${speaking ? "text-slate-900" : ""}`}
+                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                      speaking ? "text-slate-900" : ""
+                    }`}
                   >
                     {speaking ? (
                       <span className="inline-block w-[10px] h-[10px] rounded-[2px] bg-slate-600" />
@@ -592,7 +740,9 @@ export default function Translator() {
                       <Volume2 className="w-5 h-5" />
                     )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {speaking ? t("translator.stop") : t("translator.listen")}
+                      {speaking
+                        ? t("translator.stop")
+                        : t("translator.listen")}
                     </span>
                   </button>
 
@@ -603,9 +753,15 @@ export default function Translator() {
                     aria-label={t("translator.copy")}
                     className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
-                    {copied ? <Check className="w-5 h-5" /> : <CopyIcon className="w-5 h-5" />}
+                    {copied ? (
+                      <Check className="w-5 h-5" />
+                    ) : (
+                      <CopyIcon className="w-5 h-5" />
+                    )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copied ? t("translator.copied") : t("translator.copy")}
+                      {copied
+                        ? t("translator.copied")
+                        : t("translator.copy")}
                     </span>
                   </button>
 
@@ -626,7 +782,7 @@ export default function Translator() {
             </div>
           </div>
         </div>
-      </section> 
+      </section>
 
       {/* CTA */}
       <CtaSection />
