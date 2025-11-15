@@ -407,6 +407,45 @@ export default function Translator() {
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
+              {/* Tabs Testua / Dokumentua / URLa pegados a la izquierda */}
+              <div className="absolute inset-y-0 left-6 flex items-center">
+                <div className="flex items-center gap-6">
+                  {/* Testua */}
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Testua</span>
+                  </button>
+
+                  {/* Separador */}
+                  <span className="h-5 w-px bg-slate-200" />
+
+                  {/* Dokumentua */}
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                  >
+                    <FileIcon className="w-4 h-4" />
+                    <span>Dokumentua</span>
+                  </button>
+
+                  {/* Separador */}
+                  <span className="h-5 w-px bg-slate-200" />
+
+                  {/* URLa */}
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                  >
+                    <UrlIcon className="w-4 h-4" />
+                    <span>URLa</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Selector de idiomas centrado (sin cambios) */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
                   {/* izquierda */}
@@ -469,42 +508,6 @@ export default function Translator() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-                {/* Tabs: Testua / Dokumentua / URLa */}
-                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4 -mt-6 md:-mt-8">
-                  {/* Testua */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Testua</span>
-                  </button>
-
-                  {/* Separador */}
-                  <span className="h-5 w-px bg-slate-200" />
-
-                  {/* Dokumentua */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
-                  >
-                    <FileIcon className="w-4 h-4" />
-                    <span>Dokumentua</span>
-                  </button>
-
-                  {/* Separador */}
-                  <span className="h-5 w-px bg-slate-200" />
-
-                  {/* URLa */}
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-600"
-                  >
-                    <UrlIcon className="w-4 h-4" />
-                    <span>URLa</span>
-                  </button>
-                </div>
-
                 <textarea
                   ref={leftTA}
                   value={leftText}
