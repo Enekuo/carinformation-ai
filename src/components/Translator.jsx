@@ -22,7 +22,7 @@ const OPTIONS = [
 
 const MAX_CHARS = 5000;
 
-// mismos colores que en Resumen
+// Colores como en Resumen
 const BLUE = "#2563eb";
 const GRAY_TEXT = "#64748b";
 const GRAY_ICON = "#94a3b8";
@@ -70,10 +70,10 @@ export default function Translator() {
   const mediaStreamRef   = useRef(null);
   const micChunksRef     = useRef([]);
 
-  // NUEVO: modo de fuente (tabs Testua / Dokumentua / URLa)
+  // NUEVO: modo de fuente (Testua / Dokumentua / URLa)
   const [sourceMode, setSourceMode] = useState("text");
 
-  // Textos y ayuda reutilizando las mismas claves que en Resumen
+  // Textos de las tabs y ayuda (mismas claves que en Resumen)
   const labelTabText = tr("summary.sources_tab_text", "Texto");
   const labelTabDocument = tr("summary.sources_tab_document", "Documento");
   const labelTabUrl = tr("summary.sources_tab_url", "URL");
@@ -208,11 +208,9 @@ export default function Translator() {
 
   // ====== ALTAVOZ (TTS backend) ======
   const stopPlayback = () => {
-    // cancelar fetch si estaba descargando
     if (speaking && ttsAbortRef.current) {
       try { ttsAbortRef.current.abort(); } catch {}
     }
-    // parar audio si estaba sonando
     const el = audioElRef.current;
     if (el) {
       try {
@@ -220,7 +218,6 @@ export default function Translator() {
         el.currentTime = 0;
       } catch {}
     }
-    // liberar URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
@@ -229,32 +226,27 @@ export default function Translator() {
   };
 
   const handleSpeakToggle = async () => {
-    // si está en modo cuadrado → parar
     if (speaking) {
       stopPlayback();
       return;
     }
 
-    // no hay texto a leer
     const text = rightText?.trim();
     if (!text) return;
 
-    setSpeaking(true); // cambia icono a cuadrado de inmediato
+    setSpeaking(true);
 
-    // preparar <audio> (lo creo una sola vez)
     if (!audioElRef.current) {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRef.current.onpause  = () => {/* no cambiamos speaking aquí para respetar el toggle */};
+      audioElRef.current.onpause  = () => {};
     }
 
-    // abort controller para poder cancelar si vuelven a pulsar
     const ctrl = new AbortController();
     ttsAbortRef.current = ctrl;
 
     try {
-      // ⚠️ usa formato WAV para empezar antes
       const resp = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -262,7 +254,7 @@ export default function Translator() {
         body: JSON.stringify({
           text,
           voice: "alloy",
-          format: "wav"   // <- menor latencia que mp3
+          format: "wav"
         }),
       });
 
@@ -276,31 +268,26 @@ export default function Translator() {
       const blob = await resp.blob();
       const url  = URL.createObjectURL(blob);
 
-      // liberar anterior si existe
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       setAudioUrl(url);
 
-      // reproducir
       const el = audioElRef.current;
       el.src = url;
       el.oncanplay = null;
       el.oncanplaythrough = null;
 
-      // minimizar el “delay” de arranque: reproducir al primer canplay
       const start = () => {
         el.play().catch((e) => {
           console.warn("Autoplay blocked:", e);
         });
       };
 
-      // si ya está listo, arranca; si no, espera a que esté listo
       if (el.readyState >= 3) {
         start();
       } else {
         el.addEventListener("canplay", start, { once: true });
       }
 
-      // al terminar, vuelve al altavoz
       el.onended = () => {
         setSpeaking(false);
       };
@@ -327,7 +314,6 @@ export default function Translator() {
   };
 
   const handleToggleMic = async () => {
-    // si está grabando, pare
     if (listening) {
       setListening(false);
       stopRecording();
@@ -423,7 +409,7 @@ export default function Translator() {
     w.print();
   };
 
-  // ===== TabBtn igual que en Resumen =====
+  // ===== TabBtn copiado de Resumen =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
     <div className="relative flex-1 min-w-0 flex items-stretch">
       <button
@@ -455,7 +441,6 @@ export default function Translator() {
 
   return (
     <>
-      {/* CAMBIO: solo alargamos el fondo con más padding inferior */}
       <section className="w-full bg-[#F4F8FF] pt-10 pb-24 md:pb-40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
@@ -523,8 +508,8 @@ export default function Translator() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative flex flex-col">
-                {/* Tabs igual que en Resumen */}
-                <div className="flex items-center px-2 border-b mb-3" style={{ borderColor: DIVIDER }}>
+                {/* Tabs copiados de Resumen */}
+                <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
                   <TabBtn
                     active={sourceMode === "text"}
                     icon={FileText}
@@ -548,8 +533,8 @@ export default function Translator() {
                   />
                 </div>
 
-                <div className="flex-1 overflow-hidden p-1">
-                  {/* Mensaje central por si algún día usas sourceMode = null */}
+                {/* Contenido como en Resumen, pero solo implementamos TEXT por ahora */}
+                <div className="flex-1 overflow-hidden p-3">
                   {!sourceMode && (
                     <div className="h-full w-full flex items-center justify-center">
                       <div className="text-center px-2">
@@ -567,40 +552,50 @@ export default function Translator() {
                   )}
 
                   {sourceMode === "text" && (
-                    <textarea
-                      ref={leftTA}
-                      value={leftText}
-                      onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
-                      onInput={(e) => autoResize(e.currentTarget)}
-                      placeholder={t("translator.left_placeholder")}
-                      className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
-                    />
+                    <div className="h-full w-full relative">
+                      <textarea
+                        ref={leftTA}
+                        value={leftText}
+                        onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
+                        onInput={(e) => autoResize(e.currentTarget)}
+                        placeholder={t("translator.left_placeholder")}
+                        className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                      />
+
+                      {/* contador abajo a la derecha */}
+                      <div className="absolute bottom-1 right-2 text-[13px] text-slate-400">
+                        {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                      </div>
+
+                      {/* MIC abajo a la izquierda */}
+                      <div className="absolute bottom-1 left-1">
+                        <button
+                          type="button"
+                          onClick={handleToggleMic}
+                          aria-label={t("translator.dictate")}
+                          className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
+                        >
+                          <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
+                          <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                            {listening ? t("translator.listening") : t("translator.dictate")}
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {sourceMode === "document" && (
+                    <div className="h-full w-full flex items-center justify-center text-sm text-slate-400">
+                      {/* Aquí más adelante copiaremos el comportamiento de documentos de Resumen */}
+                    </div>
+                  )}
+
+                  {sourceMode === "url" && (
+                    <div className="h-full w-full flex items-center justify-center text-sm text-slate-400">
+                      {/* Aquí más adelante copiaremos el comportamiento de URLs de Resumen */}
+                    </div>
                   )}
                 </div>
-
-                {/* contador abajo a la derecha (solo en modo texto) */}
-                {sourceMode === "text" && (
-                  <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
-                    {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
-                  </div>
-                )}
-
-                {/* MIC abajo a la izquierda (solo en modo texto) */}
-                {sourceMode === "text" && (
-                  <div className="absolute bottom-4 left-6">
-                    <button
-                      type="button"
-                      onClick={handleToggleMic}
-                      aria-label={t("translator.dictate")}
-                      className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
-                    >
-                      <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
-                      <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                        {listening ? t("translator.listening") : t("translator.dictate")}
-                      </span>
-                    </button>
-                  </div>
-                )}
               </div>
 
               {/* DERECHA: salida */}
@@ -630,9 +625,7 @@ export default function Translator() {
                   placeholder={t("translator.right_placeholder")}
                   className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${loading ? "italic text-slate-500" : ""}`}
                 />
-                {/* error arriba (ya existente) */}
                 {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
-                {/* error abajo alineado al contador */}
                 {err && (
                   <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                     {err}
