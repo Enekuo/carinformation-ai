@@ -353,6 +353,34 @@ export const translations = {
     },
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* === Mensajes de error del traductor === */
+  error_generic: {
+    ES: "No se pudo traducir ahora mismo.",
+    EUS: "Ezin izan da une honetan itzuli.",
+  },
+  error_url: {
+    ES: "No se pudo traducir la URL ahora mismo.",
+    EUS: "Ezin izan da URL-a une honetan itzuli.",
+  },
+  blocked_message: {
+    ES: "Lo siento, no puedo ayudar con eso.",
+    EUS: "Barkatu, ezin dizut horretan lagundu.",
+  },
+
+
   // Toast genérico usado en el Footer (iconos sociales, etc.)
   eusToastFeatureNotImplementedTitle: {
     ES: "🚧 Funcionalidad no implementada",
@@ -362,6 +390,21 @@ export const translations = {
     ES: "Esta función aún no está implementada. ¡Pídela en tu próximo mensaje! 🚀",
     EUS: "Funtzio hau oraindik ez dago martxan. Eskatu hurrengo mezua bidaltzean! 🚀"
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
