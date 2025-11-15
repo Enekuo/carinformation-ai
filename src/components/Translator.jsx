@@ -40,7 +40,11 @@ const languageNameForPrompt = (code) => {
 
 export default function Translator() {
   const { t } = useTranslation();
-  const tr = (k, f) => t(k) || f;
+  // ⬇️ CAMBIO AQUÍ: si t(k) === k, usamos el fallback
+  const tr = (k, f) => {
+    const v = t(k);
+    return !v || v === k ? f : v;
+  };
 
   // ===== estado idioma / texto =====
   const [src, setSrc] = useState("eus");
@@ -88,9 +92,15 @@ export default function Translator() {
   const micChunksRef = useRef([]);
 
   // Error Texto, Documento o URL //
-  const labelErrorText = tr("translator.error_text");
-  const labelErrorDocument = tr("translator.error_document");
-  const labelErrorUrlAccess = tr("translator.error_url_access");
+  const labelErrorText = tr("translator.error_text", "Se ha producido un error al traducir el texto.");
+  const labelErrorDocument = tr(
+    "translator.error_document",
+    "No se ha podido procesar el documento."
+  );
+  const labelErrorUrlAccess = tr(
+    "translator.error_url_access",
+    "No se puede acceder al archivo o a la página. Comprueba la URL o inténtalo de nuevo más tarde."
+  );
 
   useEffect(
     () => () => {
@@ -174,34 +184,11 @@ export default function Translator() {
     "Lo siento, no puedo ayudar con eso."
   );
 
-  // === Normalización de texto devuelto por la API (claves → mensaje según idioma) ===
   const normalizeApiText = (raw) => {
     if (!raw) return "";
-
-    const trimmed = String(raw).trim();
+    const trimmed = raw.trim();
     const lower = trimmed.toLowerCase();
 
-    // 1) La API puede devolver directamente claves internas
-    if (trimmed === "translator.blocked_message") {
-      return labelBlockedMessage;
-    }
-    if (
-      trimmed === "translator.error_text" ||
-      trimmed === "translator.error_generic"
-    ) {
-      return labelErrorText;
-    }
-    if (trimmed === "translator.error_document") {
-      return labelErrorDocument;
-    }
-    if (
-      trimmed === "translator.error_url_access" ||
-      trimmed === "translator.error_url"
-    ) {
-      return labelErrorUrlAccess;
-    }
-
-    // 2) Frases literales en castellano que ya vimos antes
     if (
       trimmed === "Lo siento no puedo ayudar con eso." ||
       trimmed === "Lo siento, no puedo ayudar con eso." ||
@@ -209,9 +196,7 @@ export default function Translator() {
     ) {
       return labelBlockedMessage;
     }
-
-    // 3) En cualquier otro caso, devolvemos el texto tal cual
-    return trimmed;
+    return raw;
   };
 
   // ==== Traducción con OpenAI vía /api/chat (modo TEXTO, debounced) ====
