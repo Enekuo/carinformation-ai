@@ -11,7 +11,10 @@ import {
   FileText,
   File as FileIcon,
   Link2 as UrlIcon,
+  Plus,
+  X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -33,9 +36,6 @@ export default function Translator() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
-  // pestañas (texto / documento / url) → por ahora solo afecta al estilo
-  const [sourceMode, setSourceMode] = useState("text"); // "text" | "document" | "url"
-
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
@@ -47,6 +47,19 @@ export default function Translator() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
+
+  // ===== fuente (Testua / Dokumentua / URLa) =====
+  const [sourceMode, setSourceMode] = useState("text"); // "text" | "document" | "url"
+
+  // Documentos
+  const [documents, setDocuments] = useState([]); // [{id,file}]
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef(null);
+
+  // URLs
+  const [urlInputOpen, setUrlInputOpen] = useState(false);
+  const [urlsTextarea, setUrlsTextarea] = useState("");
+  const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
   // === TTS: nuevos estados/refs ===
   const [speaking, setSpeaking] = useState(false); // altavoz ↔ cuadrado
@@ -66,11 +79,6 @@ export default function Translator() {
   const mediaRecorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
   const micChunksRef = useRef([]);
-
-  // etiquetas de las pestañas, mismas claves que en Resumen
-  const labelTabText = tr("summary.sources_tab_text", "Testua");
-  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
-  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
 
   useEffect(
     () => () => {
@@ -199,7 +207,10 @@ export default function Translator() {
             className="mx-auto block"
           >
             <path d="M0,10 L10,0 L20,10" className="fill-white" />
-            <path d="M0,10 L10,0 L20,10" className="fill-none stroke-slate-200" />
+            <path
+              d="M0,10 L10,0 L20,10"
+              className="fill-none stroke-slate-200"
+            />
           </svg>
           <div className="w-48 bg-white rounded-xl shadow-lg border border-slate-200 p-2">
             {OPTIONS.map((opt) => (
@@ -216,15 +227,118 @@ export default function Translator() {
     );
   };
 
+  // ===== labels compartidos con Resumen =====
+  const labelTabText = tr("summary.sources_tab_text", "Texto");
+  const labelTabDocument = tr("summary.sources_tab_document", "Documento");
+  const labelTabUrl = tr("summary.sources_tab_url", "URL");
+  const labelChooseFileTitle = tr(
+    "summary.choose_file_title",
+    "Elige tu archivo o carpeta"
+  );
+  const labelAcceptedFormats = tr(
+    "summary.accepted_formats",
+    "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…"
+  );
+  const labelFolderHint = tr(
+    "summary.folder_hint",
+    "Puedes arrastrar varios archivos a la vez."
+  );
+  const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("summary.add_url", "Añadir URLs");
+  const labelSaveUrls = tr("summary.save_urls", "Guardar");
+  const labelCancel = tr("summary.cancel", "Cancelar");
+  const labelUrlsNoteVisible = tr(
+    "summary.urls_note_visible",
+    "Solo se importará el texto visible del sitio web."
+  );
+  const labelUrlsNotePaywalled = tr(
+    "summary.urls_note_paywalled",
+    "No se admiten artículos de pago."
+  );
+  const labelRemove = tr("summary.remove", "Quitar");
+
+  // ===== helpers documentos / urls (como en Resumen) =====
+  const parseUrlsFromText = (text) => {
+    const raw = text
+      .split(/[\s\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const valid = [];
+    for (const u of raw) {
+      try {
+        const url = new URL(u);
+        valid.push({ href: url.href, host: url.host });
+      } catch {}
+    }
+    const seen = new Set();
+    return valid.filter((v) =>
+      seen.has(v.href) ? false : (seen.add(v.href), true)
+    );
+  };
+
+  const triggerPick = () => fileInputRef.current?.click();
+
+  const addFiles = async (list) => {
+    if (!list?.length) return;
+    const arr = Array.from(list);
+    const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
+    setDocuments((prev) => [...prev, ...withIds]);
+  };
+
+  const onFiles = async (e) => {
+    await addFiles(e.target.files);
+    e.target.value = "";
+  };
+
+  const onDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+  const onDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+  const onDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+  const onDrop = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    const dt = e.dataTransfer;
+    if (dt?.files?.length) await addFiles(dt.files);
+  };
+
+  const removeDocument = (id) => {
+    setDocuments((prev) => prev.filter((d) => d.id !== id));
+  };
+
+  const addUrlsFromTextarea = () => {
+    const parsed = parseUrlsFromText(urlsTextarea);
+    if (!parsed.length) return;
+    const newItems = parsed.map((p) => ({
+      id: crypto.randomUUID(),
+      url: p.href,
+      host: p.host,
+    }));
+    setUrlItems((prev) => [...prev, ...newItems]);
+    setUrlsTextarea("");
+    setUrlInputOpen(false);
+  };
+  const removeUrl = (id) =>
+    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+
   // ====== ALTAVOZ (TTS backend) ======
   const stopPlayback = () => {
-    // cancelar fetch si estaba descargando
     if (speaking && ttsAbortRef.current) {
       try {
         ttsAbortRef.current.abort();
       } catch {}
     }
-    // parar audio si estaba sonando
     const el = audioElRef.current;
     if (el) {
       try {
@@ -232,7 +346,6 @@ export default function Translator() {
         el.currentTime = 0;
       } catch {}
     }
-    // liberar URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
@@ -241,34 +354,27 @@ export default function Translator() {
   };
 
   const handleSpeakToggle = async () => {
-    // si está en modo cuadrado → parar
     if (speaking) {
       stopPlayback();
       return;
     }
 
-    // no hay texto a leer
     const text = rightText?.trim();
     if (!text) return;
 
-    setSpeaking(true); // cambia icono a cuadrado de inmediato
+    setSpeaking(true);
 
-    // preparar <audio> (lo creo una sola vez)
     if (!audioElRef.current) {
       audioElRef.current = new Audio();
       audioElRef.current.preload = "auto";
       audioElRef.current.onended = () => setSpeaking(false);
-      audioElRef.current.onpause = () => {
-        /* no cambiamos speaking aquí para respetar el toggle */
-      };
+      audioElRef.current.onpause = () => {};
     }
 
-    // abort controller para poder cancelar si vuelven a pulsar
     const ctrl = new AbortController();
     ttsAbortRef.current = ctrl;
 
     try {
-      // ⚠️ usa formato WAV para empezar antes
       const resp = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -276,7 +382,7 @@ export default function Translator() {
         body: JSON.stringify({
           text,
           voice: "alloy",
-          format: "wav", // <- menor latencia que mp3
+          format: "wav",
         }),
       });
 
@@ -290,33 +396,26 @@ export default function Translator() {
       const blob = await resp.blob();
       const url = URL.createObjectURL(blob);
 
-      // liberar anterior si existe
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       setAudioUrl(url);
 
-      // reproducir
       const el = audioElRef.current;
       el.src = url;
       el.oncanplay = null;
       el.oncanplaythrough = null;
 
-      // minimizar el “delay” de arranque: reproducir al primer canplay
       const start = () => {
-        // algunos navegadores requieren resume del audio context; probar play
         el.play().catch((e) => {
-          // si el navegador bloquea, al menos mantenemos el estado cuadrado hasta que el usuario interactúe
           console.warn("Autoplay blocked:", e);
         });
       };
 
-      // si ya está listo, arranca; si no, espera a que esté listo
       if (el.readyState >= 3) {
         start();
       } else {
         el.addEventListener("canplay", start, { once: true });
       }
 
-      // al terminar, vuelve al altavoz
       el.onended = () => {
         setSpeaking(false);
       };
@@ -345,7 +444,6 @@ export default function Translator() {
   };
 
   const handleToggleMic = async () => {
-    // si está grabando, pare
     if (listening) {
       setListening(false);
       stopRecording();
@@ -456,79 +554,6 @@ export default function Translator() {
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
-              {/* pestañas a la izquierda */}
-              <div className="absolute inset-y-0 left-6 flex items-center">
-                <div className="flex items-center gap-4">
-                  {/* Testua */}
-                  <button
-                    type="button"
-                    onClick={() => setSourceMode("text")}
-                    className={`flex items-center gap-2 text-[14px] font-medium ${
-                      sourceMode === "text"
-                        ? "text-blue-600"
-                        : "text-slate-600 hover:text-slate-800"
-                    }`}
-                  >
-                    <FileText
-                      className={`w-4 h-4 ${
-                        sourceMode === "text"
-                          ? "text-blue-600"
-                          : "text-slate-500"
-                      }`}
-                    />
-                    <span>{labelTabText}</span>
-                  </button>
-
-                  <span className="h-4 w-px bg-slate-200" />
-
-                  {/* Dokumentua */}
-                  <button
-                    type="button"
-                    onClick={() => setSourceMode("document")}
-                    className={`flex items-center gap-2 text-[14px] font-medium ${
-                      sourceMode === "document"
-                        ? "text-blue-600"
-                        : "text-slate-600 hover:text-slate-800"
-                    }`}
-                  >
-                    <FileIcon
-                      className={`w-4 h-4 ${
-                        sourceMode === "document"
-                          ? "text-blue-600"
-                          : "text-slate-500"
-                      }`}
-                    />
-                    <span>{labelTabDocument}</span>
-                  </button>
-
-                  <span className="h-4 w-px bg-slate-200" />
-
-                  {/* URLa */}
-                  <button
-                    type="button"
-                    onClick={() => setSourceMode("url")}
-                    className={`flex items-center gap-2 text-[14px] font-medium ${
-                      sourceMode === "url"
-                        ? "text-blue-600"
-                        : "text-slate-600 hover:text-slate-800"
-                    }`}
-                  >
-                    <UrlIcon
-                      className={`w-4 h-4 ${
-                        sourceMode === "url"
-                          ? "text-blue-600"
-                          : "text-slate-500"
-                      }`}
-                    />
-                    <span>{labelTabUrl}</span>
-                  </button>
-
-                  {/* línea para “cerrar” el último botón */}
-                  <span className="h-4 w-px bg-slate-200" />
-                </div>
-              </div>
-
-              {/* selector de idiomas centrado (como estaba) */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="grid grid-cols-[auto_auto_auto] items-center gap-12">
                   {/* izquierda */}
@@ -642,44 +667,283 @@ export default function Translator() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-                <textarea
-                  ref={leftTA}
-                  value={leftText}
-                  onChange={(e) =>
-                    setLeftText(e.target.value.slice(0, MAX_CHARS))
-                  }
-                  onInput={(e) => autoResize(e.currentTarget)}
-                  placeholder={t("translator.left_placeholder")}
-                  className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
-                />
-                {/* contador abajo a la derecha */}
-                <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
-                  {leftText.length.toLocaleString()} /{" "}
-                  {MAX_CHARS.toLocaleString()}
-                </div>
-
-                {/* MIC abajo a la izquierda */}
-                <div className="absolute bottom-4 left-6">
+                {/* Tabs: Testua / Dokumentua / URLa */}
+                <div className="flex items-center gap-4 border-b border-slate-200 pb-2 mb-4">
+                  {/* Testua */}
                   <button
                     type="button"
-                    onClick={handleToggleMic}
-                    aria-label={t("translator.dictate")}
-                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${
-                      listening ? "ring-2 ring-blue-400" : ""
+                    onClick={() => setSourceMode("text")}
+                    className={`flex items-center gap-2 text-sm font-medium ${
+                      sourceMode === "text"
+                        ? "text-sky-600"
+                        : "text-slate-600 hover:text-slate-800"
                     }`}
                   >
-                    <Mic
-                      className={`w-5 h-5 ${
-                        listening ? "text-blue-600" : "text-slate-600"
+                    <FileText
+                      className={`w-4 h-4 ${
+                        sourceMode === "text" ? "text-sky-600" : ""
                       }`}
                     />
-                    <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {listening
-                        ? t("translator.listening")
-                        : t("translator.dictate")}
-                    </span>
+                    <span>{labelTabText}</span>
+                  </button>
+
+                  <span className="h-5 w-px bg-slate-200" />
+
+                  {/* Dokumentua */}
+                  <button
+                    type="button"
+                    onClick={() => setSourceMode("document")}
+                    className={`flex items-center gap-2 text-sm font-medium ${
+                      sourceMode === "document"
+                        ? "text-sky-600"
+                        : "text-slate-600 hover:text-slate-800"
+                    }`}
+                  >
+                    <FileIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "document" ? "text-sky-600" : ""
+                      }`}
+                    />
+                    <span>{labelTabDocument}</span>
+                  </button>
+
+                  <span className="h-5 w-px bg-slate-200" />
+
+                  {/* URLa */}
+                  <button
+                    type="button"
+                    onClick={() => setSourceMode("url")}
+                    className={`flex items-center gap-2 text-sm font-medium ${
+                      sourceMode === "url"
+                        ? "text-sky-600"
+                        : "text-slate-600 hover:text-slate-800"
+                    }`}
+                  >
+                    <UrlIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "url" ? "text-sky-600" : ""
+                      }`}
+                    />
+                    <span>{labelTabUrl}</span>
                   </button>
                 </div>
+
+                {/* CONTENIDO SEGÚN TAB */}
+
+                {/* 1) TEXTO */}
+                {sourceMode === "text" && (
+                  <>
+                    <textarea
+                      ref={leftTA}
+                      value={leftText}
+                      onChange={(e) =>
+                        setLeftText(e.target.value.slice(0, MAX_CHARS))
+                      }
+                      onInput={(e) => autoResize(e.currentTarget)}
+                      placeholder={t("translator.left_placeholder")}
+                      className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                    />
+                    {/* contador abajo a la derecha */}
+                    <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
+                      {leftText.length.toLocaleString()} /{" "}
+                      {MAX_CHARS.toLocaleString()}
+                    </div>
+
+                    {/* MIC abajo a la izquierda */}
+                    <div className="absolute bottom-4 left-6">
+                      <button
+                        type="button"
+                        onClick={handleToggleMic}
+                        aria-label={t("translator.dictate")}
+                        className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                          listening ? "ring-2 ring-blue-400" : ""
+                        }`}
+                      >
+                        <Mic
+                          className={`w-5 h-5 ${
+                            listening ? "text-blue-600" : "text-slate-600"
+                          }`}
+                        />
+                        <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                          {listening
+                            ? t("translator.listening")
+                            : t("translator.dictate")}
+                        </span>
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {/* 2) DOCUMENTO */}
+                {sourceMode === "document" && (
+                  <div
+                    className={`h-full w-full flex flex-col relative ${
+                      dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
+                    }`}
+                    onDragEnter={onDragEnter}
+                    onDragOver={onDragOver}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      className="hidden"
+                      multiple
+                      accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
+                      onChange={onFiles}
+                    />
+                    <button
+                      type="button"
+                      onClick={triggerPick}
+                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      aria-label={labelChooseFileTitle}
+                      title={labelChooseFileTitle}
+                    >
+                      <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
+                        <Plus className="w-10 h-10 text-sky-600" />
+                      </div>
+                      <div className="text-xl font-semibold text-slate-800">
+                        {labelChooseFileTitle}
+                      </div>
+                      <div className="mt-4 text-sm text-slate-500">
+                        {labelAcceptedFormats}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-400">
+                        {labelFolderHint}
+                      </div>
+                    </button>
+
+                    {documents.length > 0 && (
+                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
+                        {documents.map(({ id, file }) => (
+                          <li
+                            key={id}
+                            className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
+                          >
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <FileIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-sm font-medium block truncate">
+                                  {file.name}
+                                </span>
+                                <span className="text-xs text-slate-500">
+                                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                                </span>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => removeDocument(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+
+                {/* 3) URL */}
+                {sourceMode === "url" && (
+                  <div className="h-full w-full flex flex-col">
+                    <div className="mb-3 flex items-center justify-between">
+                      <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
+                        <UrlIcon className="w-4 h-4" />
+                        {labelPasteUrls}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setUrlInputOpen(true)}
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 shadow-sm transition-colors"
+                        aria-label={labelAddUrl}
+                        title={labelAddUrl}
+                      >
+                        <Plus className="w-4 h-4 text-sky-500" />
+                        {labelAddUrl}
+                      </button>
+                    </div>
+
+                    {urlInputOpen && (
+                      <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white">
+                        <textarea
+                          value={urlsTextarea}
+                          onChange={(e) => setUrlsTextarea(e.target.value)}
+                          placeholder={tr(
+                            "summary.paste_urls_placeholder",
+                            "Introduce aquí una o más URLs (separadas por línea)"
+                          )}
+                          className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
+                          aria-label={labelPasteUrls}
+                        />
+                        <div className="mt-2 flex items-center gap-2">
+                          <Button
+                            type="button"
+                            onClick={addUrlsFromTextarea}
+                            className="h-9"
+                          >
+                            {labelSaveUrls}
+                          </Button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setUrlsTextarea("");
+                              setUrlInputOpen(false);
+                            }}
+                            className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
+                          >
+                            {labelCancel}
+                          </button>
+                        </div>
+                        <div className="mt-6 text-xs text-slate-500">
+                          • {labelUrlsNoteVisible}
+                          <br />• {labelUrlsNotePaywalled}
+                        </div>
+                      </div>
+                    )}
+
+                    {urlItems.length > 0 && (
+                      <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
+                        {urlItems.map(({ id, url, host }) => (
+                          <li
+                            key={id}
+                            className="flex items-center justify-between gap-3 px-3 py-2"
+                          >
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <UrlIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-sm font-medium block truncate text-sky-600 hover:underline"
+                                  title={url}
+                                >
+                                  {host} — {url}
+                                </a>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => removeUrl(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* DERECHA: salida */}
@@ -740,9 +1004,7 @@ export default function Translator() {
                       <Volume2 className="w-5 h-5" />
                     )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {speaking
-                        ? t("translator.stop")
-                        : t("translator.listen")}
+                      {speaking ? t("translator.stop") : t("translator.listen")}
                     </span>
                   </button>
 
@@ -759,9 +1021,7 @@ export default function Translator() {
                       <CopyIcon className="w-5 h-5" />
                     )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copied
-                        ? t("translator.copied")
-                        : t("translator.copy")}
+                      {copied ? t("translator.copied") : t("translator.copy")}
                     </span>
                   </button>
 

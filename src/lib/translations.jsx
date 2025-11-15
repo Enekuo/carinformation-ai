@@ -37,7 +37,7 @@ export const translations = {
     sources_title:         { ES: "Fuentes", EUS: "Iturriak" },
     sources_tab_text:      { ES: "Texto", EUS: "Testua" },
     sources_tab_document:  { ES: "Documento", EUS: "Dokumentua" },
-    sources_tab_url:       { ES: "URL", EUS: "URLa" },
+    sources_tab_url:       { ES: "URL", EUS: "URL" },
 
     // Mensajes de ayuda (izquierda/derecha)
     create_help_left: {
