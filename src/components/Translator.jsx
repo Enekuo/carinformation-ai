@@ -86,6 +86,12 @@ export default function Translator() {
   const mediaRecorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
   const micChunksRef = useRef([]);
+ 
+  // Error Texto, Documento o URL //
+  const labelErrorText = tr("translator.error_text");
+  const labelErrorDocument = tr("translator.error_document");
+  const labelErrorUrlAccess = tr("translator.error_url_access");
+
 
   useEffect(
     () => () => {

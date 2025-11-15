@@ -365,8 +365,23 @@ export const translations = {
 
 
 
+  /* === Mensajes de error del traductor === */
+  error_text: {
+    ES: "Se ha producido un error al traducir el texto.",
+    EUS: "Errorea gertatu da testua itzultzean.",
+  },
 
-    /* === Mensajes de error del traductor === */
+  error_document: {
+    ES: "No se ha podido procesar el documento.",
+   EUS: "Ezin izan da dokumentua prozesatu.",
+  },
+
+  error_url_access: {
+    ES: "No se puede acceder al archivo o a la página. Comprueba la URL o inténtalo de nuevo más tarde.",
+    EUS: "Ezin da fitxategira edo orrialdera sartu. Egiaztatu URLa edo saiatu berriro geroago.",
+  },
+    
+/* === Mensajes de error del traductor === */
   error_generic: {
     ES: "No se pudo traducir ahora mismo.",
     EUS: "Ezin izan da une honetan itzuli.",
