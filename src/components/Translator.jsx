@@ -476,7 +476,7 @@ export default function Translator() {
               {/* IZQUIERDA: entrada */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 {/* Tabs: Testua / Dokumentua / URLa (mismas claves que Resumen) */}
-                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4">
+                <div className="flex items-center gap-6 border-b border-slate-200 pb-3 mb-4 -mt-8 md:-mt-10">
                   {/* Testua (activo) */}
                   <button
                     type="button"
