@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
+import { motion } from "framer-motion";
 import {
   FileText,
   Clock,
@@ -55,7 +56,13 @@ export default function BenefitsSection() {
   ];
 
   return (
-    <section className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28">
+    <motion.section
+      className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         {/* Título */}
         <h2 className="text-[28px] md:text-[40px] font-extrabold text-slate-900 text-center mb-12 md:mb-16">
@@ -99,6 +106,6 @@ export default function BenefitsSection() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
