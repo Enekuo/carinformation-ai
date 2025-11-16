@@ -277,6 +277,81 @@ export default function Translator() {
     };
   }, [sourceMode, src, dst, urlItems, language]);
 
+  // ==== Traducción desde DOCUMENTOS (modo DOCUMENT, auto al añadir/eliminar) ====
+  useEffect(() => {
+    if (sourceMode !== "document") return;
+
+    if (!documents.length) {
+      setRightText("");
+      setErr("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const run = async () => {
+      try {
+        setLoading(true);
+        setErr("");
+
+        const form = new FormData();
+        documents.forEach(({ file }) => {
+          form.append("files", file);
+        });
+        form.append("mode", "translate_documents");
+        form.append("src", src);
+        form.append("dst", dst);
+        form.append("model", "gpt-4o-mini");
+        form.append("temperature", "0.2");
+
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          body: form,
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          const raw = await res.text().catch(() => "");
+          console.error("API /api/chat (documents) error:", res.status, raw);
+          const uiLang =
+            (language || "ES").toString().toUpperCase() === "EUS"
+              ? "EUS"
+              : "ES";
+          setErr(
+            uiLang === "EUS"
+              ? "Ezin izan dira dokumentuak orain prozesatu."
+              : "No se han podido procesar los documentos ahora mismo."
+          );
+          return;
+        }
+
+        const data = await res.json();
+        setRightText(data?.content ?? data?.translation ?? "");
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          console.error("translate documents error:", e);
+          const uiLang =
+            (language || "ES").toString().toUpperCase() === "EUS"
+              ? "EUS"
+              : "ES";
+          setErr(
+            uiLang === "EUS"
+              ? "Ezin izan dira dokumentuak orain prozesatu."
+              : "No se han podido procesar los documentos ahora mismo."
+          );
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+
+    return () => {
+      controller.abort();
+    };
+  }, [sourceMode, src, dst, documents, language]);
+
   const Item = ({ active, label, onClick }) => (
     <button
       type="button"
@@ -1155,7 +1230,7 @@ export default function Translator() {
         </div>
       </section>
 
-      <CtaSection /> 
+      <CtaSection />
       <Footer />
     </>
   );
