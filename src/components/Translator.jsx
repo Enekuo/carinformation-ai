@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BenefitsSection from "@/components/BenefitsSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -1266,6 +1267,7 @@ export default function Translator() {
         </div>
       </section>
 
+      <BenefitsSection />
       <CtaSection />
       <Footer />
     </>

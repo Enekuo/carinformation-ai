@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
+import BenefitsSection from "@/components/BenefitsSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -1032,10 +1033,8 @@ export default function Resumen() {
         </div>
       </section>
 
-      {/* CTA final */}
+      <BenefitsSection />
       <CtaSection />
-      
-      {/* FOOTER */}
       <Footer />
     </>
   );
