@@ -55,7 +55,7 @@ export default function BenefitsSection() {
   ];
 
   return (
-    <section className="w-full bg-white py-20 md:py-24">
+    <section className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         {/* Título */}
         <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 text-center mb-12 md:mb-16">
@@ -80,8 +80,8 @@ export default function BenefitsSection() {
                 "
               >
                 <div>
-                  {/* Icono tipo Olondo (círculo azul claro con icono dentro) */}
-                  <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#E0EBFF]">
+                  {/* Icono tipo Olondo, un poco más grande */}
+                  <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#E0EBFF]">
                     <Icon className="w-5 h-5 text-[#2563eb]" />
                   </div>
 
