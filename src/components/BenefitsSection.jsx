@@ -21,37 +21,37 @@ export default function BenefitsSection() {
       id: 1,
       titleKey: "homeBenefits.benefit1_title",
       descKey: "homeBenefits.benefit1_desc",
-      Icon: FileText, // Traduce y resume
+      Icon: FileText,
     },
     {
       id: 2,
       titleKey: "homeBenefits.benefit2_title",
       descKey: "homeBenefits.benefit2_desc",
-      Icon: Clock, // Ahorra tiempo
+      Icon: Clock,
     },
     {
       id: 3,
       titleKey: "homeBenefits.benefit3_title",
       descKey: "homeBenefits.benefit3_desc",
-      Icon: HeartHandshake, // Cuida el euskera
+      Icon: HeartHandshake,
     },
     {
       id: 4,
       titleKey: "homeBenefits.benefit4_title",
       descKey: "homeBenefits.benefit4_desc",
-      Icon: Languages, // Mejora tu dominio del euskera
+      Icon: Languages,
     },
     {
       id: 5,
       titleKey: "homeBenefits.benefit5_title",
       descKey: "homeBenefits.benefit5_desc",
-      Icon: FolderOpen, // Importa formatos
+      Icon: FolderOpen,
     },
     {
       id: 6,
       titleKey: "homeBenefits.benefit6_title",
       descKey: "homeBenefits.benefit6_desc",
-      Icon: ArrowRight, // Sin registros / acceso directo
+      Icon: ArrowRight,
     },
   ];
 
@@ -60,8 +60,8 @@ export default function BenefitsSection() {
       className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.3 }} // se anima cada vez que entra en pantalla
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.9, ease: "easeOut" }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         {/* Título */}
