@@ -125,11 +125,15 @@ export const translations = {
       EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)"
     },
 
+
+
     /* === NUEVAS CLAVES: aviso límite plan gratis === */
     limit_title:   { ES: "Has alcanzado el límite del plan Gratis", EUS: "Doako planaren muga gainditu duzu" },
     limit_cta:     { ES: "Probar plan Premium", EUS: "Premium plana probatu" },
     limit_dismiss: { ES: "Seguir con plan Gratis", EUS: "Jarraitu doako planarekin" },
     limit_note:    { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako." },
+
+
 
     /* === NUEVAS CLAVES: aviso de función premium (prompt) === */
     premium_prompt_title: {
@@ -149,11 +153,15 @@ export const translations = {
       EUS: "Ulertuta"
     },
 
+
+
     /* === NUEVAS CLAVES: aviso de contenido desactualizado === */
     outdated_notice: { ES: "El texto ha cambiado. Actualiza el resumen.", EUS: "Testua aldatu da. Eguneratu laburpena." },
     outdated_update: { ES: "Actualizar", EUS: "Eguneratu" },
     outdated_close:  { ES: "Ocultar aviso", EUS: "Abisua ezkutatu" },
   },
+
+
 
   /* === Bloque anidado (por si lo usas en otras vistas) === */
   supportPage: {
@@ -178,6 +186,8 @@ export const translations = {
     },
   },
 
+
+
   /* === SOPORTE === */
   support_title:        { ES: "Soporte", EUS: "Laguntza" },
   support_subtitle:     { ES: "¿Necesitas ayuda? Estamos aquí para ayudarte.", EUS: "Laguntza behar duzu? Hemen gaude laguntzeko." },
@@ -201,9 +211,13 @@ export const translations = {
   support_form_privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
 
+
+
   /* === Aviso de funcionalidad no implementada === */
   not_implemented_title:    { ES: "Esta función no está implementada aún", EUS: "Funtzio hau oraindik ez dago ezarrita" },
   not_implemented_subtitle: { ES: "Puedes solicitarla en tu próximo prompt 🚀", EUS: "Hurrengo prompt-ean eska dezakezu 🚀" },
+
+
 
   /* === FOOTER === */
   eusFooterColumnAboutTitle:   { ES: "Sobre Euskalia",            EUS: "Euskaliari buruz" },
@@ -215,6 +229,9 @@ export const translations = {
   eusFooterCookies:            { ES: "Cookies",                   EUS: "Cookieak" },
   eusFooterContactEmailValue:  { ES: "contacto@euskalia.ai",      EUS: "contacto@euskalia.ai" },
   eusFooterLanguageLabel:      { ES: "Idioma",                    EUS: "Hizkuntza" },
+
+
+
 
   /* ==== SOBRE EUSKALIA ==== */
   eusFooterAboutTitle1: { ES: "¿Qué es Euskalia?", EUS: "Zer da Euskalia?" },
@@ -259,6 +276,10 @@ export const translations = {
   eusFooterLegalTitle4: { ES: "Uso de APIs de IA",          EUS: "Adimen Artifizialeko API en erabilera" },
   eusFooterLegalTitle5: { ES: "Política de cookies",        EUS: "Cookie politika" },
 
+
+
+
+
   /* ==== CTA FINAL ==== */
   cta: {
     title: {
@@ -300,6 +321,10 @@ export const translations = {
     noAccount: { ES: "¿No tienes cuenta?", EUS: "Ez duzu konturik?" },
     signUp:    { ES: "Regístrate",         EUS: "Erregistratu" },
   },
+
+
+
+
 
   // PRICING PAGE //
   pricing: {
@@ -352,6 +377,20 @@ export const translations = {
       speed_premium:   { ES: "", EUS: "" },
     },
   },
+
+     // BENEFITS SECTION //
+homeBenefits: {
+  title: {
+    ES: "¿Qué podrás conseguir apoyándote en Euskalia?",
+    EUS: "Zer lor dezakezu Euskaliaren laguntzarekin?",
+  },
+},
+
+
+
+
+
+
 
   // Toast genérico usado en el Footer (iconos sociales, etc.)
   eusToastFeatureNotImplementedTitle: {
