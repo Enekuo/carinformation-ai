@@ -58,8 +58,8 @@ export default function BenefitsSection() {
   return (
     <motion.section
       className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, scale: 0.97 }}          // solo “aparecer”
+      whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: false, amount: 0.3 }}
       transition={{ duration: 0.9, ease: "easeOut" }}
     >
