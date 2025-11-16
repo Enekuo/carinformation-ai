@@ -378,11 +378,67 @@ export const translations = {
     },
   },
 
+
+  
      // BENEFITS SECTION //
-homeBenefits: {
+    homeBenefits: {
   title: {
     ES: "¿Qué podrás conseguir apoyándote en Euskalia?",
     EUS: "Zer lor dezakezu Euskaliaren laguntzarekin?",
+  },
+
+  benefit1_title: {
+    ES: "Traduce y resume sin esfuerzo",
+    EUS: "Itzuli eta laburtu ahaleginik gabe",
+  },
+  benefit1_desc: {
+    ES: "Convierte cualquier texto, URL o documento en información clara y entendible en segundos.",
+    EUS: "Edozein testu, URL edo dokumentu segundo gutxitan ulertzeko moduko eduki argi bihurtu.",
+  },
+
+  benefit2_title: {
+    ES: "Ahorra horas de trabajo",
+    EUS: "Orduak aurreztu lanerako",
+  },
+  benefit2_desc: {
+    ES: "Procesa contenido largo sin leerlo entero. Traduce y resume mientras haces otras tareas.",
+    EUS: "Eduki luzeak osorik irakurri gabe prozesatu. Itzuli eta laburtu beste zeregin batzuk egiten dituzun bitartean.",
+  },
+
+  benefit3_title: {
+    ES: "Cuida el euskera cada día",
+    EUS: "Zaindu euskara egunero",
+  },
+  benefit3_desc: {
+    ES: "Pequeñas acciones como traducir, leer y escuchar en euskera ayudan a mantener viva nuestra lengua.",
+    EUS: "Itzultzea, irakurtzea eta euskaraz entzutea bezalako keinu txikiek gure hizkuntza bizirik mantentzen laguntzen dute.",
+  },
+
+  benefit4_title: {
+    ES: "Mejora tu dominio del euskera",
+    EUS: "Hobetu zure euskararen maila",
+  },
+  benefit4_desc: {
+    ES: "Lee, traduce y escucha contenido real en euskera para mejorar tu oído, vocabulario y confianza.",
+    EUS: "Euskarazko eduki errealak irakurri, itzuli eta entzun, belarria, hiztegia eta konfiantza lantzeko.",
+  },
+
+  benefit5_title: {
+    ES: "Importa cualquier formato",
+    EUS: "Formatu mota guztietatik inportatu",
+  },
+  benefit5_desc: {
+    ES: "PDFs, DOCX, imágenes, páginas web… si tiene texto, Euskalia lo encuentra y lo trabaja por ti.",
+    EUS: "PDFak, DOCX fitxategiak, irudiak, web-orriak… testua badu, Euskaliak aurkitu eta lantzen du.",
+  },
+
+  benefit6_title: {
+    ES: "Sin registros ni instalaciones",
+    EUS: "Erregistro eta instalaziorik gabe",
+  },
+  benefit6_desc: {
+    ES: "Empieza a usar Euskalia directamente desde el navegador, sin cuentas obligatorias ni descargas.",
+    EUS: "Erabili Euskalia zuzenean nabigatzailetik, konturik sortu gabe eta ezer deskargatu beharrik gabe.",
   },
 },
 

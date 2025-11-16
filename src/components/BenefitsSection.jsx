@@ -1,5 +1,13 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
+import {
+  FileText,
+  Clock,
+  HeartHandshake,
+  Languages,
+  FolderOpen,
+  ArrowRight,
+} from "lucide-react";
 
 export default function BenefitsSection() {
   const { t } = useTranslation();
@@ -12,31 +20,37 @@ export default function BenefitsSection() {
       id: 1,
       titleKey: "homeBenefits.benefit1_title",
       descKey: "homeBenefits.benefit1_desc",
+      Icon: FileText, // Traduce y resume
     },
     {
       id: 2,
       titleKey: "homeBenefits.benefit2_title",
       descKey: "homeBenefits.benefit2_desc",
+      Icon: Clock, // Ahorra tiempo
     },
     {
       id: 3,
       titleKey: "homeBenefits.benefit3_title",
       descKey: "homeBenefits.benefit3_desc",
+      Icon: HeartHandshake, // Cuida el euskera
     },
     {
       id: 4,
       titleKey: "homeBenefits.benefit4_title",
       descKey: "homeBenefits.benefit4_desc",
+      Icon: Languages, // Mejora tu dominio del euskera
     },
     {
       id: 5,
       titleKey: "homeBenefits.benefit5_title",
       descKey: "homeBenefits.benefit5_desc",
+      Icon: FolderOpen, // Importa formatos
     },
     {
       id: 6,
       titleKey: "homeBenefits.benefit6_title",
       descKey: "homeBenefits.benefit6_desc",
+      Icon: ArrowRight, // Sin registros / acceso directo
     },
   ];
 
@@ -48,11 +62,11 @@ export default function BenefitsSection() {
           {title}
         </h2>
 
-        {/* Grid de 6 cajas (tamaño tipo Escríbelo, colores tipo Olondo/Euskalia) */}
+        {/* Grid de 6 cajas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {benefits.map((item) => (
+          {benefits.map(({ id, titleKey, descKey, Icon }) => (
             <div
-              key={item.id}
+              key={id}
               className="
                 rounded-3xl border border-slate-200 bg-[#F4F8FF]
                 shadow-sm h-full
@@ -66,14 +80,18 @@ export default function BenefitsSection() {
                 "
               >
                 <div>
+                  {/* Icono tipo Olondo (círculo azul claro con icono dentro) */}
+                  <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#E0EBFF]">
+                    <Icon className="w-5 h-5 text-[#2563eb]" />
+                  </div>
+
                   <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-2">
-                    {tr(item.titleKey, "")}
+                    {tr(titleKey, "")}
                   </h3>
                   <p className="text-sm md:text-[15px] text-slate-600 leading-relaxed">
-                    {tr(item.descKey, "")}
+                    {tr(descKey, "")}
                   </p>
                 </div>
-                {/* sitio para iconos o etiquetas más adelante */}
               </div>
             </div>
           ))}
