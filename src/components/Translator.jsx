@@ -50,7 +50,7 @@ Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
 };
 
 export default function Translator() {
-  const { t, language } = useTranslation(); // <- usamos language (selector header)
+  const { t, language } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
   // ===== estado idioma / texto =====
@@ -203,20 +203,17 @@ export default function Translator() {
     };
   }, [leftText, src, dst, sourceMode]);
 
-  // ==== Traducción / mensaje desde URLs (modo URL) ====
+  // ==== Traducción desde URLs (modo URL, ahora leyendo contenido real) ====
   useEffect(() => {
     if (sourceMode !== "url") return;
 
     if (!urlItems.length) {
       setRightText("");
+      setErr("");
       return;
     }
 
     const controller = new AbortController();
-
-    // Idioma del header (selector principal)
-    const uiLang =
-      (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
 
     const run = async () => {
       try {
@@ -224,25 +221,6 @@ export default function Translator() {
         setErr("");
 
         const urls = urlItems.map((u) => u.url);
-
-        // SYSTEM en el idioma del header:
-        let system;
-        if (uiLang === "EUS") {
-          system = `
-Euskalia zara, itzulpen-laguntzailea.
-Ez daukazu sarbiderik kanpoko webguneetara eta ezin duzu URL baten edukia zuzenean irakurri.
-Azaldu modu labur eta argian ezin dituzula web-orriak ireki, eta eskatu erabiltzaileari itzuli nahi duen testua kopiatzeko eta «Testua» moduan itsasteko.
-Erantzun BETI euskaraz.
-          `.trim();
-        } else {
-          system = `
-Eres Euskalia, un asistente de traducción.
-No tienes acceso a páginas web externas y no puedes leer directamente el contenido de una URL.
-Explica de forma breve y clara que no puedes abrir esas webs y pide a la persona usuaria que copie el texto que quiere traducir y lo pegue en el modo «Texto».
-Responde SIEMPRE en español.
-          `.trim();
-        }
-
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -252,23 +230,24 @@ Responde SIEMPRE en español.
             src,
             dst,
             urls,
-            uiLang,
             model: "gpt-4o-mini",
             temperature: 0.2,
-            messages: [
-              { role: "system", content: system },
-              {
-                role: "user",
-                content: urls.join("\n"),
-              },
-            ],
           }),
         });
 
         if (!res.ok) {
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat (urls) error:", res.status, raw);
-          throw new Error(`API /api/chat (urls) ${res.status}`);
+          const uiLang =
+            (language || "ES").toString().toUpperCase() === "EUS"
+              ? "EUS"
+              : "ES";
+          setErr(
+            uiLang === "EUS"
+              ? "Ezin izan dira URLak orain prozesatu."
+              : "No se pudieron procesar las URLs ahora mismo."
+          );
+          return;
         }
 
         const data = await res.json();
@@ -276,6 +255,10 @@ Responde SIEMPRE en español.
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate urls error:", e);
+          const uiLang =
+            (language || "ES").toString().toUpperCase() === "EUS"
+              ? "EUS"
+              : "ES";
           setErr(
             uiLang === "EUS"
               ? "Ezin izan dira URLak orain prozesatu."
@@ -292,7 +275,7 @@ Responde SIEMPRE en español.
     return () => {
       controller.abort();
     };
-  }, [sourceMode, urlItems, language, src, dst]);
+  }, [sourceMode, src, dst, urlItems, language]);
 
   const Item = ({ active, label, onClick }) => (
     <button
@@ -1111,9 +1094,7 @@ Responde SIEMPRE en español.
                     type="button"
                     onClick={handleSpeakToggle}
                     aria-label={
-                      speaking
-                        ? t("translator.stop")
-                        : t("translator.listen")
+                      speaking ? t("translator.stop") : t("translator.listen")
                     }
                     aria-pressed={speaking}
                     className={`group relative p-2 rounded-md hover:bg-slate-100 ${
@@ -1144,9 +1125,7 @@ Responde SIEMPRE en español.
                       <CopyIcon className="w-5 h-5" />
                     )}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copied
-                        ? t("translator.copied")
-                        : t("translator.copy")}
+                      {copied ? t("translator.copied") : t("translator.copy")}
                     </span>
                   </button>
 

@@ -51,6 +51,24 @@ function todayKey(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 
+// Very simple HTML → texto
+function htmlToText(html) {
+  if (!html) return "";
+  // quitar scripts y estilos
+  let text = html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "");
+  // saltos de línea en bloques
+  text = text.replace(
+    /<\/(p|div|li|h[1-6]|br|section|article|header|footer|main)>/gi,
+    "$&\n"
+  );
+  // quitar resto de etiquetas
+  text = text.replace(/<[^>]+>/g, " ");
+  // normalizar espacios
+  return text.replace(/\s+/g, " ").trim();
+}
+
 // ====== Handler ======
 export default async function handler(req, res) {
   // CORS / Preflight
@@ -89,13 +107,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ ok: false, error: "Invalid JSON body" });
     }
 
-    // Admite dos contratos:
-    // A) { messages:[{role,content}, ...], system?, model?, temperature?, max_tokens? }
-    // B) { text, from, to } -> traducir
-    const hasMessages  = Array.isArray(body?.messages) && body.messages.length > 0;
-    const hasTranslate = typeof body?.text === "string" && body?.from && body?.to;
-
-    let messages = [];
     let {
       system,
       temperature = 0.2,
@@ -103,13 +114,105 @@ export default async function handler(req, res) {
       max_tokens
     } = body;
 
+    // ====== Soporte especial: traducir desde URLs ======
+    if (body?.mode === "translate_urls") {
+      const urls = Array.isArray(body.urls)
+        ? body.urls.map((u) => String(u || "").trim()).filter(Boolean)
+        : [];
+
+      if (!urls.length) {
+        return res.status(400).json({
+          ok: false,
+          error: "Missing urls",
+          message: "Debes enviar al menos una URL válida en el campo 'urls'."
+        });
+      }
+
+      const src = body.src || null;
+      const dst = body.dst || null;
+
+      // Descargar contenido de cada URL
+      const parts = [];
+      for (const url of urls) {
+        try {
+          const r = await fetch(url, { method: "GET" });
+          const html = await r.text();
+          const text = htmlToText(html);
+          if (text) {
+            parts.push(`URL: ${url}\n\n${text.slice(0, 9000)}`);
+          } else {
+            parts.push(
+              `URL: ${url}\n\n[No se ha podido extraer texto útil de esta página.]`
+            );
+          }
+        } catch (e) {
+          parts.push(
+            `URL: ${url}\n\n[No se ha podido descargar el contenido de esta página.]`
+          );
+        }
+      }
+
+      const combined = parts.join(
+        "\n\n-----------------------------\n\n"
+      );
+
+      // System por defecto según par de idiomas
+      if (!system) {
+        if (src === "eus" && dst === "es") {
+          system = `
+Eres Euskalia, un traductor profesional.
+Tu tarea es traducir el contenido de varias páginas web del euskera al español.
+Responde SOLO con la traducción en español, manteniendo en lo posible la estructura (títulos, párrafos, listas).
+No añadas explicaciones externas, solo la traducción.
+          `.trim();
+        } else if (src === "es" && dst === "eus") {
+          system = `
+Euskalia zara, itzulpen profesionaleko tresna bat.
+Zure lana hainbat webguneren edukia gaztelaniatik euskarara itzultzea da.
+Erantzun BETI euskaraz, eta saiatu egitura mantentzen (izenburuak, paragrafoak, zerrendak).
+Ez gehitu azalpen gehigarririk, soilik itzulpena.
+          `.trim();
+        } else {
+          system = `
+Eres Euskalia, un traductor profesional.
+Tu tarea es traducir el contenido de varias páginas web al idioma de destino indicado.
+Responde SOLO con la traducción final en el idioma de destino y mantén en lo posible la estructura (títulos, párrafos, listas).
+          `.trim();
+        }
+      }
+
+      body.system = system;
+      body.messages = [
+        { role: "user", content: combined }
+      ];
+      // aseguramos que no entra por el contrato text/from/to
+      delete body.text;
+      delete body.from;
+      delete body.to;
+    }
+
+    // Admite dos contratos:
+    // A) { messages:[{role,content}, ...], system?, model?, temperature?, max_tokens? }
+    // B) { text, from, to } -> traducir simple
+    const hasMessages  = Array.isArray(body?.messages) && body.messages.length > 0;
+    const hasTranslate = typeof body?.text === "string" && body?.from && body?.to;
+
+    let messages = [];
+
     if (hasMessages) {
       messages = body.messages;
+      system = system ?? body.system;
+      temperature = body.temperature ?? temperature;
+      model = body.model ?? model;
+      max_tokens = body.max_tokens ?? max_tokens;
     } else if (hasTranslate) {
       const { text, from, to } = body;
       system = system ?? "You are a precise translation engine.";
       messages = [
-        { role: "user", content: `Translate the following text from ${from} to ${to}. Respond with only the translation, no explanations:\n\n${text}` }
+        {
+          role: "user",
+          content: `Translate the following text from ${from} to ${to}. Respond with only the translation, no explanations:\n\n${text}`
+        }
       ];
     } else {
       return res.status(400).json({
@@ -184,7 +287,7 @@ export default async function handler(req, res) {
     }
 
     // ====== KV CACHE ======
-    const task = hasTranslate ? "translate" : (body?.task || "chat");
+    const task = hasTranslate ? "translate" : (body?.task || body?.mode || "chat");
     const src  = hasTranslate ? body.from : (body?.src || null);
     const dst  = hasTranslate ? body.to   : (body?.dst || null);
     const lang = body?.lang || null;
