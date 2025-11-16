@@ -26,9 +26,28 @@ const MAX_CHARS = 5000;
 
 // Texto de dirección para el prompt del sistema
 const directionText = (src, dst) => {
-  if (src === "eus" && dst === "es") return "Traduce de Euskera a Español";
-  if (src === "es" && dst === "eus") return "Traduce de Español a Euskera";
-  return "Traduce manteniendo el sentido y el formato";
+  if (src === "eus" && dst === "es") {
+    return `
+Eres Euskalia, un traductor profesional.
+Traduce SIEMPRE de Euskera a Español.
+Responde SIEMPRE en Español, incluso cuando expliques errores, límites o que no puedes procesar una URL.
+No cambies de idioma en ningún momento.
+`.trim();
+  }
+  if (src === "es" && dst === "eus") {
+    return `
+Eres Euskalia, itzulpen profesionaleko tresna bat.
+Itzuli BETI gaztelaniatik euskarara.
+Erantzun BETI euskaraz, baita erroreak, muga teknikoak edo URLa ezin duzula prozesatu azaltzen duzunean ere.
+Ez aldatu inoiz hizkuntza zure erantzunetan.
+`.trim();
+  }
+  return `
+Eres Euskalia, un traductor profesional.
+Traduce siempre del idioma de origen al idioma de destino indicado.
+Responde SIEMPRE en el idioma de destino, también al explicar errores o limitaciones.
+No cambies nunca de idioma en tus respuestas.
+`.trim();
 };
 
 export default function Translator() {
@@ -141,7 +160,7 @@ export default function Translator() {
         const system = `${directionText(
           src,
           dst
-        )}. Responde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
+        )}\n\nResponde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -206,7 +225,7 @@ export default function Translator() {
         const system = `${directionText(
           src,
           dst
-        )}. Tienes que traducir el contenido de las siguientes páginas web. Devuelve SOLO el texto traducido final, en el idioma de destino. Mantén en la medida de lo posible la estructura (párrafos, listas, títulos).`;
+        )}\n\nTienes que traducir el contenido de las siguientes páginas web. Devuelve SOLO el texto traducido final, en el idioma de destino. Mantén en la medida de lo posible la estructura (párrafos, listas, títulos).`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -1131,5 +1150,5 @@ export default function Translator() {
       <CtaSection />
       <Footer />
     </>
-  ); 
+  );
 }
