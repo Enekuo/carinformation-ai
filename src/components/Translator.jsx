@@ -50,7 +50,7 @@ Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
 };
 
 export default function Translator() {
-  const { t, lang } = useTranslation(); // lang = "ES" | "EUS" (selector del header)
+  const { t, language } = useTranslation(); // <- usamos language (selector header)
   const tr = (k, f) => t(k) || f;
 
   // ===== estado idioma / texto =====
@@ -214,6 +214,10 @@ export default function Translator() {
 
     const controller = new AbortController();
 
+    // Idioma del header (selector principal)
+    const uiLang =
+      (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
+
     const run = async () => {
       try {
         setLoading(true);
@@ -221,15 +225,12 @@ export default function Translator() {
 
         const urls = urlItems.map((u) => u.url);
 
-        // Idioma del header (selector principal)
-        const uiLang = lang || "ES";
-
         // SYSTEM en el idioma del header:
         let system;
         if (uiLang === "EUS") {
           system = `
 Euskalia zara, itzulpen-laguntzailea.
-Ez daukazu sarbiderik kanpoko webguneetara eta ezin duzu URLa baten edukia zuzenean irakurri.
+Ez daukazu sarbiderik kanpoko webguneetara eta ezin duzu URL baten edukia zuzenean irakurri.
 Azaldu modu labur eta argian ezin dituzula web-orriak ireki, eta eskatu erabiltzaileari itzuli nahi duen testua kopiatzeko eta «Testua» moduan itsasteko.
 Erantzun BETI euskaraz.
           `.trim();
@@ -291,7 +292,7 @@ Responde SIEMPRE en español.
     return () => {
       controller.abort();
     };
-  }, [sourceMode, src, dst, urlItems, lang]);
+  }, [sourceMode, urlItems, language, src, dst]);
 
   const Item = ({ active, label, onClick }) => (
     <button
