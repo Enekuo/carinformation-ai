@@ -80,14 +80,16 @@ export default function BenefitsSection() {
                 "
               >
                 <div>
-                  {/* Icono tipo Olondo, un poco más grande */}
-                  <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#E0EBFF]">
-                    <Icon className="w-5 h-5 text-[#2563eb]" />
+                  {/* Icono + título en fila, como el ejemplo */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#E0EBFF]">
+                      <Icon className="w-5 h-5 text-[#2563eb]" />
+                    </div>
+                    <h3 className="text-base md:text-lg font-semibold text-slate-900">
+                      {tr(titleKey, "")}
+                    </h3>
                   </div>
 
-                  <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-2">
-                    {tr(titleKey, "")}
-                  </h3>
                   <p className="text-sm md:text-[15px] text-slate-600 leading-relaxed">
                     {tr(descKey, "")}
                   </p>
