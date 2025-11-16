@@ -24,34 +24,33 @@ const OPTIONS = [
 
 const MAX_CHARS = 5000;
 
-// Texto de dirección para el prompt del sistema
+// Texto de dirección para el prompt del sistema (solo para modo TEXTO)
 const directionText = (src, dst) => {
   if (src === "eus" && dst === "es") {
     return `
 Eres Euskalia, un traductor profesional.
 Traduce SIEMPRE de Euskera a Español.
-Responde SIEMPRE en Español, incluso cuando expliques errores, límites o que no puedes procesar una URL.
-No cambies de idioma en ningún momento.
+Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
+No cambies de idioma en la traducción.
 `.trim();
   }
   if (src === "es" && dst === "eus") {
     return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
 Itzuli BETI gaztelaniatik euskarara.
-Erantzun BETI euskaraz, baita erroreak, muga teknikoak edo URLa ezin duzula prozesatu azaltzen duzunean ere.
-Ez aldatu inoiz hizkuntza zure erantzunetan.
+Erantzun BETI euskaraz itzulpena ematean.
+Ez aldatu hizkuntza itzulpenean.
 `.trim();
   }
   return `
 Eres Euskalia, un traductor profesional.
 Traduce siempre del idioma de origen al idioma de destino indicado.
-Responde SIEMPRE en el idioma de destino, también al explicar errores o limitaciones.
-No cambies nunca de idioma en tus respuestas.
+Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
 `.trim();
 };
 
 export default function Translator() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation(); // lang = "ES" | "EUS" (selector del header)
   const tr = (k, f) => t(k) || f;
 
   // ===== estado idioma / texto =====
@@ -204,7 +203,7 @@ export default function Translator() {
     };
   }, [leftText, src, dst, sourceMode]);
 
-  // ==== Traducción desde URLs (modo URL, automática al subir URLs) ====
+  // ==== Traducción / mensaje desde URLs (modo URL) ====
   useEffect(() => {
     if (sourceMode !== "url") return;
 
@@ -222,10 +221,26 @@ export default function Translator() {
 
         const urls = urlItems.map((u) => u.url);
 
-        const system = `${directionText(
-          src,
-          dst
-        )}\n\nTienes que traducir el contenido de las siguientes páginas web. Devuelve SOLO el texto traducido final, en el idioma de destino. Mantén en la medida de lo posible la estructura (párrafos, listas, títulos).`;
+        // Idioma del header (selector principal)
+        const uiLang = lang || "ES";
+
+        // SYSTEM en el idioma del header:
+        let system;
+        if (uiLang === "EUS") {
+          system = `
+Euskalia zara, itzulpen-laguntzailea.
+Ez daukazu sarbiderik kanpoko webguneetara eta ezin duzu URLa baten edukia zuzenean irakurri.
+Azaldu modu labur eta argian ezin dituzula web-orriak ireki, eta eskatu erabiltzaileari itzuli nahi duen testua kopiatzeko eta «Testua» moduan itsasteko.
+Erantzun BETI euskaraz.
+          `.trim();
+        } else {
+          system = `
+Eres Euskalia, un asistente de traducción.
+No tienes acceso a páginas web externas y no puedes leer directamente el contenido de una URL.
+Explica de forma breve y clara que no puedes abrir esas webs y pide a la persona usuaria que copie el texto que quiere traducir y lo pegue en el modo «Texto».
+Responde SIEMPRE en español.
+          `.trim();
+        }
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -236,6 +251,7 @@ export default function Translator() {
             src,
             dst,
             urls,
+            uiLang,
             model: "gpt-4o-mini",
             temperature: 0.2,
             messages: [
@@ -259,7 +275,11 @@ export default function Translator() {
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate urls error:", e);
-          setErr("No se pudo traducir la URL ahora mismo.");
+          setErr(
+            uiLang === "EUS"
+              ? "Ezin izan dira URLak orain prozesatu."
+              : "No se pudieron procesar las URLs ahora mismo."
+          );
         }
       } finally {
         setLoading(false);
@@ -271,7 +291,7 @@ export default function Translator() {
     return () => {
       controller.abort();
     };
-  }, [sourceMode, src, dst, urlItems]);
+  }, [sourceMode, src, dst, urlItems, lang]);
 
   const Item = ({ active, label, onClick }) => (
     <button
