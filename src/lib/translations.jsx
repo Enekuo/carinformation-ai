@@ -379,12 +379,12 @@ export const translations = {
   },
 
 
-  
+
      // BENEFITS SECTION //
     homeBenefits: {
   title: {
     ES: "¿Qué podrás conseguir apoyándote en Euskalia?",
-    EUS: "Zer lor dezakezu Euskaliaren laguntzarekin?",
+    EUS: "Zer lortu dezakezu Euskaliaren laguntzarekin?",
   },
 
   benefit1_title: {
