@@ -277,6 +277,15 @@ export default function Translator() {
     };
   }, [sourceMode, src, dst, urlItems, language]);
 
+  // === Helper para leer archivos como texto ===
+  const readFileAsText = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result || "");
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+
   // ==== Traducción desde DOCUMENTOS (modo DOCUMENT, auto al añadir/eliminar) ====
   useEffect(() => {
     if (sourceMode !== "document") return;
@@ -294,20 +303,47 @@ export default function Translator() {
         setLoading(true);
         setErr("");
 
-        const form = new FormData();
-        documents.forEach(({ file }) => {
-          form.append("files", file);
-        });
-        form.append("mode", "translate_documents");
-        form.append("src", src);
-        form.append("dst", dst);
-        form.append("model", "gpt-4o-mini");
-        form.append("temperature", "0.2");
+        // Leemos todos los documentos como texto (ideal para .txt, .md, etc.)
+        const contents = await Promise.all(
+          documents.map(({ file }) => readFileAsText(file))
+        );
+        const combined = contents.join("\n\n---\n\n").slice(0, MAX_CHARS);
+
+        if (!combined.trim()) {
+          const uiLang =
+            (language || "ES").toString().toUpperCase() === "EUS"
+              ? "EUS"
+              : "ES";
+          setErr(
+            uiLang === "EUS"
+              ? "Ezin da dokumentuaren edukia irakurri."
+              : "No se ha podido leer el contenido del documento."
+          );
+          setRightText("");
+          return;
+        }
+
+        const system = `${directionText(
+          src,
+          dst
+        )}\n\nResponde SOLO con la traducción final. Mantén el formato (saltos de línea, listas, mayúsculas) y los nombres propios.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
-          body: form,
+          headers: { "Content-Type": "application/json" },
           signal: controller.signal,
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            temperature: 0.2,
+            mode: "translate_text",
+            src,
+            dst,
+            text: combined,
+            messages: [
+              { role: "system", content: system },
+              { role: "user", content: combined },
+            ],
+          }),
         });
 
         if (!res.ok) {
@@ -1023,7 +1059,7 @@ export default function Translator() {
                         {documents.map(({ id, file }) => (
                           <li
                             key={id}
-                            className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
+                            className="flex items-center justify_between gap-3 px-3 py-2 bg-white"
                           >
                             <div className="min-w-0 flex items-center gap-3 flex-1">
                               <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
