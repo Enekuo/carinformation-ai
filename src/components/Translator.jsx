@@ -1131,5 +1131,5 @@ export default function Translator() {
       <CtaSection />
       <Footer />
     </>
-  );
+  ); 
 }
