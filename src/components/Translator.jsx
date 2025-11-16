@@ -1155,7 +1155,7 @@ export default function Translator() {
         </div>
       </section>
 
-      <CtaSection />
+      <CtaSection /> 
       <Footer />
     </>
   );
