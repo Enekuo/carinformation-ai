@@ -203,7 +203,7 @@ export default function Translator() {
     };
   }, [leftText, src, dst, sourceMode]);
 
-  // ==== Traducción desde URLs (modo URL, ahora leyendo contenido real) ====
+  // ==== Traducción desde URLs (modo URL, leyendo contenido real) ====
   useEffect(() => {
     if (sourceMode !== "url") return;
 
@@ -534,8 +534,15 @@ export default function Translator() {
     }
   };
 
-  // ===== Borrar (BORRA LA IZQUIERDA) =====
-  const handleClearLeft = () => setLeftText("");
+  // ===== Botón de borrar: ahora limpia TODO (izquierda + derecha + URLs + docs) =====
+  const handleClearLeft = () => {
+    setLeftText("");
+    setRightText("");
+    setDocuments([]);
+    setUrlItems([]);
+    setUrlsTextarea("");
+    setErr("");
+  };
 
   // ===== Acciones: copiar / PDF =====
   const handleCopy = async () => {
@@ -653,7 +660,7 @@ export default function Translator() {
             {/* barra superior: tabs a la izquierda + selector de idioma centrado */}
             <div className="relative h-12 border-b border-slate-200">
               <div className="flex items-center h-full px-6">
-                {/* Tabs a la izquierda como en la tercera imagen */}
+                {/* Tabs a la izquierda */}
                 <div className="flex items-center text-sm font-medium text-slate-600">
                   {/* Texto */}
                   <button
@@ -838,6 +845,19 @@ export default function Translator() {
                   </div>
                 </div>
               </div>
+
+              {/* Botón de borrar en la misma línea del selector, alineado a la derecha */}
+              <button
+                type="button"
+                onClick={handleClearLeft}
+                aria-label={t("translator.clear_left")}
+                className="group absolute top-1/2 -translate-y-1/2 right-4 p-2 rounded-md hover:bg-slate-100"
+              >
+                <Trash2 className="w-5 h-5 text-slate-500" />
+                <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                  {t("translator.clear_left")}
+                </span>
+              </button>
             </div>
 
             {/* paneles */}
@@ -1056,18 +1076,6 @@ export default function Translator() {
 
               {/* DERECHA: salida */}
               <div className="p-8 md:p-10 relative">
-                <button
-                  type="button"
-                  onClick={handleClearLeft}
-                  aria-label={t("translator.clear_left")}
-                  className="group absolute top-3 right-4 p-2 rounded-md hover:bg-slate-100"
-                >
-                  <Trash2 className="w-5 h-5 text-slate-500" />
-                  <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                    {t("translator.clear_left")}
-                  </span>
-                </button>
-
                 <textarea
                   ref={rightTA}
                   value={
