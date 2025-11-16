@@ -107,5 +107,5 @@ export default function BenefitsSection() {
         </div>
       </div>
     </motion.section>
-  );
+  ); 
 }
