@@ -62,9 +62,9 @@ export default function BenefitsSection() {
       whileInView={{ opacity: 1 }}             // aparece
       viewport={{ once: false, amount: 0.3 }}  // SIEMPRE que entre en pantalla
       transition={{
-        duration: 0.4, // aparece rápido
+        duration: 0.8, // aparece más lento
         ease: "easeOut",
-        delay: 0.2,    // tarda menos en empezar
+        delay: 0.2,    // mantiene el mismo retardo antes de empezar
       }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
