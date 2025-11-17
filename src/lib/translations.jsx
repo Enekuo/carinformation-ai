@@ -360,51 +360,54 @@ homeHowItWorks: {
     EUS: "Euskalia adimen artifiziala erabiltzen duen webgune bat da, formatu azkar eta errazean testuak euskerara itzuli eta balurtzeko gai dena. Testua itsatsi, dokumentu bat igo edo URL bat sartu besterik ez duzu egin behar; hizkuntzak aukeratu, eta segundo gutxitan argi ulertzeko moduko bertsio garbi eta erabilgarri bat jasoko duzu. Zure beharren arabera laguntzeko pentsatuta dago, bai beste hizkuntza batetik euskarara itzuli nahi baduzu, edo bai euskaratik beste edozein hizkuntzatara, ahalegin eta zailtasunik gabe. ",
   },
 
-  homeHowItWorks_offers_title: {
-  ES: "🔍 ¿Qué ofrece Euskalia?",
-  EUS: "🔍 Zer eskaintzen du Euskaliak ?",
+  offers_title: {
+    ES: "🔍 ¿Qué ofrece Euskalia?",
+    EUS: "🔍 Zer eskaintzen du Euskaliak?",
+  },
+
+  offers_item1: {
+    ES: "Traduce textos largos al euskera o desde el euskera en cuestión de segundos.",
+    EUS: "Itzuli testu luzeak euskarara edo euskaratik, segundo gutxitan.",
+  },
+
+  offers_item2: {
+    ES: "Convierte documentos completos en resúmenes claros y fáciles de entender.",
+    EUS: "Bihurtu dokumentu osoak laburpen argi eta erraz ulertzeko modukoetan.",
+  },
+
+  offers_item3: {
+    ES: "Trabaja con enlaces y páginas web sin tener que copiar todo el contenido a mano.",
+    EUS: "Lan egin esteka eta web-orrietan edukia eskuz kopiatu beharrik gabe.",
+  },
+
+  offers_item4: {
+    ES: "Combina información de diferentes fuentes en un único resultado ordenado.",
+    EUS: "Batu iturri desberdinetako informazioa emaitza bakar eta antolatu batean.",
+  },
+
+  offers_item5: {
+    ES: "Ahorra tiempo en clase, en el trabajo o estudiando por tu cuenta.",
+    EUS: "Aurreztu denbora ikasgelan, lanean edo zure kabuz ikasten ari zarenean.",
+  },
+
+  offers_item6: {
+    ES: "Utiliza el euskera con más seguridad, aunque todavía no lo domines al cien por cien.",
+    EUS: "Erabili euskara konfiantza handiagoz, oraindik guztiz menderatzen ez baduzu ere.",
+  },
+
+  listen_block_title: {
+    ES: "Muy pronto, también en audio",
+    EUS: "Laster, baita audioan ere",
+  },
+
+  listen_block_paragraph: {
+    ES: "Euskalia está pensada para que no solo leas, sino que también puedas escuchar tus textos y resúmenes en voz alta. Estamos trabajando en una experiencia auditiva cómoda y natural, pensada para ayudarte a aprender, repasar o entender contenido en euskera mientras haces otras cosas.",
+    EUS: "Euskalia ez dago soilik irakurtzeko pentsatuta, baizik eta zure testuak eta laburpenak ozen entzuteko ere. Ahots natural eta erosoarekin esperientzia entzunezkoa eskaintzeko lanean ari gara, euskarazko edukia ikasten, errepasatzen edo ulertzen jarrai dezazun beste gauza batzuk egiten dituzun bitartean.",
+  },
 },
 
-homeHowItWorks_offers_item1: {
-  ES: "",
-  EUS: "",
-},
 
-homeHowItWorks_offers_item2: {
-  ES: "",
-  EUS: "",
-},
 
-homeHowItWorks_offers_item3: {
-  ES: "",
-  EUS: "",
-},
-
-homeHowItWorks_offers_item4: {
-  ES: "",
-  EUS: "",
-},
-
-homeHowItWorks_offers_item5: {
-  ES: "",
-  EUS: "",
-},
-
-homeHowItWorks_offers_item6: {
-  ES: "",
-  EUS: "",
-},
-
-homeHowItWorks_listen_block_title: {
-  ES: "",
-  EUS: "",
-},
-
-homeHowItWorks_listen_block_paragraph: {
-  ES: "",
-  EUS: "",
-},
-},
 
 
 /* ==== CTA FINAL ==== */

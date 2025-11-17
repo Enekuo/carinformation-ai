@@ -11,32 +11,32 @@ export default function HowItWorks() {
         {/* BLOQUE DE TEXTO */}
         <div className="w-full lg:basis-7/12 text-left">
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
-            {tr("homeHowItWorks_title", "")}
+            {tr("homeHowItWorks.title", "")}
           </h2>
 
           <p className="text-slate-600 text-[16px] leading-relaxed mb-8">
-            {tr("homeHowItWorks_intro", "")}
+            {tr("homeHowItWorks.intro", "")}
           </p>
 
           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            {tr("homeHowItWorks_offers_title", "")}
+            {tr("homeHowItWorks.offers_title", "")}
           </h3>
 
           <ul className="space-y-3 text-slate-600 text-[15px] leading-relaxed">
-            <li>{tr("homeHowItWorks_offers_item1", "")}</li>
-            <li>{tr("homeHowItWorks_offers_item2", "")}</li>
-            <li>{tr("homeHowItWorks_offers_item3", "")}</li>
-            <li>{tr("homeHowItWorks_offers_item4", "")}</li>
-            <li>{tr("homeHowItWorks_offers_item5", "")}</li>
-            <li>{tr("homeHowItWorks_offers_item6", "")}</li>
+            <li>{tr("homeHowItWorks.offers_item1", "")}</li>
+            <li>{tr("homeHowItWorks.offers_item2", "")}</li>
+            <li>{tr("homeHowItWorks.offers_item3", "")}</li>
+            <li>{tr("homeHowItWorks.offers_item4", "")}</li>
+            <li>{tr("homeHowItWorks.offers_item5", "")}</li>
+            <li>{tr("homeHowItWorks.offers_item6", "")}</li>
           </ul>
 
           <div className="mt-10">
             <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              {tr("homeHowItWorks_listen_block_title", "")}
+              {tr("homeHowItWorks.listen_block_title", "")}
             </h3>
             <p className="text-slate-600 text-[15px] leading-relaxed">
-              {tr("homeHowItWorks_listen_block_paragraph", "")}
+              {tr("homeHowItWorks.listen_block_paragraph", "")}
             </p>
           </div>
         </div>
