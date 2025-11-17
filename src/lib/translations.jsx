@@ -357,7 +357,7 @@ homeHowItWorks: {
 
   intro: {
     ES: "Euskalia es una web de inteligencia artificial que te permite traducir y resumir textos en euskera de forma fácil y rápida. Solo tienes que pegar un texto, subir un documento o introducir una URL, elegir los idiomas y en segundos obtendrás una versión clara, comprensible y lista para usar. Está pensada para ayudarte en tu día a día, tanto si quieres traducir de otro idioma al euskera como del euskera a cualquier otro, y para que puedas utilizar el idioma sin esfuerzo ni complicaciones.",
-    EUS: "Euskalia adimen artifiziala erabiltzen duen webgune bat da, formatu azkar eta errazean testuak euskerara itzuli eta balurtzeko gai dena. Testua itsatsi, dokumentu bat igo edo URL bat sartu besterik ez duzu egin behar; hizkuntzak aukeratu, eta segundo gutxitan argi ulertzeko moduko bertsio garbi eta erabilgarri bat jasoko duzu. Zure beharren arabera laguntzeko pentsatuta dago, bai beste hizkuntza batetik euskarara itzuli nahi baduzu, edo bai euskaratik beste edozein hizkuntzatara, ahalegin eta zailtasunik gabe. ",
+    EUS: "Euskalia adimen artifiziala erabiltzen duen webgune bat da, formatu azkar eta errazean testuak euskerara itzuli eta balurtzeko gai dena. Testua itsatsi, dokumentu bat igo edo URL bat sartu besterik ez duzu egin behar. Hizkuntzak aukeratu, eta segundo gutxitan argi ulertzeko moduko bertsio garbi eta erabilgarri bat jasoko duzu. Zure beharren arabera laguntzeko pentsatuta dago, bai beste hizkuntza batetik euskarara itzuli nahi baduzu, edo bai euskaratik beste edozein hizkuntzatara, ahalegin eta zailtasunik gabe. ",
   },
 
   offers_title: {
