@@ -361,7 +361,7 @@ homeHowItWorks: {
   },
 
   offers_title: {
-    ES: "",
+    ES: "🔍 ¿Qué ofrece Euskalia?",
     EUS: "",
   },
   offers_item1: {
