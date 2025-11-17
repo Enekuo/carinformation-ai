@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
 
-
 export default function HowItWorks() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
@@ -9,7 +8,6 @@ export default function HowItWorks() {
   return (
     <section className="w-full bg-white py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-12">
-        
         {/* BLOQUE DE TEXTO */}
         <div className="flex-1 text-left">
           <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-6 leading-tight">
@@ -46,8 +44,8 @@ export default function HowItWorks() {
         {/* BLOQUE DE IMAGEN */}
         <div className="flex-1 flex justify-center lg:justify-end">
           <img
-            src={HowItWorksImage}
-            alt="how it works illustration"
+            src="/how-it-works.png"
+            alt=""
             className="w-full max-w-[540px]"
           />
         </div>
