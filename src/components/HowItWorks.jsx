@@ -30,15 +30,6 @@ export default function HowItWorks() {
             <li>{tr("homeHowItWorks.offers_item5", "")}</li>
             <li>{tr("homeHowItWorks.offers_item6", "")}</li>
           </ul>
-
-          <div className="mt-10">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              {tr("homeHowItWorks.listen_block_title", "")}
-            </h3>
-            <p className="text-slate-600 text-[15px] leading-relaxed">
-              {tr("homeHowItWorks.listen_block_paragraph", "")}
-            </p>
-          </div>
         </div>
 
         {/* BLOQUE DE IMAGEN */}

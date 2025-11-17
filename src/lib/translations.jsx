@@ -395,15 +395,7 @@ homeHowItWorks: {
     EUS: "Erabili euskara konfiantza handiagoz, oraindik guztiz menderatzen ez baduzu ere.",
   },
 
-  listen_block_title: {
-    ES: "Muy pronto, también en audio",
-    EUS: "Laster, baita audioan ere",
-  },
-
-  listen_block_paragraph: {
-    ES: "Euskalia está pensada para que no solo leas, sino que también puedas escuchar tus textos y resúmenes en voz alta. Estamos trabajando en una experiencia auditiva cómoda y natural, pensada para ayudarte a aprender, repasar o entender contenido en euskera mientras haces otras cosas.",
-    EUS: "Euskalia ez dago soilik irakurtzeko pentsatuta, baizik eta zure testuak eta laburpenak ozen entzuteko ere. Ahots natural eta erosoarekin esperientzia entzunezkoa eskaintzeko lanean ari gara, euskarazko edukia ikasten, errepasatzen edo ulertzen jarrai dezazun beste gauza batzuk egiten dituzun bitartean.",
-  },
+  
 },
 
 
