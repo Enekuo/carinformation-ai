@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
-import HowItWorksImage from "@/assets/HowItWorks"; 
+
 
 export default function HowItWorks() {
   const { t } = useTranslation();
