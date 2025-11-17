@@ -6,11 +6,11 @@ export default function HowItWorks() {
   const tr = (key, fallback) => t(key) || fallback;
 
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section className="w-full bg-white py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-12">
         {/* BLOQUE DE TEXTO */}
         <div className="flex-1 text-left">
-          <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-6 leading-tight">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
             {tr("homeHowItWorks.title", "")}
           </h2>
 
