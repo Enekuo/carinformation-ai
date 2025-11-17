@@ -64,7 +64,7 @@ export default function BenefitsSection() {
       transition={{
         duration: 0.4, // aparece rápido
         ease: "easeOut",
-        delay: 0.5,    // pero tarda medio segundo en empezar
+        delay: 0.2,    // tarda menos en empezar
       }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
