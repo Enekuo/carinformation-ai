@@ -6,7 +6,7 @@ export default function HowItWorks() {
   const tr = (key, fallback) => t(key) || fallback;
 
   return (
-    <section className="w-full bg-slate-50 py-12 md:py-16">
+    <section className="w-full bg-[#F4F8FF] py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* TARJETA CONTENEDORA */}
         <div
@@ -45,7 +45,7 @@ export default function HowItWorks() {
             <img
               src="/how-it-works.png"
               alt=""
-              className="w-full max-w-[360px]"
+              className="w-full max-w-[400px]"
             />
           </div>
         </div>
