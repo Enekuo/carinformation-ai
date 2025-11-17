@@ -6,15 +6,15 @@ export default function HowItWorks() {
   const tr = (key, fallback) => t(key) || fallback;
 
   return (
-    <section className="w-full bg-white py-20 md:py-28">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-12">
+    <section className="w-full bg-white py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-10">
         {/* BLOQUE DE TEXTO */}
-        <div className="flex-1 text-left">
+        <div className="w-full lg:basis-7/12 text-left">
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
             {tr("homeHowItWorks.title", "")}
           </h2>
 
-          <p className="text-slate-600 text-[16px] leading-loose mb-10 max-w-[720px]">
+          <p className="text-slate-600 text-[16px] leading-relaxed mb-8">
             {tr("homeHowItWorks.intro", "")}
           </p>
 
@@ -42,11 +42,11 @@ export default function HowItWorks() {
         </div>
 
         {/* BLOQUE DE IMAGEN */}
-        <div className="flex-1 flex justify-center lg:justify-end">
+        <div className="w-full lg:basis-5/12 flex justify-center lg:justify-end">
           <img
             src="/how-it-works.png"
             alt=""
-            className="w-full max-w-[540px]"
+            className="w-full max-w-[460px]"
           />
         </div>
       </div>
