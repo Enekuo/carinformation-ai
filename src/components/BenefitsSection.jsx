@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import {
   FileText,
   Clock,
@@ -55,16 +55,27 @@ export default function BenefitsSection() {
     },
   ];
 
+  const controls = useAnimation();
+
   return (
     <motion.section
       className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28"
-      initial={{ opacity: 0 }}                 // empieza invisible
-      whileInView={{ opacity: 1 }}             // aparece
-      viewport={{ once: false, amount: 0.3 }}  // SIEMPRE que entre en pantalla
-      transition={{
-        duration: 0.8, // aparece más lento
-        ease: "easeOut",
-        delay: 0.2,    // mantiene el mismo retardo antes de empezar
+      initial={{ opacity: 0 }}
+      animate={controls}
+      viewport={{ amount: 0.3 }}
+      onViewportEnter={() => {
+        controls.start({
+          opacity: 1,
+          transition: {
+            duration: 0.8, // aparece un poco más lento
+            ease: "easeOut",
+            delay: 0.2,    // tarda un poco en empezar
+          },
+        });
+      }}
+      onViewportLeave={() => {
+        // cuando sale de pantalla, lo dejamos otra vez oculto
+        controls.set({ opacity: 0 });
       }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
