@@ -61,7 +61,11 @@ export default function BenefitsSection() {
       initial={{ opacity: 0 }}                 // empieza invisible
       whileInView={{ opacity: 1 }}             // aparece
       viewport={{ once: false, amount: 0.3 }}  // cada vez que entra en pantalla
-      transition={{ duration: 1.4, ease: "easeOut" }}  // más lento
+      transition={{
+        duration: 1.4,       // fade-in lento
+        ease: "easeOut",
+        delay: 0.35,         // tarda un poco en empezar a aparecer
+      }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         {/* Título */}
