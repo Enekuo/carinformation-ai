@@ -280,105 +280,8 @@ export const translations = {
 
 
 
-  /* ==== CTA FINAL ==== */
-  cta: {
-    title: {
-      ES: "✨ Lleva tu experiencia Euskalia al siguiente nivel",
-      EUS: "✨ Eraman Euskaliako esperientzia hurrengo mailara",
-    },
-    subtitle: {
-      ES: "Guarda tus textos, elimina los anuncios y disfruta sin límites.",
-      EUS: "Gorde zure testuak, kendu iragarkiak eta gozatu mugarik gabe.",
-    },
-    button: {
-      ES: "🚀 Empieza gratis",
-      EUS: "🚀 Hasi doain",
-    },
-  },
-
-  authPage: {
-    pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
-    pageDescription:        { ES: "Accede a tu cuenta para seguir usando Euskalia.", EUS: "Sartu zure kontura Euskalia erabiltzen jarraitzeko." },
-
-    welcome:                { ES: "BIENVENIDO",                  EUS: "ONGI ETORRI" },
-    continueWithGoogle:     { ES: "Continuar con Google",                 EUS: "Jarraitu Google-rekin" },
-    or:                     { ES: "o",                                    EUS: "edo" },
-
-    emailOrUserPlaceholder: { ES: "Introduce tu correo o nombre de usuario", EUS: "Idatzi zure posta edo erabiltzaile-izena" },
-    signInButton:           { ES: "Continuar",                            EUS: "Jarraitu" },
-
-    emailRequiredError:     { ES: "Por favor, introduce tu correo electrónico.", EUS: "Mesedez, idatzi zure posta elektronikoa." },
-    emailInvalidError:      { ES: "El formato del correo no es válido.",  EUS: "Posta elektronikoaren formatua ez da baliozkoa." },
-    passwordRequiredError:  { ES: "Por favor, introduce tu contraseña.",  EUS: "Mesedez, idatzi zure pasahitza." },
-
-    legalText: {
-      prefix:  { ES: "Al continuar, aceptas nuestros", EUS: "Jarraitzearen bidez, gure" },
-      terms:   { ES: "Términos",                        EUS: "Baldintzak" },
-      and:     { ES: "y",                               EUS: "eta" },
-      privacy: { ES: "Política de Privacidad",         EUS: "Pribatutasun-politika" },
-    },
-
-    noAccount: { ES: "¿No tienes cuenta?", EUS: "Ez duzu konturik?" },
-    signUp:    { ES: "Regístrate",         EUS: "Erregistratu" },
-  },
-
-
-
-
-
-  // PRICING PAGE //
-  pricing: {
-    title:    { ES: "Elige Tu Plan Perfecto", EUS: "Aukeratu Zure Plan Perfectua" },
-    subtitle: { ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.", EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin." },
-
-    plan: {
-      free:  { ES: "Prueba Gratis",  EUS: "Probatu Doan" },
-      basic: { ES: "Plan Básico",    EUS: "Oinarrizko Plana" },
-      pro:   { ES: "Plan Premium",   EUS: "Premium Plana" },
-    },
-
-    perMonth: { ES: "/ mes", EUS: "/ hilean" },
-    perDay: {
-      basic:   { ES: "≈ 0,17 € al día", EUS: "≈ 0,17 € egunean" },
-      premium: { ES: "≈ 0,33 € al día", EUS: "≈ 0,33 € egunean" },
-    },
-
-    mostPopular: { ES: "Más popular", EUS: "Ezagunenak" },
-
-    cta: {
-      free:  { ES: "Empieza gratis",   EUS: "Hasi doan" },
-      basic: { ES: "Elegir Básico",    EUS: "Aukeratu Oinarrizkoa" },
-      pro:   { ES: "Elegir Premium",   EUS: "Aukeratu Premium" },
-    },
-
-    features: {
-      // FREE
-      library_free: { ES: "", EUS: "" },
-      export_free:  { ES: "", EUS: "" },
-      audio_free:   { ES: "", EUS: "" },
-      ai_free:      { ES: "", EUS: "" },
-      file_free:    { ES: "", EUS: "" },
-      speed_free:   { ES: "", EUS: "" },
-
-      // BASIC
-      library_basic: { ES: "", EUS: "" },
-      export_basic:  { ES: "", EUS: "" },
-      audio_basic:   { ES: "", EUS: "" },
-      ai_basic:      { ES: "", EUS: "" },
-      file_basic:    { ES: "", EUS: "" },
-      speed_basic:   { ES: "", EUS: "" },
-
-      // PREMIUM
-      library_premium: { ES: "", EUS: "" },
-      export_premium:  { ES: "", EUS: "" },
-      audio_premium:   { ES: "", EUS: "" },
-      ai_premium:      { ES: "", EUS: "" },
-      file_premium:    { ES: "", EUS: "" },
-      speed_premium:   { ES: "", EUS: "" },
-    },
-  },
-
-
+  
+  
 
      // BENEFITS SECTION //
     homeBenefits: {
@@ -444,6 +347,160 @@ export const translations = {
 
 
 
+
+// Cómo funciona Euskalia
+homeHowItWorks: {
+  title: {
+    ES: "¿Cómo funciona Euskalia?",
+    EUS: "Nola funtzionatzen du Euskaliak ? ", 
+  },
+
+  intro: {
+    ES: "Euskalia es una web de inteligencia artificial que te permite traducir y resumir textos en euskera de forma fácil y rápida. Solo tienes que pegar un texto, subir un documento o introducir una URL, elegir los idiomas y en segundos obtendrás una versión clara, comprensible y lista para usar. Está pensada para ayudarte en tu día a día, tanto si quieres traducir de otro idioma al euskera como del euskera a cualquier otro, y para que puedas utilizar el idioma sin esfuerzo ni complicaciones.",
+    EUS: "Euskalia adimen artifiziala erabiltzen duen webgune bat da, formatu azkar eta errazean testuak euskerara itzuli eta balurtzeko gai dena. Testua itsatsi, dokumentu bat igo edo URL bat sartu besterik ez duzu egin behar; hizkuntzak aukeratu, eta segundo gutxitan argi ulertzeko moduko bertsio garbi eta erabilgarri bat jasoko duzu. Zure beharren arabera laguntzeko pentsatuta dago, bai beste hizkuntza batetik euskarara itzuli nahi baduzu, edo bai euskaratik beste edozein hizkuntzatara, ahalegin eta zailtasunik gabe. ",
+  },
+
+  offers_title: {
+    ES: "",
+    EUS: "",
+  },
+  offers_item1: {
+    ES: "",
+    EUS: "",
+  },
+  offers_item2: {
+    ES: "",
+    EUS: "",
+  },
+  offers_item3: {
+    ES: "",
+    EUS: "",
+  },
+  offers_item4: {
+    ES: "",
+    EUS: "",
+  },
+  offers_item5: {
+    ES: "",
+    EUS: "",
+  },
+  offers_item6: {
+    ES: "",
+    EUS: "",
+  },
+
+  listen_block_title: {
+    ES: "",
+    EUS: "",
+  },
+  listen_block_paragraph: {
+    ES: "",
+    EUS: "",
+  },
+},
+
+
+
+
+/* ==== CTA FINAL ==== */
+  cta: {
+    title: {
+      ES: "✨ Lleva tu experiencia Euskalia al siguiente nivel",
+      EUS: "✨ Eraman Euskaliako esperientzia hurrengo mailara",
+    },
+    subtitle: {
+      ES: "Guarda tus textos, elimina los anuncios y disfruta sin límites.",
+      EUS: "Gorde zure testuak, kendu iragarkiak eta gozatu mugarik gabe.",
+    },
+    button: {
+      ES: "🚀 Empieza gratis",
+      EUS: "🚀 Hasi doain",
+    },
+  },
+
+
+
+
+  // INICIAR SESION //
+  authPage: {
+    pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
+    pageDescription:        { ES: "Accede a tu cuenta para seguir usando Euskalia.", EUS: "Sartu zure kontura Euskalia erabiltzen jarraitzeko." },
+
+    welcome:                { ES: "BIENVENIDO",                  EUS: "ONGI ETORRI" },
+    continueWithGoogle:     { ES: "Continuar con Google",                 EUS: "Jarraitu Google-rekin" },
+    or:                     { ES: "o",                                    EUS: "edo" },
+
+    emailOrUserPlaceholder: { ES: "Introduce tu correo o nombre de usuario", EUS: "Idatzi zure posta edo erabiltzaile-izena" },
+    signInButton:           { ES: "Continuar",                            EUS: "Jarraitu" },
+
+    emailRequiredError:     { ES: "Por favor, introduce tu correo electrónico.", EUS: "Mesedez, idatzi zure posta elektronikoa." },
+    emailInvalidError:      { ES: "El formato del correo no es válido.",  EUS: "Posta elektronikoaren formatua ez da baliozkoa." },
+    passwordRequiredError:  { ES: "Por favor, introduce tu contraseña.",  EUS: "Mesedez, idatzi zure pasahitza." },
+
+    legalText: {
+      prefix:  { ES: "Al continuar, aceptas nuestros", EUS: "Jarraitzearen bidez, gure" },
+      terms:   { ES: "Términos",                        EUS: "Baldintzak" },
+      and:     { ES: "y",                               EUS: "eta" },
+      privacy: { ES: "Política de Privacidad",         EUS: "Pribatutasun-politika" },
+    },
+
+    noAccount: { ES: "¿No tienes cuenta?", EUS: "Ez duzu konturik?" },
+    signUp:    { ES: "Regístrate",         EUS: "Erregistratu" },
+  },
+
+
+
+    // PRICING PAGE //
+  pricing: {
+    title:    { ES: "Elige Tu Plan Perfecto", EUS: "Aukeratu Zure Plan Perfectua" },
+    subtitle: { ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.", EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin." },
+
+    plan: {
+      free:  { ES: "Prueba Gratis",  EUS: "Probatu Doan" },
+      basic: { ES: "Plan Básico",    EUS: "Oinarrizko Plana" },
+      pro:   { ES: "Plan Premium",   EUS: "Premium Plana" },
+    },
+
+    perMonth: { ES: "/ mes", EUS: "/ hilean" },
+    perDay: {
+      basic:   { ES: "≈ 0,17 € al día", EUS: "≈ 0,17 € egunean" },
+      premium: { ES: "≈ 0,33 € al día", EUS: "≈ 0,33 € egunean" },
+    },
+
+    mostPopular: { ES: "Más popular", EUS: "Ezagunenak" },
+
+    cta: {
+      free:  { ES: "Empieza gratis",   EUS: "Hasi doan" },
+      basic: { ES: "Elegir Básico",    EUS: "Aukeratu Oinarrizkoa" },
+      pro:   { ES: "Elegir Premium",   EUS: "Aukeratu Premium" },
+    },
+
+    features: {
+      // FREE
+      library_free: { ES: "", EUS: "" },
+      export_free:  { ES: "", EUS: "" },
+      audio_free:   { ES: "", EUS: "" },
+      ai_free:      { ES: "", EUS: "" },
+      file_free:    { ES: "", EUS: "" },
+      speed_free:   { ES: "", EUS: "" },
+
+      // BASIC
+      library_basic: { ES: "", EUS: "" },
+      export_basic:  { ES: "", EUS: "" },
+      audio_basic:   { ES: "", EUS: "" },
+      ai_basic:      { ES: "", EUS: "" },
+      file_basic:    { ES: "", EUS: "" },
+      speed_basic:   { ES: "", EUS: "" },
+
+      // PREMIUM
+      library_premium: { ES: "", EUS: "" },
+      export_premium:  { ES: "", EUS: "" },
+      audio_premium:   { ES: "", EUS: "" },
+      ai_premium:      { ES: "", EUS: "" },
+      file_premium:    { ES: "", EUS: "" },
+      speed_premium:   { ES: "", EUS: "" },
+    },
+  },
 
 
 
