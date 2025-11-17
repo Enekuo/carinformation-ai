@@ -14,7 +14,7 @@ export default function HowItWorks() {
             {tr("homeHowItWorks.title", "")}
           </h2>
 
-          <p className="text-slate-600 text-[16px] leading-relaxed mb-8">
+          <p className="text-slate-600 text-[16px] leading-loose mb-10 max-w-[720px]">
             {tr("homeHowItWorks.intro", "")}
           </p>
 
