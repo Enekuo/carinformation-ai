@@ -30,13 +30,109 @@ export default function HowItWorks() {
               {tr("homeHowItWorks.offers_title", "")}
             </h3>
 
+            {/* LISTA CON TICK VERDE */}
             <ul className="space-y-2 text-slate-600 text-[14px] md:text-[15px] leading-relaxed">
-              <li>{tr("homeHowItWorks.offers_item1", "")}</li>
-              <li>{tr("homeHowItWorks.offers_item2", "")}</li>
-              <li>{tr("homeHowItWorks.offers_item3", "")}</li>
-              <li>{tr("homeHowItWorks.offers_item4", "")}</li>
-              <li>{tr("homeHowItWorks.offers_item5", "")}</li>
-              <li>{tr("homeHowItWorks.offers_item6", "")}</li>
+              <li className="flex items-start gap-2">
+                <svg
+                  className="mt-[5px] w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 6L9 17L4 12"
+                    stroke="#16A34A"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{tr("homeHowItWorks.offers_item1", "")}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <svg
+                  className="mt-[5px] w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 6L9 17L4 12"
+                    stroke="#16A34A"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{tr("homeHowItWorks.offers_item2", "")}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <svg
+                  className="mt-[5px] w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 6L9 17L4 12"
+                    stroke="#16A34A"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{tr("homeHowItWorks.offers_item3", "")}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <svg
+                  className="mt-[5px] w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 6L9 17L4 12"
+                    stroke="#16A34A"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{tr("homeHowItWorks.offers_item4", "")}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <svg
+                  className="mt-[5px] w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 6L9 17L4 12"
+                    stroke="#16A34A"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{tr("homeHowItWorks.offers_item5", "")}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <svg
+                  className="mt-[5px] w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 6L9 17L4 12"
+                    stroke="#16A34A"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{tr("homeHowItWorks.offers_item6", "")}</span>
+              </li>
             </ul>
           </div>
 
@@ -45,7 +141,7 @@ export default function HowItWorks() {
             <img
               src="/how-it-works.png"
               alt=""
-              className="w-full max-w-[400px]"
+              className="w-full max-w-[360px]"
             />
           </div>
         </div>
