@@ -360,46 +360,51 @@ homeHowItWorks: {
     EUS: "Euskalia adimen artifiziala erabiltzen duen webgune bat da, formatu azkar eta errazean testuak euskerara itzuli eta balurtzeko gai dena. Testua itsatsi, dokumentu bat igo edo URL bat sartu besterik ez duzu egin behar; hizkuntzak aukeratu, eta segundo gutxitan argi ulertzeko moduko bertsio garbi eta erabilgarri bat jasoko duzu. Zure beharren arabera laguntzeko pentsatuta dago, bai beste hizkuntza batetik euskarara itzuli nahi baduzu, edo bai euskaratik beste edozein hizkuntzatara, ahalegin eta zailtasunik gabe. ",
   },
 
-  offers_title: {
-    ES: "🔍 ¿Qué ofrece Euskalia?",
-    EUS: "",
-  },
-  offers_item1: {
-    ES: "",
-    EUS: "",
-  },
-  offers_item2: {
-    ES: "",
-    EUS: "",
-  },
-  offers_item3: {
-    ES: "",
-    EUS: "",
-  },
-  offers_item4: {
-    ES: "",
-    EUS: "",
-  },
-  offers_item5: {
-    ES: "",
-    EUS: "",
-  },
-  offers_item6: {
-    ES: "",
-    EUS: "",
-  },
-
-  listen_block_title: {
-    ES: "",
-    EUS: "",
-  },
-  listen_block_paragraph: {
-    ES: "",
-    EUS: "",
-  },
+  homeHowItWorks_offers_title: {
+  ES: "🔍 ¿Qué ofrece Euskalia?",
+  EUS: "🔍 Zer eskaintzen du Euskaliak ?",
 },
 
+homeHowItWorks_offers_item1: {
+  ES: "",
+  EUS: "",
+},
 
+homeHowItWorks_offers_item2: {
+  ES: "",
+  EUS: "",
+},
+
+homeHowItWorks_offers_item3: {
+  ES: "",
+  EUS: "",
+},
+
+homeHowItWorks_offers_item4: {
+  ES: "",
+  EUS: "",
+},
+
+homeHowItWorks_offers_item5: {
+  ES: "",
+  EUS: "",
+},
+
+homeHowItWorks_offers_item6: {
+  ES: "",
+  EUS: "",
+},
+
+homeHowItWorks_listen_block_title: {
+  ES: "",
+  EUS: "",
+},
+
+homeHowItWorks_listen_block_paragraph: {
+  ES: "",
+  EUS: "",
+},
+},
 
 
 /* ==== CTA FINAL ==== */
