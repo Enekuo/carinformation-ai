@@ -181,7 +181,7 @@ export default function HowItWorks() {
             <img
               src="/how-it-works.png"
               alt=""
-              className="w-full max-w-[360px]"
+              className="w-full max-w-[520px]"
             />
           </motion.div>
         </motion.div>
