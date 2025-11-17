@@ -366,34 +366,34 @@ homeHowItWorks: {
   },
 
   offers_item1: {
-    ES: "Traduce textos largos al euskera o desde el euskera en cuestión de segundos.",
-    EUS: "Itzuli testu luzeak euskarara edo euskaratik, segundo gutxitan.",
-  },
+  ES: "Traduce textos largos al euskera o desde el euskera en cuestión de segundos.",
+  EUS: "Itzuli testu luzeak euskarara edo euskaratik segundo gutxitan.",
+},
 
-  offers_item2: {
-    ES: "Convierte documentos completos en resúmenes claros y fáciles de entender.",
-    EUS: "Bihurtu dokumentu osoak laburpen argi eta erraz ulertzeko modukoetan.",
-  },
+offers_item2: {
+  ES: "Convierte desde documentos completos o URLs.",
+  EUS: "Bihurtu dokumentu bitartez edo URL bidez.",
+},
 
-  offers_item3: {
-    ES: "Trabaja con enlaces y páginas web sin tener que copiar todo el contenido a mano.",
-    EUS: "Lan egin esteka eta web-orrietan edukia eskuz kopiatu beharrik gabe.",
-  },
+offers_item3: {
+  ES: "Trabaja con enlaces y páginas web sin tener que copiar todo el contenido a mano.",
+  EUS: "Lan egin esteka edo web-orrien bitartez eduki osoa eskuz kopiatu gabe.",
+},
 
-  offers_item4: {
-    ES: "Combina información de diferentes fuentes en un único resultado ordenado.",
-    EUS: "Batu iturri desberdinetako informazioa emaitza bakar eta antolatu batean.",
-  },
+offers_item4: {
+  ES: "Combina información de diferentes fuentes en un único resultado ordenado.",
+  EUS: "Batu iturri desberdinetako informazioa emaitza bakar eta ordenatu batean.",
+},
 
-  offers_item5: {
-    ES: "Ahorra tiempo en clase, en el trabajo o estudiando por tu cuenta.",
-    EUS: "Aurreztu denbora ikasgelan, lanean edo zure kabuz ikasten ari zarenean.",
-  },
+offers_item5: {
+  ES: "Ahorra tiempo en clase, en el trabajo o estudiando por tu cuenta.",
+  EUS: "Aurreztu denbora ikasgelan, lanean edo zure kabuz ikasten ari zarenean.",
+},
 
-  offers_item6: {
-    ES: "Utiliza el euskera con más seguridad, aunque todavía no lo domines al cien por cien.",
-    EUS: "Erabili euskara konfiantza handiagoz, oraindik guztiz menderatzen ez baduzu ere.",
-  },
+offers_item6: {
+  ES: "Utiliza el euskera con más seguridad, aunque todavía no lo domines al cien por cien.",
+  EUS: "Erabili euskara konfiantza handiagoz, oraindik guztiz menderatzen ez baduzu ere.",
+},
 
   
 },
