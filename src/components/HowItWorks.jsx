@@ -6,31 +6,31 @@ export default function HowItWorks() {
   const tr = (key, fallback) => t(key) || fallback;
 
   return (
-    <section className="w-full bg-slate-50 py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
+    <section className="w-full bg-slate-50 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* TARJETA CONTENEDORA */}
         <div
           className="
             bg-white rounded-3xl border border-slate-100 shadow-lg
-            px-6 md:px-10 py-10 md:py-12
-            flex flex-col lg:flex-row items-center gap-10
+            px-5 md:px-8 py-8 md:py-10
+            flex flex-col lg:flex-row items-center gap-8
           "
         >
           {/* BLOQUE DE TEXTO */}
           <div className="w-full lg:basis-7/12 text-left">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-4 leading-tight">
               {tr("homeHowItWorks.title", "")}
             </h2>
 
-            <p className="text-slate-600 text-[16px] leading-relaxed mb-8">
+            <p className="text-slate-600 text-[15px] md:text-[16px] leading-relaxed mb-6">
               {tr("homeHowItWorks.intro", "")}
             </p>
 
-            <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            <h3 className="text-lg md:text-xl font-semibold text-slate-900 mb-3">
               {tr("homeHowItWorks.offers_title", "")}
             </h3>
 
-            <ul className="space-y-3 text-slate-600 text-[15px] leading-relaxed">
+            <ul className="space-y-2 text-slate-600 text-[14px] md:text-[15px] leading-relaxed">
               <li>{tr("homeHowItWorks.offers_item1", "")}</li>
               <li>{tr("homeHowItWorks.offers_item2", "")}</li>
               <li>{tr("homeHowItWorks.offers_item3", "")}</li>
@@ -45,7 +45,7 @@ export default function HowItWorks() {
             <img
               src="/how-it-works.png"
               alt=""
-              className="w-full max-w-[460px]"
+              className="w-full max-w-[360px]"
             />
           </div>
         </div>
