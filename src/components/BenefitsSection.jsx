@@ -58,9 +58,9 @@ export default function BenefitsSection() {
   return (
     <motion.section
       className="w-full bg-white pt-20 pb-24 md:pt-24 md:pb-28"
-      initial={{ opacity: 0, scale: 0.97 }}          // solo “aparecer”
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: false, amount: 0.3 }}
+      initial={{ opacity: 0 }}                 // empieza invisible
+      whileInView={{ opacity: 1 }}             // aparece
+      viewport={{ once: false, amount: 0.3 }}  // cada vez que entra en pantalla
       transition={{ duration: 0.9, ease: "easeOut" }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -107,5 +107,5 @@ export default function BenefitsSection() {
         </div>
       </div>
     </motion.section>
-  ); 
+  );
 }
