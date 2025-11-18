@@ -358,21 +358,21 @@ export const translations = {
     EUS: "Euskalia itzulpen adimentsua, laburpen automatikoei eta URL edo dokumentuen prozesamenduari konbinatzen du, euskarazko edukiarekin ahaleginik gabe lan egin dezazun. Testu bakoitzaren testuinguru erreala detektatzen du, argi eta zehatzak diren bertsioak segundo gutxitan sortzen ditu eta, behar izanez gero, emaitza audio natural batean bihurtzen du, ikasten ari zarenean edo beste lan batzuk egiten dituzunean entzuteko. Denak azkar, seguruan eta euskararen menperaketa hobetzen laguntzeko pentsatuta funtzionatzen du egunerokoan."
   },
   item1_title: {
-    ES: "",
-    EUS: "",
+    ES: "Traducción inteligente neurorreforzada",
+    EUS: "Euskalia detecta el contexto real de tus frases y genera traducciones más naturales, precisas y adaptadas al uso cotidiano o académico.",
   },
   item1_desc: {
-    ES: "",
-    EUS: "",
+    ES: "Itzulpen adimendun neuroindartua",
+    EUS: "Euskaliak zure esaldien benetako testuingurua hautematen du eta itzulpen naturalagoak, zehatzagoak eta erabilera akademiko edo egunerokora egokituak sortzen ditu.",
   },
 
   item2_title: {
-    ES: "",
-    EUS: "",
+    ES: "Velocidad optimizada para el día a día",
+    EUS: "Abiadura optimizatua eguneroko erabilerarako",
   },
   item2_desc: {
-    ES: "",
-    EUS: "",
+    ES: "Todo el procesamiento —traducción, resumen, extracción, audio— se realiza en segundos gracias a una arquitectura rápida y ligera.",
+    EUS: "Prozesu guztiak —itzulpena, laburpena, erauzketa, audioa— segundo gutxitan egiten dira arkitektura arin eta azkarrari esker.",
   },
 
   item3_title: {
