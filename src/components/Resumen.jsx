@@ -11,6 +11,7 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 import BenefitsSection from "@/components/BenefitsSection";
+import BenefitsSection from "@/components/FeaturesSection";
 import HowItWorks from "@/components/HowItWorks";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
@@ -1035,6 +1036,7 @@ export default function Resumen() {
       </section>
 
       <BenefitsSection />
+      <FeaturesSection />
       <HowItWorks />
       <CtaSection />
       <Footer />
