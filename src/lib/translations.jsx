@@ -347,6 +347,28 @@ export const translations = {
 
 
 
+// CARACTERÍSTICAS DE EUSKALIA //
+  features: {
+  title: {
+    ES: "Características de Euskalia",
+    EUS: "Euskaliaren ezaugarriak"
+  },
+  paragraph: {
+    ES: "Euskalia combina traducción inteligente, resúmenes automáticos y procesamiento de URLs o documentos para que puedas trabajar con contenido en euskera sin esfuerzo. Detecta el contexto real de cada texto, genera versiones claras y precisas en segundos y, si lo necesitas, convierte el resultado en audio natural para escucharlo mientras estudias o haces otras tareas.Todo funciona de forma rápida, segura y pensada para ayudarte a mejorar tu dominio del euskera en tu día a día.",
+    EUS: "Euskalia itzulpen adimentsua, laburpen automatikoei eta URL edo dokumentuen prozesamenduari konbinatzen du, euskarazko edukiarekin ahaleginik gabe lan egin dezazun. Testu bakoitzaren testuinguru erreala detektatzen du, argi eta zehatzak diren bertsioak segundo gutxitan sortzen ditu eta, behar izanez gero, emaitza audio natural batean bihurtzen du, ikasten ari zarenean edo beste lan batzuk egiten dituzunean entzuteko. Denak azkar, seguruan eta euskararen menperaketa hobetzen laguntzeko pentsatuta funtzionatzen du egunerokoan."
+  },
+  features: {
+  // ...
+  highlight1_title: { ES: "", EUS: "" },
+  highlight1_desc:  { ES: "", EUS: "" },
+  highlight2_title: { ES: "", EUS: "" },
+  highlight2_desc:  { ES: "", EUS: "" },
+  highlight3_title: { ES: "", EUS: "" },
+  highlight3_desc:  { ES: "", EUS: "" },
+}
+},
+
+
 
 // Cómo funciona Euskalia
 homeHowItWorks: {

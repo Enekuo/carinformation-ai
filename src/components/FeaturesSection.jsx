@@ -41,7 +41,7 @@ export default function FeaturesSection() {
           </div>
         </div>
 
-        {/* TARJETA DE CARACTERÍSTICAS */}
+        {/* TARJETA DE CARACTERÍSTICAS (DISEÑO TIPO OLONDO) */}
         <div
           className="
             bg-white rounded-3xl border border-slate-100
@@ -50,9 +50,9 @@ export default function FeaturesSection() {
             py-6 sm:py-7 md:py-8
           "
         >
-          <div className="grid gap-4 md:gap-6 md:grid-cols-2">
-            {/* Columna izquierda */}
-            <div className="space-y-4 md:space-y-5">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+            {/* Columna izquierda: 6 filas pequeñas */}
+            <div className="w-full lg:w-5/12 space-y-4 md:space-y-5">
               <FeatureRow
                 icon={
                   <CircleIcon>
@@ -96,10 +96,7 @@ export default function FeaturesSection() {
                 title={tr("features.item3_title", "")}
                 description={tr("features.item3_desc", "")}
               />
-            </div>
 
-            {/* Columna derecha */}
-            <div className="space-y-4 md:space-y-5">
               <FeatureRow
                 icon={
                   <CircleIcon>
@@ -147,6 +144,62 @@ export default function FeaturesSection() {
                 description={tr("features.item6_desc", "")}
               />
             </div>
+
+            {/* Columna derecha: 3 bloques grandes */}
+            <div className="w-full lg:w-7/12 space-y-6 md:space-y-7">
+              <FeatureHighlight
+                icon={
+                  <CircleIcon>
+                    <path
+                      d="M6 7h12M6 17h12"
+                      strokeWidth="1.9"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="10" cy="7" r="2" strokeWidth="1.9" />
+                    <circle cx="14" cy="17" r="2" strokeWidth="1.9" />
+                  </CircleIcon>
+                }
+                title={tr("features.highlight1_title", "")}
+                description={tr("features.highlight1_desc", "")}
+              />
+
+              <FeatureHighlight
+                icon={
+                  <CircleIcon>
+                    <path
+                      d="M8 9a4 4 0 0 1 8 0v2"
+                      strokeWidth="1.9"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M9 14v2a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-2"
+                      strokeWidth="1.9"
+                      strokeLinecap="round"
+                    />
+                  </CircleIcon>
+                }
+                title={tr("features.highlight2_title", "")}
+                description={tr("features.highlight2_desc", "")}
+              />
+
+              <FeatureHighlight
+                icon={
+                  <CircleIcon>
+                    <path d="M8 11V9a4 4 0 0 1 8 0v2" strokeWidth="1.9" />
+                    <rect
+                      x="7"
+                      y="11"
+                      width="10"
+                      height="8"
+                      rx="2"
+                      strokeWidth="1.9"
+                    />
+                  </CircleIcon>
+                }
+                title={tr("features.highlight3_title", "")}
+                description={tr("features.highlight3_desc", "")}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -179,6 +232,22 @@ function FeatureRow({ icon, title, description }) {
           {title}
         </h4>
         <p className="text-[13px] md:text-[14px] text-slate-600 leading-relaxed">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function FeatureHighlight({ icon, title, description }) {
+  return (
+    <div className="flex items-start gap-4">
+      <div className="mt-[2px] shrink-0">{icon}</div>
+      <div>
+        <h3 className="text-[17px] md:text-[19px] font-semibold text-slate-900 mb-1.5">
+          {title}
+        </h3>
+        <p className="text-[14px] md:text-[15px] text-slate-600 leading-relaxed">
           {description}
         </p>
       </div>
