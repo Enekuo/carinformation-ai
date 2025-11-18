@@ -357,16 +357,88 @@ export const translations = {
     ES: "Euskalia combina traducción inteligente, resúmenes automáticos y procesamiento de URLs o documentos para que puedas trabajar con contenido en euskera sin esfuerzo. Detecta el contexto real de cada texto, genera versiones claras y precisas en segundos y, si lo necesitas, convierte el resultado en audio natural para escucharlo mientras estudias o haces otras tareas.Todo funciona de forma rápida, segura y pensada para ayudarte a mejorar tu dominio del euskera en tu día a día.",
     EUS: "Euskalia itzulpen adimentsua, laburpen automatikoei eta URL edo dokumentuen prozesamenduari konbinatzen du, euskarazko edukiarekin ahaleginik gabe lan egin dezazun. Testu bakoitzaren testuinguru erreala detektatzen du, argi eta zehatzak diren bertsioak segundo gutxitan sortzen ditu eta, behar izanez gero, emaitza audio natural batean bihurtzen du, ikasten ari zarenean edo beste lan batzuk egiten dituzunean entzuteko. Denak azkar, seguruan eta euskararen menperaketa hobetzen laguntzeko pentsatuta funtzionatzen du egunerokoan."
   },
-  features: {
-  // ...
-  highlight1_title: { ES: "", EUS: "" },
-  highlight1_desc:  { ES: "", EUS: "" },
-  highlight2_title: { ES: "", EUS: "" },
-  highlight2_desc:  { ES: "", EUS: "" },
-  highlight3_title: { ES: "", EUS: "" },
-  highlight3_desc:  { ES: "", EUS: "" },
-}
+  item1_title: {
+    ES: "",
+    EUS: "",
+  },
+  item1_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+  item2_title: {
+    ES: "",
+    EUS: "",
+  },
+  item2_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+  item3_title: {
+    ES: "",
+    EUS: "",
+  },
+  item3_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+  item4_title: {
+    ES: "",
+    EUS: "",
+  },
+  item4_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+  item5_title: {
+    ES: "",
+    EUS: "",
+  },
+  item5_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+  item6_title: {
+    ES: "",
+    EUS: "",
+  },
+  item6_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+  highlight1_title: {
+    ES: "🧠Procesamiento inteligente del contenido",
+    EUS: "🧠Edukien prozesamendu adimenduna",
+  },
+  highlight1_desc: {
+    ES: "Euskalia analiza cada texto, documento o URL para entender realmente lo que dice. Detecta estructura, contexto y puntos clave para ofrecerte una traducción o resumen mucho más útil y adaptado a lo que necesitas.",
+    EUS: "Euskaliak testu, dokumentu edo URL bakoitza aztertzen du benetan zer esaten duen ulertzeko. Egiturak, testuingurua eta puntu nagusiak detektatzen ditu, eta horri esker itzulpen edo laburpen erabilgarriagoa eskaintzen dizu.",
+  },
+
+  highlight2_title: {
+    ES: "🎯Resultados claros y naturales",
+    EUS: "🎯Emaitza argi eta naturalak",
+  },
+  highlight2_desc: {
+    ES: "El contenido generado por Euskalia está pensado para que lo entiendas rápido. Traducciones limpias, resúmenes estructurados y textos que respetan el sentido original para que estudiar o trabajar sea más fácil y más rápido.",
+    EUS: "Euskaliak sortutako edukia azkar ulertzeko pentsatuta dago. Itzulpen garbiak, egituratutako laburpenak eta jatorrizko esanahia errespetatzen duten testuak eskaintzen ditu, ikastea edo lan egitea errazagoa izan dadin.",
+  },
+
+  highlight3_title: {
+    ES: "🔒Privacidad garantizada",
+    EUS: "🔒Segurtasuna bermatuta",
+  },
+  highlight3_desc: {
+    ES: "El contenido no se almacena de forma permanente. Tus textos, documentos y enlaces se procesan de forma segura y temporal.",
+    EUS: "Edukia ez da behin betiko gordetzen. Zure testuak, dokumentuak eta estekak modu seguruan eta aldi baterako prozesatzen dira.",
+  },
 },
+
 
 
 
