@@ -1,10 +1,25 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 
 export default function FeaturesSection() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
+
+  // Controlador para repetir la animación cada vez que entra en viewport
+  const controls = useAnimation();
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 28 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
 
   return (
     <section className="w-full bg-[#F4F8FF] py-16 md:py-24">
@@ -28,10 +43,12 @@ export default function FeaturesSection() {
             px-4 sm:px-6 md:px-8 lg:px-10
             py-6 sm:py-8 md:py-9
           "
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          variants={cardVariants}
+          initial="hidden"
+          animate={controls}
+          whileInView="show"
+          viewport={{ once: false, amount: 0.25 }}
+          onViewportLeave={() => controls.set("hidden")}
         >
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
             {/* COLUMNA IZQUIERDA: 6 FILAS LARGAS */}
