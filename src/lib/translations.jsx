@@ -379,8 +379,8 @@ export const translations = {
     EUS: "Itzulpen adimendu neuroindartua",
   },
   item3_desc: {
-    ES: "Euskalia detecta el contexto real de tus frases y genera traducciones más naturales, precisas y adaptadas al uso cotidiano o académico.",
-    EUS: "Euskaliak zure esaldien benetako testuingurua hautematen du eta itzulpen naturalagoak, zehatzagoak eta erabilera akademiko edo egunerokora egokituak sortzen ditu.",
+    ES: "Euskalia entiende el contexto real y crea traducciones más naturales y precisas.",
+    EUS: "Euskaliak testuingurua ulertu eta itzulpen natural eta zehatzagoak sortzen ditu.",
   },
 
   item4_title: {
@@ -396,8 +396,8 @@ export const translations = {
     EUS: "Abiadura optimizatua eguneroko erabilerarako",
   },
   item5_desc: {
-    ES: "Todo el procesamiento —traducción, resumen, extracción, audio— se realiza en segundos gracias a una arquitectura rápida y ligera.",
-    EUS: "Prozesu guztiak —itzulpena, laburpena, erauzketa, audioa— segundo gutxitan egiten dira arkitektura arin eta azkarrari esker.",
+    ES: "Todo se procesa en segundos gracias a una arquitectura rápida y ligera.",
+    EUS: "Guztia segundo gutxitan prozesatzen da arkitektura arin eta azkarrari esker.",
   },
   
   item6_title: {
