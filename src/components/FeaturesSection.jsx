@@ -41,7 +41,7 @@ export default function FeaturesSection() {
           </div>
         </div>
 
-        {/* TARJETA DE CARACTERÍSTICAS (DISEÑO COMPLETO CON PARTE DERECHA) */}
+        {/* TARJETA DE CARACTERÍSTICAS (IZQUIERDA + DERECHA) */}
         <div
           className="
             bg-white rounded-3xl border border-slate-100
@@ -210,23 +210,25 @@ export default function FeaturesSection() {
 /* ==== Subcomponentes internos ==== */
 
 function CircleIcon({ children }) {
+  // Icono un poco más compacto, como en el ejemplo
   return (
     <svg
-      className="w-9 h-9 text-blue-600"
+      className="w-7 h-7 text-blue-600"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
     >
-      <circle cx="12" cy="12" r="10" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="10" strokeWidth="1.8" />
       {children}
     </svg>
   );
 }
 
 function FeatureRow({ icon, title, description }) {
+  // Fila con fondo azul claro, borde suave y padding tipo ejemplo
   return (
-    <div className="flex items-start gap-3 rounded-2xl bg-slate-50/70 px-4 py-3.5">
-      <div className="mt-[2px] shrink-0">{icon}</div>
+    <div className="flex items-center gap-3 rounded-2xl bg-[#F5FAFF] border border-[#E1EEFF] px-5 py-4">
+      <div className="mt-[1px] shrink-0">{icon}</div>
       <div>
         <h4 className="text-sm md:text-[15px] font-semibold text-slate-900 mb-0.5">
           {title}
