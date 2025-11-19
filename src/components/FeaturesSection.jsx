@@ -53,91 +53,83 @@ export default function FeaturesSection() {
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
             {/* Columna izquierda: 6 filas pequeñas (tipo Olondo) */}
             <div className="w-full lg:w-5/12 space-y-4 md:space-y-5">
+              {/* 1. Eduki sortzailea – documento con líneas */}
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M7 4h10a1 1 0 0 1 1 1v12M7 4A2 2 0 0 0 5 6v12a2 2 0 0 1 2-2h10"
-                      strokeWidth="1.9"
-                    />
+                    <rect x="5" y="4" width="12" height="16" rx="2" />
+                    <path d="M8 8h6M8 11h4M8 14h5" />
+                    {/* pequeño destello en la esquina */}
+                    <path d="M15.5 6.5 17 5" />
                   </CircleIcon>
                 }
                 title={tr("features.item1_title", "")}
                 description={tr("features.item1_desc", "")}
               />
 
+              {/* 2. Iturri mota desberdinak – varias fuentes (dos docs) */}
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M9 4h6l3 3v11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"
-                      strokeWidth="1.9"
-                    />
-                    <path d="M13 4v4h5" strokeWidth="1.9" />
+                    <rect x="4" y="6" width="7" height="11" rx="1.5" />
+                    <rect x="11" y="4" width="7" height="11" rx="1.5" />
+                    <path d="M11 9.5h2" />
                   </CircleIcon>
                 }
                 title={tr("features.item2_title", "")}
                 description={tr("features.item2_desc", "")}
               />
 
+              {/* 3. Itzulpen adimendu neuroindartua – cerebro */}
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M9.5 14.5 8 16a3 3 0 0 0 4.24 4.24l2-2A3 3 0 0 0 13 13.5"
-                      strokeWidth="1.9"
-                    />
-                    <path
-                      d="M14.5 9.5 16 8a3 3 0 1 0-4.24-4.24l-2 2A3 3 0 0 0 11 10.5"
-                      strokeWidth="1.9"
-                    />
+                    {/* mitad izquierda del cerebro */}
+                    <path d="M9 4a2 2 0 0 0-2 2v1.5A2.5 2.5 0 0 0 5 10v2a2.5 2.5 0 0 0 2 2.45V17a2 2 0 0 0 2 2" />
+                    {/* mitad derecha */}
+                    <path d="M15 4a2 2 0 0 1 2 2v1.5A2.5 2.5 0 0 1 19 10v2a2.5 2.5 0 0 1-2 2.45V17a2 2 0 0 1-2 2" />
+                    {/* separación central */}
+                    <path d="M12 4v14" />
+                    {/* conexiones */}
+                    <path d="M9 8h1.5M9 12h1.5M9 16h1.5" />
+                    <path d="M13.5 10H15M13.5 14H15" />
                   </CircleIcon>
                 }
                 title={tr("features.item3_title", "")}
                 description={tr("features.item3_desc", "")}
               />
 
+              {/* 4. Testuaren luzeraren kontrola – sliders */}
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M6 7h12M6 17h12"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                    />
-                    <circle cx="10" cy="7" r="2" strokeWidth="1.9" />
-                    <circle cx="14" cy="17" r="2" strokeWidth="1.9" />
+                    <path d="M6 7h12M6 17h12" />
+                    <circle cx="10" cy="7" r="2" />
+                    <circle cx="14" cy="17" r="2" />
                   </CircleIcon>
                 }
                 title={tr("features.item4_title", "")}
                 description={tr("features.item4_desc", "")}
               />
 
+              {/* 5. Abiadura optimizatua – rayo */}
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    <path d="M8 11V9a4 4 0 0 1 8 0v2" strokeWidth="1.9" />
-                    <rect
-                      x="7"
-                      y="11"
-                      width="10"
-                      height="8"
-                      rx="2"
-                      strokeWidth="1.9"
-                    />
+                    <path d="M11 3 6 13h4l-1 8 5-10h-4z" />
                   </CircleIcon>
                 }
                 title={tr("features.item5_title", "")}
                 description={tr("features.item5_desc", "")}
               />
 
+              {/* 6. Pribatutasuna – candado */}
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M13 3 7 13h4l-1 8 6-10h-4l1-8Z"
-                      strokeWidth="1.9"
-                    />
+                    <rect x="7" y="11" width="10" height="8" rx="2" />
+                    <path d="M10 11V9a2 2 0 0 1 4 0v2" />
+                    <circle cx="12" cy="14.5" r="1" />
                   </CircleIcon>
                 }
                 title={tr("features.item6_title", "")}
@@ -145,55 +137,38 @@ export default function FeaturesSection() {
               />
             </div>
 
-            {/* Columna derecha: 3 bloques grandes (las mantengo igual) */}
+            {/* Columna derecha: 3 bloques grandes */}
             <div className="w-full lg:w-7/12 space-y-6 md:space-y-7">
+              {/* Edukien prozesamendu adimenduna – engranaje */}
               <FeatureHighlight
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M6 7h12M6 17h12"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                    />
-                    <circle cx="10" cy="7" r="2" strokeWidth="1.9" />
-                    <circle cx="14" cy="17" r="2" strokeWidth="1.9" />
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M12 3v2.5M12 18.5V21M5.2 5.2l1.8 1.8M17 17l1.8 1.8M3 12h2.5M18.5 12H21M5.2 18.8 7 17M17 7l1.8-1.8" />
                   </CircleIcon>
                 }
                 title={tr("features.highlight1_title", "")}
                 description={tr("features.highlight1_desc", "")}
               />
 
+              {/* Emaitza argi eta naturalak – estrella / resultado claro */}
               <FeatureHighlight
                 icon={
                   <CircleIcon>
-                    <path
-                      d="M8 9a4 4 0 0 1 8 0v2"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M9 14v2a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-2"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                    />
+                    <path d="M12 5.5 13.6 9l3.9.3-3 2.5.9 3.8L12 14.5 8.6 18l.9-3.8-3-2.5 3.9-.3z" />
                   </CircleIcon>
                 }
                 title={tr("features.highlight2_title", "")}
                 description={tr("features.highlight2_desc", "")}
               />
 
+              {/* Segurtasuna bermatuta – candado */}
               <FeatureHighlight
                 icon={
                   <CircleIcon>
-                    <path d="M8 11V9a4 4 0 0 1 8 0v2" strokeWidth="1.9" />
-                    <rect
-                      x="7"
-                      y="11"
-                      width="10"
-                      height="8"
-                      rx="2"
-                      strokeWidth="1.9"
-                    />
+                    <rect x="7" y="11" width="10" height="8" rx="2" />
+                    <path d="M10 11V9a2 2 0 0 1 4 0v2" />
+                    <circle cx="12" cy="14.5" r="1" />
                   </CircleIcon>
                 }
                 title={tr("features.highlight3_title", "")}
@@ -209,26 +184,25 @@ export default function FeaturesSection() {
 
 /* ==== Subcomponentes internos ==== */
 
-// Ahora CircleIcon se comporta como un icono azul “normal”, sin círculo alrededor,
-// parecido al estilo de Lucide en tu ejemplo de Olondo.
 function CircleIcon({ children }) {
   return (
     <svg
-      className="w-6 h-6 text-blue-600"
+      className="w-8 h-8 text-blue-600"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       {children}
     </svg>
   );
 }
 
-// Fila tipo tarjeta, igual concepto que en Olondo:
-// icono azul + fondo gris-azulado + bordes redondeados.
 function FeatureRow({ icon, title, description }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl bg-slate-100 px-4 py-3">
+    <div className="flex items-center gap-4 rounded-xl bg-slate-100 px-4 py-3.5">
       <div className="mt-[2px] shrink-0">{icon}</div>
       <div>
         <h4 className="text-sm md:text-[15px] font-semibold text-slate-900 mb-0.5">
