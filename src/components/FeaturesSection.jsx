@@ -51,7 +51,7 @@ export default function FeaturesSection() {
           "
         >
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-            {/* Columna izquierda: 6 filas pequeñas */}
+            {/* Columna izquierda: 6 filas pequeñas (tipo Olondo) */}
             <div className="w-full lg:w-5/12 space-y-4 md:space-y-5">
               <FeatureRow
                 icon={
@@ -145,7 +145,7 @@ export default function FeaturesSection() {
               />
             </div>
 
-            {/* Columna derecha: 3 bloques grandes */}
+            {/* Columna derecha: 3 bloques grandes (las mantengo igual) */}
             <div className="w-full lg:w-7/12 space-y-6 md:space-y-7">
               <FeatureHighlight
                 icon={
@@ -209,26 +209,27 @@ export default function FeaturesSection() {
 
 /* ==== Subcomponentes internos ==== */
 
+// Ahora CircleIcon se comporta como un icono azul “normal”, sin círculo alrededor,
+// parecido al estilo de Lucide en tu ejemplo de Olondo.
 function CircleIcon({ children }) {
-  // Icono un poco más compacto, como en el ejemplo
   return (
     <svg
-      className="w-7 h-7 text-blue-600"
+      className="w-6 h-6 text-blue-600"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
     >
-      <circle cx="12" cy="12" r="10" strokeWidth="1.8" />
       {children}
     </svg>
   );
 }
 
+// Fila tipo tarjeta, igual concepto que en Olondo:
+// icono azul + fondo gris-azulado + bordes redondeados.
 function FeatureRow({ icon, title, description }) {
-  // Fila con fondo azul claro, borde suave y padding tipo ejemplo
   return (
-    <div className="flex items-center gap-3 rounded-2xl bg-[#F5FAFF] border border-[#E1EEFF] px-5 py-4">
-      <div className="mt-[1px] shrink-0">{icon}</div>
+    <div className="flex items-center gap-3 rounded-xl bg-slate-100 px-4 py-3">
+      <div className="mt-[2px] shrink-0">{icon}</div>
       <div>
         <h4 className="text-sm md:text-[15px] font-semibold text-slate-900 mb-0.5">
           {title}
