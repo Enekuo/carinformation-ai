@@ -50,16 +50,15 @@ export default function FeaturesSection() {
             py-6 sm:py-7 md:py-8
           "
         >
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-            {/* Columna izquierda: 6 filas pequeñas (tipo Olondo) */}
-            <div className="w-full lg:w-5/12 space-y-4 md:space-y-5">
+          <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-10">
+            {/* Columna izquierda: 6 filas pequeñas (más ancha) */}
+            <div className="w-full lg:w-7/12 space-y-4 md:space-y-5">
               {/* 1. Eduki sortzailea – documento con líneas */}
               <FeatureRow
                 icon={
                   <CircleIcon>
                     <rect x="5" y="4" width="12" height="16" rx="2" />
                     <path d="M8 8h6M8 11h4M8 14h5" />
-                    {/* pequeño destello en la esquina */}
                     <path d="M15.5 6.5 17 5" />
                   </CircleIcon>
                 }
@@ -67,7 +66,7 @@ export default function FeaturesSection() {
                 description={tr("features.item1_desc", "")}
               />
 
-              {/* 2. Iturri mota desberdinak – varias fuentes (dos docs) */}
+              {/* 2. Iturri mota desberdinak – varias fuentes */}
               <FeatureRow
                 icon={
                   <CircleIcon>
@@ -84,13 +83,9 @@ export default function FeaturesSection() {
               <FeatureRow
                 icon={
                   <CircleIcon>
-                    {/* mitad izquierda del cerebro */}
                     <path d="M9 4a2 2 0 0 0-2 2v1.5A2.5 2.5 0 0 0 5 10v2a2.5 2.5 0 0 0 2 2.45V17a2 2 0 0 0 2 2" />
-                    {/* mitad derecha */}
                     <path d="M15 4a2 2 0 0 1 2 2v1.5A2.5 2.5 0 0 1 19 10v2a2.5 2.5 0 0 1-2 2.45V17a2 2 0 0 1-2 2" />
-                    {/* separación central */}
                     <path d="M12 4v14" />
-                    {/* conexiones */}
                     <path d="M9 8h1.5M9 12h1.5M9 16h1.5" />
                     <path d="M13.5 10H15M13.5 14H15" />
                   </CircleIcon>
@@ -137,8 +132,8 @@ export default function FeaturesSection() {
               />
             </div>
 
-            {/* Columna derecha: 3 bloques grandes */}
-            <div className="w-full lg:w-7/12 space-y-6 md:space-y-7">
+            {/* Columna derecha: 3 bloques grandes (más estrecha y más vertical) */}
+            <div className="w-full lg:w-5/12 max-w-xl ml-auto space-y-6 md:space-y-7">
               {/* Edukien prozesamendu adimenduna – engranaje */}
               <FeatureHighlight
                 icon={
@@ -151,7 +146,7 @@ export default function FeaturesSection() {
                 description={tr("features.highlight1_desc", "")}
               />
 
-              {/* Emaitza argi eta naturalak – estrella / resultado claro */}
+              {/* Emaitza argi eta naturalak – estrella */}
               <FeatureHighlight
                 icon={
                   <CircleIcon>
@@ -202,7 +197,7 @@ function CircleIcon({ children }) {
 
 function FeatureRow({ icon, title, description }) {
   return (
-    <div className="flex items-center gap-4 rounded-xl bg-slate-100 px-4 py-3.5">
+    <div className="flex items-center gap-4 rounded-xl bg-slate-100 px-4 py-4">
       <div className="mt-[2px] shrink-0">{icon}</div>
       <div>
         <h4 className="text-sm md:text-[15px] font-semibold text-slate-900 mb-0.5">
