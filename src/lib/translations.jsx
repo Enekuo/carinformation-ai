@@ -358,57 +358,55 @@ export const translations = {
     EUS: "Euskalia itzulpen adimentsua, laburpen automatikoei eta URL edo dokumentuen prozesamenduari konbinatzen du, euskarazko edukiarekin ahaleginik gabe lan egin dezazun. Testu bakoitzaren testuinguru erreala detektatzen du, argi eta zehatzak diren bertsioak segundo gutxitan sortzen ditu eta, behar izanez gero, emaitza audio natural batean bihurtzen du, ikasten ari zarenean edo beste lan batzuk egiten dituzunean entzuteko. Denak azkar, seguruan eta euskararen menperaketa hobetzen laguntzeko pentsatuta funtzionatzen du egunerokoan."
   },
   item1_title: {
-    ES: "Traducción inteligente neurorreforzada",
-    EUS: "Euskalia detecta el contexto real de tus frases y genera traducciones más naturales, precisas y adaptadas al uso cotidiano o académico.",
+    ES: "Generación de contenido",
+    EUS: "Eduki sortzailea",
   },
   item1_desc: {
-    ES: "Itzulpen adimendun neuroindartua",
+    ES: "Crea traducciones o resúmenes con IA en segundos.",
+    EUS: "Sortu itzulpenak edo laburpenak IA-rekin segundu gutxitan",
+  },
+  item2_title: {
+    ES: "Variedad de fuentes",
+    EUS: "Iturri mota desberdinak",
+  },
+  item2_desc: {
+    ES: "Euskalia funciona con diferentes tipos de entrada: texto, documentos, URLs...",
+    EUS: "Euskaliak mota desberdinetako sarrerak onartzen ditu: testua, dokumentua, URLak...",
+  },
+  
+  item3_title: {
+    ES: "Traducción inteligente neurorreforzada",
+    EUS: "Itzulpen adimendu neuroindartua",
+  },
+  item3_desc: {
+    ES: "Euskalia detecta el contexto real de tus frases y genera traducciones más naturales, precisas y adaptadas al uso cotidiano o académico.",
     EUS: "Euskaliak zure esaldien benetako testuingurua hautematen du eta itzulpen naturalagoak, zehatzagoak eta erabilera akademiko edo egunerokora egokituak sortzen ditu.",
   },
 
-  item2_title: {
+  item4_title: {
+    ES: "Control de longitud del texto",
+    EUS: "Testuaren luzeraren kontrola",
+  },
+  item4_desc: {
+    ES: "Decide si quieres un resultado breve, medio o detallado.",
+    EUS: "Erabaki emaitza laburra, ertaina edo zehatza nahi duzun.",
+  },
+  item5_title: {
     ES: "Velocidad optimizada para el día a día",
     EUS: "Abiadura optimizatua eguneroko erabilerarako",
   },
-  item2_desc: {
+  item5_desc: {
     ES: "Todo el procesamiento —traducción, resumen, extracción, audio— se realiza en segundos gracias a una arquitectura rápida y ligera.",
     EUS: "Prozesu guztiak —itzulpena, laburpena, erauzketa, audioa— segundo gutxitan egiten dira arkitektura arin eta azkarrari esker.",
   },
-
-  item3_title: {
-    ES: "",
-    EUS: "",
-  },
-  item3_desc: {
-    ES: "",
-    EUS: "",
-  },
-
-  item4_title: {
-    ES: "",
-    EUS: "",
-  },
-  item4_desc: {
-    ES: "",
-    EUS: "",
-  },
-
-  item5_title: {
-    ES: "",
-    EUS: "",
-  },
-  item5_desc: {
-    ES: "",
-    EUS: "",
-  },
-
+  
   item6_title: {
-    ES: "",
-    EUS: "",
+    ES: "Privacidad garantizada",
+    EUS: "Pribatutasuna",
   },
   item6_desc: {
-    ES: "",
-    EUS: "",
+    ES: "Tu contenido se elimina automáticamente. Nadie accede a tus datos.",
+    EUS: "Zure edukia automatikoki ezabatzen da. Inork ez du datuetara sarbiderik.",
   },
 
   highlight1_title: {
