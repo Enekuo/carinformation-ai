@@ -6,7 +6,8 @@ export default function FeaturesSection() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
 
-  const controls = useAnimation();
+  const topControls = useAnimation();
+  const bottomControls = useAnimation();
 
   const cardVariants = {
     hidden: { opacity: 0, y: 28 },
@@ -24,7 +25,15 @@ export default function FeaturesSection() {
     <section className="w-full bg-[#F4F8FF] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12 md:space-y-16">
         {/* BLOQUE TITULAR + PÁRRAFO + IMAGEN */}
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+        <motion.div
+          className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14"
+          variants={cardVariants}
+          initial="hidden"
+          animate={topControls}
+          whileInView="show"
+          viewport={{ once: false, amount: 0.25 }}
+          onViewportLeave={() => topControls.set("hidden")}
+        >
           {/* TEXTO */}
           <div className="w-full lg:basis-6/12 text-left">
             <h2 className="text-[28px] sm:text-[32px] md:text-[36px] lg:text-[40px] font-extrabold text-slate-900 leading-tight mb-5">
@@ -54,7 +63,7 @@ export default function FeaturesSection() {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* TARJETA DE CARACTERÍSTICAS (IZQUIERDA + DERECHA) */}
         <motion.div
@@ -66,10 +75,10 @@ export default function FeaturesSection() {
           "
           variants={cardVariants}
           initial="hidden"
-          animate={controls}
+          animate={bottomControls}
           whileInView="show"
           viewport={{ once: false, amount: 0.25 }}
-          onViewportLeave={() => controls.set("hidden")}
+          onViewportLeave={() => bottomControls.set("hidden")}
         >
           <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-10">
             {/* Columna izquierda: 6 filas pequeñas (más ancha) */}
