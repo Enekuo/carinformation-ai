@@ -1,12 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/lib/translations";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 const FAQ_ITEMS = [
   { id: 1 },
@@ -24,6 +18,12 @@ const FAQ_ITEMS = [
 export default function FaqSection() {
   const { t } = useTranslation();
   const tr = (key, fallback = "") => t(key) || fallback;
+
+  const [openItem, setOpenItem] = useState(null);
+
+  const handleToggle = (id) => {
+    setOpenItem((current) => (current === id ? null : id));
+  };
 
   const renderAnswer = (answerText) => {
     if (!answerText) return null;
@@ -80,36 +80,58 @@ export default function FaqSection() {
           </p>
         </motion.div>
 
-        {/* LISTA DE PREGUNTAS */}
+        {/* LISTA DE PREGUNTAS (acordeón simple) */}
         <motion.div
-          className="max-w-3xl mx-auto"
+          className="max-w-3xl mx-auto divide-y divide-slate-200 dark:divide-slate-700 bg-white/70 dark:bg-slate-900/50 rounded-2xl shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Accordion type="single" collapsible className="w-full">
-            {FAQ_ITEMS.map(({ id }) => {
-              const question = tr(`faq_item${id}_question`, "");
-              const answer = tr(`faq_item${id}_answer`, "");
+          {FAQ_ITEMS.map(({ id }) => {
+            const question = tr(`faq_item${id}_question`, "");
+            const answer = tr(`faq_item${id}_answer`, "");
 
-              // Si todavía no hay traducción, no mostramos el item
-              if (!question && !answer) return null;
+            // Si aún no hay traducción, no mostramos el item
+            if (!question && !answer) return null;
 
-              return (
-                <AccordionItem value={`item-${id}`} key={id}>
-                  <AccordionTrigger className="text-lg text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-primary">
-                    {question}
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-4 text-base">
+            const isOpen = openItem === id;
+
+            return (
+              <div key={id}>
+                <button
+                  type="button"
+                  onClick={() => handleToggle(id)}
+                  className="
+                    w-full flex items-center justify-between gap-4
+                    px-6 py-4 text-left
+                    text-lg text-slate-800 dark:text-slate-200
+                    hover:bg-slate-50 dark:hover:bg-slate-800
+                    transition-colors
+                  "
+                >
+                  <span className="flex-1">{question}</span>
+                  <span
+                    className={`
+                      inline-flex items-center justify-center
+                      h-6 w-6 rounded-full border text-sm
+                      border-slate-300 dark:border-slate-600
+                    `}
+                  >
+                    {isOpen ? "-" : "+"}
+                  </span>
+                </button>
+
+                {isOpen && (
+                  <div className="px-6 pb-5 text-base bg-slate-50/70 dark:bg-slate-900/70">
+                    <div className="space-y-3">
                       {renderAnswer(answer)}
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
