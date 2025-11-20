@@ -15,7 +15,7 @@ export default function FeaturesSection() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 1.2, // más lento
         ease: [0.16, 1, 0.3, 1],
       },
     },
