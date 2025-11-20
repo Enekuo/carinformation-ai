@@ -522,8 +522,8 @@ offers_item6: {
     EUS: "Ohiko galderak",
   },
   faq_subtitle: {
-    ES: "Aquí resolvemos las dudas más habituales sobre Euskalia: cómo funciona el traductor, los límites, los idiomas y el uso que puedes darle en tu día a día.",
-    EUS: "Hemen Euskaliari buruzko galderarik ohikoenei erantzuten diegu: nola dabilen itzultzailea, mugak, hizkuntzak eta egunerokoan nola erabil dezakezun.",
+    ES: "Aquí respondemos las dudas más comunes de nuestros usuarios. Esta sección se actualiza constantemente para ayudarte mejor.",
+    EUS: "Hemen gure erabiltzaileen ohiko zalantzak erantzuten ditugu. Atal hau etengabe eguneratzen da zuretzat hobe laguntzeko.",
   
   },
 
