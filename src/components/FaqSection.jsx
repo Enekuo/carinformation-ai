@@ -82,7 +82,10 @@ export default function FaqSection() {
 
         {/* LISTA DE PREGUNTAS (acordeón simple) */}
         <motion.div
-          className="max-w-3xl mx-auto divide-y divide-slate-200 dark:divide-slate-700 bg-white/70 dark:bg-slate-900/50 rounded-2xl shadow-sm"
+          className="
+            max-w-3xl mx-auto
+            border-t border-b border-slate-200 dark:border-slate-700
+          "
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -92,18 +95,19 @@ export default function FaqSection() {
             const question = tr(`faq_item${id}_question`, "");
             const answer = tr(`faq_item${id}_answer`, "");
 
-            // Si aún no hay traducción, no mostramos el item
-            if (!question && !answer) return null;
-
+            // Si aún no hay traducción, mostramos igualmente (como ahora)
             const isOpen = openItem === id;
 
             return (
-              <div key={id}>
+              <div
+                key={id}
+                className="border-b last:border-b-0 border-slate-200 dark:border-slate-700"
+              >
                 <button
                   type="button"
                   onClick={() => handleToggle(id)}
                   className="
-                    w-full flex items-center justify-between gap-4
+                    w-full flex items-center justify-between
                     px-6 py-4 text-left
                     text-lg text-slate-800 dark:text-slate-200
                     hover:bg-slate-50 dark:hover:bg-slate-800
@@ -112,13 +116,12 @@ export default function FaqSection() {
                 >
                   <span className="flex-1">{question}</span>
                   <span
-                    className={`
-                      inline-flex items-center justify-center
-                      h-6 w-6 rounded-full border text-sm
-                      border-slate-300 dark:border-slate-600
-                    `}
+                    className="
+                      text-slate-400 dark:text-slate-300
+                      text-xl font-semibold leading-none
+                    "
                   >
-                    {isOpen ? "-" : "+"}
+                    {isOpen ? "−" : "+"}
                   </span>
                 </button>
 
