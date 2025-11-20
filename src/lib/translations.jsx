@@ -493,6 +493,142 @@ offers_item6: {
 
 
 
+ // ===================== FAQ SECTION ===================== //
+    // ===================== INFO PRINCIPAL =====================
+
+  euskalia_what_is_title: {
+    ES: "¿Qué es Euskalia?",
+    EUS: "Zer da Euskalia?",
+  },
+  euskalia_what_is_text: {
+    ES: "Euskalia es una plataforma de inteligencia artificial diseñada para trabajadores, estudiantes y cualquier persona que necesite traducir o resumir contenido de forma rápida y sencilla, centrada en el público vasco y en ayudar a cualquiera que necesite trabajar con el euskera. Su objetivo es ayudarte a entender y producir contenido en menos tiempo, sin perder calidad, y permitiéndote usar el euskera en tu día a día sin barreras.",
+    EUS: "Euskalia adimen artifizialeko plataforma bat da, langileei, ikasleei eta edukiak modu azkar eta erraz batean itzuli edo laburtu behar dituen edonori zuzendua, euskal herritarrei eta euskararekin lan egin behar duen edonori laguntzera bideratua. Helburua edukiak denbora gutxiagoan ulertzen eta sortzen laguntzea da, kalitatea galdu gabe eta euskara egunerokoan oztoporik gabe erabiltzeko aukera emanez.",
+  },
+
+  euskalia_goal_title: {
+    ES: "Objetivo de Euskalia",
+    EUS: "Euskaliaren helburua",
+  },
+  euskalia_goal_text: {
+    ES: "El objetivo de Euskalia es impulsar el euskera en el ámbito digital, garantizando que las personas que viven, trabajan o estudian en nuestro entorno puedan usarlo como un idioma moderno, completo y plenamente funcional. Buscamos evitar la desinformación, las barreras tecnológicas y los problemas derivados de la falta de herramientas en euskera, ofreciendo soluciones de IA que permitan trabajar, aprender y comunicarse sin limitaciones lingüísticas.",
+    EUS: "Euskaliaren helburua euskara eremu digitalean indartzea da, gure inguruan bizi, lan edo ikasten duten pertsonek hizkuntza moderno, oso eta guztiz funtzional gisa erabili ahal izan dezaten. Desinformazioa, oztopo teknologikoak eta euskarazko tresna faltak sortzen dituzten arazoak saihestu nahi ditugu, hizkuntza-mugarik gabe lan, ikasi eta komunikatzeko aukera emango duten AA soluzioak eskainiz.",
+  },
+
+
+    // ===================== FAQ SECTION =====================
+
+  faq_title: {
+    ES: "Preguntas frecuentes",
+    EUS: "Ohiko galderak",
+  },
+  faq_subtitle: {
+    ES: "Aquí resolvemos las dudas más habituales sobre Euskalia: cómo funciona el traductor, los límites, los idiomas y el uso que puedes darle en tu día a día.",
+    EUS: "Hemen Euskaliari buruzko galderarik ohikoenei erantzuten diegu: nola dabilen itzultzailea, mugak, hizkuntzak eta egunerokoan nola erabil dezakezun.",
+  
+  },
+
+  // 1 — ¿Qué es Euskalia?
+  faq_item1_question: {
+    ES: "🧠 ¿Qué es Euskalia?",
+    EUS: "🧠 Zer da Euskalia?",
+  },
+  faq_item1_answer: {
+    ES: "Euskalia es una plataforma de inteligencia artificial diseñada para trabajadores, estudiantes y cualquier persona que necesite traducir o resumir contenido de forma rápida y sencilla, centrada en el público vasco y en ayudar a cualquiera que necesite trabajar con el euskera.\n\nSu objetivo es ayudarte a entender y producir contenido en menos tiempo, sin perder calidad, y permitiéndote usar el euskera en tu día a día sin barreras.",
+    EUS: "Euskalia adimen artifizialeko plataforma bat da, langileei, ikasleei eta edukiak modu azkar eta erraz batean itzuli edo laburtu behar dituen edonori zuzendua, euskal herritarrei eta euskararekin lan egin behar duen edonori laguntzera bideratua.\n\nHelburua edukiak denbora gutxiagoan ulertzen eta sortzen laguntzea da, kalitatea galdu gabe eta euskara egunerokoan oztoporik gabe erabiltzeko aukera emanez.",
+  },
+
+  // 2 — Objetivo de Euskalia
+  faq_item2_question: {
+    ES: "🎯 Objetivo de Euskalia",
+    EUS: "🎯 Euskaliaren helburua",
+  },
+  faq_item2_answer: {
+    ES: "El objetivo de Euskalia es impulsar el euskera en el ámbito digital, garantizando que las personas que viven, trabajan o estudian en nuestro entorno puedan usarlo como un idioma moderno, completo y plenamente funcional.\n\nBuscamos evitar la desinformación, las barreras tecnológicas y los problemas derivados de la falta de herramientas en euskera, ofreciendo soluciones de IA que permitan trabajar, aprender y comunicarse sin limitaciones lingüísticas.",
+    EUS: "Euskaliaren helburua euskara eremu digitalean indartzea da, gure inguruan bizi, lan edo ikasten duten pertsonek hizkuntza moderno, oso eta guztiz funtzional gisa erabili ahal izan dezaten.\n\nDesinformazioa, oztopo teknologikoak eta euskarazko tresna faltak sortzen dituzten arazoak saihestu nahi ditugu, hizkuntza-mugarik gabe lan, ikasi eta komunikatzeko aukera emango duten AA soluzioak eskainiz.",
+  },
+
+  // 3
+  faq_item3_question: {
+    ES: "🌍 ¿Qué idiomas soporta Euskalia?",
+    EUS: "🌍 Zein hizkuntza onartzen ditu Euscaliak?",
+  },
+  faq_item3_answer: {
+    ES: "El foco principal es el euskera: puedes traducir entre euskera, castellano e inglés, además de otros idiomas que iremos añadiendo poco a poco.",
+    EUS: "Foku nagusia euskara da: euskararen, gaztelaniaren eta ingelesaren arteko itzulpenak egin ditzakezu, eta pixkanaka hizkuntza gehiago gehitzen joango gara.",
+  },
+
+  // 4
+  faq_item4_question: {
+    ES: "📝 ¿Cuál es la diferencia entre traducir y resumir?",
+    EUS: "📝 Zein da itzultze eta laburtzearen arteko aldea?",
+  },
+  faq_item4_answer: {
+    ES: "Traducir mantiene la longitud y estructura del texto original, pero lo convierte a otro idioma.\n\nResumir reduce el contenido a las ideas esenciales, manteniendo el idioma seleccionado.",
+    EUS: "Itzultzeak jatorrizko testuaren luzera eta egitura mantentzen ditu, baina beste hizkuntza batera eramaten du.\n\nLaburtzeak edukia murrizten du eta ideia nagusiak uzten ditu, aukeratutako hizkuntza errespetatuz.",
+  },
+
+  // 5
+  faq_item5_question: {
+    ES: "📏 ¿Hay límites de caracteres o tamaño de archivo?",
+    EUS: "📏 Ba al dago karaktere edo fitxategi-tamainaren mugarik?",
+  },
+  faq_item5_answer: {
+    ES: "Sí, existe un límite de texto y tamaño de archivo para asegurar un uso estable del servicio.\n\nSi tu contenido es muy largo, recomendamos dividirlo en partes.",
+    EUS: "Bai, testuaren eta dokumentu-tamainaren muga dago zerbitzua egonkor mantentzeko.\n\nEdukia oso luzea bada, zatika bidaltzea gomendatzen dugu.",
+  },
+
+  // 6
+  faq_item6_question: {
+    ES: "🔐 ¿Son seguras mis traducciones?",
+    EUS: "🔐 Seguruak al dira nire itzulpenak?",
+  },
+  faq_item6_answer: {
+    ES: "Tus textos solo se usan para generar el resultado solicitado y no se almacenan para fines externos.",
+    EUS: "Zure testuak soilik eskatutako emaitza sortzeko erabiltzen dira, eta ez dira kanpoko helburuetarako gordetzen.",
+  },
+
+  // 7
+  faq_item7_question: {
+    ES: "👩‍🎓 ¿Para quién está pensada Euskalia?",
+    EUS: "👩‍🎓 Nork erabil dezake Euskalia?",
+  },
+  faq_item7_answer: {
+    ES: "Para estudiantes, profesorado, profesionales y cualquier persona que necesite trabajar en euskera sin barreras.",
+    EUS: "Ikasle, irakasle, profesional eta euskaraz lan egin behar duen edonorentzat pentsatua dago.",
+  },
+
+  // 8
+  faq_item8_question: {
+    ES: "💰 ¿Euskalia es gratis?",
+    EUS: "💰 Euskalia doakoa al da?",
+  },
+  faq_item8_answer: {
+    ES: "Actualmente Euskalia se puede usar gratis dentro de unos límites razonables.",
+    EUS: "Gaur egun Euskalia doan erabil daiteke erabilera-muga arrazoizkoekin.",
+  },
+
+  // 9
+  faq_item9_question: {
+    ES: "📄 ¿Qué pasa con mis documentos?",
+    EUS: "📄 Zer gertatzen da nire dokumentuekin?",
+  },
+  faq_item9_answer: {
+    ES: "Los documentos se procesan temporalmente para generar la traducción y no se almacenan.",
+    EUS: "Dokumentuak behin-behinean prozesatzen dira itzulpena sortzeko, eta ez dira gordetzen.",
+  },
+
+  // 10
+  faq_item10_question: {
+    ES: "💬 ¿Cómo puedo dar mi opinión?",
+    EUS: "💬 Nola bidal dezaket nire iritzia?",
+  },
+  faq_item10_answer: {
+    ES: "Puedes escribirnos para sugerencias o mejoras a:\ninfo@euskalia.com",
+    EUS: "Iradokizunak edo hobekuntzak bidaltzeko, idatzi hona:\ninfo@euskalia.com",
+  },
+
+
+
 
 /* ==== CTA FINAL ==== */
   cta: {
