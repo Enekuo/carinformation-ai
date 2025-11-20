@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import BenefitsSection from "@/components/BenefitsSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorks from "@/components/HowItWorks";
+import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -1272,6 +1273,7 @@ export default function Translator() {
       <BenefitsSection />
       <FeaturesSection />
       <HowItWorks />
+      <FaqSection />
       <CtaSection />
       <Footer />
     </>

@@ -13,6 +13,7 @@ import {
 import BenefitsSection from "@/components/BenefitsSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorks from "@/components/HowItWorks";
+import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -1038,6 +1039,7 @@ export default function Resumen() {
       <BenefitsSection />
       <FeaturesSection />
       <HowItWorks />
+      <FaqSection />
       <CtaSection />
       <Footer />
     </>
