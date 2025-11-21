@@ -67,7 +67,7 @@ export default function FaqSection() {
         bg-[#eef4ff] dark:bg-[#1E293B]
       "
     >
-      {/* Glow / efecto de luz de fondo como en el resto de la landing */}
+      {/* Glow de fondo */}
       <div className="pointer-events-none absolute inset-x-0 -top-40 flex justify-center">
         <div className="h-64 w-[520px] bg-gradient-to-b from-blue-400/35 to-transparent blur-3xl" />
       </div>
@@ -76,10 +76,10 @@ export default function FaqSection() {
         {/* TÍTULO + SUBTÍTULO */}
         <motion.div
           className="text-center max-w-3xl mx-auto mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ amount: 0.3 }} // se anima cada vez que entra en vista
+          transition={{ duration: 0.9, ease: "easeOut" }} // más lento
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
             {tr("faq_title", "")}
@@ -95,10 +95,10 @@ export default function FaqSection() {
             max-w-3xl mx-auto
             border-t border-b border-slate-200 dark:border-slate-700
           "
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ amount: 0.3 }} // también se reanima al entrar
+          transition={{ duration: 0.9, delay: 0.25, ease: "easeOut" }}
         >
           {FAQ_ITEMS.map(({ id }) => {
             const question = tr(`faq_item${id}_question`, "");
