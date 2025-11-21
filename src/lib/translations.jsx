@@ -589,12 +589,12 @@ offers_item6: {
 
   // 7
   faq_item7_question: {
-  ES: "💼 ¿Qué opciones gratuitas y de pago ofrece Euskalia?",
-  EUS: "💼 Zein aukera doako eta ordaindu eskaintzen ditu Euskaliak?",
+  ES: "💼 ¿Qué opciones ofrece Euskalia?",
+  EUS: "💼 Zein aukera eskaintzen ditu Euskaliak?",
 },
 faq_item7_answer: {
-  ES: "Euskalia ofrece dos niveles: una versión gratuita sin registro para usar el traductor y el resumidor de forma puntual, y una cuenta de pago para quienes necesitan más capacidad y una experiencia completa. En el futuro se añadirán nuevas funciones y planes avanzados.",
-  EUS: "Euskaliak bi maila eskaintzen ditu: erregistro gabe doako bertsioa, itzultzailea eta laburtzailea noizbehinka erabiltzeko; eta kontu ordaindua, gaitasun handiagoa eta esperientzia osoa behar dutenentzat. Etorkizunean funtzio eta plan aurreratuak gehituko dira.",
+  ES: "Euskalia ofrece dos opciones: una versión gratuita sin registro para usar el traductor y el resumidor, y una cuenta de pago para quienes necesitan más capacidad y una experiencia completa. En el futuro se añadirán nuevas funciones y planes avanzados.",
+  EUS: "Euskaliak bi aukera eskaintzen ditu: erregistro gabe doako bertsioa, itzultzailea eta laburtzailea erabiltzeko; eta kontu ordaindua, gaitasun handiagoa eta esperientzia osoa behar dutenentzat. Etorkizunean funtzio eta plan aurreratuak gehituko dira.",
 },
   // 10
   faq_item10_question: {
