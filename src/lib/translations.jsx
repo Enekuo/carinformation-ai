@@ -589,33 +589,15 @@ offers_item6: {
 
   // 7
   faq_item7_question: {
-    ES: "👩‍🎓 ¿Para quién está pensada Euskalia?",
-    EUS: "👩‍🎓 Nork erabil dezake Euskalia?",
-  },
-  faq_item7_answer: {
-    ES: "Para estudiantes, profesorado, profesionales y cualquier persona que necesite trabajar en euskera sin barreras.",
-    EUS: "Ikasle, irakasle, profesional eta euskaraz lan egin behar duen edonorentzat pentsatua dago.",
-  },
-
-  // 8
-  faq_item8_question: {
     ES: "💰 ¿Euskalia es gratis?",
     EUS: "💰 Euskalia doakoa al da?",
   },
-  faq_item8_answer: {
+  faq_item7_answer: {
     ES: "Actualmente Euskalia se puede usar gratis dentro de unos límites razonables.",
     EUS: "Gaur egun Euskalia doan erabil daiteke erabilera-muga arrazoizkoekin.",
   },
 
-  // 9
-  faq_item9_question: {
-    ES: "📄 ¿Qué pasa con mis documentos?",
-    EUS: "📄 Zer gertatzen da nire dokumentuekin?",
-  },
-  faq_item9_answer: {
-    ES: "Los documentos se procesan temporalmente para generar la traducción y no se almacenan.",
-    EUS: "Dokumentuak behin-behinean prozesatzen dira itzulpena sortzeko, eta ez dira gordetzen.",
-  },
+  
 
   // 10
   faq_item10_question: {
