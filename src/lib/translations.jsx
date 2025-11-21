@@ -533,7 +533,7 @@ offers_item6: {
     EUS: "🧠 Zer da Euskalia?",
   },
   faq_item1_answer: {
-    ES: "Euskalia es una plataforma de inteligencia artificial diseñada para trabajadores, estudiantes y cualquier persona que necesite traducir o resumir contenido de forma rápida y sencilla. Está centrada en el público vasco y en ayudar a cualquiera que necesite trabajar con el euskera.\n\nEuskalia está centrada en el euskera como idioma principal. Tanto la traducción como el resto de herramientas funcionan siempre en relación al euskera, utilizando otros idiomas como castellano, inglés o francés únicamente para convertir el contenido hacia el euskera o desde el euskera, según las necesidades.\n\nSu objetivo es ayudarte a entender y producir contenido en menos tiempo, sin perder calidad, y permitiéndote usar el euskera en tu día a día sin barreras.",
+    ES: "Euskalia es una plataforma de inteligencia artificial diseñada para trabajadores, estudiantes y cualquier persona que necesite traducir o resumir contenido de forma rápida y sencilla. Está centrada en el público vasco o en cualquiera que necesite trabajar con el euskera.\n\nEuskalia está centrada en el euskera como idioma principal. Tanto la traducción como el resto de herramientas funcionan siempre en relación al euskera, utilizando otros idiomas como castellano, inglés o francés únicamente para convertir el contenido hacia el euskera o desde el euskera, según las necesidades.\n\nSu objetivo es ayudarte a entender y producir contenido en menos tiempo, sin perder calidad, y permitiéndote usar el euskera en tu día a día sin barreras.",
     EUS: "Euskalia adimen artifizialeko plataforma bat da, langileei, ikasleei eta edukiak modu azkar eta erraz batean itzuli edo laburtu behar dituen edonori zuzendua. Euskal herritarrei eta euskararekin lan egin behar duen edonori laguntzera bideratua dago.\n\nEuskalia euskararekin lotuta lan egiteko pentsatuta dago. Bai itzulpenak bai gainerako tresnek euskararekin lotuta funtzionatzen dute, eta gaztelania, ingelesa edo frantsesa bezalako beste hizkuntzak euskarara edo euskaratik edukia bihurtzeko erabiltzen dira, erabiltzaileen beharren arabera.\n\nHelburua edukiak denbora gutxiagoan ulertzen eta sortzen laguntzea da, kalitatea galdu gabe eta euskara egunerokoan oztoporik gabe erabiltzeko aukera emanez.",
   },
 
@@ -553,8 +553,8 @@ offers_item6: {
     EUS: "🌍 Zein hizkuntza onartzen ditu Euskaliak?",
   },
   faq_item3_answer: {
-    ES: "Euskalia está centrada en el euskera como idioma principal. Tanto la traducción como el resto de herramientas funcionan siempre en relación al euskera, utilizando otros idiomas como castellano, inglés o francés únicamente para convertir el contenido hacia el euskera o desde el euskera, según las necesidades.",
-    EUS: "Foku nagusia euskara da: euskararen, gaztelaniaren eta ingelesaren arteko itzulpenak egin ditzakezu, eta pixkanaka hizkuntza gehiago gehitzen joango gara.",
+    ES: "El idioma principal de Euskalia es el euskera. Toda la plataforma está diseñada para utilizar el euskera en relación con el inglés, el español y el francés.",
+    EUS: "Hizkuntza nagusia euskara da. Plataforma osoa euskararekin lotuta erabiltzeko diseinatuta dago, ingelesa, gaztelania eta frantsesa tarteko direla.",
   },
 
   // 4
@@ -584,7 +584,7 @@ offers_item6: {
   },
   faq_item6_answer: {
     ES: "Tus textos solo se usan para generar el resultado solicitado y no se almacenan para fines externos.",
-    EUS: "Zure testuak soilik eskatutako emaitza sortzeko erabiltzen dira, eta ez dira kanpoko helburuetarako gordetzen.",
+    EUS: "Zure testuak soilik eskatutako emaitzak sortzeko erabiltzen dira, eta ez dira kanpoko helburuetarako gordetzen.",
   },
 
   // 7

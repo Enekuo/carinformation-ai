@@ -9,9 +9,9 @@ const FAQ_ITEMS = [
   { id: 4 },
   { id: 5 },
   { id: 6 },
+  // id 7 será la nueva pregunta sobre la cuenta de pago
   { id: 7 },
-  { id: 8 },
-  { id: 9 },
+  // saltamos 8 y 9 (eliminados) y mantenemos la última
   { id: 10 },
 ];
 
@@ -95,7 +95,6 @@ export default function FaqSection() {
             const question = tr(`faq_item${id}_question`, "");
             const answer = tr(`faq_item${id}_answer`, "");
 
-            // Si aún no hay traducción, mostramos igualmente (como ahora)
             const isOpen = openItem === id;
 
             return (
