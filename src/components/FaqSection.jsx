@@ -78,8 +78,8 @@ export default function FaqSection() {
           className="text-center max-w-3xl mx-auto mb-12"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ amount: 0.3 }} // se anima cada vez que entra en vista
-          transition={{ duration: 0.9, ease: "easeOut" }} // más lento
+          viewport={{ amount: 0.3 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
             {tr("faq_title", "")}
@@ -97,19 +97,27 @@ export default function FaqSection() {
           "
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ amount: 0.3 }} // también se reanima al entrar
+          viewport={{ amount: 0.3 }}
           transition={{ duration: 0.9, delay: 0.25, ease: "easeOut" }}
         >
-          {FAQ_ITEMS.map(({ id }) => {
+          {FAQ_ITEMS.map(({ id }, index) => {
             const question = tr(`faq_item${id}_question`, "");
             const answer = tr(`faq_item${id}_answer`, "");
 
             const isOpen = openItem === id;
 
             return (
-              <div
+              <motion.div
                 key={id}
                 className="border-b last:border-b-0 border-slate-200 dark:border-slate-700"
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ amount: 0.25 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15 + index * 0.08,
+                  ease: "easeOut",
+                }}
               >
                 <button
                   type="button"
@@ -138,7 +146,7 @@ export default function FaqSection() {
                     <div className="space-y-3">{renderAnswer(answer)}</div>
                   </div>
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </motion.div>
