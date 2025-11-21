@@ -589,16 +589,13 @@ offers_item6: {
 
   // 7
   faq_item7_question: {
-    ES: "💰 ¿Euskalia es gratis?",
-    EUS: "💰 Euskalia doakoa al da?",
-  },
-  faq_item7_answer: {
-    ES: "Actualmente Euskalia se puede usar gratis dentro de unos límites razonables.",
-    EUS: "Gaur egun Euskalia doan erabil daiteke erabilera-muga arrazoizkoekin.",
-  },
-
-  
-
+  ES: "💼 ¿Qué opciones gratuitas y de pago ofrece Euskalia?",
+  EUS: "💼 Zein aukera doako eta ordaindu eskaintzen ditu Euskaliak?",
+},
+faq_item7_answer: {
+  ES: "Euskalia ofrece dos niveles: una versión gratuita sin registro para usar el traductor y el resumidor de forma puntual, y una cuenta de pago para quienes necesitan más capacidad y una experiencia completa. En el futuro se añadirán nuevas funciones y planes avanzados.",
+  EUS: "Euskaliak bi maila eskaintzen ditu: erregistro gabe doako bertsioa, itzultzailea eta laburtzailea noizbehinka erabiltzeko; eta kontu ordaindua, gaitasun handiagoa eta esperientzia osoa behar dutenentzat. Etorkizunean funtzio eta plan aurreratuak gehituko dira.",
+},
   // 10
   faq_item10_question: {
     ES: "💬 ¿Cómo puedo dar mi opinión?",
@@ -606,7 +603,7 @@ offers_item6: {
   },
   faq_item10_answer: {
     ES: "Puedes escribirnos para sugerencias o mejoras a:\ninfo@euskalia.com",
-    EUS: "Iradokizunak edo hobekuntzak bidaltzeko, idatzi hona:\ninfo@euskalia.com",
+    EUS: "Iradokizunak edo hobekuntzak bidali hona:\ninfo@euskalia.com",
   },
 
 
