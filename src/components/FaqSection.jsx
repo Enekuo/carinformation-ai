@@ -9,9 +9,7 @@ const FAQ_ITEMS = [
   { id: 4 },
   { id: 5 },
   { id: 6 },
-  // id 7 será la nueva pregunta sobre la cuenta de pago
   { id: 7 },
-  // saltamos 8 y 9 (eliminados) y mantenemos la última
   { id: 10 },
 ];
 
@@ -62,7 +60,18 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="w-full py-32 bg-[#eef4ff] dark:bg-[#1E293B]">
+    <section
+      className="
+        relative overflow-hidden
+        w-full py-32
+        bg-[#eef4ff] dark:bg-[#1E293B]
+      "
+    >
+      {/* Glow / efecto de luz de fondo como en el resto de la landing */}
+      <div className="pointer-events-none absolute inset-x-0 -top-40 flex justify-center">
+        <div className="h-64 w-[520px] bg-gradient-to-b from-blue-400/35 to-transparent blur-3xl" />
+      </div>
+
       <div className="container mx-auto px-4 md:px-6">
         {/* TÍTULO + SUBTÍTULO */}
         <motion.div
@@ -126,9 +135,7 @@ export default function FaqSection() {
 
                 {isOpen && (
                   <div className="px-6 pb-5 text-base bg-slate-50/70 dark:bg-slate-900/70">
-                    <div className="space-y-3">
-                      {renderAnswer(answer)}
-                    </div>
+                    <div className="space-y-3">{renderAnswer(answer)}</div>
                   </div>
                 )}
               </div>
