@@ -660,12 +660,12 @@ faq_item7_answer: {
     // PRICING PAGE //
     pricing: {
   title: {
-    ES: "Elige cómo quieres usar Euskalia cada día",
-    EUS: "Aukeratu nola erabili nahi duzun Euskalia egunean zehar",
+    ES: "Elige Tu Plan Perfecto",
+    EUS: "Aukeratu Zure Plan Egokiena",
   },
   subtitle: {
-    ES: "Empieza con un Plan Pro sencillo para trabajar y estudiar en euskera y da el salto a Premium+ cuando necesites uso intensivo y más herramientas.",
-    EUS: "Hasi Pro plan erraz batekin euskaraz ikasi eta lan egiteko eta egin jauzi Premium+ planera erabilera intentsiboagoa eta tresna gehiago behar dituzunean.",
+    ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.",
+    EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin.",
   },
 
   perMonth: {
