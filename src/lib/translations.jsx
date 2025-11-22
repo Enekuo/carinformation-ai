@@ -222,10 +222,6 @@ assistant_mascot_greeting: {
   ES: "¿Cómo puedo ayudarte?",
   EUS: "Nola lagundu diezazaket?",
 },
-assistant_mascot_hint: {
-  ES: "Pregunta lo que quieras",
-  EUS: "Edozer galde dezakezu",
-},
 assistant_placeholder: {
   ES: "Pregunta lo que quieras",
   EUS: "Edozer galde dezakezu",

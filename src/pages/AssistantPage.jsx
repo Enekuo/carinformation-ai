@@ -40,24 +40,39 @@ export default function AssistantPage() {
 
       {/* Contenido principal */}
       <div className="flex flex-col items-center px-4 pb-16">
-        {/* Bloque mascota + título */}
+        {/* Bloque mascota + bocadillo + título */}
         {isEmpty && (
-          <div className="mt-10 mb-10 flex flex-col items-center text-center">
-            <div className="mb-4 rounded-2xl bg-white shadow-md p-3">
-              <img
-                src="/olondo.mascota.png"
-                alt="Euskalia asistentzia"
-                className="w-16 h-16 rounded-xl"
-                draggable={false}
-              />
+          <div className="mt-10 mb-10 flex flex-col items-center text-center gap-6">
+            {/* Mascota + bocadillo a la derecha */}
+            <div className="flex items-center gap-4 md:gap-8">
+              {/* Mascota grande */}
+              <div className="rounded-3xl bg-white shadow-md p-4 md:p-6">
+                <img
+                  src="/olondo.mascota.png"
+                  alt="Euskalia asistentzia"
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-2xl"
+                  draggable={false}
+                />
+              </div>
+
+              {/* Bocadillo con la frase */}
+              <div
+                className="
+                  bg-white border border-slate-100 shadow-sm
+                  rounded-3xl px-4 py-3 md:px-6 md:py-4
+                  max-w-xs md:max-w-sm text-left
+                "
+              >
+                <p className="text-sm md:text-base text-slate-700">
+                  {tr("assistant_mascot_hint")}
+                </p>
+              </div>
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
+            {/* Título debajo, sin subtítulo en rojo */}
+            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
               {tr("assistant_title")}
             </h1>
-            <p className="text-sm md:text-base text-slate-500">
-              {tr("assistant_mascot_hint")}
-            </p>
           </div>
         )}
 
