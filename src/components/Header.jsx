@@ -83,9 +83,19 @@ export default function Header() {
   );
 
   const resources = [
-    { name: t("resourcesMenu.support"), icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />, isLink: true, path: "/soporte" },
-    { name: t("resourcesMenu.aiChat"), icon: <MessageSquare size={16} className="mr-2 text-slate-500" />, isLink: false },
-  ];
+  {
+    name: t("resourcesMenu.support"),
+    icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
+    isLink: true,
+    path: "/soporte",
+  },
+  {
+    name: t("resourcesMenu.aiChat"),
+    icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
+    isLink: true,
+    path: "/chat-ia",   // <- la ruta de tu página de chat
+  },
+];
 
   const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
     <div className={`p-1 ${inMobileMenu ? "w-full" : "w-48"}`}>
