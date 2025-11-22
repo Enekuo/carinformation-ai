@@ -6,6 +6,7 @@ import Translator from '@/components/Translator';
 import { Toaster } from '@/components/ui/toaster';
 import AuthPage from '@/pages/AuthPage';
 import SupportPage from '@/pages/SupportPage';
+import AssistantPage from "@/pages/AssistantPage";
 import Resumen from "@/components/Resumen";
 import LegalNoticePage from "@/components/Legal/LegalNoticePage";
 import PrivacyPolicyPage from "@/components/Legal/PrivacyPolicyPage";
@@ -36,6 +37,7 @@ function App() {
                         <Route path="/" element={<Translator />} />
                         <Route path="/iniciar-sesion" element={<AuthPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
+                        <Route path="/chat-ia" element={<AssistantPage />} />
                         <Route path="/resumen" element={<Resumen />} />
                         <Route path="/aviso-legal" element={<LegalNoticePage />} />
                         <Route path="/politica-de-privacidad" element={<PrivacyPolicyPage />} />
