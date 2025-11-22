@@ -658,56 +658,156 @@ faq_item7_answer: {
 
 
     // PRICING PAGE //
-  pricing: {
-    title:    { ES: "Elige Tu Plan Perfecto", EUS: "Aukeratu Zure Plan Perfectua" },
-    subtitle: { ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.", EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin." },
-
-    plan: {
-      free:  { ES: "Prueba Gratis",  EUS: "Probatu Doan" },
-      basic: { ES: "Plan Básico",    EUS: "Oinarrizko Plana" },
-      pro:   { ES: "Plan Premium",   EUS: "Premium Plana" },
+    pricing: {
+    title: {
+      ES: "Elige cómo quieres usar Euskalia",
+      EUS: "Aukeratu nola erabili nahi duzun Euskalia",
+    },
+    subtitle: {
+      ES: "Empieza gratis para probar el traductor y el resumidor con euskera como idioma principal, y da el salto al plan de pago cuando lo necesites. Más adelante añadiremos planes avanzados para uso intensivo.",
+      EUS: "Hasi doan euskararekin lan egiten duen itzultzailea eta laburtzailea probatzen, eta behar duzunean igaro ordainpeko planera. Aurrerago erabilera intentsiborako plan aurreratuak gehituko dira.",
     },
 
-    perMonth: { ES: "/ mes", EUS: "/ hilean" },
-    perDay: {
-      basic:   { ES: "≈ 0,17 € al día", EUS: "≈ 0,17 € egunean" },
-      premium: { ES: "≈ 0,33 € al día", EUS: "≈ 0,33 € egunean" },
+    // Nombres de los planes
+    free_name: {
+      ES: "Prueba Gratis",
+      EUS: "Proba Doan",
+    },
+    pro_name: {
+      ES: "Plan Pro",
+      EUS: "Plan Pro",
+    },
+    premium_name: {
+      ES: "Plan Premium+",
+      EUS: "Plan Premium+",
     },
 
-    mostPopular: { ES: "Más popular", EUS: "Ezagunenak" },
-
-    cta: {
-      free:  { ES: "Empieza gratis",   EUS: "Hasi doan" },
-      basic: { ES: "Elegir Básico",    EUS: "Aukeratu Oinarrizkoa" },
-      pro:   { ES: "Elegir Premium",   EUS: "Aukeratu Premium" },
+    // Etiquetas / notas bajo el precio
+    free_note: {
+      ES: "Ideal para probar Euskalia sin registro",
+      EUS: "Euskalia erregistratu gabe probatzeko egokia",
+    },
+    pro_note: {
+      ES: "Para usar Euskalia a diario con más capacidad",
+      EUS: "Euskalia egunero eta gaitasun handiagoz erabiltzeko",
+    },
+    premium_note: {
+      ES: "Funciones avanzadas y uso intensivo (próximamente)",
+      EUS: "Funtzio aurreratuak eta erabilera intentsiboa (laster)",
     },
 
+    // CTA de los botones
+    free_cta: {
+      ES: "Empezar gratis",
+      EUS: "Hasi doan",
+    },
+    pro_cta: {
+      ES: "Elegir Plan Pro",
+      EUS: "Aukeratu Plan Pro",
+    },
+    premium_cta_soon: {
+      ES: "Disponible próximamente",
+      EUS: "Laster eskuragarri",
+    },
+
+    // BADGE “Más popular” / “Próximamente”
+    badge_popular: {
+      ES: "Más popular",
+      EUS: "Ezagunenak",
+    },
+    badge_soon: {
+      ES: "Próximamente",
+      EUS: "Laster",
+    },
+
+    // ===== CARACTERÍSTICAS (las que ya tienes en el diseño) =====
     features: {
-      // FREE
-      library_free: { ES: "", EUS: "" },
-      export_free:  { ES: "", EUS: "" },
-      audio_free:   { ES: "", EUS: "" },
-      ai_free:      { ES: "", EUS: "" },
-      file_free:    { ES: "", EUS: "" },
-      speed_free:   { ES: "", EUS: "" },
+      // Biblioteca / guardado
+      library_free: {
+        ES: "Biblioteca básica para guardar algunos textos",
+        EUS: "Testu batzuk gordetzeko oinarrizko liburutegia",
+      },
+      library_basic: {
+        ES: "Más espacio para guardar y organizar tus textos",
+        EUS: "Testu gehiago gordetzeko eta antolatzeko espazio handiagoa",
+      },
+      library_premium: {
+        ES: "Liburutegi aurreratua eta erabilera intentsiborako prest (próximamente)",
+        EUS: "Liburutegi aurreratua eta erabilera intentsiborako prest (laster)",
+      },
 
-      // BASIC
-      library_basic: { ES: "", EUS: "" },
-      export_basic:  { ES: "", EUS: "" },
-      audio_basic:   { ES: "", EUS: "" },
-      ai_basic:      { ES: "", EUS: "" },
-      file_basic:    { ES: "", EUS: "" },
-      speed_basic:   { ES: "", EUS: "" },
+      // Exportar / descargar
+      export_free: {
+        ES: "Copiar el texto generado y descargar de forma sencilla",
+        EUS: "Sortutako testua kopiatu eta erraz deskargatzeko aukera",
+      },
+      export_basic: {
+        ES: "Más opciones para exportar y trabajar con tus resultados",
+        EUS: "Emaitzekin lan egiteko esportazio aukera gehiago",
+      },
+      export_premium: {
+        ES: "Esportazio aurreratuak eta formatu gehiago (próximamente)",
+        EUS: "Esportazio aurreratuak eta formatu gehiago (laster)",
+      },
 
-      // PREMIUM
-      library_premium: { ES: "", EUS: "" },
-      export_premium:  { ES: "", EUS: "" },
-      audio_premium:   { ES: "", EUS: "" },
-      ai_premium:      { ES: "", EUS: "" },
-      file_premium:    { ES: "", EUS: "" },
-      speed_premium:   { ES: "", EUS: "" },
+      // Audio / escuchar
+      audio_free: {
+        ES: "Escucha básica del contenido generado (cuando esté disponible)",
+        EUS: "Sortutako edukia entzuteko oinarrizko aukera (eskuragarri dagoenean)",
+      },
+      audio_basic: {
+        ES: "Mejor experiencia de escucha para estudiar o trabajar",
+        EUS: "Ikasteko eta lan egiteko entzute esperientzia hobea",
+      },
+      audio_premium: {
+        ES: "Audio a calidad superior y uso intensivo (próximamente)",
+        EUS: "Kalitate handiagoko audioa eta erabilera intentsiboa (laster)",
+      },
+
+      // IA / potencia
+      ai_free: {
+        ES: "Uso básico de IA para traducciones y resúmenes",
+        EUS: "Itzulpen eta laburpenetarako AAren oinarrizko erabilera",
+      },
+      ai_basic: {
+        ES: "Más capacidad diaria para traducir y resumir en euskera",
+        EUS: "Eguneko gaitasun handiagoa euskaraz itzuli eta laburtzeko",
+      },
+      ai_premium: {
+        ES: "Goi mailako gaitasuna eta lehentasunezko prozesamendua (próximamente)",
+        EUS: "Gaitasun handiagoa eta lehentasunezko prozesamendua (laster)",
+      },
+
+      // Ficheros / documentos
+      file_free: {
+        ES: "Subida de documentos con tamaño limitado",
+        EUS: "Tamaina mugatuko dokumentuak igotzeko aukera",
+      },
+      file_basic: {
+        ES: "Documentos más grandes y mejor manejo de archivos",
+        EUS: "Dokumentu handiagoak eta fitxategien kudeaketa hobea",
+      },
+      file_premium: {
+        ES: "Edukia dokumentu askorekin eta tamaina handian lantzea (próximamente)",
+        EUS: "Eduki asko dokumentu askorekin eta tamaina handian lantzea (laster)",
+      },
+
+      // Velocidad / prioridad
+      speed_free: {
+        ES: "Velocidad estándar de respuesta",
+        EUS: "Erantzun abiadura estandarra",
+      },
+      speed_basic: {
+        ES: "Procesado más rápido en las tareas del día a día",
+        EUS: "Eguneroko lanetarako prozesatze azkarragoa",
+      },
+      speed_premium: {
+        ES: "Lehentasunezko abiadura eta ilara gutxiago (próximamente)",
+        EUS: "Lehentasunezko abiadura eta ilara gutxiago (laster)",
+      },
     },
   },
+
 
 
 
