@@ -660,19 +660,25 @@ faq_item7_answer: {
     // PRICING PAGE //
     pricing: {
   title: {
-    ES: "Elige Tu Plan Perfecto",
-    EUS: "Aukeratu Zure Plan Egokiena",
+    ES: "Elige tu plan",
+    EUS: "Aukeratu zure plana",
   },
   subtitle: {
-    ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.",
-    EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin.",
+    ES: "Euskalia ofrece planes adaptados para estudiar, trabajar y mejorar tu día a día con IA.",
+    EUS: "Euskaliak plan egokituak eskaintzen ditu ikasteko, lan egiteko eta zure egunerokoa hobetzeko IArekin.",
   },
 
-  perMonth: {
-    ES: "/ mes",
-    EUS: "/ hilean",
+  // BADGES
+  badge_popular: {
+    ES: "Más popular",
+    EUS: "Ezagunenak",
+  },
+  badge_soon: {
+    ES: "Próximamente",
+    EUS: "Laster",
   },
 
+  // PLAN NAMES
   pro_name: {
     ES: "Plan Pro",
     EUS: "Plan Pro",
@@ -682,82 +688,90 @@ faq_item7_answer: {
     EUS: "Plan Premium+",
   },
 
+  // PRICE SUFFIXES
+  perMonth: {
+    ES: "/ mes",
+    EUS: "/ hilean",
+  },
+
+  // CTA BUTTONS
   pro_cta: {
-    ES: "Empezar con el Plan Pro",
-    EUS: "Hasi Plan Pro-rekin",
+    ES: "Elegir Pro",
+    EUS: "Aukeratu Pro",
   },
   premium_cta_soon: {
-    ES: "Disponible próximamente",
+    ES: "Próximamente",
     EUS: "Laster eskuragarri",
   },
 
-  badge_popular: {
-    ES: "Más utilizado",
-    EUS: "Erabiliena",
+  // FEATURES — PRO PLAN
+  "features.pro.1": {
+    ES: "Límites más extensos para traducir y resumir sin preocuparte por los límites básicos.",
+    EUS: "Muga zabalagoak itzulpenak eta laburpenak egiteko, oinarrizko mugak ahaztuta.",
   },
-  badge_soon: {
-    ES: "Próximamente",
-    EUS: "Laster",
+  "features.pro.2": {
+    ES: "Tu propia cuenta personal con diferentes modos y contenido guardado.",
+    EUS: "Zure kontu pertsonala modu desberdinekin eta gordetako edukiarekin.",
+  },
+  "features.pro.3": {
+    ES: "Biblioteca personal para guardar tus traducciones y resúmenes más importantes.",
+    EUS: "Zure itzulpen eta laburpen garrantzitsuenak gordetzeko liburutegi pertsonala.",
+  },
+  "features.pro.4": {
+    ES: "Opciones cómodas para copiar o descargar el contenido y seguir trabajando fuera de Euskalia.",
+    EUS: "Edukia kopiatu edo deskargatzeko aukera erosoak eta Euskaliatik kanpo ere lan jarraitzeko moduak.",
+  },
+  "features.pro.5": {
+    ES: "Subida de documentos de tamaño medio para trabajar cómodamente en euskera y otros idiomas.",
+    EUS: "Tamaina ertaineko dokumentuak igotzeko aukera, euskaraz eta beste hizkuntzatan eroso lan egin ahal izateko.",
+  },
+  "features.pro.6": {
+    ES: "Procesamiento más rápido y estable para estudiar y trabajar cada día con fluidez.",
+    EUS: "Eguneroko lanerako eta ikaskuntzarako prozesatze azkarragoa eta egonkorragoa.",
   },
 
-  // ==== FUNCIONES PLAN PRO (antes _basic) ====
-
-  features: {
-    library_basic: {
-      ES: "Biblioteca personal para guardar tus traducciones y resúmenes más importantes.",
-      EUS: "Zure itzulpen eta laburpen garrantzitsuenak gordetzeko liburutegi pertsonala.",
-    },
-    export_basic: {
-      ES: "Opciones cómodas para copiar y descargar el contenido y seguir trabajando fuera de Euskalia.",
-      EUS: "Edukia kopiatu eta deskargatzeko aukera erosoak Euskaliatik kanpo lanean jarraitzeko.",
-    },
-    audio_basic: {
-      ES: "Escucha básica del contenido cuando la opción de audio esté disponible.",
-      EUS: "Sortutako edukia entzuteko aukera oinarrizkoa audio funtzionalitatea eskuragarri dagoenean.",
-    },
-    ai_basic: {
-      ES: "Más capacidad diaria para traducir y resumir con IA sin preocuparte tanto por los límites.",
-      EUS: "Eguneko gaitasun handiagoa mugak hainbeste kontuan hartu gabe itzultzeko eta laburtzeko.",
-    },
-    file_basic: {
-      ES: "Subida de documentos de tamaño medio para trabajar cómodamente en euskera y otros idiomas.",
-      EUS: "Tamaina ertaineko dokumentuak igo eta euskaraz nahiz beste hizkuntzetan eroso lan egiteko aukera.",
-    },
-    speed_basic: {
-      ES: "Procesamiento más rápido y estable para estudiar y trabajar cada día con Euskalia.",
-      EUS: "Prozesatze azkarragoa eta egonkorragoa Euskaliarekin egunero ikasi eta lan egiteko.",
-    },
-
-    // ==== FUNCIONES PLAN PREMIUM+ (futuro) ====
-
-    library_premium: {
-      ES: "Biblioteca avanzada pensada para uso intensivo y proyectos grandes (laster).",
-      EUS: "Erabilera intentsiborako eta proiektu handietarako pentsatutako liburutegi aurreratua (laster).",
-    },
-    export_premium: {
-      ES: "Exportaciones avanzadas y más formatos para integrar Euskalia en tu flujo profesional (laster).",
-      EUS: "Esportazio aurreratuak eta formatu gehiago Euskalia zure lan fluxu profesionalean txertatzeko (laster).",
-    },
-    audio_premium: {
-      ES: "Audio de mayor calidad y más opciones de escucha continua tipo podcast (laster).",
-      EUS: "Kalitate handiagoko audioa eta jarraian entzuteko aukera gehiago, podcast estiloan (laster).",
-    },
-    ai_premium: {
-      ES: "Más potencia de IA y límites mucho más altos para un trabajo intensivo en euskera (laster).",
-      EUS: "AAren potentzia handiagoa eta muga askoz zabalagoak euskarazko lan intentsiborako (laster).",
-    },
-    file_premium: {
-      ES: "Soporte para muchos documentos y archivos de gran tamaño sin interrupciones (laster).",
-      EUS: "Dokumentu eta fitxategi handien kopuru handia etenik gabe lantzeko euskarria (laster).",
-    },
-    speed_premium: {
-      ES: "Prioridad en la cola y velocidad máxima incluso en horas punta (laster).",
-      EUS: "Lehentasunezko ilara eta abiadura handiena puntako orduetan ere (laster).",
-    },
+  // FEATURES — PREMIUM+ PLAN
+  "features.premium.1": {
+    ES: "Límites muy ampliados para trabajar con grandes volúmenes de contenido sin restricciones.",
+    EUS: "Muga oso handituak, eduki bolumen handiekin inolako mugak gabe lan egiteko.",
   },
-},
-
-
+  "features.premium.2": {
+    ES: "Cuenta personal avanzada con más espacio y sincronización futura de proyectos.",
+    EUS: "Kontu pertsonal aurreratua, espazio gehiagorekin eta etorkizunean proiektuen sinkronizazioarekin.",
+  },
+  "features.premium.3": {
+    ES: "Biblioteca ampliada para guardar contenido sin límite práctico.",
+    EUS: "Liburutegi handitua, edukia ia mugarik gabe gordetzeko.",
+  },
+  "features.premium.4": {
+    ES: "Exportaciones avanzadas y más formatos profesionales (laster).",
+    EUS: "Esportazio aurreratuak eta formatu profesional gehiago (laster).",
+  },
+  "features.premium.5": {
+    ES: "Audio premium de mayor calidad y opción de escucha continua tipo podcast (laster).",
+    EUS: "Kalitate handiagoko audio premiuma eta jarraian entzuteko aukera, podcast moduan (laster).",
+  },
+  "features.premium.6": {
+    ES: "Subida de documentos grandes para trabajar con PDFs largos y archivos complejos.",
+    EUS: "Dokumentu handiak igotzeko aukera, PDF luze eta dokumentu konplexuekin lan egiteko.",
+  },
+  "features.premium.7": {
+    ES: "Procesamiento más rápido, prioridad en cola y velocidad máxima incluso en horas punta.",
+    EUS: "Prozesatze azkarragoa, ilaran lehentasuna eta abiadura maximoa puntako orduetan ere.",
+  },
+  "features.premium.8": {
+    ES: "Modelos de IA más potentes para traducciones y resúmenes de mayor calidad.",
+    EUS: "IA eredu indartsuagoak kalitate handiagoko itzulpen eta laburpenak sortzeko.",
+  },
+  "features.premium.9": {
+    ES: "Soporte para muchos documentos y archivos de gran tamaño sin interrupciones.",
+    EUS: "Dokumentu eta fitxategi handiak etenik gabe lantzeko euskarria.",
+  },
+  "features.premium.10": {
+    ES: "La experiencia más completa de Euskalia: más rápida, más potente y sin límites molestos.",
+    EUS: "Euskaliaren esperientziarik osoena: azkarragoa, indartsuagoa eta mugarik gabe.",
+  },
+}
 
 
 
