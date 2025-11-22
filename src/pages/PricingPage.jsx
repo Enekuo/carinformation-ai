@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 import { Sparkles, Gem, CheckCircle } from "lucide-react";
 
@@ -10,7 +11,7 @@ export default function PricingPage() {
     // FREE
     {
       id: "free",
-      titleKey: "pricing.plan.free",
+      titleKey: "pricing.free_name",
       priceText: "0€",
       priceSuffixKey: null,
       perDayKey: null,
@@ -22,7 +23,7 @@ export default function PricingPage() {
         "pricing.features.file_free",
         "pricing.features.speed_free",
       ],
-      buttonKey: "pricing.cta.free",
+      buttonKey: "pricing.free_cta",
       icon: <Sparkles className="h-8 w-8 text-green-500 mb-4" />,
       borderColor: "border-green-500",
       priceColor: "text-green-500",
@@ -34,10 +35,10 @@ export default function PricingPage() {
       badgeKey: null,
     },
 
-    // BASIC (Más popular)
+    // PRO (plan de pago actual, más popular)
     {
-      id: "basic",
-      titleKey: "pricing.plan.basic",
+      id: "pro",
+      titleKey: "pricing.pro_name",
       priceText: "6,99€",
       priceSuffixKey: "pricing.perMonth",
       perDayKey: "pricing.perDay.basic",
@@ -49,7 +50,7 @@ export default function PricingPage() {
         "pricing.features.file_basic",
         "pricing.features.speed_basic",
       ],
-      buttonKey: "pricing.cta.basic",
+      buttonKey: "pricing.pro_cta",
       icon: <Gem className="h-8 w-8 text-blue-500 mb-4" />,
       borderColor: "border-blue-500",
       priceColor: "text-blue-600",
@@ -58,13 +59,13 @@ export default function PricingPage() {
         "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700",
       glow: false,
       tint: "",
-      badgeKey: "pricing.mostPopular",
+      badgeKey: "pricing.badge_popular",
     },
 
-    // PREMIUM (colores calcados a la otra web)
+    // PREMIUM+ (Próximamente)
     {
       id: "premium",
-      titleKey: "pricing.plan.pro",
+      titleKey: "pricing.premium_name",
       priceText: "12,99€",
       priceSuffixKey: "pricing.perMonth",
       perDayKey: "pricing.perDay.premium",
@@ -76,9 +77,9 @@ export default function PricingPage() {
         "pricing.features.file_premium",
         "pricing.features.speed_premium",
       ],
-      buttonKey: "pricing.cta.pro",
+      buttonKey: "pricing.premium_cta_soon",
 
-      // === Azul principal exacto ===
+      // Azul principal exacto
       icon: <Gem className="h-8 w-8 mb-4" style={{ color: "#2563eb" }} />,
       borderColor: "border-[#2563eb]",
       priceColor: "text-[#2563eb]",
@@ -90,17 +91,16 @@ export default function PricingPage() {
       // Brillo exterior
       glow: true,
 
-      // Botón con el mismo gradiente
-      buttonGradient:
-        "bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1e4fdc] hover:to-[#1b46c7]",
+      // El gradiente del botón no se usa como CTA real, solo decoración base
+      buttonGradient: "",
 
-      badgeKey: null,
+      badgeKey: "pricing.badge_soon",
     },
   ];
 
   return (
     <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center relative bg-gradient-to-br from-slate-100 via-sky-50 to-blue-100 p-6 pt-12 md:pt-20">
-      {/* Título / subtítulo (claves intactas) */}
+      {/* Título / subtítulo */}
       <div className="text-center mb-10 md:mb-16">
         <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-3">
           {tr("pricing.title")}
@@ -152,25 +152,52 @@ export default function PricingPage() {
                   )}
                 </p>
                 {p.perDayKey && (
-                  <p className="text-xs text-slate-500 mt-1">{tr(p.perDayKey)}</p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    {tr(p.perDayKey)}
+                  </p>
                 )}
               </div>
 
               <ul className="space-y-4 mb-8 flex-grow">
                 {p.featuresKeys.map((k) => (
                   <li key={k} className="flex items-start">
-                    <CheckCircle className={`h-5 w-5 mr-2 mt-0.5 flex-shrink-0 ${p.checkColor}`} />
-                    <span className="text-slate-700 text-[15px] leading-snug">{tr(k)}</span>
+                    <CheckCircle
+                      className={`h-5 w-5 mr-2 mt-0.5 flex-shrink-0 ${p.checkColor}`}
+                    />
+                    <span className="text-slate-700 text-[15px] leading-snug">
+                      {tr(k)}
+                    </span>
                   </li>
                 ))}
               </ul>
 
-              <button
-                type="button"
-                className={`w-full py-3 text-base font-semibold ${p.buttonGradient} text-white rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]`}
-              >
-                {tr(p.buttonKey)}
-              </button>
+              {/* CTA según el plan */}
+              {p.id === "free" ? (
+                // Plan gratis → a la home
+                <Link
+                  to="/"
+                  className={`w-full inline-flex items-center justify-center py-3 text-base font-semibold ${p.buttonGradient} text-white rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]`}
+                >
+                  {tr(p.buttonKey)}
+                </Link>
+              ) : p.id === "premium" ? (
+                // Plan Premium+ → Próximamente (botón desactivado)
+                <button
+                  type="button"
+                  disabled
+                  className="w-full py-3 text-base font-semibold rounded-lg shadow-lg bg-slate-300 text-slate-600 cursor-not-allowed hover:shadow-lg transition-transform duration-300 hover:scale-[1.0]"
+                >
+                  {tr(p.buttonKey)}
+                </button>
+              ) : (
+                // Plan Pro → CTA normal (decidirás más adelante a qué ruta lleva)
+                <button
+                  type="button"
+                  className={`w-full py-3 text-base font-semibold ${p.buttonGradient} text-white rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]`}
+                >
+                  {tr(p.buttonKey)}
+                </button>
+              )}
             </div>
           </div>
         ))}
