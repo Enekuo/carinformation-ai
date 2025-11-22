@@ -7,7 +7,7 @@ export const translations = {
     resources: { ES: "Recursos",      EUS: "Baliabideak" },
     pricing:   { ES: "Precios",       EUS: "Prezioak" },
     signIn:    { ES: "Iniciar sesión", EUS: "Hasi saioa" },
-    startFree: { ES: "Comienza Gratis", EUS: "Doan hasi" },
+    startFree: { ES: "Crear cuenta", EUS: "Sortu kontua" },
   },
 
   resourcesMenu: {
@@ -620,8 +620,8 @@ faq_item7_answer: {
       EUS: "Gorde zure testuak, kendu iragarkiak eta gozatu mugarik gabe.",
     },
     button: {
-      ES: "🚀 Empieza gratis",
-      EUS: "🚀 Hasi doain",
+      ES: "🚀 Empieza sin límites",
+      EUS: "🚀 Hasi mugarik gabe",
     },
   },
 
