@@ -25,7 +25,7 @@ export default function AssistantPage() {
 
   return (
     <div className="min-h-screen w-full bg-slate-50">
-      {/* Botón "Nuevo chat" */}
+      {/* Botón "Txat berria / Nuevo chat" */}
       <div className="flex justify-end px-6 pt-6">
         <button
           onClick={handleNewChat}
@@ -43,21 +43,21 @@ export default function AssistantPage() {
         {/* Bloque mascota + título */}
         {isEmpty && (
           <div className="mt-10 mb-10 flex flex-col items-center text-center">
-            <div className="mb-4 rounded-2xl bg-white shadow-md p-3">
+            {/* Mascota con cuadro/fondo y más grande */}
+            <div className="mb-5 rounded-3xl bg-white shadow-lg p-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
-                alt="Euskalia asistentzia"
-                className="w-16 h-16 rounded-xl"
+                alt="Euskalia IA"
+                className="w-24 h-24 md:w-28 md:h-28 rounded-2xl"
                 draggable={false}
               />
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
+            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
               {tr("assistant_title")}
             </h1>
-            <p className="text-sm md:text-base text-slate-500">
-              {tr("assistant_mascot_hint")}
-            </p>
+
+            {/* IMPORTANTE: subtítulo eliminado (assistant_mascot_hint) */}
           </div>
         )}
 
