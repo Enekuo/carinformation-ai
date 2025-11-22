@@ -1,40 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
-import { Sparkles, Gem, CheckCircle } from "lucide-react";
+import { Gem, CheckCircle } from "lucide-react";
 
 export default function PricingPage() {
   const { t } = useTranslation();
   const tr = (k) => t(k) || k; // mostramos la clave si no hay traducción
 
   const plans = [
-    // FREE
-    {
-      id: "free",
-      titleKey: "pricing.free_name",
-      priceText: "0€",
-      priceSuffixKey: null,
-      featuresKeys: [
-        "pricing.features.library_free",
-        "pricing.features.export_free",
-        "pricing.features.audio_free",
-        "pricing.features.ai_free",
-        "pricing.features.file_free",
-        "pricing.features.speed_free",
-      ],
-      buttonKey: "pricing.free_cta",
-      icon: <Sparkles className="h-8 w-8 text-green-500 mb-4" />,
-      borderColor: "border-green-500",
-      priceColor: "text-green-500",
-      checkColor: "text-green-500",
-      buttonGradient:
-        "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600",
-      glow: false,
-      tint: "",
-      badgeKey: null,
-    },
-
-    // PRO (plan de pago actual, más popular)
+    // PLAN PRO (plan actual)
     {
       id: "pro",
       titleKey: "pricing.pro_name",
@@ -58,9 +31,10 @@ export default function PricingPage() {
       glow: false,
       tint: "",
       badgeKey: "pricing.badge_popular",
+      disabled: false,
     },
 
-    // PREMIUM+ (Próximamente)
+    // PLAN PREMIUM+ (PRÓXIMAMENTE)
     {
       id: "premium",
       titleKey: "pricing.premium_name",
@@ -75,21 +49,15 @@ export default function PricingPage() {
         "pricing.features.speed_premium",
       ],
       buttonKey: "pricing.premium_cta_soon",
-
-      // Azul principal exacto
       icon: <Gem className="h-8 w-8 mb-4" style={{ color: "#2563eb" }} />,
       borderColor: "border-[#2563eb]",
       priceColor: "text-[#2563eb]",
       checkColor: "text-[#2563eb]",
-
-      // Tinte de fondo suave
       tint: "bg-gradient-to-br from-[#dbeafe] to-[#bfdbfe]",
-
-      // Brillo exterior
       glow: true,
-
       buttonGradient: "",
       badgeKey: "pricing.badge_soon",
+      disabled: true,
     },
   ];
 
@@ -106,7 +74,7 @@ export default function PricingPage() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl lg:max-w-5xl">
         {plans.map((p) => (
           <div
             key={p.id}
@@ -161,26 +129,16 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              {/* CTA según el plan */}
-              {p.id === "free" ? (
-                // Plan gratis → a la home
-                <Link
-                  to="/"
-                  className={`w-full inline-flex items-center justify-center py-3 text-base font-semibold ${p.buttonGradient} text-white rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]`}
-                >
-                  {tr(p.buttonKey)}
-                </Link>
-              ) : p.id === "premium" ? (
-                // Plan Premium+ → Próximamente (botón desactivado)
+              {/* CTA */}
+              {p.disabled ? (
                 <button
                   type="button"
                   disabled
-                  className="w-full py-3 text-base font-semibold rounded-lg shadow-lg bg-slate-300 text-slate-600 cursor-not-allowed hover:shadow-lg transition-transform duration-300 hover:scale-[1.0]"
+                  className="w-full py-3 text-base font-semibold rounded-lg shadow-lg bg-slate-300 text-slate-600 cursor-not-allowed hover:shadow-lg transition-transform duration-300"
                 >
                   {tr(p.buttonKey)}
                 </button>
               ) : (
-                // Plan Pro → CTA normal (más adelante decidirás la ruta)
                 <button
                   type="button"
                   className={`w-full py-3 text-base font-semibold ${p.buttonGradient} text-white rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]`}
