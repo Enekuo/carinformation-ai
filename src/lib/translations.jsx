@@ -663,98 +663,100 @@ faq_item7_answer: {
    
     pricing: {
   title: {
-    ES: "Planes para usar Euskalia sin límites",
-    EUS: "Euskalia mugarik gabe erabiltzeko planak",
+    ES: "Elige tu plan",
+    EUS: "Aukeratu zure plana",
   },
   subtitle: {
-    ES: "Empieza gratis y sube de nivel solo cuando lo necesites.",
-    EUS: "Hasi doan eta igo mailaz benetan behar duzunean bakarrik.",
+    ES: "Empieza con el Plan Pro y pasa a Premium+ cuando necesites más potencia y menos límites.",
+    EUS: "Hasi Pro planarekin eta pasa Premium+ planera potentzia eta muga gutxiago behar dituzunean.",
   },
 
-  badge_popular: {
-    ES: "Más utilizado",
-    EUS: "Gehien erabilia",
+  pro_name: {
+    ES: "Plan Pro",
+    EUS: "Plan Pro",
   },
-  badge_soon: {
+  premium_name: {
+    ES: "Plan Premium+",
+    EUS: "Plan Premium+",
+  },
+
+  perMonth: {
+    ES: "/ mes",
+    EUS: "/ hilean",
+  },
+
+  pro_cta: {
+    ES: "Elegir Pro",
+    EUS: "Aukeratu Pro",
+  },
+  premium_cta_soon: {
     ES: "Próximamente",
     EUS: "Laster eskuragarri",
   },
 
-  pro_name: {
-    ES: "Cuenta Pro",
-    EUS: "Pro kontua",
+  badge_popular: {
+    ES: "Más popular",
+    EUS: "Ezagunenak",
   },
-  premium_name: {
-    ES: "Cuenta Premium",
-    EUS: "Premium kontua",
-  },
-
-  perMonth: {
-    ES: "/mes",
-    EUS: "/hilean",
+  badge_soon: {
+    ES: "Próximamente",
+    EUS: "Laster",
   },
 
-  /* ===== PRO – CARACTERÍSTICAS BASIC ===== */
   features: {
-    library_basic: {
-      ES: "Biblioteca básica para guardar traducciones y resúmenes",
-      EUS: "Itzulpen eta laburpenak gordetzeko oinarrizko liburutegia",
+    // ===== PLAN PRO – TUS FRASES =====
+
+    limits_pro: {
+      ES: "Limites mas extensos Traducciones y resúmenes con sin preocuparte por los límites básicos",
+      EUS: "Muga zabalagoak, itzulpen eta laburpen gehiago oinarrizko mugak kezkatu gabe egiteko.",
     },
-    export_basic: {
-      ES: "Exportar resultados en texto y copiar con un clic",
-      EUS: "Emaitzak testuan esportatu eta klik bakarrean kopiatu",
+    account_pro: {
+      ES: "Cuenta personal Tu proia cuenta con diferentes moduz y guardados",
+      EUS: "Kontu pertsonala Zure kontua modu eta gordeketa desberdinekin.",
     },
-    audio_basic: {
-      ES: "Escucha básica del texto en audio",
-      EUS: "Testuaren oinarrizko entzunaldi audioan",
+    library_pro: {
+      ES: "📚3 Biblioteca personal Guarda tus traducciones y resúmenes más importantes.",
+      EUS: "📚3 Liburutegi pertsonala Zure itzulpen eta laburpen garrantzitsuenak gordetzeko.",
     },
-    ai_basic: {
-      ES: "Traducción y resumen con IA estándar",
-      EUS: "Itzulpen eta laburpen estandarra adimen artifizialarekin",
+    export_pro: {
+      ES: "📄 4Opciones cómodas para copiar y descargar Copia o descarga el contenido generado y sigue trabajando fuera de Euskalia.",
+      EUS: "📄 4Kopiatzeko eta deskargatzeko aukera erosoak Sortutako edukia kopiatu edo deskargatu eta Euskaliatik kanpo lanean jarraitu.",
     },
-    file_basic: {
-      ES: "Subida de documentos en formato básico (PDF, DOCX…)",
-      EUS: "Oinarrizko formatuan dokumentuak igo (PDF, DOCX…)",
+    upload_pro: {
+      ES: "📤5 Subida de documentos de tamaño medio Trabaja con archivos cómodamente en euskera y otros idiomas.",
+      EUS: "📤5 Tamaina ertaineko dokumentuak igotzea Euskaraz eta beste hizkuntzatan eroso lan egiteko.",
     },
-    speed_basic: {
-      ES: "Procesamiento normal en la cola de peticiones",
-      EUS: "Eskaeren ilaran prozesatze arrunta",
+    speed_pro: {
+      ES: "🚀 6Procesamiento más rápido y estable Pensado para estudiar y trabajar cada día con fluidez.",
+      EUS: "🚀 6Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
     },
 
-    /* ===== PREMIUM – CARACTERÍSTICAS PREMIUM ===== */
+    // ===== PLAN PREMIUM+ – puedes cambiar estas frases cuando quieras =====
+
     library_premium: {
-      ES: "Biblioteca avanzada con historial ampliado y colecciones",
-      EUS: "Liburutegi aurreratua, historial zabalarekin eta bildumekin",
+      ES: "Biblioteca ampliada para uso intensivo y proyectos grandes.",
+      EUS: "Liburutegi handitua erabilera intentsiborako eta proiektu handietarako.",
     },
     export_premium: {
-      ES: "Exportar en varios formatos (PDF, DOCX, audio…) sin límites",
-      EUS: "Formatu anitzetan esportatzea (PDF, DOCX, audio…) mugarik gabe",
+      ES: "Exportaciones avanzadas y más formatos profesionales (laster).",
+      EUS: "Esportazio aurreratuak eta formatu profesional gehiago (laster).",
     },
     audio_premium: {
-      ES: "Audio de alta calidad con voces naturales y más minutos",
-      EUS: "Kalitate handiko audioa, ahots naturalekin eta minutu gehiagorekin",
+      ES: "Audio premium de mayor calidad y opción de escucha continua tipo podcast (laster).",
+      EUS: "Kalitate handiagoko audio premiuma eta jarraian entzuteko aukera, podcast moduan (laster).",
     },
     ai_premium: {
-      ES: "IA avanzada con textos más largos y mejor precisión",
-      EUS: "Adimen artifizial aurreratua, testu luzeago eta zehatzagoekin",
+      ES: "IA más potente y límites mucho más altos para un uso intensivo en euskera.",
+      EUS: "IA indartsuagoa eta muga askoz handiagoak euskarazko erabilera intentsiborako.",
     },
     file_premium: {
-      ES: "Más tamaño por archivo y soporte para varios documentos a la vez",
-      EUS: "Fitxategi bakoitzerako tamaina handiagoa eta dokumentu anitzen euskarria",
+      ES: "Soporte para documentos más grandes y complejos sin interrupciones.",
+      EUS: "Dokumentu handiago eta konplexuagoak etenik gabe lantzeko euskarria.",
     },
     speed_premium: {
-      ES: "Prioridad en cola y respuestas más rápidas",
-      EUS: "Lehentasuna ilaran eta erantzun azkarragoak",
+      ES: "Prioridad en la cola y velocidad máxima incluso en horas punta.",
+      EUS: "Lehentasuna ilaran eta abiadura handiena puntako orduetan ere.",
     },
-  },
-
-  pro_cta: {
-    ES: "Empezar con Cuenta Pro",
-    EUS: "Hasi Pro kontuarekin",
-  },
-  premium_cta_soon: {
-    ES: "Disponible muy pronto",
-    EUS: "Oso laster eskuragarri",
   },
 },
 

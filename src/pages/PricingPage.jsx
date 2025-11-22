@@ -4,22 +4,22 @@ import { Gem, CheckCircle } from "lucide-react";
 
 export default function PricingPage() {
   const { t } = useTranslation();
-  const tr = (k) => t(k) || k; // mostramos la clave si no hay traducción
+  const tr = (k, fallback = "") => t(k) || fallback;
 
   const plans = [
-    // PLAN PRO (plan actual)
+    // PLAN PRO (actual)
     {
       id: "pro",
       titleKey: "pricing.pro_name",
-      priceText: "4,99€",
+      priceText: "6,99€",
       priceSuffixKey: "pricing.perMonth",
       featuresKeys: [
-        "pricing.features.library_basic",
-        "pricing.features.export_basic",
-        "pricing.features.audio_basic",
-        "pricing.features.ai_basic",
-        "pricing.features.file_basic",
-        "pricing.features.speed_basic",
+        "pricing.features.limits_pro",
+        "pricing.features.account_pro",
+        "pricing.features.library_pro",
+        "pricing.features.export_pro",
+        "pricing.features.upload_pro",
+        "pricing.features.speed_pro",
       ],
       buttonKey: "pricing.pro_cta",
       icon: <Gem className="h-8 w-8 text-blue-500 mb-4" />,
@@ -38,7 +38,7 @@ export default function PricingPage() {
     {
       id: "premium",
       titleKey: "pricing.premium_name",
-      priceText: "19,99€",
+      priceText: "12,99€",
       priceSuffixKey: "pricing.perMonth",
       featuresKeys: [
         "pricing.features.library_premium",
