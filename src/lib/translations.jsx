@@ -771,7 +771,7 @@ faq_item7_answer: {
     ES: "La experiencia más completa de Euskalia: más rápida, más potente y sin límites molestos.",
     EUS: "Euskaliaren esperientziarik osoena: azkarragoa, indartsuagoa eta mugarik gabe.",
   },
-}
+},
 
 
 
