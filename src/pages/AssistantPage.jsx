@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Plus, Mic } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Plus } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
 export default function AssistantPage() {
@@ -24,70 +24,98 @@ export default function AssistantPage() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="min-h-screen w-full bg-white">
-      {/* HEADER - New chat */}
-      <div className="flex justify-end p-6">
+    <div className="min-h-screen w-full bg-slate-50">
+      {/* Botón "Nuevo chat" */}
+      <div className="flex justify-end px-6 pt-6">
         <button
           onClick={handleNewChat}
-          className="flex items-center gap-2 px-4 h-10 rounded-full border border-slate-200
-                     hover:bg-slate-100 text-sm font-medium text-slate-700"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white
+                     px-4 h-10 text-sm font-medium text-slate-700 shadow-sm
+                     hover:bg-slate-50 hover:shadow-md transition"
         >
           <Plus className="w-4 h-4" />
           {tr("assistant_new_chat")}
         </button>
       </div>
 
-      {/* MAIN CONTENT */}
-      <div className="flex flex-col items-center text-center px-4">
+      {/* Contenido principal */}
+      <div className="flex flex-col items-center px-4 pb-16">
+        {/* Bloque mascota + título */}
         {isEmpty && (
-          <>
-            <img
-              src="/olondo.mascota.png"
-              alt="Euskalia IA"
-              className="w-20 h-20 rounded-xl shadow-sm mb-4"
-            />
+          <div className="mt-10 mb-10 flex flex-col items-center text-center">
+            <div className="mb-4 rounded-2xl bg-white shadow-md p-3">
+              <img
+                src="/olondo.mascota.png"
+                alt="Euskalia asistentzia"
+                className="w-16 h-16 rounded-xl"
+                draggable={false}
+              />
+            </div>
 
-            <h2 className="text-2xl md:text-3xl font-semibold mb-1">
+            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
               {tr("assistant_title")}
-            </h2>
-
-            <p className="text-slate-500 mb-10">
+            </h1>
+            <p className="text-sm md:text-base text-slate-500">
               {tr("assistant_mascot_hint")}
             </p>
-          </>
+          </div>
         )}
 
-        {/* INPUT BAR */}
-        <div className="w-full max-w-3xl flex items-center rounded-full border border-slate-200 shadow-sm px-4 py-2 mb-20">
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-slate-100">
-            <Plus className="w-5 h-5 text-slate-600" />
-          </button>
-
-          <input
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                handleSend();
-              }
+        {/* Barra de entrada */}
+        <div className="w-full flex justify-center">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
             }}
-            placeholder={tr("assistant_placeholder")}
-            className="flex-1 bg-transparent outline-none text-[15px] placeholder:text-slate-400 px-2"
-          />
-
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-slate-100">
-            <Mic className="w-5 h-5 text-slate-600" />
-          </button>
-
-          <button
-            onClick={handleSend}
-            className="ml-2 px-6 h-10 rounded-full bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold"
+            className="w-full max-w-3xl"
           >
-            {tr("assistant_send")} 
-          </button>
-        </div>  
+            <div
+              className="
+                flex items-center gap-2
+                rounded-full border border-slate-200 bg-white
+                shadow-sm px-4 py-2
+                hover:shadow-md transition
+              "
+            >
+              {/* Botón + (futuro adjuntar archivos) */}
+              <button
+                type="button"
+                className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+
+              {/* Input */}
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                placeholder={tr("assistant_placeholder")}
+                className="flex-1 bg-transparent outline-none text-[15px] placeholder:text-slate-400 px-1"
+              />
+
+              {/* Botón Enviar */}
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                className="
+                  ml-2 h-9 px-6 rounded-full text-sm font-semibold text-white
+                  bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed
+                  transition
+                "
+              >
+                {tr("assistant_send")}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
