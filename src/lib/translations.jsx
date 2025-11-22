@@ -667,8 +667,6 @@ faq_item7_answer: {
       ES: "Empieza gratis para probar el traductor y el resumidor con euskera como idioma principal, y da el salto al plan de pago cuando lo necesites. Más adelante añadiremos planes avanzados para uso intensivo.",
       EUS: "Hasi doan euskararekin lan egiten duen itzultzailea eta laburtzailea probatzen, eta behar duzunean igaro ordainpeko planera. Aurrerago erabilera intentsiborako plan aurreratuak gehituko dira.",
     },
-
-    // Nombres de los planes
     free_name: {
       ES: "Prueba Gratis",
       EUS: "Proba Doan",
@@ -681,8 +679,10 @@ faq_item7_answer: {
       ES: "Plan Premium+",
       EUS: "Plan Premium+",
     },
-
-    // Etiquetas / notas bajo el precio
+    perMonth: {
+    ES: "/ mes",
+    EUS: "/ hilean",
+    },
     free_note: {
       ES: "Ideal para probar Euskalia sin registro",
       EUS: "Euskalia erregistratu gabe probatzeko egokia",
@@ -695,8 +695,6 @@ faq_item7_answer: {
       ES: "Funciones avanzadas y uso intensivo (próximamente)",
       EUS: "Funtzio aurreratuak eta erabilera intentsiboa (laster)",
     },
-
-    // CTA de los botones
     free_cta: {
       ES: "Empezar gratis",
       EUS: "Hasi doan",
@@ -709,8 +707,6 @@ faq_item7_answer: {
       ES: "Disponible próximamente",
       EUS: "Laster eskuragarri",
     },
-
-    // BADGE “Más popular” / “Próximamente”
     badge_popular: {
       ES: "Más popular",
       EUS: "Ezagunenak",
@@ -719,10 +715,7 @@ faq_item7_answer: {
       ES: "Próximamente",
       EUS: "Laster",
     },
-
-    // ===== CARACTERÍSTICAS (las que ya tienes en el diseño) =====
     features: {
-      // Biblioteca / guardado
       library_free: {
         ES: "Biblioteca básica para guardar algunos textos",
         EUS: "Testu batzuk gordetzeko oinarrizko liburutegia",
@@ -735,8 +728,6 @@ faq_item7_answer: {
         ES: "Liburutegi aurreratua eta erabilera intentsiborako prest (próximamente)",
         EUS: "Liburutegi aurreratua eta erabilera intentsiborako prest (laster)",
       },
-
-      // Exportar / descargar
       export_free: {
         ES: "Copiar el texto generado y descargar de forma sencilla",
         EUS: "Sortutako testua kopiatu eta erraz deskargatzeko aukera",
@@ -749,8 +740,6 @@ faq_item7_answer: {
         ES: "Esportazio aurreratuak eta formatu gehiago (próximamente)",
         EUS: "Esportazio aurreratuak eta formatu gehiago (laster)",
       },
-
-      // Audio / escuchar
       audio_free: {
         ES: "Escucha básica del contenido generado (cuando esté disponible)",
         EUS: "Sortutako edukia entzuteko oinarrizko aukera (eskuragarri dagoenean)",
@@ -763,8 +752,6 @@ faq_item7_answer: {
         ES: "Audio a calidad superior y uso intensivo (próximamente)",
         EUS: "Kalitate handiagoko audioa eta erabilera intentsiboa (laster)",
       },
-
-      // IA / potencia
       ai_free: {
         ES: "Uso básico de IA para traducciones y resúmenes",
         EUS: "Itzulpen eta laburpenetarako AAren oinarrizko erabilera",
@@ -777,8 +764,6 @@ faq_item7_answer: {
         ES: "Goi mailako gaitasuna eta lehentasunezko prozesamendua (próximamente)",
         EUS: "Gaitasun handiagoa eta lehentasunezko prozesamendua (laster)",
       },
-
-      // Ficheros / documentos
       file_free: {
         ES: "Subida de documentos con tamaño limitado",
         EUS: "Tamaina mugatuko dokumentuak igotzeko aukera",
@@ -791,8 +776,6 @@ faq_item7_answer: {
         ES: "Edukia dokumentu askorekin eta tamaina handian lantzea (próximamente)",
         EUS: "Eduki asko dokumentu askorekin eta tamaina handian lantzea (laster)",
       },
-
-      // Velocidad / prioridad
       speed_free: {
         ES: "Velocidad estándar de respuesta",
         EUS: "Erantzun abiadura estandarra",

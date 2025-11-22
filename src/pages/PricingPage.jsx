@@ -14,7 +14,6 @@ export default function PricingPage() {
       titleKey: "pricing.free_name",
       priceText: "0€",
       priceSuffixKey: null,
-      perDayKey: null,
       featuresKeys: [
         "pricing.features.library_free",
         "pricing.features.export_free",
@@ -41,7 +40,6 @@ export default function PricingPage() {
       titleKey: "pricing.pro_name",
       priceText: "6,99€",
       priceSuffixKey: "pricing.perMonth",
-      perDayKey: "pricing.perDay.basic",
       featuresKeys: [
         "pricing.features.library_basic",
         "pricing.features.export_basic",
@@ -68,7 +66,6 @@ export default function PricingPage() {
       titleKey: "pricing.premium_name",
       priceText: "12,99€",
       priceSuffixKey: "pricing.perMonth",
-      perDayKey: "pricing.perDay.premium",
       featuresKeys: [
         "pricing.features.library_premium",
         "pricing.features.export_premium",
@@ -91,9 +88,7 @@ export default function PricingPage() {
       // Brillo exterior
       glow: true,
 
-      // El gradiente del botón no se usa como CTA real, solo decoración base
       buttonGradient: "",
-
       badgeKey: "pricing.badge_soon",
     },
   ];
@@ -151,11 +146,6 @@ export default function PricingPage() {
                     </span>
                   )}
                 </p>
-                {p.perDayKey && (
-                  <p className="text-xs text-slate-500 mt-1">
-                    {tr(p.perDayKey)}
-                  </p>
-                )}
               </div>
 
               <ul className="space-y-4 mb-8 flex-grow">
@@ -190,7 +180,7 @@ export default function PricingPage() {
                   {tr(p.buttonKey)}
                 </button>
               ) : (
-                // Plan Pro → CTA normal (decidirás más adelante a qué ruta lleva)
+                // Plan Pro → CTA normal (más adelante decidirás la ruta)
                 <button
                   type="button"
                   className={`w-full py-3 text-base font-semibold ${p.buttonGradient} text-white rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]`}
