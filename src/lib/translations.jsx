@@ -661,95 +661,101 @@ faq_item7_answer: {
 
     // PRICING PAGE //
    
-    pricing_title: {
-  ES: "Elige tu plan",
-  EUS: "Aukeratu zure plana",
-},
-pricing_subtitle: {
-  ES: "Euskalia ofrece planes adaptados para estudiar, trabajar y usar el euskera con IA en tu día a día.",
-  EUS: "Euskaliak plan egokituak eskaintzen ditu ikasteko, lan egiteko eta euskara egunerokoan erabiltzeko IArekin.",
-},
+    pricing: {
+  title: {
+    ES: "Planes para usar Euskalia sin límites",
+    EUS: "Euskalia mugarik gabe erabiltzeko planak",
+  },
+  subtitle: {
+    ES: "Empieza gratis y sube de nivel solo cuando lo necesites.",
+    EUS: "Hasi doan eta igo mailaz benetan behar duzunean bakarrik.",
+  },
 
-"pricing.pro_name": {
-  ES: "Plan Pro",
-  EUS: "Plan Pro",
-},
-"pricing.premium_name": {
-  ES: "Plan Premium+",
-  EUS: "Plan Premium+",
-},
+  badge_popular: {
+    ES: "Más utilizado",
+    EUS: "Gehien erabilia",
+  },
+  badge_soon: {
+    ES: "Próximamente",
+    EUS: "Laster eskuragarri",
+  },
 
-"pricing.perMonth": {
-  ES: "/ mes",
-  EUS: "/ hilean",
-},
+  pro_name: {
+    ES: "Cuenta Pro",
+    EUS: "Pro kontua",
+  },
+  premium_name: {
+    ES: "Cuenta Premium",
+    EUS: "Premium kontua",
+  },
 
-"pricing.pro_cta": {
-  ES: "Elegir Pro",
-  EUS: "Aukeratu Pro",
-},
-"pricing.premium_cta_soon": {
-  ES: "Próximamente",
-  EUS: "Laster eskuragarri",
-},
+  perMonth: {
+    ES: "/mes",
+    EUS: "/hilean",
+  },
 
-"pricing.badge_popular": {
-  ES: "Más popular",
-  EUS: "Ezagunenak",
-},
-"pricing.badge_soon": {
-  ES: "Próximamente",
-  EUS: "Laster",
-},
-// ====== PLAN PRO – FEATURES (basic) ======
-"pricing.features.library_basic": {
-  ES: "Biblioteca personal para guardar tus traducciones y resúmenes más importantes.",
-  EUS: "Zure itzulpen eta laburpen garrantzitsuenak gordetzeko liburutegi pertsonala.",
-},
-"pricing.features.export_basic": {
-  ES: "Opciones cómodas para copiar o descargar el contenido y seguir trabajando fuera de Euskalia.",
-  EUS: "Edukia kopiatu edo deskargatzeko aukera erosoak, Euskaliatik kanpo ere lanean jarraitzeko.",
-},
-"pricing.features.audio_basic": {
-  ES: "Escucha básica del contenido cuando la opción de audio esté disponible.",
-  EUS: "Sortutako edukia entzuteko aukera oinarrizkoa, audio funtzionalitatea eskuragarri dagoenean.",
-},
-"pricing.features.ai_basic": {
-  ES: "Más capacidad diaria para traducir y resumir con IA sin preocuparte por los límites básicos.",
-  EUS: "Eguneko gaitasun handiagoa, oinarrizko mugak ahaztuta itzuli eta laburtzeko.",
-},
-"pricing.features.file_basic": {
-  ES: "Subida de documentos de tamaño medio para trabajar cómodamente en euskera y otros idiomas.",
-  EUS: "Tamaina ertaineko dokumentuak igotzeko aukera, euskaraz eta beste hizkuntzatan eroso lan egiteko.",
-},
-"pricing.features.speed_basic": {
-  ES: "Procesamiento más rápido y estable para estudiar y trabajar cada día con fluidez.",
-  EUS: "Prozesatze azkarragoa eta egonkorragoa, egunero ikasi eta lan egiteko erraztasun handiagoarekin.",
-},
-// ====== PLAN PREMIUM+ – FEATURES (premium) ======
-"pricing.features.library_premium": {
-  ES: "Biblioteca ampliada para uso intensivo y proyectos grandes.",
-  EUS: "Erabilera intentsiborako eta proiektu handietarako liburutegi handitua.",
-},
-"pricing.features.export_premium": {
-  ES: "Exportaciones avanzadas y más formatos profesionales (laster).",
-  EUS: "Esportazio aurreratuak eta formatu profesional gehiago (laster).",
-},
-"pricing.features.audio_premium": {
-  ES: "Audio premium de mayor calidad y opción de escucha continua tipo podcast (laster).",
-  EUS: "Kalitate handiagoko audio premiuma eta jarraian entzuteko aukera, podcast moduan (laster).",
-},
-"pricing.features.ai_premium": {
-  ES: "IA más potente y límites mucho más altos para un uso intensivo en euskera.",
-  EUS: "IA indartsuagoa eta muga askoz zabalagoak euskarazko erabilera intentsiborako.",
-},
-"pricing.features.file_premium": {
-  ES: "Soporte para documentos más grandes y complejos sin interrupciones.",
-  EUS: "Dokumentu handiago eta konplexuagoak etenik gabe lantzeko euskarria.",
-},
-"pricing.features.speed_premium": {
-  ES: "Prioridad en la cola y velocidad máxima incluso en horas punta.",
-  EUS: "Lehentasuna ilaran eta abiadura handiena puntako orduetan ere.",
+  /* ===== PRO – CARACTERÍSTICAS BASIC ===== */
+  features: {
+    library_basic: {
+      ES: "Biblioteca básica para guardar traducciones y resúmenes",
+      EUS: "Itzulpen eta laburpenak gordetzeko oinarrizko liburutegia",
+    },
+    export_basic: {
+      ES: "Exportar resultados en texto y copiar con un clic",
+      EUS: "Emaitzak testuan esportatu eta klik bakarrean kopiatu",
+    },
+    audio_basic: {
+      ES: "Escucha básica del texto en audio",
+      EUS: "Testuaren oinarrizko entzunaldi audioan",
+    },
+    ai_basic: {
+      ES: "Traducción y resumen con IA estándar",
+      EUS: "Itzulpen eta laburpen estandarra adimen artifizialarekin",
+    },
+    file_basic: {
+      ES: "Subida de documentos en formato básico (PDF, DOCX…)",
+      EUS: "Oinarrizko formatuan dokumentuak igo (PDF, DOCX…)",
+    },
+    speed_basic: {
+      ES: "Procesamiento normal en la cola de peticiones",
+      EUS: "Eskaeren ilaran prozesatze arrunta",
+    },
+
+    /* ===== PREMIUM – CARACTERÍSTICAS PREMIUM ===== */
+    library_premium: {
+      ES: "Biblioteca avanzada con historial ampliado y colecciones",
+      EUS: "Liburutegi aurreratua, historial zabalarekin eta bildumekin",
+    },
+    export_premium: {
+      ES: "Exportar en varios formatos (PDF, DOCX, audio…) sin límites",
+      EUS: "Formatu anitzetan esportatzea (PDF, DOCX, audio…) mugarik gabe",
+    },
+    audio_premium: {
+      ES: "Audio de alta calidad con voces naturales y más minutos",
+      EUS: "Kalitate handiko audioa, ahots naturalekin eta minutu gehiagorekin",
+    },
+    ai_premium: {
+      ES: "IA avanzada con textos más largos y mejor precisión",
+      EUS: "Adimen artifizial aurreratua, testu luzeago eta zehatzagoekin",
+    },
+    file_premium: {
+      ES: "Más tamaño por archivo y soporte para varios documentos a la vez",
+      EUS: "Fitxategi bakoitzerako tamaina handiagoa eta dokumentu anitzen euskarria",
+    },
+    speed_premium: {
+      ES: "Prioridad en cola y respuestas más rápidas",
+      EUS: "Lehentasuna ilaran eta erantzun azkarragoak",
+    },
+  },
+
+  pro_cta: {
+    ES: "Empezar con Cuenta Pro",
+    EUS: "Hasi Pro kontuarekin",
+  },
+  premium_cta_soon: {
+    ES: "Disponible muy pronto",
+    EUS: "Oso laster eskuragarri",
+  },
 },
 
 
