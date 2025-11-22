@@ -664,8 +664,8 @@ faq_item7_answer: {
       EUS: "Aukeratu nola erabili nahi duzun Euskalia",
     },
     subtitle: {
-      ES: "Empieza gratis para probar el traductor y el resumidor con euskera como idioma principal, y da el salto al plan de pago cuando lo necesites. Más adelante añadiremos planes avanzados para uso intensivo.",
-      EUS: "Hasi doan euskararekin lan egiten duen itzultzailea eta laburtzailea probatzen, eta behar duzunean igaro ordainpeko planera. Aurrerago erabilera intentsiborako plan aurreratuak gehituko dira.",
+      ES: "Desbloquea todo el potencial de Euskalia con el plan que mejor se adapte a ti.",
+      EUS: "Askatu Euskaliaren ahalmen osoa, zure beharretara egokitzen den planarekin.",
     },
     free_name: {
       ES: "Prueba Gratis",
