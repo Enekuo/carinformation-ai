@@ -715,20 +715,20 @@ faq_item7_answer: {
       EUS: "Kontu pertsonala Zure kontua modu eta gordeketa desberdinekin.",
     },
     library_pro: {
-      ES: "📚3 Biblioteca personal Guarda tus traducciones y resúmenes más importantes.",
-      EUS: "📚3 Liburutegi pertsonala Zure itzulpen eta laburpen garrantzitsuenak gordetzeko.",
+      ES: "Biblioteca personal Guarda tus traducciones y resúmenes más importantes.",
+      EUS: "Liburutegi pertsonala Zure itzulpen eta laburpen garrantzitsuenak gordetzeko.",
     },
     export_pro: {
-      ES: "📄 4Opciones cómodas para copiar y descargar Copia o descarga el contenido generado y sigue trabajando fuera de Euskalia.",
-      EUS: "📄 4Kopiatzeko eta deskargatzeko aukera erosoak Sortutako edukia kopiatu edo deskargatu eta Euskaliatik kanpo lanean jarraitu.",
+      ES: "Opciones cómodas para copiar y descargar Copia o descarga el contenido generado y sigue trabajando fuera de Euskalia.",
+      EUS: "Kopiatzeko eta deskargatzeko aukera erosoak Sortutako edukia kopiatu edo deskargatu eta Euskaliatik kanpo lanean jarraitu.",
     },
     upload_pro: {
-      ES: "📤5 Subida de documentos de tamaño medio Trabaja con archivos cómodamente en euskera y otros idiomas.",
-      EUS: "📤5 Tamaina ertaineko dokumentuak igotzea Euskaraz eta beste hizkuntzatan eroso lan egiteko.",
+      ES: "Subida de documentos de tamaño medio Trabaja con archivos cómodamente en euskera y otros idiomas.",
+      EUS: "Tamaina ertaineko dokumentuak igotzea Euskaraz eta beste hizkuntzatan eroso lan egiteko.",
     },
     speed_pro: {
-      ES: "🚀 6Procesamiento más rápido y estable Pensado para estudiar y trabajar cada día con fluidez.",
-      EUS: "🚀 6Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
+      ES: "Procesamiento más rápido y estable Pensado para estudiar y trabajar cada día con fluidez.",
+      EUS: "6Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
     },
 
     // ===== PLAN PREMIUM+ – puedes cambiar estas frases cuando quieras =====
