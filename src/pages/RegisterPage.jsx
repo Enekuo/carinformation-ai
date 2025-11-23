@@ -1,17 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-[#F7F9FC] text-slate-900">
-      {/* Marca arriba a la izquierda, igual que en iniciar sesión */}
+    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
+      {/* Marca arriba a la izquierda, clicable hacia el traductor */}
       <header className="px-8 py-6">
-        <span className="font-semibold text-lg">Euskalia</span>
+        <Link
+          to="/"
+          className="font-semibold text-lg hover:opacity-80 transition-opacity"
+        >
+          Euskalia
+        </Link>
       </header>
 
-      {/* Contenido centrado */}
-      <main className="flex items-center justify-center px-4 pb-16">
+      {/* Contenido centrado vertical y horizontalmente */}
+      <main className="flex-1 flex items-center justify-center px-4 pb-16">
         <div className="w-full max-w-md flex flex-col items-center">
-          {/* TÍTULO (sin círculo E) */}
+          {/* TÍTULO */}
           <h1 className="text-2xl font-semibold mb-6 text-center">
             Crea tu cuenta
           </h1>
