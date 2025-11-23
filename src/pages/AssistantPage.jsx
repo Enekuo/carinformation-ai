@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
@@ -6,13 +6,22 @@ export default function AssistantPage() {
   const { t } = useTranslation();
   const tr = (k) => t(k) || k;
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]); // { id, role, content }
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
+  const endRef = useRef(null);
 
   const handleSend = () => {
-    if (!input.trim()) return;
-    setMessages((prev) => [...prev, { role: "user", content: input }]);
+    const text = input.trim();
+    if (!text) return;
+
+    const userMsg = {
+      id: Date.now(),
+      role: "user",
+      content: text,
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
   };
 
@@ -22,6 +31,31 @@ export default function AssistantPage() {
   };
 
   const isEmpty = messages.length === 0;
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages.length]);
+
+  const Bubble = ({ role, children }) => {
+    const isUser = role === "user";
+    return (
+      <div
+        className={`w-full flex ${
+          isUser ? "justify-end" : "justify-start"
+        } mb-3`}
+      >
+        <div
+          className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-2 text-sm md:text-base whitespace-pre-wrap leading-relaxed ${
+            isUser
+              ? "bg-sky-600 text-white rounded-br-md"
+              : "bg-slate-100 text-slate-800 rounded-bl-md"
+          }`}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen w-full bg-slate-50 overflow-hidden">
@@ -39,30 +73,40 @@ export default function AssistantPage() {
       </div>
 
       {/* Contenido principal */}
-      <div className="flex flex-col items-center px-4 pb-16">
-        {/* Bloque mascota + título */}
-        {isEmpty && (
-          <div className="mt-10 mb-10 flex flex-col items-center text-center">
-            {/* Mascota SIN cuadrado de fondo */}
-            <div className="mb-5 flex items-center justify-center">
-              <img
-                src="/olondo.mascota.png"
-                alt="Euskalia IA"
-                className="h-40 sm:h-44 md:h-48 w-auto"
-                draggable={false}
-              />
+      <div className="flex flex-col items-center px-4 pb-16 mt-[-40px]">
+        <div className="w-full max-w-3xl mx-auto">
+          {/* Estado vacío: mascota + título */}
+          {isEmpty ? (
+            <div className="mt-16 mb-10 flex flex-col items-center text-center">
+              {/* Mascota */}
+              <div className="mb-5 flex items-center justify-center">
+                <img
+                  src="/olondo.mascota.png"
+                  alt="Euskalia IA"
+                  className="h-40 sm:h-44 md:h-48 w-auto"
+                  draggable={false}
+                />
+              </div>
+
+              <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
+                {tr("assistant_title")}
+              </h1>
             </div>
+          ) : (
+            // Lista de mensajes tipo burbuja
+            <div className="mt-10 mb-6 max-h-[calc(100vh-260px)] overflow-y-auto pr-1">
+              {messages.map((m) => (
+                <Bubble key={m.id} role={m.role}>
+                  {m.content}
+                </Bubble>
+              ))}
+              <div ref={endRef} />
+            </div>
+          )}
+        </div>
 
-            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
-              {tr("assistant_title")}
-            </h1>
-
-            {/* subtítulo eliminado */}
-          </div>
-        )}
-
-        {/* Barra de entrada */}
-        <div className="w-full flex justify-center">
+        {/* Barra de entrada (siempre visible, igual que en la otra web) */}
+        <div className="w-full flex justify-center mt-2">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -78,7 +122,7 @@ export default function AssistantPage() {
                 hover:shadow-md transition
               "
             >
-              {/* Botón + (futuro adjuntar archivos) */}
+              {/* Botón + (futuras opciones: archivos, etc.) */}
               <button
                 type="button"
                 className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600"
