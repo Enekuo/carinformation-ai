@@ -28,29 +28,29 @@ export default function Home() {
 
         {/* NAV LATERAL */}
         <nav className="space-y-1 text-sm">
-          {/* Inicio */}
-          <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-900 text-white font-medium">
-            <LayoutDashboard size={16} />
-            <span>Inicio</span>
+          {/* Home */}
+          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg bg-slate-900 text-white font-medium">
+            <LayoutDashboard size={18} />
+            <span>Home</span>
           </button>
 
-          {/* Herramientas Pro */}
-          <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700">
-            <Sparkles size={16} />
-            <span>Herramientas Pro</span>
+          {/* Herramientas */}
+          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg hover:bg-slate-100 text-slate-700">
+            <Sparkles size={18} />
+            <span>Herramientas</span>
           </button>
 
           {/* Biblioteca */}
-          <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700">
-            <Folder size={16} />
+          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg hover:bg-slate-100 text-slate-700">
+            <Folder size={18} />
             <span>Biblioteca</span>
           </button>
         </nav>
 
         {/* BOTÓN AJUSTES ABAJO */}
         <div className="mt-auto pt-6 border-t border-slate-200">
-          <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 text-sm">
-            <Settings size={16} />
+          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg hover:bg-slate-100 text-slate-700 text-sm">
+            <Settings size={18} />
             <span>Ajustes</span>
           </button>
         </div>
