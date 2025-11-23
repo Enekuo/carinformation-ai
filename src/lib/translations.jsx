@@ -214,26 +214,23 @@ export const translations = {
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
 
   // === CHAT IA / ASSISTANT === //
-assistant_title: {
+ assistant_title: {
   ES: "¿Cómo puedo ayudarte?",
   EUS: "Nola lagundu diezazaket?",
-},
-assistant_mascot_greeting: {
-  ES: "¿Cómo puedo ayudarte?",
-  EUS: "Nola lagundu diezazaket?",
-},
-assistant_placeholder: {
-  ES: "Pregunta lo que quieras",
-  EUS: "Edozer galde dezakezu",
-},
-assistant_send: {
-  ES: "Enviar",
-  EUS: "Bidali",
-},
-assistant_new_chat: {
+ },
+ assistant_new_chat: {
   ES: "Nuevo chat",
   EUS: "Txat berria",
-},
+ },
+ assistant_placeholder: {
+  ES: "Pregunta lo que quieras",
+  EUS: "Edozer galde dezakezu",
+ },
+ assistant_send: {
+  ES: "Enviar",
+  EUS: "Bidali",
+ },
+
 
 
 

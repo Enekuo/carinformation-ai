@@ -10,7 +10,7 @@ export default function AssistantPage() {
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
-  // 🔹 Mantener el foco en el input al cargar la página
+  // Mantener el foco en el input al entrar en la página
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -22,7 +22,7 @@ export default function AssistantPage() {
     setMessages((prev) => [...prev, { role: "user", content: text }]);
     setInput("");
 
-    // 🔹 Volver a enfocar el input tras enviar
+    // Volver a enfocar el input tras enviar
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
@@ -32,7 +32,7 @@ export default function AssistantPage() {
     setMessages([]);
     setInput("");
 
-    // 🔹 Foco de nuevo al limpiar el chat
+    // Foco de nuevo al limpiar el chat
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
@@ -89,7 +89,6 @@ export default function AssistantPage() {
         )}
 
         {/* BARRA DE ESCRITURA */}
-        {/* 🔹 Cuando hay mensajes, la subimos un poco más (mt-auto + mb extra) */}
         <div
           className={
             isEmpty
