@@ -1,7 +1,7 @@
 import { kv } from "@vercel/kv";
 import crypto from "crypto";
 
-// ================= MANUAL DE EUSKALIA =================
+/* ========= MANUAL INTERNO DE EUSKALIA (FUENTE ÚNICA DE VERDAD) ========= */
 
 const EUSKALIA_MANUAL = `
 1. Qué es Euskalia
@@ -15,7 +15,7 @@ Buscamos evitar la desinformación, las barreras tecnológicas y los problemas d
 
 2. A quién está dirigido
 Euskalia está pensado para:
-- Personas que saben euskera y necesitan trabajar o estudiar con otros idiomas.
+- Personas que saben euskera y necesitan trabajar o estudiar hacia otros idiomas.
 - Personas de otros idiomas que quieren trabajar o estudiar en euskera.
 - Estudiantes que necesitan ayuda con trabajos, textos o estudios en euskera.
 - Trabajadores que usan euskera en informes, documentos o comunicaciones.
@@ -29,7 +29,7 @@ Euskalia está pensado para:
 - Traduce textos en ambos sentidos Euskera ↔ Español.
 - Permite copiar el texto traducido fácilmente.
 - Entrada por texto directo, PDF y URL.
-- Tiene límites definidos según el plan del usuario.
+- Límites definidos según el plan del usuario.
 - Traduce frases, párrafos, textos largos y notas.
 
 3.2. Resumidor con IA
@@ -37,14 +37,14 @@ Euskalia está pensado para:
 - Mantiene las ideas principales sin inventar contenido.
 - Admite texto directo, PDF y URL.
 - Es útil para estudiar, informar y simplificar contenido.
-- Tiene límites según el plan del usuario.
+- Los límites dependen del plan del usuario.
 
 3.3. Chat de asistencia oficial de Euskalia
 - Responde solo dudas relacionadas con Euskalia.
-- No actúa como un ChatGPT general.
+- No actúa como un chat general tipo ChatGPT.
 - Explica funciones, límites, planes y uso de la plataforma.
 - Ayuda al usuario a entender cómo traducir, resumir o usar la web.
-- Si la pregunta no es sobre Euskalia, informa de ello.
+- Si la pregunta no es sobre Euskalia, informa de ello de forma clara.
 
 4. Planes de Euskalia
 
@@ -52,110 +52,138 @@ Euskalia está pensado para:
 - Traducciones básicas.
 - Resúmenes cortos.
 - Límite menor de caracteres por texto.
-- Sin cuenta personal o historial.
+- Sin cuenta personal ni historial.
 - Velocidad estándar.
 
 4.2. Plan Pro
 - Más caracteres por traducción o resumen.
 - Velocidad más rápida y estable.
-- Posibilidad de guardar más contenido.
+- Posibilidad de guardar más contenido (cuando esté disponible).
 - Pensado para trabajo diario o estudio intensivo.
-- La IA nunca debe inventar características que no existan.
-- Si algo no está implementado, debe indicarlo claramente.
+
+La IA nunca debe inventar características que no existan. Si algo no está implementado, debe indicarlo claramente.
 
 5. Funcionamiento general de Euskalia
 - El usuario escribe o pega texto en la herramienta seleccionada.
 - La plataforma procesa el contenido mediante IA.
 - Se muestra el resultado con botones para copiar, borrar o crear uno nuevo.
-- La interfaz es simple y muy visual.
-- La web está disponible en euskera y español.
+- La interfaz es simple, clara y muy visual.
+- La web está disponible en euskera y español (y puede ampliarse con otros idiomas como inglés y francés).
 
 6. Límites del sistema
 - El plan gratuito tiene límites más reducidos.
 - El plan Pro permite textos más largos.
 - Si el usuario supera el límite, se le muestra un aviso.
+- Los números exactos de límites pueden ajustarse y la IA no debe inventarlos.
 
 7. Qué hacer cuando algo no existe o no está claro
 - La IA no debe inventar información.
 - Si algo no está implementado, debe responder: "Esa función todavía no está disponible en Euskalia."
 - Si la pregunta no aparece literalmente en el manual pero es lógica, la IA puede deducir la respuesta usando sentido común solo con la información de este manual.
-- Si la pregunta no es de Euskalia: "Solo puedo ayudarte con dudas relacionadas con Euskalia o también puedes preguntar en la sección de soporte."
+- Si la pregunta no es de Euskalia, debe responder algo como:
+  "Solo puedo ayudarte con dudas relacionadas con Euskalia. También puedes preguntar en la sección de soporte."
 
 8. Tono y estilo de las respuestas
 La IA debe responder siempre:
-- Amable
-- Clara
-- Cortés
-- Precisa
-- Sin tecnicismos innecesarios
-- Breve pero útil
-- Sin vender funciones que no existen
-Debe sonar como un “soporte oficial”.
+- Amable.
+- Clara.
+- Cortés.
+- Precisa.
+- Sin tecnicismos innecesarios.
+- Breve pero útil.
+- Sin vender funciones que no existen.
+Debe sonar como un soporte oficial.
 
 9. Errores comunes y cómo responder
 
-Problemas al traducir un texto:
-"Puede que el texto sea muy largo o haya un error temporal. Intenta dividir el contenido o pruébalo más tarde. Si ves que el error persiste no dudes en preguntar en soporte."
+Si el usuario se encuentra con:
 
-Resumen que no se genera:
-"Puede que el texto sea muy largo o haya un error temporal. Prueba otra vez o intenta dividir el contenido. Si ves que el error persiste no dudes en preguntar en soporte."
+❌ Problemas al traducir un texto
+Respuesta orientativa:
+"Puede que el texto sea muy largo o haya un error temporal. Intenta dividir el contenido o pruébalo más tarde. Si ves que el error persiste, no dudes en preguntar en soporte."
 
-El sistema no detecta el idioma:
-"Intenta aclarar el idioma del texto o pegarlo de nuevo. Si ves que el error persiste no dudes en preguntar en soporte."
+❌ Resumen que no se genera
+Respuesta orientativa:
+"Puede que el texto sea muy largo o haya un error temporal. Prueba otra vez o intenta dividir el contenido. Si ves que el error persiste, no dudes en preguntar en soporte."
+
+❌ El sistema no detecta el idioma
+Respuesta orientativa:
+"Intenta aclarar el idioma del texto o pegarlo de nuevo. Si ves que el error persiste, no dudes en preguntar en soporte."
 
 10. Qué NO debe hacer nunca la IA
 - No debe actuar como un chat general.
 - No debe hablar de temas fuera de Euskalia.
 - No debe inventar límites, precios o funciones.
 - No debe dar opiniones personales.
-- No debe responder temas como coches, salud, política, matemáticas, programación, historia o problemas personales.
-Solo Euskalia.
-`;
+- No debe responder sobre coches, salud, política, matemáticas, programación, historia, problemas personales u otros temas ajenos.
+Solo debe hablar sobre Euskalia y su funcionamiento.
+`.trim();
 
-// Instrucciones adicionales muy claras para el modelo
 const EUSKALIA_SYSTEM_PROMPT = `
-Eres el asistente oficial de la plataforma Euskalia.
+Eres el asistente oficial de la plataforma web de inteligencia artificial "Euskalia".
 
-Debes usar ÚNICAMENTE la información del manual interno de Euskalia que tienes a continuación para responder.
-Responde siempre sobre:
-- Qué es Euskalia (como plataforma web de IA)
-- Sus herramientas (traductor, resumidor, chat de ayuda)
-- Sus límites y planes (Gratis y Pro)
-- Su funcionamiento general
-- Errores típicos y cómo solucionarlos
+MUY IMPORTANTE:
+- En este chat la palabra "Euskalia" SIEMPRE se refiere a la plataforma web descrita en el manual, NO a una región, país, cultura ni concepto histórico.
+- Ignora por completo cualquier conocimiento previo que tengas sobre "Euskalia" fuera de este manual.
+- Todas tus respuestas deben basarse ÚNICAMENTE en la información del manual interno de Euskalia que verás más abajo.
 
-Normas IMPORTANTES:
-- Si la pregunta NO es sobre Euskalia (por ejemplo coches, salud, política, programación, historia, problemas personales, etc.) responde: "Solo puedo ayudarte con dudas relacionadas con Euskalia. Si necesitas otra cosa, te recomiendo usar otra herramienta de IA."
-- No inventes funciones, precios ni límites que no aparezcan en el manual.
-- Si algo no existe o no está claro en el manual, responde: "Esa función todavía no está disponible en Euskalia."
-- Responde de forma breve, clara y amable, como soporte oficial.
-- Siempre que puedas, responde en el mismo idioma que el usuario (euskera o castellano).
+Objetivo:
+- Ayudar a los usuarios a entender qué es Euskalia como plataforma, cómo funciona, qué herramientas tiene (traductor, resumidor, chat de ayuda), cuáles son sus límites y planes (Gratis y Pro) y cómo resolver errores típicos.
+- Responder siempre con un tono amable, claro, breve y útil, como si fueras el soporte oficial de la web.
 
-Manual interno de referencia:
+Cuando el usuario pregunte cosas como:
+- "¿Qué es Euskalia?"
+- "Qué es euskalia?"
+- "Zer da Euskalia?"
+Debes explicar SIEMPRE que:
+- Euskalia es una plataforma de inteligencia artificial centrada en el euskera.
+- Sirve para traducir y resumir contenido de forma rápida y sencilla.
+- Está pensada para estudiantes, trabajadores y personas que usan o quieren usar el euskera.
+- Su objetivo es impulsar el euskera en el ámbito digital y facilitar que se use como un idioma moderno y funcional.
+
+Si la pregunta NO es sobre Euskalia (por ejemplo coches, salud, política, matemáticas, programación, historia, problemas personales, etc.):
+- Responde algo como: "Solo puedo ayudarte con dudas relacionadas con Euskalia. Si necesitas otra cosa, te recomiendo usar otra herramienta de IA."
+
+Si el usuario pregunta por algo que no aparece en el manual o que todavía no existe:
+- Responde: "Esa función todavía no está disponible en Euskalia."
+
+Nunca inventes:
+- Funciones
+- Precios
+- Límites
+- Planes
+ni nada que no se pueda deducir del manual.
+
+Manual interno de referencia (debes usarlo SIEMPRE como fuente principal de verdad):
 ${EUSKALIA_MANUAL}
 `.trim();
 
-// ====== Configuración de límites (via ENV con defaults sensatos) ======
+/* ================== CONFIGURACIÓN LÍMITES / CACHÉ ================== */
+
 const CACHE_TTL_SECONDS = Number(process.env.CACHE_TTL_SECONDS || 60 * 60 * 24 * 14);
 
-// LÍMITES PLAN GRATIS
-const FREE_MAX_CHARS    = Number(process.env.FREE_MAX_CHARS || 12000);
-const FREE_DAILY_TOKENS = Number(process.env.FREE_DAILY_TOKENS || 10000);
-const FREE_RPM          = Number(process.env.FREE_RPM || 6);
+// LÍMITES PLAN GRATIS (puedes sobreescribir en Vercel → Env Vars)
+const FREE_MAX_CHARS    = Number(process.env.FREE_MAX_CHARS || 12000);    // máx. caracteres por request
+const FREE_DAILY_TOKENS = Number(process.env.FREE_DAILY_TOKENS || 10000); // cuota diaria aprox por IP
+const FREE_RPM          = Number(process.env.FREE_RPM || 6);              // peticiones/min por IP aprox.
 
+// Conversión aproximada chars→tokens
 const TOKENS_PER_CHAR = 0.25; // ~4 chars ≈ 1 token
 
-// ====== Helpers ======
+/* ============================== HELPERS ============================= */
+
 function canonicalize(s) {
   return (s || "")
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase().replace(/\s+/g, " ")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
     .replace(/^[\s,.!?;:|]+|[\s,.!?;:|]+$/g, "")
     .trim();
 }
 
 function makeCacheKey({ task, model, system, messages, src, dst, lang, length }) {
-  const userText = canonicalize((messages || []).map(m => m?.content || "").join(" "));
+  const userText = canonicalize((messages || []).map((m) => m?.content || "").join(" "));
   const payload = JSON.stringify({
     v: "v1",
     task,
@@ -163,7 +191,7 @@ function makeCacheKey({ task, model, system, messages, src, dst, lang, length })
     pair: lang || `${src || ""}-${dst || ""}` || "na",
     length: length || null,
     system: system ? canonicalize(system) : "",
-    text: userText
+    text: userText,
   });
   const sha = crypto.createHash("sha256").update(payload).digest("hex");
   const pair = lang || `${src || ""}-${dst || ""}` || "na";
@@ -184,29 +212,17 @@ function todayKey(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 
-// Very simple HTML → texto
-function htmlToText(html) {
-  if (!html) return "";
-  let text = html
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<style[\s\S]*?<\/style>/gi, "");
-  text = text.replace(
-    /<\/(p|div|li|h[1-6]|br|section|article|header|footer|main)>/gi,
-    "$&\n"
-  );
-  text = text.replace(/<[^>]+>/g, " ");
-  return text.replace(/\s+/g, " ").trim();
-}
+/* ================ HANDLER PRINCIPAL: /api/euskalia-chat =============== */
 
-// ====== Handler ======
 export default async function handler(req, res) {
-  // CORS / Preflight
+  // CORS / preflight
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     return res.status(200).end();
   }
+
   if (req.method !== "POST") {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Allow", "POST, OPTIONS");
@@ -221,6 +237,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ ok: false, error: "Missing OPENAI_API_KEY" });
     }
 
+    // Leer body
     const raw = await new Promise((resolve, reject) => {
       let data = "";
       req.on("data", (c) => (data += c));
@@ -239,84 +256,26 @@ export default async function handler(req, res) {
       system,
       temperature = 0.2,
       model = "gpt-4o-mini",
-      max_tokens
+      max_tokens,
     } = body;
 
-    // ====== MODO ESPECIAL: ASISTENTE EUSKALIA ======
-    const isAssistant = body?.mode === "assistant";
-    if (isAssistant) {
+    /* ========= FORZAR MODO ASISTENTE EUSKALIA ========= */
+
+    if (body?.mode === "assistant") {
+      // Siempre usamos el system del manual
       system = EUSKALIA_SYSTEM_PROMPT;
+      // Temperatura baja para respuestas estables
+      if (typeof body.temperature === "number") {
+        temperature = body.temperature;
+      } else {
+        temperature = 0.2;
+      }
     }
 
-    // ====== Soporte especial: traducir desde URLs (para otros modos) ======
-    if (body?.mode === "translate_urls") {
-      const urls = Array.isArray(body.urls)
-        ? body.urls.map((u) => String(u || "").trim()).filter(Boolean)
-        : [];
-
-      if (!urls.length) {
-        return res.status(400).json({
-          ok: false,
-          error: "Missing urls",
-          message: "Debes enviar al menos una URL válida en el campo 'urls'."
-        });
-      }
-
-      const src = body.src || null;
-      const dst = body.dst || null;
-
-      const parts = [];
-      for (const url of urls) {
-        try {
-          const r = await fetch(url, { method: "GET" });
-          const html = await r.text();
-          const text = htmlToText(html);
-          if (text) {
-            parts.push(`URL: ${url}\n\n${text.slice(0, 9000)}`);
-          } else {
-            parts.push(`URL: ${url}\n\n[No se ha podido extraer texto útil de esta página.]`);
-          }
-        } catch (e) {
-          parts.push(
-            `URL: ${url}\n\n[No se ha podido descargar el contenido de esta página.]`
-          );
-        }
-      }
-
-      const combined = parts.join("\n\n-----------------------------\n\n");
-
-      if (!system) {
-        if (src === "eus" && dst === "es") {
-          system = `
-Eres Euskalia, un traductor profesional.
-Tu tarea es traducir el contenido de varias páginas web del euskera al español.
-Responde SOLO con la traducción en español, manteniendo en lo posible la estructura (títulos, párrafos, listas).
-No añadas explicaciones externas, solo la traducción.
-          `.trim();
-        } else if (src === "es" && dst === "eus") {
-          system = `
-Euskalia zara, itzulpen profesionaleko tresna bat.
-Zure lana hainbat webguneren edukia gaztelaniatik euskarara itzultzea da.
-Erantzun BETI euskaraz, eta saiatu egitura mantentzen (izenburuak, paragrafoak, zerrendak).
-Ez gehitu azalpen gehigarririk, soilik itzulpena.
-          `.trim();
-        } else {
-          system = `
-Eres Euskalia, un traductor profesional.
-Tu tarea es traducir el contenido de varias páginas web al idioma de destino indicado.
-Responde SOLO con la traducción final en el idioma de destino y mantén en lo posible la estructura (títulos, párrafos, listas).
-          `.trim();
-        }
-      }
-
-      body.system = system;
-      body.messages = [{ role: "user", content: combined }];
-      delete body.text;
-      delete body.from;
-      delete body.to;
-    }
-
-    const hasMessages  = Array.isArray(body?.messages) && body.messages.length > 0;
+    // Contratos admitidos:
+    // A) { messages:[{role,content}...], system?, model?, temperature?, max_tokens?, mode? }
+    // B) { text, from, to }  -> no lo usamos normalmente aquí, pero se mantiene por compatibilidad.
+    const hasMessages = Array.isArray(body?.messages) && body.messages.length > 0;
     const hasTranslate = typeof body?.text === "string" && body?.from && body?.to;
 
     let messages = [];
@@ -333,13 +292,13 @@ Responde SOLO con la traducción final en el idioma de destino y mantén en lo p
       messages = [
         {
           role: "user",
-          content: `Translate the following text from ${from} to ${to}. Respond with only the translation, no explanations:\n\n${text}`
-        }
+          content: `Translate the following text from ${from} to ${to}. Respond with only the translation, no explanations:\n\n${text}`,
+        },
       ];
     } else {
       return res.status(400).json({
         ok: false,
-        error: "Invalid body. Send {messages:[{role,content}...]} or {text, from, to}."
+        error: "Invalid body. Send {messages:[{role,content}...]} or {text, from, to}.",
       });
     }
 
@@ -349,9 +308,10 @@ Responde SOLO con la traducción final en el idioma de destino y mantén en lo p
     ];
 
     // ====== LÍMITES PLAN GRATIS ======
-    const ip  = getClientIp(req);
+    const ip = getClientIp(req);
     const day = todayKey();
 
+    // 1) Máx. caracteres por request
     const totalChars =
       (system?.length || 0) +
       finalMessages.reduce((n, m) => n + ((m?.content?.length) || 0), 0);
@@ -363,30 +323,30 @@ Responde SOLO con la traducción final en el idioma de destino y mantén en lo p
         limit: { max_chars: FREE_MAX_CHARS },
         message:
           `El texto es demasiado largo para el plan gratis. Máximo ${FREE_MAX_CHARS.toLocaleString()} caracteres por petición. ` +
-          `Divide el texto y vuelve a intentarlo.`
+          `Divide el texto y vuelve a intentarlo.`,
       });
     }
 
-    // Rate-limit RPM por IP
+    // 2) Rate limit RPM por IP
     try {
       const rpmKey = `rl:rpm:${ip}`;
       const count = await kv.incr(rpmKey);
       if (count === 1) {
-        await kv.expire(rpmKey, 60);
+        await kv.expire(rpmKey, 60); // ventana 60 s
       }
       if (count > FREE_RPM) {
         return res.status(429).json({
           ok: false,
           error: "Too Many Requests",
           limit: { rpm: FREE_RPM },
-          message: `Demasiadas peticiones. Límite ${FREE_RPM}/min. Espera unos segundos.`
+          message: `Demasiadas peticiones. Límite ${FREE_RPM}/min. Espera unos segundos.`,
         });
       }
     } catch {
-      // si KV falla, continuamos
+      // si KV falla, continuamos sin romper la experiencia
     }
 
-    // Cuota diaria aproximada de tokens
+    // 3) Cuota diaria aproximada de tokens por IP
     const estTokens = Math.ceil(totalChars * TOKENS_PER_CHAR);
     try {
       const dailyKey = `quota:${day}:${ip}`;
@@ -399,22 +359,30 @@ Responde SOLO con la traducción final en el idioma de destino y mantén en lo p
           message:
             `Has alcanzado la cuota diaria del plan gratis. ` +
             `Disponible: ${FREE_DAILY_TOKENS.toLocaleString()} tokens/día. ` +
-            `Vuelve mañana o mejora de plan.`
+            `Vuelve mañana o mejora de plan.`,
         });
       }
+      // no reservamos aún; sumaremos después con el usage real
     } catch {
-      // no bloqueamos si falla
+      // si KV falla, no bloqueamos
     }
 
-    // ====== KV CACHE ======
+    // ====== CACHÉ KV ======
     const task = hasTranslate ? "translate" : (body?.task || body?.mode || "chat");
-    const src  = hasTranslate ? body.from : (body?.src || null);
-    const dst  = hasTranslate ? body.to   : (body?.dst || null);
+    const src = hasTranslate ? body.from : (body?.src || null);
+    const dst = hasTranslate ? body.to : (body?.dst || null);
     const lang = body?.lang || null;
     const length = body?.length || null;
 
     const cacheKey = makeCacheKey({
-      task, model, system, messages: finalMessages, src, dst, lang, length
+      task,
+      model,
+      system,
+      messages: finalMessages,
+      src,
+      dst,
+      lang,
+      length,
     });
 
     try {
@@ -426,14 +394,14 @@ Responde SOLO con la traducción final en el idioma de destino y mantén en lo p
           provider: "openai",
           content: cached.content,
           usage: cached.usage || null,
-          cached: true
+          cached: true,
         });
       }
     } catch {
-      // sin caché, seguimos
+      // sin caché, continuamos
     }
 
-    // ====== Llamada a OpenAI ======
+    // ====== LLAMADA A OPENAI ======
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -465,30 +433,39 @@ Responde SOLO con la traducción final en el idioma de destino y mantén en lo p
     }
 
     const content = data?.choices?.[0]?.message?.content ?? "";
-    const usage   = data?.usage ?? null;
+    const usage = data?.usage ?? null;
 
+    // Guardar en caché
     try {
       await kv.set(cacheKey, { content, usage }, { ex: CACHE_TTL_SECONDS });
     } catch {}
 
+    // Actualizar cuota diaria real
     try {
       const dailyKey = `quota:${day}:${ip}`;
       const used = (await kv.get(dailyKey)) || 0;
+
       const realTokens =
         (usage?.prompt_tokens || 0) + (usage?.completion_tokens || 0) ||
         Math.max(estTokens, 1);
+
       const newUsed = used + realTokens;
-      await kv.set(dailyKey, newUsed, { ex: 60 * 60 * 26 });
-    } catch {}
+      await kv.set(dailyKey, newUsed, { ex: 60 * 60 * 26 }); // ~26h
+    } catch {
+      // si KV falla, seguimos
+    }
 
     return res.status(200).json({
       ok: true,
       provider: "openai",
       content,
       usage,
-      cached: false
+      cached: false,
     });
   } catch (err) {
-    return res.status(500).json({ ok: false, error: err?.message || "Server error" });
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || "Server error",
+    });
   }
 }
