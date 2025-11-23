@@ -6,7 +6,7 @@ export default function AssistantPage() {
   const { t } = useTranslation();
   const tr = (k) => t(k) || k;
 
-  const [messages, setMessages] = useState([]); // { role, content }
+  const [messages, setMessages] = useState([]); // { role: "user" | "assistant", content: string }
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
@@ -15,24 +15,59 @@ export default function AssistantPage() {
     inputRef.current?.focus();
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = input.trim();
     if (!text) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: text }]);
+    // Mensaje del usuario
+    const userMsg = { role: "user", content: text };
+    const newMessages = [...messages, userMsg];
+
+    setMessages(newMessages);
     setInput("");
 
     // Volver a enfocar el input tras enviar
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
+
+    // Llamada al backend de Euskalia
+    try {
+      const res = await fetch("/api/euskalia-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error en la respuesta del asistente");
+      }
+
+      const data = await res.json();
+      const assistantText =
+        data.reply ||
+        "Une honetan ezin izan da erantzuna sortu. Saiatu berriro edo galdetu laguntza atalean.";
+
+      const assistantMsg = {
+        role: "assistant",
+        content: assistantText,
+      };
+
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch (error) {
+      const errorMsg = {
+        role: "assistant",
+        content:
+          "Arazo bat egon da erantzuna sortzerakoan. Saiatu berriro pixka batean edo galdetu zuzenean euskarri atalean.",
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    }
   };
 
   const handleNewChat = () => {
     setMessages([]);
     setInput("");
 
-    // Foco de nuevo al limpiar el chat
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
@@ -79,8 +114,19 @@ export default function AssistantPage() {
         {!isEmpty && (
           <div className="w-full max-w-3xl flex-1 overflow-y-auto mt-6 mb-6 pr-1">
             {messages.map((m, idx) => (
-              <div key={idx} className="w-full flex justify-end mb-3">
-                <div className="max-w-[85%] md:max-w-[70%] bg-sky-600 text-white rounded-2xl rounded-br-md px-4 py-2 text-sm md:text-base leading-relaxed">
+              <div
+                key={idx}
+                className={`w-full flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                } mb-3`}
+              >
+                <div
+                  className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-2 text-sm md:text-base leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-sky-600 text-white rounded-br-md"
+                      : "bg-white text-slate-800 border border-slate-200 rounded-bl-md"
+                  }`}
+                >
                   {m.content}
                 </div>
               </div>
