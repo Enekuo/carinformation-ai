@@ -37,8 +37,8 @@ export default function AssistantPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          mode: "assistant",      // si el backend usa este modo
-          messages: newMessages,  // historial completo
+          mode: "assistant",
+          messages: newMessages,
         }),
       });
 
@@ -48,7 +48,7 @@ export default function AssistantPage() {
 
       const data = await res.json();
       const assistantText =
-        data.reply ||
+        data?.content ||
         "Une honetan ezin izan da erantzuna sortu. Saiatu berriro edo galdetu laguntza atalean.";
 
       const assistantMsg = {
