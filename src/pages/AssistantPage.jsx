@@ -43,12 +43,12 @@ export default function AssistantPage() {
         {/* Bloque mascota + título */}
         {isEmpty && (
           <div className="mt-10 mb-10 flex flex-col items-center text-center">
-            {/* Mascota con cuadro/fondo y más grande */}
-            <div className="mb-5 rounded-3xl bg-white shadow-lg p-5 flex items-center justify-center">
+            {/* Mascota SIN cuadrado de fondo */}
+            <div className="mb-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
                 alt="Euskalia IA"
-                className="w-24 h-24 md:w-28 md:h-28 rounded-2xl"
+                className="w-28 h-28 md:w-32 md:h-32"
                 draggable={false}
               />
             </div>
@@ -57,7 +57,7 @@ export default function AssistantPage() {
               {tr("assistant_title")}
             </h1>
 
-            {/* IMPORTANTE: subtítulo eliminado (assistant_mascot_hint) */}
+            {/* subtítulo eliminado */}
           </div>
         )}
 
