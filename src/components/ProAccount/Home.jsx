@@ -13,7 +13,7 @@ export default function Home() {
       {/* SIDEBAR PRO */}
       <aside
         className="
-          w-56 bg-white border-r border-slate-200
+          w-48 bg-white border-r border-slate-200
           flex flex-col px-4 py-6
         "
       >
@@ -48,8 +48,8 @@ export default function Home() {
         </nav>
 
         {/* BOTÓN AJUSTES ABAJO */}
-        <div className="mt-auto pt-6 border-t border-slate-200">
-          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg hover:bg-slate-100 text-slate-700 text-sm">
+        <div className="mt-auto pt-3 border-t border-slate-200">
+          <button className="w-full flex items-center gap-2 px-3 h-10 rounded-lg hover:bg-slate-100 text-slate-700 text-sm">
             <Settings size={18} />
             <span>Ajustes</span>
           </button>
