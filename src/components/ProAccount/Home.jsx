@@ -13,8 +13,8 @@ export default function Home() {
       {/* SIDEBAR PRO */}
       <aside
         className="
-          w-64 bg-white border-r border-slate-200
-          flex flex-col px-3 py-4
+          w-56 bg-white border-r border-slate-200
+          flex flex-col px-4 py-6
         "
       >
         <div className="mb-8">
