@@ -14,7 +14,7 @@ export default function Home() {
       <aside
         className="
           w-64 bg-white border-r border-slate-200
-          flex flex-col px-4 py-6
+          flex flex-col px-3 py-4
         "
       >
         <div className="mb-8">
