@@ -19,8 +19,10 @@ import PricingPage from "@/pages/PricingPage";
 
 function App() {
     const location = useLocation();
-    const showHeader = location.pathname !== '/iniciar-sesion'; 
-                       location.pathname !== '/crear-cuenta';
+    const showHeader =
+        location.pathname !== '/iniciar-sesion' &&
+        location.pathname !== '/crear-cuenta';
+
     return (
         <>
             <Helmet>
@@ -47,7 +49,6 @@ function App() {
                         <Route path="/cookies" element={<CookiesPolicyPage />} />
                         <Route path="/uso-de-ia" element={<UseAIPage />} />
                         <Route path="/pricing" element={<PricingPage />} />
-                       
                     </Routes>
                 </main>
                 <Toaster />
