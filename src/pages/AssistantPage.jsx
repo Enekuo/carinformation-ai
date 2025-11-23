@@ -33,7 +33,7 @@ export default function AssistantPage() {
 
     // Llamada al backend de Euskalia
     try {
-      const res = await fetch("/api/euskalia-chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
