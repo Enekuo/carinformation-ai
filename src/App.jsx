@@ -15,7 +15,8 @@ import TermsConditionsPage from "@/components/Legal/TermsConditionsPage";
 import CookiesPolicyPage from "@/components/Legal/CookiesPolicyPage";
 import UseAIPage from "@/components/Legal/UseAIPage";
 import PricingPage from "@/pages/PricingPage";
-
+// Pro-Account //
+import ProAccountHome from "@/components/ProAccount/Home";
 
 function App() {
     const location = useLocation();
@@ -49,6 +50,8 @@ function App() {
                         <Route path="/cookies" element={<CookiesPolicyPage />} />
                         <Route path="/uso-de-ia" element={<UseAIPage />} />
                         <Route path="/pricing" element={<PricingPage />} />
+                        // Pro-Account //
+                        <Route path="/cuenta-pro" element={<ProAccountHome />} />
                     </Routes>
                 </main>
                 <Toaster />
