@@ -37,7 +37,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Translator />} />
                         <Route path="/iniciar-sesion" element={<AuthPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/crear-cuenta" element={<RegisterPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
                         <Route path="/chat-ia" element={<AssistantPage />} />
                         <Route path="/resumen" element={<Resumen />} />
