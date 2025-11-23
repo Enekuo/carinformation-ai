@@ -22,8 +22,8 @@ function App() {
     const location = useLocation();
     const showHeader =
         location.pathname !== '/iniciar-sesion' &&
-        location.pathname !== '/crear-cuenta';
-
+        location.pathname !== '/crear-cuenta' &&
+        location.pathname !== '/cuenta-pro';
     return (
         <>
             <Helmet>
