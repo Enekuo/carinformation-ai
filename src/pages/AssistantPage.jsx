@@ -24,7 +24,7 @@ export default function AssistantPage() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="min-h-screen w-full bg-slate-50">
+    <div className="min-h-screen w-full bg-slate-50 overflow-hidden">
       {/* Botón "Txat berria / Nuevo chat" */}
       <div className="flex justify-end px-6 pt-6">
         <button
