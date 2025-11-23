@@ -12,10 +12,10 @@ Buscamos evitar la desinformación, las barreras tecnológicas y los problemas d
 
 2. A quién está dirigido
 Euskalia está pensado para:
-- Personas que saben euskera y necesitan trabajar o estudiar en otros idiomas.
+- Personas que saben euskera y necesitan trabajar o estudiar en otros idiomas. 
 - Personas de otros idiomas que quieren trabajar o estudiar en euskera.
 - Estudiantes que necesitan ayuda con trabajos, textos o estudios en euskera.
-- Trabajadores que usan euskera en informes, documentos o comunicaciones.
+- Trabajadores que usan euskera en informes, documentos o comunicaciones. 
 - Personas que quieren aprender o mejorar su nivel de euskera.
 - Profesionales que necesitan traducir o condensar información rápidamente.
 - Usuarios que buscan una herramienta rápida, clara y simple para textos en euskera.
