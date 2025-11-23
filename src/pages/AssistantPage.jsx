@@ -57,6 +57,7 @@ export default function AssistantPage() {
     );
   };
 
+  // Campo de escritura (mismo en los dos estados)
   const ChatInput = () => (
     <form
       onSubmit={(e) => {
@@ -110,8 +111,7 @@ export default function AssistantPage() {
   );
 
   return (
-    // ESTA ES LA CLAVE: altura = viewport - header (4rem) y sin scroll de página
-    <div className="bg-slate-50 min-h-[calc(100vh-4rem)] flex flex-col">
+    <div className="min-h-screen w-full bg-slate-50 flex flex-col">
       {/* Botón "Txat berria" */}
       <div className="flex justify-end px-6 pt-6">
         <button
@@ -127,8 +127,8 @@ export default function AssistantPage() {
 
       {/* ========= ESTADO SIN MENSAJES ========= */}
       {isEmpty ? (
-        <div className="flex-1 flex flex-col items-center justify-center px-4 pb-10">
-          <div className="mb-8 flex flex-col items-center text-center">
+        <div className="flex-1 flex flex-col items-center px-4 pb-10">
+          <div className="mt-16 mb-10 flex flex-col items-center text-center">
             <div className="mb-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
@@ -148,9 +148,9 @@ export default function AssistantPage() {
         </div>
       ) : (
         /* ========= ESTADO CON MENSAJES ========= */
-        <div className="flex-1 flex flex-col items-center px-4 pb-4">
-          {/* Área de mensajes con scroll interno */}
-          <div className="w-full max-w-3xl mx-auto flex-1 overflow-y-auto mt-6 mb-4 pr-1">
+        <div className="flex-1 flex flex-col items-center px-4">
+          {/* Área de mensajes con scroll, ocupa casi toda la pantalla */}
+          <div className="w-full max-w-3xl mx-auto flex-1 overflow-y-auto mt-10 mb-4 pr-1">
             {messages.map((m) => (
               <Bubble key={m.id} role={m.role}>
                 {m.content}
@@ -159,11 +159,11 @@ export default function AssistantPage() {
             <div ref={endRef} />
           </div>
 
-          {/* Input fijo visualmente abajo (sin estar pegado del todo) */}
-          <div className="w-full flex justify-center pb-2">
+          {/* Input fijado abajo, pero sin quedar pegado al borde */}
+          <div className="w-full flex justify-center pb-6">
             <ChatInput />
           </div>
-        </div> 
+        </div>
       )}
     </div>
   );
