@@ -4,13 +4,27 @@ import { Link } from "react-router-dom";
 export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
-      {/* Marca arriba a la izquierda, clicable hacia el traductor */}
-      <header className="px-8 py-6">
+      {/* Barra superior: Euskalia (izquierda) + Cuenta Pro (derecha) */}
+      <header className="px-8 py-6 flex items-center justify-between">
         <Link
           to="/"
           className="font-semibold text-lg hover:opacity-80 transition-opacity"
         >
           Euskalia
+        </Link>
+
+        {/* Botón temporal para acceder a la cuenta Pro */}
+        <Link
+          to="/cuenta-pro"
+          className="
+            text-sm font-semibold
+            px-4 py-2 rounded-full
+            bg-blue-600 text-white
+            shadow-sm hover:bg-blue-700
+            transition-colors
+          "
+        >
+          Cuenta Pro
         </Link>
       </header>
 
