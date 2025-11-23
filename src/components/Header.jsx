@@ -83,19 +83,19 @@ export default function Header() {
   );
 
   const resources = [
-  {
-    name: t("resourcesMenu.support"),
-    icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
-    isLink: true,
-    path: "/soporte",
-  },
-  {
-    name: t("resourcesMenu.aiChat"),
-    icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
-    isLink: true,
-    path: "/chat-ia",   // <- la ruta de tu página de chat
-  },
-];
+    {
+      name: t("resourcesMenu.support"),
+      icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
+      isLink: true,
+      path: "/soporte",
+    },
+    {
+      name: t("resourcesMenu.aiChat"),
+      icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
+      isLink: true,
+      path: "/chat-ia",   // <- la ruta de tu página de chat
+    },
+  ];
 
   const ResourcesDropdownContent = ({ inMobileMenu = false }) => (
     <div className={`p-1 ${inMobileMenu ? "w-full" : "w-48"}`}>
@@ -221,14 +221,16 @@ export default function Header() {
             {t("header.signIn")}
           </Link>
 
-          <motion.button
-            onClick={handleFeatureClick}
-            className="h-9 px-4 bg-blue-600 text-white font-semibold text-sm rounded-full shadow-sm hover:bg-blue-700"
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-          >
-            {t("header.startFree")}
-          </motion.button>
+          {/* Botón azul -> Crear cuenta */}
+          <Link to="/crear-cuenta">
+            <motion.button
+              className="h-9 px-4 bg-blue-600 text-white font-semibold text-sm rounded-full shadow-sm hover:bg-blue-700"
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              {t("header.startFree")}
+            </motion.button>
+          </Link>
         </div>
 
         {/* HAMBURGER (mobile) */}
@@ -306,13 +308,20 @@ export default function Header() {
                 >
                   {t("header.signIn")}
                 </Link>
-                <motion.button
-                  onClick={handleFeatureClick}
-                  className="w-full h-11 bg-blue-600 text-white font-bold text-base rounded-full"
-                  whileTap={{ scale: 0.98 }}
+
+                {/* Botón azul móvil -> Crear cuenta */}
+                <Link
+                  to="/crear-cuenta"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full"
                 >
-                  {t("header.startFree")}
-                </motion.button>
+                  <motion.button
+                    className="w-full h-11 bg-blue-600 text-white font-bold text-base rounded-full"
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {t("header.startFree")}
+                  </motion.button>
+                </Link>
               </div>
             </div>
           </motion.div>

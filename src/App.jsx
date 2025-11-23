@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Translator from '@/components/Translator';
 import { Toaster } from '@/components/ui/toaster';
 import AuthPage from '@/pages/AuthPage';
+import RegisterPage from "@/pages/RegisterPage";
 import SupportPage from '@/pages/SupportPage';
 import AssistantPage from "@/pages/AssistantPage";
 import Resumen from "@/components/Resumen";
@@ -36,6 +37,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Translator />} />
                         <Route path="/iniciar-sesion" element={<AuthPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
                         <Route path="/soporte" element={<SupportPage />} />
                         <Route path="/chat-ia" element={<AssistantPage />} />
                         <Route path="/resumen" element={<Resumen />} />
