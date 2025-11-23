@@ -57,7 +57,7 @@ export default function AssistantPage() {
     );
   };
 
-  // Componente reutilizable para el campo de escritura
+  // Campo de escritura (mismo en los dos estados)
   const ChatInput = () => (
     <form
       onSubmit={(e) => {
@@ -74,7 +74,6 @@ export default function AssistantPage() {
           hover:shadow-md transition
         "
       >
-        {/* Botón + (para futuro: archivos, etc.) */}
         <button
           type="button"
           className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600"
@@ -82,7 +81,6 @@ export default function AssistantPage() {
           <Plus className="w-4 h-4" />
         </button>
 
-        {/* Input */}
         <input
           ref={inputRef}
           value={input}
@@ -97,7 +95,6 @@ export default function AssistantPage() {
           className="flex-1 bg-transparent outline-none text-[15px] placeholder:text-slate-400 px-1"
         />
 
-        {/* Botón Enviar */}
         <button
           type="submit"
           disabled={!input.trim()}
@@ -114,8 +111,8 @@ export default function AssistantPage() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-slate-50 flex flex-col overflow-hidden">
-      {/* Botón "Txat berria / Nuevo chat" */}
+    <div className="min-h-screen w-full bg-slate-50 flex flex-col">
+      {/* Botón "Txat berria" */}
       <div className="flex justify-end px-6 pt-6">
         <button
           onClick={handleNewChat}
@@ -128,11 +125,10 @@ export default function AssistantPage() {
         </button>
       </div>
 
-      {/* ===== ESTADO SIN MENSAJES (héroe centrado) ===== */}
+      {/* ========= ESTADO SIN MENSAJES ========= */}
       {isEmpty ? (
-        <div className="flex-1 flex flex-col items-center px-4 pb-16 mt-[-40px]">
+        <div className="flex-1 flex flex-col items-center px-4 pb-10">
           <div className="mt-16 mb-10 flex flex-col items-center text-center">
-            {/* Mascota */}
             <div className="mb-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
@@ -151,10 +147,10 @@ export default function AssistantPage() {
           <ChatInput />
         </div>
       ) : (
-        /* ===== ESTADO CON MENSAJES (como ChatGPT) ===== */
-        <div className="flex-1 flex flex-col items-center px-4 pb-4 mt-[-40px]">
-          {/* Área de mensajes scrollable */}
-          <div className="w-full max-w-3xl mx-auto flex-1 overflow-y-auto mt-10 mb-3 pr-1">
+        /* ========= ESTADO CON MENSAJES ========= */
+        <div className="flex-1 flex flex-col items-center px-4">
+          {/* Área de mensajes con scroll, ocupa casi toda la pantalla */}
+          <div className="w-full max-w-3xl mx-auto flex-1 overflow-y-auto mt-10 mb-4 pr-1">
             {messages.map((m) => (
               <Bubble key={m.id} role={m.role}>
                 {m.content}
@@ -163,8 +159,8 @@ export default function AssistantPage() {
             <div ref={endRef} />
           </div>
 
-          {/* Input pegado abajo */}
-          <div className="w-full flex justify-center pt-2 pb-4 bg-slate-50">
+          {/* Input fijado abajo, pero sin quedar pegado al borde */}
+          <div className="w-full flex justify-center pb-6">
             <ChatInput />
           </div>
         </div>
