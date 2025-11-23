@@ -36,9 +36,10 @@ export default function AssistantPage() {
       const res = await fetch("/api/euskalia-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
-        mode: "assistant",  
-        messages: [...messages, userMessage],
+        body: JSON.stringify({
+          mode: "assistant",      // si el backend usa este modo
+          messages: newMessages,  // historial completo
+        }),
       });
 
       if (!res.ok) {
