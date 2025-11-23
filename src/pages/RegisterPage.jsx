@@ -22,7 +22,7 @@ export default function RegisterPage() {
             Crea tu cuenta
           </h1>
 
-          {/* Botón Google con logo como en iniciar sesión */}
+          {/* Botón Google – icono plano como en iniciar sesión */}
           <button
             type="button"
             className="
@@ -32,7 +32,7 @@ export default function RegisterPage() {
               hover:bg-slate-50 transition-colors
             "
           >
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white">
+            <span className="mr-2 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 48 48"
