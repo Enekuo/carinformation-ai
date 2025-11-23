@@ -48,7 +48,7 @@ export default function AssistantPage() {
               <img
                 src="/olondo.mascota.png"
                 alt="Euskalia IA"
-                className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40"
+                className="w-44 h-44 sm:w-48 sm:h-48 md:w-56 md:h-56"
                 draggable={false}
               />
             </div>
