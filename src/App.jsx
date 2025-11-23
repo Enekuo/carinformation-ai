@@ -19,8 +19,8 @@ import PricingPage from "@/pages/PricingPage";
 
 function App() {
     const location = useLocation();
-    const showHeader = location.pathname !== '/iniciar-sesion';
-
+    const showHeader = location.pathname !== '/iniciar-sesion'; 
+                       location.pathname !== '/crear-cuenta';
     return (
         <>
             <Helmet>
