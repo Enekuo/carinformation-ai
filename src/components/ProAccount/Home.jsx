@@ -75,9 +75,9 @@ export default function Home() {
 
       {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
       <div className="flex-1 flex flex-col">
-        {/* HEADER SUPERIOR PRO */}
-        <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-[#F7F9FC]">
-          {/* LADO IZQUIERDO: ahora vacío (sin título ni subtítulo) */}
+        {/* HEADER SUPERIOR PRO (fondo blanco) */}
+        <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-white">
+          {/* LADO IZQUIERDO vacío */}
           <div />
 
           {/* LADO DERECHO: Plan Pro + idioma + cuenta */}
@@ -161,14 +161,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-              <h2 className="text-sm font-semibold mb-2">Estado actual</h2>
-              <p className="text-sm text-slate-600">
-                Esta área es solo para desarrollo. Puedes usarla para ir probando
-                ideas de diseño y componentes, sin afectar a las páginas públicas
-                de Euskalia.
-              </p>
-            </div>
+            {/* Tarjeta "Estado actual" eliminada */}
           </section>
         </main>
       </div>
