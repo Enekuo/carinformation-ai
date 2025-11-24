@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Home as HomeIcon,
   Wrench,
@@ -14,6 +13,7 @@ import {
   LifeBuoy,
   ChevronsLeft,
   ChevronsRight,
+  ChevronRight,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import {
@@ -27,7 +27,7 @@ import {
 export default function Home() {
   const { language, setLanguage } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
-  const [toolsOpen, setToolsOpen] = useState(false); // submenu Herramientas
+  const [toolsOpen, setToolsOpen] = useState(false); // submenu Herramientas cerrado por defecto
 
   const languages = [
     { code: "ES", name: "Español" },
@@ -38,28 +38,28 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
-      {/* SIDEBAR PRO (sin borde con el header) */}
+      {/* SIDEBAR PRO (con línea igual que el header) */}
       <aside
         className={`
           bg-white flex flex-col pt-6 pb-2
+          border-r border-slate-200
           transition-all duration-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca arriba */}
+        {/* Marca arriba (ya no es enlace, un poco a la derecha) */}
         <div
           className={`mb-6 flex items-center ${
             collapsed ? "justify-center" : ""
           }`}
         >
-          <Link
-            to="/"
+          <div
             className={`font-bold tracking-tight ${
-              collapsed ? "text-base" : "text-lg"
+              collapsed ? "text-base" : "text-lg ml-1.5"
             }`}
           >
             Euskalia
-          </Link>
+          </div>
         </div>
 
         {/* Contenido del sidebar */}
@@ -78,46 +78,47 @@ export default function Home() {
               {showText && <span>Home</span>}
             </button>
 
-            {/* Herramientas (toggle submenu) */}
-            <button
-              onClick={() => setToolsOpen((v) => !v)}
-              className={`
-                w-full flex items-center gap-2 px-3 h-11 rounded-lg
-                hover:bg-slate-100 text-slate-700
-                ${collapsed ? "justify-center" : ""}
-              `}
-            >
-              <Wrench size={18} />
-              {showText && <span>Herramientas</span>}
-            </button>
+            {/* Herramientas (con submenu Traductor/Resumen) */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setToolsOpen((v) => !v)}
+                className={`
+                  w-full flex items-center px-3 h-11 rounded-lg
+                  hover:bg-slate-100 text-slate-700
+                  ${collapsed ? "justify-center" : "gap-2"}
+                `}
+              >
+                {collapsed ? (
+                  <Wrench size={18} />
+                ) : (
+                  <>
+                    <Wrench size={18} />
+                    <span>Herramientas</span>
+                    <ChevronRight
+                      size={14}
+                      className={`ml-auto transition-transform ${
+                        toolsOpen ? "rotate-90" : ""
+                      }`}
+                    />
+                  </>
+                )}
+              </button>
 
-            {/* Submenú Herramientas: Traductor / Resumen */}
-            {!collapsed && toolsOpen && (
-              <div className="mt-1 ml-4 space-y-1 text-sm text-slate-700">
-                <button
-                  className="
-                    w-full flex items-center gap-2 px-3 h-9 rounded-lg
-                    hover:bg-slate-100
-                  "
-                >
-                  <span className="text-slate-300 font-mono text-xs -ml-1">
-                    ├
-                  </span>
-                  <span>Traductor</span>
-                </button>
-                <button
-                  className="
-                    w-full flex items-center gap-2 px-3 h-9 rounded-lg
-                    hover:bg-slate-100
-                  "
-                >
-                  <span className="text-slate-300 font-mono text-xs -ml-1">
-                    └
-                  </span>
-                  <span>Resumen</span>
-                </button>
-              </div>
-            )}
+              {/* Submenú solo visible si no está colapsado y está abierto */}
+              {toolsOpen && !collapsed && (
+                <div className="mt-1 ml-6 space-y-1 text-xs text-slate-700">
+                  <button className="w-full flex items-center text-left hover:text-slate-900">
+                    <span className="text-slate-300 mr-1">├</span>
+                    <span>Traductor</span>
+                  </button>
+                  <button className="w-full flex items-center text-left hover:text-slate-900">
+                    <span className="text-slate-300 mr-1">└</span>
+                    <span>Resumen</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Biblioteca */}
             <button
