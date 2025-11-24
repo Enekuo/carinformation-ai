@@ -1,5 +1,5 @@
+// src/components/ProAccount/LayoutPro.jsx
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
 import {
   Home as HomeIcon,
   Wrench,
@@ -24,7 +24,7 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 
-export default function ProLayout() {
+export default function LayoutPro({ children }) {
   const { language, setLanguage } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function ProLayout() {
   const showText = !collapsed;
 
   return (
-    <div className="min-h-screen bg-[#F4F8FF] text-slate-900 flex">
+    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
       {/* SIDEBAR PRO */}
       <aside
         className={`
@@ -65,10 +65,8 @@ export default function ProLayout() {
         <div className="flex-1 flex flex-col">
           {/* NAV LATERAL PRINCIPAL */}
           <nav className="space-y-1 text-sm">
-
             {/* Home */}
-            <Link
-              to="/pro"
+            <button
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
                 bg-slate-900 text-white font-medium
@@ -77,9 +75,9 @@ export default function ProLayout() {
             >
               <HomeIcon size={18} />
               {showText && <span>Home</span>}
-            </Link>
+            </button>
 
-            {/* Herramientas */}
+            {/* Herramientas (grupo desplegable) */}
             <div className="space-y-1">
               <button
                 onClick={() => setToolsOpen((v) => !v)}
@@ -94,6 +92,7 @@ export default function ProLayout() {
                   {showText && <span>Herramientas</span>}
                 </div>
 
+                {/* Flecha solo cuando no está colapsado */}
                 {showText && (
                   <ChevronDown
                     size={14}
@@ -104,10 +103,10 @@ export default function ProLayout() {
                 )}
               </button>
 
+              {/* Submenú: Traductor / Resumen */}
               {toolsOpen && !collapsed && (
                 <div className="ml-3 mt-1 space-y-1">
-                  <Link
-                    to="/pro/traductor"
+                  <button
                     className="
                       w-full flex items-center
                       pl-6 pr-3 h-9
@@ -117,10 +116,9 @@ export default function ProLayout() {
                   >
                     <span className="mr-2 text-slate-200">│</span>
                     <span>Traductor</span>
-                  </Link>
+                  </button>
 
-                  <Link
-                    to="/pro/resumen"
+                  <button
                     className="
                       w-full flex items-center
                       pl-6 pr-3 h-9
@@ -130,14 +128,13 @@ export default function ProLayout() {
                   >
                     <span className="mr-2 text-slate-200">└</span>
                     <span>Resumen</span>
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
 
             {/* Biblioteca */}
-            <Link
-              to="/pro/biblioteca"
+            <button
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
                 hover:bg-slate-100 text-slate-700
@@ -146,11 +143,10 @@ export default function ProLayout() {
             >
               <Folder size={18} />
               {showText && <span>Biblioteca</span>}
-            </Link>
+            </button>
 
             {/* Chat con IA */}
-            <Link
-              to="/pro/chat-ia"
+            <button
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
                 hover:bg-slate-100 text-slate-700
@@ -159,16 +155,16 @@ export default function ProLayout() {
             >
               <MessageSquare size={18} />
               {showText && <span>Chat con IA</span>}
-            </Link>
+            </button>
           </nav>
 
-          {/* SEPARADOR */}
+          {/* SEPARADOR FLEX PARA EMPUJAR EL BLOQUE INFERIOR HACIA ABAJO */}
           <div className="flex-1" />
 
-          {/* BLOQUE INFERIOR */}
+          {/* BLOQUE INFERIOR: Sugerencias / Ayuda / Ajustes */}
           <div className="space-y-1 text-sm mb-2">
-            <Link
-              to="/pro/sugerencias"
+            {/* Sugerencias */}
+            <button
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 hover:bg-slate-100 text-slate-700 text-sm
@@ -177,10 +173,10 @@ export default function ProLayout() {
             >
               <Lightbulb size={18} />
               {showText && <span>Sugerencias</span>}
-            </Link>
+            </button>
 
-            <Link
-              to="/pro/ayuda"
+            {/* Ayuda */}
+            <button
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 hover:bg-slate-100 text-slate-700 text-sm
@@ -189,10 +185,10 @@ export default function ProLayout() {
             >
               <LifeBuoy size={18} />
               {showText && <span>Ayuda</span>}
-            </Link>
+            </button>
 
-            <Link
-              to="/pro/ajustes"
+            {/* Ajustes */}
+            <button
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 hover:bg-slate-100 text-slate-700 text-sm
@@ -201,10 +197,10 @@ export default function ProLayout() {
             >
               <Settings size={18} />
               {showText && <span>Ajustes</span>}
-            </Link>
+            </button>
           </div>
 
-          {/* BOTÓN CONTRAER */}
+          {/* BOTÓN CONTRAER / EXPANDIR PEGADO AL FONDO */}
           <button
             onClick={() => setCollapsed((v) => !v)}
             className={`
@@ -225,14 +221,16 @@ export default function ProLayout() {
         </div>
       </aside>
 
-      {/* HEADER + CONTENIDO */}
+      {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
       <div className="flex-1 flex flex-col">
-        {/* HEADER */}
+        {/* HEADER SUPERIOR (más bajo, sin línea inferior) */}
         <header className="h-16 px-8 flex items-center justify-between bg-white">
+          {/* LADO IZQUIERDO vacío por ahora */}
           <div />
 
+          {/* LADO DERECHO: Plan Pro + idioma + cuenta */}
           <div className="flex items-center gap-3">
-            {/* Icono gema */}
+            {/* Icono gema en círculo */}
             <div className="h-9 w-9 rounded-full border border-slate-200 bg-white flex items-center justify-center">
               <Gem size={18} className="text-slate-700" />
             </div>
@@ -248,7 +246,7 @@ export default function ProLayout() {
               Plan Pro
             </button>
 
-            {/* Idioma */}
+            {/* Selector de idioma */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -284,17 +282,15 @@ export default function ProLayout() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Cuenta */}
+            {/* Círculo de cuenta */}
             <div className="h-9 w-9 rounded-full border border-slate-200 bg-white flex items-center justify-center">
               <User size={18} className="text-slate-700" />
             </div>
           </div>
         </header>
 
-        {/* AQUÍ CAMBIA EL CONTENIDO */}
-        <main className="flex-1 px-8 py-8">
-          <Outlet />
-        </main>
+        {/* CONTENIDO PRINCIPAL (aquí metemos cada página Pro) */}
+        <main className="flex-1 px-8 py-8">{children}</main>
       </div>
     </div>
   );
