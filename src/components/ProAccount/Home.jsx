@@ -40,9 +40,7 @@ export default function Home() {
           <Link to="/" className="text-lg font-bold tracking-tight">
             Euskalia Pro
           </Link>
-          <p className="text-xs text-slate-500 mt-1">
-            Panel en desarrollo
-          </p>
+          <p className="text-xs text-slate-500 mt-1">Panel en desarrollo</p>
         </div>
 
         {/* NAV LATERAL */}
@@ -75,10 +73,11 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* CONTENIDO PRINCIPAL */}
-      <main className="flex-1 px-8 py-8">
-        <header className="mb-6 flex items-center justify-between">
-          {/* LADO IZQUIERDO */}
+      {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
+      <div className="flex-1 flex flex-col">
+        {/* HEADER SUPERIOR PRO */}
+        <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-[#F7F9FC]">
+          {/* LADO IZQUIERDO: título y subtítulo */}
           <div>
             <h1 className="text-2xl font-semibold">Bienvenido a Euskalia Pro</h1>
             <p className="text-sm text-slate-500 mt-1">
@@ -86,7 +85,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/* LADO DERECHO: PLAN PRO + IDIOMA + CUENTA */}
+          {/* LADO DERECHO: Plan Pro + idioma + cuenta */}
           <div className="flex items-center gap-3">
             {/* Icono gema en círculo */}
             <div className="h-9 w-9 rounded-full border border-slate-200 bg-white flex items-center justify-center">
@@ -147,29 +146,32 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="grid gap-6 md:grid-cols-2">
-          <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-            <h2 className="text-sm font-semibold mb-2">
-              Próximamente en tu cuenta Pro
-            </h2>
-            <ul className="text-sm text-slate-600 space-y-1">
-              <li>• Historial de traducciones y resúmenes.</li>
-              <li>• Límites ampliados y prioridad en la cola.</li>
-              <li>• Panel con estadísticas de uso.</li>
-              <li>• Opciones avanzadas para audio y documentos.</li>
-            </ul>
-          </div>
+        {/* CONTENIDO PRINCIPAL */}
+        <main className="flex-1 px-8 py-8">
+          <section className="grid gap-6 md:grid-cols-2">
+            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+              <h2 className="text-sm font-semibold mb-2">
+                Próximamente en tu cuenta Pro
+              </h2>
+              <ul className="text-sm text-slate-600 space-y-1">
+                <li>• Historial de traducciones y resúmenes.</li>
+                <li>• Límites ampliados y prioridad en la cola.</li>
+                <li>• Panel con estadísticas de uso.</li>
+                <li>• Opciones avanzadas para audio y documentos.</li>
+              </ul>
+            </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-            <h2 className="text-sm font-semibold mb-2">Estado actual</h2>
-            <p className="text-sm text-slate-600">
-              Esta área es solo para desarrollo. Puedes usarla para ir probando
-              ideas de diseño y componentes, sin afectar a las páginas públicas
-              de Euskalia.
-            </p>
-          </div>
-        </section>
-      </main>
+            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+              <h2 className="text-sm font-semibold mb-2">Estado actual</h2>
+              <p className="text-sm text-slate-600">
+                Esta área es solo para desarrollo. Puedes usarla para ir probando
+                ideas de diseño y componentes, sin afectar a las páginas públicas
+                de Euskalia.
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   );
 }
