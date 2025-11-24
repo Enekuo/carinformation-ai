@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 function SidebarToggleIcon(props) {
-  // Icono parecido al que has marcado: rectángulo redondeado con barra vertical
+  // Icono parecido al que marcaste: rectángulo redondeado con barra vertical
   return (
     <svg
       viewBox="0 0 24 24"
@@ -71,13 +71,17 @@ export default function Home() {
       {/* SIDEBAR PRO */}
       <aside
         className={`
-          bg-white border-r border-slate-200 flex flex-col py-6
+          bg-white flex flex-col py-6
           transition-all duration-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca */}
-        <div className={`mb-8 ${collapsed ? "text-center" : ""}`}>
+        {/* Marca + botón contraer arriba */}
+        <div
+          className={`mb-6 flex items-center ${
+            collapsed ? "justify-center" : "justify-between"
+          }`}
+        >
           <Link
             to="/"
             className={`font-bold tracking-tight ${
@@ -86,9 +90,35 @@ export default function Home() {
           >
             Euskalia
           </Link>
+
+          {!collapsed && (
+            <button
+              onClick={() => setCollapsed((v) => !v)}
+              className="
+                h-8 w-8 rounded-lg border border-slate-200
+                flex items-center justify-center
+                hover:bg-slate-50 text-slate-700
+              "
+            >
+              <SidebarToggleIcon />
+            </button>
+          )}
+
+          {collapsed && (
+            <button
+              onClick={() => setCollapsed((v) => !v)}
+              className="
+                h-8 w-8 rounded-lg border border-slate-200
+                flex items-center justify-center
+                hover:bg-slate-50 text-slate-700
+              "
+            >
+              <SidebarToggleIcon />
+            </button>
+          )}
         </div>
 
-        {/* NAV LATERAL PRINCIPAL */}
+        {/* NAV LATERAL PRINCIPAL (ocupa el alto para empujar lo de abajo) */}
         <nav className="space-y-1 text-sm flex-1">
           {/* Home */}
           <button
@@ -137,10 +167,10 @@ export default function Home() {
             <MessageSquare size={18} />
             {showText && <span>Chat con IA</span>}
           </button>
+        </nav>
 
-          {/* Separador visual entre parte principal y utilidades */}
-          <div className="h-px bg-slate-200 my-3" />
-
+        {/* ZONA INFERIOR: Sugerencias / Ayuda / Ajustes pegados abajo */}
+        <div className="mt-6 space-y-1 text-sm">
           {/* Sugerencias */}
           <button
             className={`
@@ -175,22 +205,6 @@ export default function Home() {
           >
             <Settings size={18} />
             {showText && <span>Ajustes</span>}
-          </button>
-        </nav>
-
-        {/* BOTÓN DE CONTRAER / EXPANDIR */}
-        <div className="mt-4">
-          <button
-            onClick={() => setCollapsed((v) => !v)}
-            className="
-              w-full flex items-center justify-center
-              h-9 rounded-lg border border-slate-200
-              hover:bg-slate-50 text-slate-700 text-xs font-medium
-              transition-colors
-            "
-          >
-            <SidebarToggleIcon className="mr-1" />
-            {showText && <span>{collapsed ? "Expandir" : "Contraer"}</span>}
           </button>
         </div>
       </aside>
@@ -281,7 +295,6 @@ export default function Home() {
                 <li>• Opciones avanzadas para audio y documentos.</li>
               </ul>
             </div>
-            {/* De momento sólo dejamos esta tarjeta, como ya pediste */}
           </section>
         </main>
       </div>
