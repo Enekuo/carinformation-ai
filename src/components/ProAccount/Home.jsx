@@ -40,7 +40,7 @@ export default function Home() {
       {/* SIDEBAR PRO (sin borde con el header) */}
       <aside
         className={`
-          bg-white flex flex-col py-6
+          bg-white flex flex-col pt-6 pb-2
           transition-all duration-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
@@ -163,7 +163,6 @@ export default function Home() {
               w-full flex items-center
               ${collapsed ? "justify-center" : "justify-start"}
               gap-2 h-9 text-sm text-slate-500 hover:text-slate-700
-              mb-1
             `}
           >
             {collapsed ? (
