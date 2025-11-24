@@ -38,9 +38,9 @@ export default function Home() {
       >
         <div className="mb-8">
           <Link to="/" className="text-lg font-bold tracking-tight">
-            Euskalia Pro
+            Euskalia
           </Link>
-          <p className="text-xs text-slate-500 mt-1">Panel en desarrollo</p>
+          {/* Frase "Panel en desarrollo" eliminada */}
         </div>
 
         {/* NAV LATERAL */}
@@ -77,13 +77,8 @@ export default function Home() {
       <div className="flex-1 flex flex-col">
         {/* HEADER SUPERIOR PRO */}
         <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-[#F7F9FC]">
-          {/* LADO IZQUIERDO: título y subtítulo */}
-          <div>
-            <h1 className="text-2xl font-semibold">Bienvenido a Euskalia Pro</h1>
-            <p className="text-sm text-slate-500 mt-1">
-              Aquí iremos activando las funciones avanzadas de tu cuenta.
-            </p>
-          </div>
+          {/* LADO IZQUIERDO: ahora vacío (sin título ni subtítulo) */}
+          <div />
 
           {/* LADO DERECHO: Plan Pro + idioma + cuenta */}
           <div className="flex items-center gap-3">
@@ -103,7 +98,7 @@ export default function Home() {
               Plan Pro
             </button>
 
-            {/* Selector de idioma (mismo sistema que Euskalia) */}
+            {/* Selector de idioma */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -148,6 +143,11 @@ export default function Home() {
 
         {/* CONTENIDO PRINCIPAL */}
         <main className="flex-1 px-8 py-8">
+          {/* Título principal debajo del header */}
+          <h1 className="text-2xl font-semibold mb-6">
+            Bienvenido a Euskalia Pro
+          </h1>
+
           <section className="grid gap-6 md:grid-cols-2">
             <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
               <h2 className="text-sm font-semibold mb-2">
