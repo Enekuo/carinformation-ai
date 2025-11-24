@@ -16,6 +16,7 @@ import CookiesPolicyPage from "@/components/Legal/CookiesPolicyPage";
 import UseAIPage from "@/components/Legal/UseAIPage";
 import PricingPage from "@/pages/PricingPage";
 // Pro-Account //
+import LayoutPro from "@/components/ProAccount/LayoutPro";
 import ProAccountHome from "@/components/ProAccount/Home";
 
 function App() {
@@ -28,12 +29,18 @@ function App() {
         <>
             <Helmet>
                 <title>Meditation.AI - Tu Compañero de Meditación con IA</title>
-                <meta name="description" content="Descubre la meditación personalizada con inteligencia artificial. Meditation.AI te ayuda a encontrar la paz interior con sesiones adaptadas a tus necesidades." />
+                <meta
+                    name="description"
+                    content="Descubre la meditación personalizada con inteligencia artificial. Meditation.AI te ayuda a encontrar la paz interior con sesiones adaptadas a tus necesidades."
+                />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap" rel="stylesheet" />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
+                    rel="stylesheet"
+                />
             </Helmet>
-            
+
             <div className="bg-white text-slate-900">
                 {showHeader && <Header />}
                 <main>
@@ -51,7 +58,14 @@ function App() {
                         <Route path="/uso-de-ia" element={<UseAIPage />} />
                         <Route path="/pricing" element={<PricingPage />} />
                         // Pro-Account //
-                        <Route path="/cuenta-pro" element={<ProAccountHome />} />
+                        <Route
+                            path="/cuenta-pro"
+                            element={
+                                <LayoutPro>
+                                    <ProAccountHome />
+                                </LayoutPro>
+                            }
+                        />
                     </Routes>
                 </main>
                 <Toaster />
