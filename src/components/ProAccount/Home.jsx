@@ -12,6 +12,8 @@ import {
   MessageSquare,
   Lightbulb,
   LifeBuoy,
+  ChevronsLeft,
+  ChevronsRight,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import {
@@ -21,39 +23,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-
-function SidebarToggleIcon(props) {
-  // Icono parecido al que marcaste: rectángulo redondeado con barra vertical
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-4 w-4"
-      aria-hidden="true"
-      {...props}
-    >
-      <rect
-        x="3.5"
-        y="4"
-        width="17"
-        height="16"
-        rx="4"
-        ry="4"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <line
-        x1="11.5"
-        y1="5"
-        x2="11.5"
-        y2="19"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 export default function Home() {
   const { language, setLanguage } = useTranslation();
@@ -68,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
-      {/* SIDEBAR PRO */}
+      {/* SIDEBAR PRO (sin borde con el header) */}
       <aside
         className={`
           bg-white flex flex-col py-6
@@ -76,10 +45,10 @@ export default function Home() {
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca + botón contraer arriba */}
+        {/* Marca arriba */}
         <div
           className={`mb-6 flex items-center ${
-            collapsed ? "justify-center" : "justify-between"
+            collapsed ? "justify-center" : ""
           }`}
         >
           <Link
@@ -90,128 +59,126 @@ export default function Home() {
           >
             Euskalia
           </Link>
-
-          {!collapsed && (
-            <button
-              onClick={() => setCollapsed((v) => !v)}
-              className="
-                h-8 w-8 rounded-lg border border-slate-200
-                flex items-center justify-center
-                hover:bg-slate-50 text-slate-700
-              "
-            >
-              <SidebarToggleIcon />
-            </button>
-          )}
-
-          {collapsed && (
-            <button
-              onClick={() => setCollapsed((v) => !v)}
-              className="
-                h-8 w-8 rounded-lg border border-slate-200
-                flex items-center justify-center
-                hover:bg-slate-50 text-slate-700
-              "
-            >
-              <SidebarToggleIcon />
-            </button>
-          )}
         </div>
 
-        {/* NAV LATERAL PRINCIPAL (ocupa el alto para empujar lo de abajo) */}
-        <nav className="space-y-1 text-sm flex-1">
-          {/* Home */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-11 rounded-lg
-              bg-slate-900 text-white font-medium
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <LayoutDashboard size={18} />
-            {showText && <span>Home</span>}
-          </button>
+        {/* Contenido del sidebar */}
+        <div className="flex-1 flex flex-col">
+          {/* NAV LATERAL PRINCIPAL */}
+          <nav className="space-y-1 text-sm">
+            {/* Home */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-11 rounded-lg
+                bg-slate-900 text-white font-medium
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <LayoutDashboard size={18} />
+              {showText && <span>Home</span>}
+            </button>
 
-          {/* Herramientas */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-11 rounded-lg
-              hover:bg-slate-100 text-slate-700
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <Sparkles size={18} />
-            {showText && <span>Herramientas</span>}
-          </button>
+            {/* Herramientas */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-11 rounded-lg
+                hover:bg-slate-100 text-slate-700
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <Sparkles size={18} />
+              {showText && <span>Herramientas</span>}
+            </button>
 
-          {/* Biblioteca */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-11 rounded-lg
-              hover:bg-slate-100 text-slate-700
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <Folder size={18} />
-            {showText && <span>Biblioteca</span>}
-          </button>
+            {/* Biblioteca */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-11 rounded-lg
+                hover:bg-slate-100 text-slate-700
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <Folder size={18} />
+              {showText && <span>Biblioteca</span>}
+            </button>
 
-          {/* Chat con IA */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-11 rounded-lg
-              hover:bg-slate-100 text-slate-700
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <MessageSquare size={18} />
-            {showText && <span>Chat con IA</span>}
-          </button>
-        </nav>
+            {/* Chat con IA */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-11 rounded-lg
+                hover:bg-slate-100 text-slate-700
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <MessageSquare size={18} />
+              {showText && <span>Chat con IA</span>}
+            </button>
+          </nav>
 
-        {/* ZONA INFERIOR: Sugerencias / Ayuda / Ajustes pegados abajo */}
-        <div className="mt-6 space-y-1 text-sm">
-          {/* Sugerencias */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-10 rounded-lg
-              hover:bg-slate-100 text-slate-700 text-sm
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <Lightbulb size={18} />
-            {showText && <span>Sugerencias</span>}
-          </button>
+          {/* BLOQUE INFERIOR: Sugerencias / Ayuda / Ajustes */}
+          <div className="mt-6 space-y-1 text-sm">
+            {/* Sugerencias */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-10 rounded-lg
+                hover:bg-slate-100 text-slate-700 text-sm
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <Lightbulb size={18} />
+              {showText && <span>Sugerencias</span>}
+            </button>
 
-          {/* Ayuda */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-10 rounded-lg
-              hover:bg-slate-100 text-slate-700 text-sm
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <LifeBuoy size={18} />
-            {showText && <span>Ayuda</span>}
-          </button>
+            {/* Ayuda */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-10 rounded-lg
+                hover:bg-slate-100 text-slate-700 text-sm
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <LifeBuoy size={18} />
+              {showText && <span>Ayuda</span>}
+            </button>
 
-          {/* Ajustes */}
-          <button
-            className={`
-              w-full flex items-center gap-2 px-3 h-10 rounded-lg
-              hover:bg-slate-100 text-slate-700 text-sm
-              ${collapsed ? "justify-center" : ""}
-            `}
-          >
-            <Settings size={18} />
-            {showText && <span>Ajustes</span>}
-          </button>
+            {/* Ajustes */}
+            <button
+              className={`
+                w-full flex items-center gap-2 px-3 h-10 rounded-lg
+                hover:bg-slate-100 text-slate-700 text-sm
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <Settings size={18} />
+              {showText && <span>Ajustes</span>}
+            </button>
+          </div>
+
+          {/* BOTÓN CONTRAER / EXPANDIR DEBAJO DEL TODO */}
+          <div className="mt-auto pt-4">
+            <button
+              onClick={() => setCollapsed((v) => !v)}
+              className={`
+                w-full flex items-center
+                ${collapsed ? "justify-center" : "justify-start"}
+                gap-2 h-9 text-sm text-slate-500 hover:text-slate-700
+              `}
+            >
+              {collapsed ? (
+                <ChevronsRight size={18} />
+              ) : (
+                <>
+                  <ChevronsLeft size={18} />
+                  <span>Contraer</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </aside>
 
       {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
       <div className="flex-1 flex flex-col">
-        {/* HEADER SUPERIOR (blanco, junto al sidebar) */}
+        {/* HEADER SUPERIOR (blanco, unido al sidebar) */}
         <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-white">
           {/* LADO IZQUIERDO vacío por ahora */}
           <div />
@@ -234,7 +201,7 @@ export default function Home() {
               Plan Pro
             </button>
 
-            {/* Selector de idioma */}
+            {/* Selector de idioma (mismo estilo que Euskalia) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
