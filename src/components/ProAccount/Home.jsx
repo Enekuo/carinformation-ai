@@ -37,7 +37,7 @@ export default function Home() {
   const showText = !collapsed;
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
+    <div className="min-h-screen bg-[#F4F8FF] text-slate-900 flex">
       {/* SIDEBAR PRO */}
       <aside
         className={`
