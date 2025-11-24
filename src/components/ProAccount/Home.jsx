@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -9,6 +9,9 @@ import {
   User,
   Globe,
   ChevronDown,
+  MessageSquare,
+  Lightbulb,
+  LifeBuoy,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import {
@@ -19,65 +22,184 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 
+function SidebarToggleIcon(props) {
+  // Icono parecido al que has marcado: rectángulo redondeado con barra vertical
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect
+        x="3.5"
+        y="4"
+        width="17"
+        height="16"
+        rx="4"
+        ry="4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <line
+        x1="11.5"
+        y1="5"
+        x2="11.5"
+        y2="19"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function Home() {
   const { language, setLanguage } = useTranslation();
+  const [collapsed, setCollapsed] = useState(false);
 
   const languages = [
     { code: "ES", name: "Español" },
     { code: "EUS", name: "Euskara" },
   ];
 
+  const showText = !collapsed;
+
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
       {/* SIDEBAR PRO */}
       <aside
-        className="
-          w-48 bg-white border-r border-slate-200
-          flex flex-col px-4 py-6
-        "
+        className={`
+          bg-white border-r border-slate-200 flex flex-col py-6
+          transition-all duration-200
+          ${collapsed ? "w-16 px-2" : "w-48 px-4"}
+        `}
       >
-        <div className="mb-8">
-          <Link to="/" className="text-lg font-bold tracking-tight">
+        {/* Marca */}
+        <div className={`mb-8 ${collapsed ? "text-center" : ""}`}>
+          <Link
+            to="/"
+            className={`font-bold tracking-tight ${
+              collapsed ? "text-base" : "text-lg"
+            }`}
+          >
             Euskalia
           </Link>
-          {/* Frase "Panel en desarrollo" eliminada */}
         </div>
 
-        {/* NAV LATERAL */}
-        <nav className="space-y-1 text-sm">
+        {/* NAV LATERAL PRINCIPAL */}
+        <nav className="space-y-1 text-sm flex-1">
           {/* Home */}
-          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg bg-slate-900 text-white font-medium">
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-11 rounded-lg
+              bg-slate-900 text-white font-medium
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
             <LayoutDashboard size={18} />
-            <span>Home</span>
+            {showText && <span>Home</span>}
           </button>
 
           {/* Herramientas */}
-          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg hover:bg-slate-100 text-slate-700">
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-11 rounded-lg
+              hover:bg-slate-100 text-slate-700
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
             <Sparkles size={18} />
-            <span>Herramientas</span>
+            {showText && <span>Herramientas</span>}
           </button>
 
           {/* Biblioteca */}
-          <button className="w-full flex items-center gap-2 px-3 h-11 rounded-lg hover:bg-slate-100 text-slate-700">
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-11 rounded-lg
+              hover:bg-slate-100 text-slate-700
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
             <Folder size={18} />
-            <span>Biblioteca</span>
+            {showText && <span>Biblioteca</span>}
+          </button>
+
+          {/* Chat con IA */}
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-11 rounded-lg
+              hover:bg-slate-100 text-slate-700
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <MessageSquare size={18} />
+            {showText && <span>Chat con IA</span>}
+          </button>
+
+          {/* Separador visual entre parte principal y utilidades */}
+          <div className="h-px bg-slate-200 my-3" />
+
+          {/* Sugerencias */}
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-10 rounded-lg
+              hover:bg-slate-100 text-slate-700 text-sm
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <Lightbulb size={18} />
+            {showText && <span>Sugerencias</span>}
+          </button>
+
+          {/* Ayuda */}
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-10 rounded-lg
+              hover:bg-slate-100 text-slate-700 text-sm
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <LifeBuoy size={18} />
+            {showText && <span>Ayuda</span>}
+          </button>
+
+          {/* Ajustes */}
+          <button
+            className={`
+              w-full flex items-center gap-2 px-3 h-10 rounded-lg
+              hover:bg-slate-100 text-slate-700 text-sm
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <Settings size={18} />
+            {showText && <span>Ajustes</span>}
           </button>
         </nav>
 
-        {/* BOTÓN AJUSTES ABAJO */}
-        <div className="mt-auto pt-3 border-t border-slate-200">
-          <button className="w-full flex items-center gap-2 px-3 h-10 rounded-lg hover:bg-slate-100 text-slate-700 text-sm">
-            <Settings size={18} />
-            <span>Ajustes</span>
+        {/* BOTÓN DE CONTRAER / EXPANDIR */}
+        <div className="mt-4">
+          <button
+            onClick={() => setCollapsed((v) => !v)}
+            className="
+              w-full flex items-center justify-center
+              h-9 rounded-lg border border-slate-200
+              hover:bg-slate-50 text-slate-700 text-xs font-medium
+              transition-colors
+            "
+          >
+            <SidebarToggleIcon className="mr-1" />
+            {showText && <span>{collapsed ? "Expandir" : "Contraer"}</span>}
           </button>
         </div>
       </aside>
 
       {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
       <div className="flex-1 flex flex-col">
-        {/* HEADER SUPERIOR PRO (fondo blanco) */}
+        {/* HEADER SUPERIOR (blanco, junto al sidebar) */}
         <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-white">
-          {/* LADO IZQUIERDO vacío */}
+          {/* LADO IZQUIERDO vacío por ahora */}
           <div />
 
           {/* LADO DERECHO: Plan Pro + idioma + cuenta */}
@@ -143,7 +265,6 @@ export default function Home() {
 
         {/* CONTENIDO PRINCIPAL */}
         <main className="flex-1 px-8 py-8">
-          {/* Título principal debajo del header */}
           <h1 className="text-2xl font-semibold mb-6">
             Bienvenido a Euskalia Pro
           </h1>
@@ -160,8 +281,7 @@ export default function Home() {
                 <li>• Opciones avanzadas para audio y documentos.</li>
               </ul>
             </div>
-
-            {/* Tarjeta "Estado actual" eliminada */}
+            {/* De momento sólo dejamos esta tarjeta, como ya pediste */}
           </section>
         </main>
       </div>
