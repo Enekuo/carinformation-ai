@@ -15,63 +15,68 @@ import TermsConditionsPage from "@/components/Legal/TermsConditionsPage";
 import CookiesPolicyPage from "@/components/Legal/CookiesPolicyPage";
 import UseAIPage from "@/components/Legal/UseAIPage";
 import PricingPage from "@/pages/PricingPage";
+
 // Pro-Account //
-import LayoutPro from "@/components/ProAccount/LayoutPro";
-import ProAccountHome from "@/components/ProAccount/Home";
+import ProLayout from "@/components/ProAccount/ProLayout";
+import Home from "@/components/ProAccount/Home";
 
 function App() {
-    const location = useLocation();
-    const showHeader =
-        location.pathname !== '/iniciar-sesion' &&
-        location.pathname !== '/crear-cuenta' &&
-        location.pathname !== '/cuenta-pro';
-    return (
-        <>
-            <Helmet>
-                <title>Meditation.AI - Tu Compañero de Meditación con IA</title>
-                <meta
-                    name="description"
-                    content="Descubre la meditación personalizada con inteligencia artificial. Meditation.AI te ayuda a encontrar la paz interior con sesiones adaptadas a tus necesidades."
-                />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
-                    rel="stylesheet"
-                />
-            </Helmet>
+  const location = useLocation();
+  const showHeader =
+    location.pathname !== '/iniciar-sesion' &&
+    location.pathname !== '/crear-cuenta' &&
+    location.pathname !== '/cuenta-pro';
 
-            <div className="bg-white text-slate-900">
-                {showHeader && <Header />}
-                <main>
-                    <Routes>
-                        <Route path="/" element={<Translator />} />
-                        <Route path="/iniciar-sesion" element={<AuthPage />} />
-                        <Route path="/crear-cuenta" element={<RegisterPage />} />
-                        <Route path="/soporte" element={<SupportPage />} />
-                        <Route path="/chat-ia" element={<AssistantPage />} />
-                        <Route path="/resumen" element={<Resumen />} />
-                        <Route path="/aviso-legal" element={<LegalNoticePage />} />
-                        <Route path="/politica-de-privacidad" element={<PrivacyPolicyPage />} />
-                        <Route path="/terminos-condiciones" element={<TermsConditionsPage />} />
-                        <Route path="/cookies" element={<CookiesPolicyPage />} />
-                        <Route path="/uso-de-ia" element={<UseAIPage />} />
-                        <Route path="/pricing" element={<PricingPage />} />
-                        // Pro-Account //
-                        <Route
-                            path="/cuenta-pro"
-                            element={
-                                <LayoutPro>
-                                    <Home />
-                                </LayoutPro>
-                            }
-                        />
-                    </Routes>
-                </main>
-                <Toaster />
-            </div>
-        </>
-    );
+  return (
+    <>
+      <Helmet>
+        <title>Meditation.AI - Tu Compañero de Meditación con IA</title>
+        <meta
+          name="description"
+          content="Descubre la meditación personalizada con inteligencia artificial. Meditation.AI te ayuda a encontrar la paz interior con sesiones adaptadas a tus necesidades."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
+          rel="stylesheet"
+        />
+      </Helmet>
+
+      <div className="bg-white text-slate-900">
+        {showHeader && <Header />}
+
+        <main>
+          <Routes>
+            <Route path="/" element={<Translator />} />
+            <Route path="/iniciar-sesion" element={<AuthPage />} />
+            <Route path="/crear-cuenta" element={<RegisterPage />} />
+            <Route path="/soporte" element={<SupportPage />} />
+            <Route path="/chat-ia" element={<AssistantPage />} />
+            <Route path="/resumen" element={<Resumen />} />
+            <Route path="/aviso-legal" element={<LegalNoticePage />} />
+            <Route path="/politica-de-privacidad" element={<PrivacyPolicyPage />} />
+            <Route path="/terminos-condiciones" element={<TermsConditionsPage />} />
+            <Route path="/cookies" element={<CookiesPolicyPage />} />
+            <Route path="/uso-de-ia" element={<UseAIPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+
+            {/* Pro-Account */}
+            <Route
+              path="/cuenta-pro"
+              element={
+                <ProLayout>
+                  <Home />
+                </ProLayout>
+              }
+            />
+          </Routes>
+        </main>
+
+        <Toaster />
+      </div>
+    </>
+  );
 }
 
 export default App;
