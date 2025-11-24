@@ -62,7 +62,7 @@ function App() {
                             path="/cuenta-pro"
                             element={
                                 <LayoutPro>
-                                    <ProAccountHome />
+                                    <Home />
                                 </LayoutPro>
                             }
                         />
