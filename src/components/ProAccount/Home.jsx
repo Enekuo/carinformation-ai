@@ -114,8 +114,11 @@ export default function Home() {
             </button>
           </nav>
 
+          {/* SEPARADOR FLEX PARA EMPUJAR EL BLOQUE INFERIOR HACIA ABAJO */}
+          <div className="flex-1" />
+
           {/* BLOQUE INFERIOR: Sugerencias / Ayuda / Ajustes */}
-          <div className="mt-6 space-y-1 text-sm">
+          <div className="space-y-1 text-sm mb-2">
             {/* Sugerencias */}
             <button
               className={`
@@ -153,32 +156,31 @@ export default function Home() {
             </button>
           </div>
 
-          {/* BOTÓN CONTRAER / EXPANDIR DEBAJO DEL TODO */}
-          <div className="mt-auto pt-4">
-            <button
-              onClick={() => setCollapsed((v) => !v)}
-              className={`
-                w-full flex items-center
-                ${collapsed ? "justify-center" : "justify-start"}
-                gap-2 h-9 text-sm text-slate-500 hover:text-slate-700
-              `}
-            >
-              {collapsed ? (
-                <ChevronsRight size={18} />
-              ) : (
-                <>
-                  <ChevronsLeft size={18} />
-                  <span>Contraer</span>
-                </>
-              )}
-            </button>
-          </div>
+          {/* BOTÓN CONTRAER / EXPANDIR PEGADO AL FONDO */}
+          <button
+            onClick={() => setCollapsed((v) => !v)}
+            className={`
+              w-full flex items-center
+              ${collapsed ? "justify-center" : "justify-start"}
+              gap-2 h-9 text-sm text-slate-500 hover:text-slate-700
+              mb-1
+            `}
+          >
+            {collapsed ? (
+              <ChevronsRight size={18} />
+            ) : (
+              <>
+                <ChevronsLeft size={18} />
+                <span>Contraer</span>
+              </>
+            )}
+          </button>
         </div>
       </aside>
 
       {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
       <div className="flex-1 flex flex-col">
-        {/* HEADER SUPERIOR (blanco, unido al sidebar) */}
+        {/* HEADER SUPERIOR */}
         <header className="h-20 px-8 flex items-center justify-between border-b border-slate-200 bg-white">
           {/* LADO IZQUIERDO vacío por ahora */}
           <div />
@@ -201,7 +203,7 @@ export default function Home() {
               Plan Pro
             </button>
 
-            {/* Selector de idioma (mismo estilo que Euskalia) */}
+            {/* Selector de idioma */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
