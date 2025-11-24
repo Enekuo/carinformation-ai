@@ -55,7 +55,7 @@ export default function Home() {
           <span
             className={`font-bold tracking-tight ${
               collapsed ? "text-base" : "text-lg"
-            } ml-3`}
+            } ml-4`}
           >
             Euskalia
           </span>
