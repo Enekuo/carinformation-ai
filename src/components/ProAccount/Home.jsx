@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Sparkles,
+  Home as HomeIcon,
+  Wrench,
   Folder,
   Settings,
   Gem,
@@ -27,7 +27,7 @@ import {
 export default function Home() {
   const { language, setLanguage } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
-  const [toolsOpen, setToolsOpen] = useState(true); // <-- submenú Herramientas abierto/cerrado
+  const [toolsOpen, setToolsOpen] = useState(false); // submenu Herramientas
 
   const languages = [
     { code: "ES", name: "Español" },
@@ -74,54 +74,50 @@ export default function Home() {
                 ${collapsed ? "justify-center" : ""}
               `}
             >
-              <LayoutDashboard size={18} />
+              <HomeIcon size={18} />
               {showText && <span>Home</span>}
             </button>
 
-            {/* Herramientas (con submenú) */}
-            <div>
-              <button
-                onClick={() => setToolsOpen((v) => !v)}
-                className={`
-                  w-full flex items-center gap-2 px-3 h-11 rounded-lg
-                  hover:bg-slate-100 text-slate-700
-                  ${collapsed ? "justify-center" : "justify-between"}
-                `}
-              >
-                <div className="flex items-center gap-2">
-                  <Sparkles size={18} />
-                  {showText && <span>Herramientas</span>}
-                </div>
-                {/* Pequeño indicador de despliegue solo cuando hay texto */}
-                {showText && (
-                  <span className="text-[10px] text-slate-400">
-                    {toolsOpen ? "▾" : "▸"}
-                  </span>
-                )}
-              </button>
+            {/* Herramientas (toggle submenu) */}
+            <button
+              onClick={() => setToolsOpen((v) => !v)}
+              className={`
+                w-full flex items-center gap-2 px-3 h-11 rounded-lg
+                hover:bg-slate-100 text-slate-700
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <Wrench size={18} />
+              {showText && <span>Herramientas</span>}
+            </button>
 
-              {/* Submenú: Traductor / Resumen (solo cuando no está colapsado) */}
-              {toolsOpen && !collapsed && (
-                <div className="mt-1 ml-7 space-y-1">
-                  <button
-                    className="
-                      w-full flex items-center gap-2 px-2 h-9 rounded-lg
-                      hover:bg-slate-100 text-slate-700 text-sm
-                    "
-                  >
-                    <span>Traductor</span>
-                  </button>
-                  <button
-                    className="
-                      w-full flex items-center gap-2 px-2 h-9 rounded-lg
-                      hover:bg-slate-100 text-slate-700 text-sm
-                    "
-                  >
-                    <span>Resumen</span>
-                  </button>
-                </div>
-              )}
-            </div>
+            {/* Submenú Herramientas: Traductor / Resumen */}
+            {!collapsed && toolsOpen && (
+              <div className="mt-1 ml-4 space-y-1 text-sm text-slate-700">
+                <button
+                  className="
+                    w-full flex items-center gap-2 px-3 h-9 rounded-lg
+                    hover:bg-slate-100
+                  "
+                >
+                  <span className="text-slate-300 font-mono text-xs -ml-1">
+                    ├
+                  </span>
+                  <span>Traductor</span>
+                </button>
+                <button
+                  className="
+                    w-full flex items-center gap-2 px-3 h-9 rounded-lg
+                    hover:bg-slate-100
+                  "
+                >
+                  <span className="text-slate-300 font-mono text-xs -ml-1">
+                    └
+                  </span>
+                  <span>Resumen</span>
+                </button>
+              </div>
+            )}
 
             {/* Biblioteca */}
             <button
