@@ -20,11 +20,16 @@ import PricingPage from "@/pages/PricingPage";
 import ProLayout from "@/components/ProAccount/ProLayout";
 import Home from "@/components/ProAccount/Home";
 import ProTranslator from "@/components/ProAccount/ProTranslator";
+import ProSummary from "@/components/ProAccount/ProSummary";
+import ProLibrary from "@/components/ProAccount/ProLibrary";
+import ProChat from "@/components/ProAccount/ProChat";
+import ProSuggestions from "@/components/ProAccount/ProSuggestions";
+import ProHelp from "@/components/ProAccount/ProHelp";
+import ProSettings from "@/components/ProAccount/ProSettings";
 
 function App() {
   const location = useLocation();
 
-  // ⬅️ CUALQUIER ruta que empiece por /cuenta-pro es zona Pro
   const isProRoute = location.pathname.startsWith("/cuenta-pro");
 
   const showHeader =
@@ -69,6 +74,12 @@ function App() {
             {/* Pro-Account */}
             <Route path="/cuenta-pro" element={<ProLayout><Home /></ProLayout>} />
             <Route path="/cuenta-pro/traductor" element={<ProLayout><ProTranslator /></ProLayout>} />
+            <Route path="/cuenta-pro/resumen" element={<ProLayout><ProSummary /></ProLayout>} />
+            <Route path="/cuenta-pro/biblioteca" element={<ProLayout><ProLibrary /></ProLayout>} />
+            <Route path="/cuenta-pro/chat-ia" element={<ProLayout><ProChat /></ProLayout>} />
+            <Route path="/cuenta-pro/sugerencias" element={<ProLayout><ProSuggestions /></ProLayout>} />
+            <Route path="/cuenta-pro/ayuda" element={<ProLayout><ProHelp /></ProLayout>} />
+            <Route path="/cuenta-pro/ajustes" element={<ProLayout><ProSettings /></ProLayout>} />
           </Routes>
         </main>
 

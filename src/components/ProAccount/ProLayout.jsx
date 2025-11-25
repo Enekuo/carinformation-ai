@@ -122,6 +122,7 @@ export default function LayoutPro({ children }) {
                   </button>
 
                   <button
+                    onClick={() => navigate("/cuenta-pro/resumen")}
                     className="
                       w-full flex items-center
                       pl-6 pr-3 h-9
@@ -138,6 +139,7 @@ export default function LayoutPro({ children }) {
 
             {/* Biblioteca */}
             <button
+              onClick={() => navigate("/cuenta-pro/biblioteca")}
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
                 hover:bg-slate-100 text-slate-700
@@ -150,6 +152,7 @@ export default function LayoutPro({ children }) {
 
             {/* Chat con IA */}
             <button
+              onClick={() => navigate("/cuenta-pro/chat-ia")}
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
                 hover:bg-slate-100 text-slate-700
@@ -168,6 +171,7 @@ export default function LayoutPro({ children }) {
           <div className="space-y-1 text-sm mb-2">
             {/* Sugerencias */}
             <button
+              onClick={() => navigate("/cuenta-pro/sugerencias")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 hover:bg-slate-100 text-slate-700 text-sm
@@ -180,6 +184,7 @@ export default function LayoutPro({ children }) {
 
             {/* Ayuda */}
             <button
+              onClick={() => navigate("/cuenta-pro/ayuda")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 hover:bg-slate-100 text-slate-700 text-sm
@@ -192,6 +197,7 @@ export default function LayoutPro({ children }) {
 
             {/* Ajustes */}
             <button
+              onClick={() => navigate("/cuenta-pro/ajustes")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 hover:bg-slate-100 text-slate-700 text-sm
@@ -226,19 +232,14 @@ export default function LayoutPro({ children }) {
 
       {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
       <div className="flex-1 flex flex-col">
-        {/* HEADER SUPERIOR (más bajo, sin línea inferior) */}
         <header className="h-16 px-8 flex items-center justify-between bg-white">
-          {/* LADO IZQUIERDO vacío por ahora */}
           <div />
 
-          {/* LADO DERECHO: Plan Pro + idioma + cuenta */}
           <div className="flex items-center gap-3">
-            {/* Icono gema en círculo */}
             <div className="h-9 w-9 rounded-full border border-slate-200 bg-white flex items-center justify-center">
               <Gem size={18} className="text-slate-700" />
             </div>
 
-            {/* Pill Plan Pro */}
             <button
               className="
                 h-9 px-4 rounded-full border border-slate-200
@@ -249,7 +250,6 @@ export default function LayoutPro({ children }) {
               Plan Pro
             </button>
 
-            {/* Selector de idioma */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -285,14 +285,12 @@ export default function LayoutPro({ children }) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Círculo de cuenta */}
             <div className="h-9 w-9 rounded-full border border-slate-200 bg-white flex items-center justify-center">
               <User size={18} className="text-slate-700" />
             </div>
           </div>
         </header>
 
-        {/* CONTENIDO PRINCIPAL (aquí metemos cada página Pro) */}
         <main className="flex-1 px-8 py-8">{children}</main>
       </div>
     </div>
