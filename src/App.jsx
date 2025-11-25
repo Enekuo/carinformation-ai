@@ -20,12 +20,16 @@ import PricingPage from "@/pages/PricingPage";
 import ProLayout from "@/components/ProAccount/ProLayout";
 import Home from "@/components/ProAccount/Home";
 import ProTranslator from "@/components/ProAccount/ProTranslator";
+
 function App() {
   const location = useLocation();
+
+  const isProRoute = location.pathname.startsWith("/cuenta-pro");
+
   const showHeader =
-    location.pathname !== '/iniciar-sesion' &&
-    location.pathname !== '/crear-cuenta' &&
-    location.pathname !== '/cuenta-pro';
+    !isProRoute &&
+    location.pathname !== "/iniciar-sesion" &&
+    location.pathname !== "/crear-cuenta";
 
   return (
     <>
@@ -70,10 +74,19 @@ function App() {
                 </ProLayout>
               }
             />
+
+            <Route
+              path="/cuenta-pro/traductor"
+              element={
+                <ProLayout>
+                  <ProTranslator />
+                </ProLayout>
+              }
+            />
           </Routes>
         </main>
- 
-        <Toaster /> 
+
+        <Toaster />
       </div>
     </>
   );
