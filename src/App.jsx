@@ -64,7 +64,7 @@ function App() {
 
             {/* Pro-Account */}
             <Route path="/cuenta-pro" element={<ProLayout><Home /></ProLayout>} />
-            <Route path="/cuenta-pro/ProTranslator" element={<ProLayout><ProTranslator /></ProLayout>} />
+            <Route path="/cuenta-pro/traductor" element={<ProLayout><ProTranslator /></ProLayout>} />
           </Routes>
         </main>
 
