@@ -70,6 +70,14 @@ function App() {
                 </ProLayout>
               }
             />
+            <Route 
+             path="/cuenta-pro/traductor" 
+             element={
+             <ProLayout>
+               <ProTranslator />
+             </ProLayout>
+            }
+           />
           </Routes>
         </main>
 
