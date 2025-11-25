@@ -39,15 +39,18 @@ export default function LayoutPro({ children }) {
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
-      {/* SIDEBAR PRO */}
+
+      {/* ========== SIDEBAR FIJO ========== */}
       <aside
         className={`
+          fixed top-0 left-0 h-screen
           bg-white flex flex-col pt-6 pb-2
           transition-all duration-200
+          border-r border-slate-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca arriba (sin link) */}
+        {/* Marca */}
         <div
           className={`mb-6 flex items-center ${
             collapsed ? "justify-center" : ""
@@ -62,11 +65,11 @@ export default function LayoutPro({ children }) {
           </span>
         </div>
 
-        {/* Contenido del sidebar */}
+        {/* Contenido */}
         <div className="flex-1 flex flex-col">
-          {/* NAV LATERAL PRINCIPAL */}
+
+          {/* Home */}
           <nav className="space-y-1 text-sm">
-            {/* Home */}
             <button
               onClick={() => navigate("/cuenta-pro")}
               className={`
@@ -148,7 +151,7 @@ export default function LayoutPro({ children }) {
               {showText && <span>Biblioteca</span>}
             </button>
 
-            {/* Chat con IA */}
+            {/* Chat IA */}
             <button
               onClick={() => navigate("/cuenta-pro/chat-ia")}
               className={`
@@ -162,16 +165,16 @@ export default function LayoutPro({ children }) {
             </button>
           </nav>
 
-          {/* SEPARADOR PARA SUBIR EL BLOQUE DE ABAJO */}
-          <div className="flex-1 min-h-[160px]" />
+          {/* SEPARADOR FLEX PARA EMPUJAR ABAJO */}
+          <div className="flex-1" />
 
-          {/* BLOQUE INFERIOR */}
+          {/* BLOQUE FINAL */}
           <div className="space-y-1 text-sm mb-2">
             <button
               onClick={() => navigate("/cuenta-pro/sugerencias")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700 text-sm
+                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
               `}
             >
@@ -183,7 +186,7 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/ayuda")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700 text-sm
+                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
               `}
             >
@@ -195,7 +198,7 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/ajustes")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700 text-sm
+                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
               `}
             >
@@ -204,6 +207,7 @@ export default function LayoutPro({ children }) {
             </button>
           </div>
 
+          {/* Contraer */}
           <button
             onClick={() => setCollapsed((v) => !v)}
             className={`
@@ -224,9 +228,10 @@ export default function LayoutPro({ children }) {
         </div>
       </aside>
 
-      {/* COLUMNA DERECHA */}
-      <div className="flex-1 flex flex-col">
-        <header className="h-16 px-8 flex items-center justify-between bg-white">
+      {/* ========== COLUMNA DERECHA ========== */}
+      <div className={`flex-1 flex flex-col transition-all ${collapsed ? "ml-16" : "ml-48"}`}>
+
+        <header className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200">
           <div />
 
           <div className="flex items-center gap-3">
@@ -258,6 +263,7 @@ export default function LayoutPro({ children }) {
                   <ChevronDown size={14} className="opacity-70" />
                 </button>
               </DropdownMenuTrigger>
+
               <DropdownMenuContent
                 align="end"
                 className="w-40 bg-white rounded-lg shadow-lg border border-slate-200 mt-2"
@@ -267,6 +273,7 @@ export default function LayoutPro({ children }) {
                   width={14}
                   height={7}
                 />
+
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
@@ -276,6 +283,7 @@ export default function LayoutPro({ children }) {
                     {lang.name}
                   </DropdownMenuItem>
                 ))}
+
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -285,7 +293,10 @@ export default function LayoutPro({ children }) {
           </div>
         </header>
 
-        <main className="flex-1 px-8 py-8">{children}</main>
+        <main className="flex-1 px-8 py-8">
+          {children}
+        </main>
+
       </div>
     </div>
   );
