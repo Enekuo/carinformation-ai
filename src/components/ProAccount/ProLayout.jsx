@@ -1,4 +1,3 @@
-// src/components/ProAccount/LayoutPro.jsx
 import React, { useState } from "react";
 import {
   Home as HomeIcon,
@@ -23,13 +22,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
 
 export default function LayoutPro({ children }) {
   const { language, setLanguage } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
-  const navigate = useNavigate();
 
   const languages = [
     { code: "ES", name: "Español" },
@@ -69,7 +66,6 @@ export default function LayoutPro({ children }) {
           <nav className="space-y-1 text-sm">
             {/* Home */}
             <button
-              onClick={() => navigate("/cuenta-pro")}
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
                 bg-slate-900 text-white font-medium
@@ -110,7 +106,6 @@ export default function LayoutPro({ children }) {
               {toolsOpen && !collapsed && (
                 <div className="ml-3 mt-1 space-y-1">
                   <button
-                    onClick={() => navigate("/cuenta-pro/traductor")}
                     className="
                       w-full flex items-center
                       pl-6 pr-3 h-9
@@ -298,4 +293,4 @@ export default function LayoutPro({ children }) {
       </div>
     </div>
   );
-}
+} 
