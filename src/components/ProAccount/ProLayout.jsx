@@ -39,15 +39,18 @@ export default function LayoutPro({ children }) {
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
+
       {/* SIDEBAR PRO */}
       <aside
         className={`
-          bg-white flex flex-col pt-6 pb-2
+          bg-white flex flex-col justify-between   /* ⭐ CAMBIO: antes era solo flex-col */
+          pt-6 pb-2
           transition-all duration-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca arriba (sin link) */}
+
+        {/* Marca arriba */}
         <div
           className={`mb-6 flex items-center ${
             collapsed ? "justify-center" : ""
@@ -62,9 +65,10 @@ export default function LayoutPro({ children }) {
           </span>
         </div>
 
-        {/* Contenido del sidebar */}
-        <div className="flex-1 flex flex-col">
-          {/* NAV LATERAL PRINCIPAL */}
+        {/* CONTENIDO DEL SIDEBAR */}
+        <div className="flex flex-col">
+
+          {/* NAV */}
           <nav className="space-y-1 text-sm">
             {/* Home */}
             <button
@@ -79,10 +83,10 @@ export default function LayoutPro({ children }) {
               {showText && <span>Home</span>}
             </button>
 
-            {/* Herramientas (grupo desplegable) */}
+            {/* Herramientas */}
             <div className="space-y-1">
               <button
-                onClick={() => setToolsOpen((v) => !v)}
+                onClick={() => setToolsOpen(v => !v)}
                 className={`
                   w-full flex items-center gap-2 px-3 h-11 rounded-lg
                   hover:bg-slate-100 text-slate-700
@@ -94,7 +98,6 @@ export default function LayoutPro({ children }) {
                   {showText && <span>Herramientas</span>}
                 </div>
 
-                {/* Flecha solo cuando no está colapsado */}
                 {showText && (
                   <ChevronDown
                     size={14}
@@ -105,16 +108,14 @@ export default function LayoutPro({ children }) {
                 )}
               </button>
 
-              {/* Submenú: Traductor / Resumen */}
+              {/* Submenú */}
               {toolsOpen && !collapsed && (
                 <div className="ml-3 mt-1 space-y-1">
                   <button
                     onClick={() => navigate("/cuenta-pro/traductor")}
                     className="
-                      w-full flex items-center
-                      pl-6 pr-3 h-9
-                      text-sm text-slate-700
-                      hover:text-slate-900
+                      w-full flex items-center pl-6 pr-3 h-9
+                      text-sm text-slate-700 hover:text-slate-900
                     "
                   >
                     <span className="mr-2 text-slate-200">│</span>
@@ -124,10 +125,8 @@ export default function LayoutPro({ children }) {
                   <button
                     onClick={() => navigate("/cuenta-pro/resumen")}
                     className="
-                      w-full flex items-center
-                      pl-6 pr-3 h-9
-                      text-sm text-slate-700
-                      hover:text-slate-900
+                      w-full flex items-center pl-6 pr-3 h-9
+                      text-sm text-slate-700 hover:text-slate-900
                     "
                   >
                     <span className="mr-2 text-slate-200">└</span>
@@ -150,7 +149,7 @@ export default function LayoutPro({ children }) {
               {showText && <span>Biblioteca</span>}
             </button>
 
-            {/* Chat con IA */}
+            {/* Chat IA */}
             <button
               onClick={() => navigate("/cuenta-pro/chat-ia")}
               className={`
@@ -162,56 +161,56 @@ export default function LayoutPro({ children }) {
               <MessageSquare size={18} />
               {showText && <span>Chat con IA</span>}
             </button>
+
           </nav>
 
-          {/* SEPARADOR FLEX PARA EMPUJAR EL BLOQUE INFERIOR HACIA ABAJO */}
-          <div className="flex-1" />
+        </div>
 
-          {/* BLOQUE INFERIOR: Sugerencias / Ayuda / Ajustes */}
-          <div className="space-y-1 text-sm mb-2">
-            {/* Sugerencias */}
-            <button
-              onClick={() => navigate("/cuenta-pro/sugerencias")}
-              className={`
-                w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700 text-sm
-                ${collapsed ? "justify-center" : ""}
-              `}
-            >
-              <Lightbulb size={18} />
-              {showText && <span>Sugerencias</span>}
-            </button>
+        {/* BLOQUE INFERIOR FIJO */}
+        <div className="space-y-1 text-sm mb-2">
 
-            {/* Ayuda */}
-            <button
-              onClick={() => navigate("/cuenta-pro/ayuda")}
-              className={`
-                w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700 text-sm
-                ${collapsed ? "justify-center" : ""}
-              `}
-            >
-              <LifeBuoy size={18} />
-              {showText && <span>Ayuda</span>}
-            </button>
-
-            {/* Ajustes */}
-            <button
-              onClick={() => navigate("/cuenta-pro/ajustes")}
-              className={`
-                w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700 text-sm
-                ${collapsed ? "justify-center" : ""}
-              `}
-            >
-              <Settings size={18} />
-              {showText && <span>Ajustes</span>}
-            </button>
-          </div>
-
-          {/* BOTÓN CONTRAER / EXPANDIR PEGADO AL FONDO */}
+          {/* Sugerencias */}
           <button
-            onClick={() => setCollapsed((v) => !v)}
+            onClick={() => navigate("/cuenta-pro/sugerencias")}
+            className={`
+              w-full flex items-center gap-2 px-3 h-10 rounded-lg
+              hover:bg-slate-100 text-slate-700 text-sm
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <Lightbulb size={18} />
+            {showText && <span>Sugerencias</span>}
+          </button>
+
+          {/* Ayuda */}
+          <button
+            onClick={() => navigate("/cuenta-pro/ayuda")}
+            className={`
+              w-full flex items-center gap-2 px-3 h-10 rounded-lg
+              hover:bg-slate-100 text-slate-700 text-sm
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <LifeBuoy size={18} />
+            {showText && <span>Ayuda</span>}
+          </button>
+
+          {/* Ajustes */}
+          <button
+            onClick={() => navigate("/cuenta-pro/ajustes")}
+            className={`
+              w-full flex items-center gap-2 px-3 h-10 rounded-lg
+              hover:bg-slate-100 text-slate-700 text-sm
+              ${collapsed ? "justify-center" : ""}
+            `}
+          >
+            <Settings size={18} />
+            {showText && <span>Ajustes</span>}
+          </button>
+
+          {/* Contraer */}
+          <button
+            onClick={() => setCollapsed(v => !v)}
             className={`
               w-full flex items-center
               ${collapsed ? "justify-center" : "justify-start"}
@@ -227,10 +226,12 @@ export default function LayoutPro({ children }) {
               </>
             )}
           </button>
+
         </div>
+
       </aside>
 
-      {/* COLUMNA DERECHA: HEADER + CONTENIDO */}
+      {/* COLUMNA DERECHA */}
       <div className="flex-1 flex flex-col">
         <header className="h-16 px-8 flex items-center justify-between bg-white">
           <div />
@@ -273,7 +274,7 @@ export default function LayoutPro({ children }) {
                   width={14}
                   height={7}
                 />
-                {languages.map((lang) => (
+                {languages.map(lang => (
                   <DropdownMenuItem
                     key={lang.code}
                     onSelect={() => setLanguage(lang.code)}
