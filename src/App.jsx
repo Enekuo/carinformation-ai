@@ -19,7 +19,7 @@ import PricingPage from "@/pages/PricingPage";
 // Pro-Account //
 import ProLayout from "@/components/ProAccount/ProLayout";
 import Home from "@/components/ProAccount/Home";
-
+import ProTranslator from "@/components/ProAccount/ProTranslator";
 function App() {
   const location = useLocation();
   const showHeader =
@@ -70,18 +70,10 @@ function App() {
                 </ProLayout>
               }
             />
-            <Route 
-             path="/cuenta-pro/traductor" 
-             element={
-             <ProLayout>
-               <ProTranslator />
-             </ProLayout>
-            }
-           />
           </Routes>
         </main>
-
-        <Toaster />
+ 
+        <Toaster /> 
       </div>
     </>
   );
