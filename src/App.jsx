@@ -23,10 +23,14 @@ import ProTranslator from "@/components/ProAccount/ProTranslator";
 
 function App() {
   const location = useLocation();
+
+  // ⬅️ CUALQUIER ruta que empiece por /cuenta-pro es zona Pro
+  const isProRoute = location.pathname.startsWith("/cuenta-pro");
+
   const showHeader =
-    location.pathname !== '/iniciar-sesion' &&
-    location.pathname !== '/crear-cuenta' &&
-    location.pathname !== '/cuenta-pro';
+    !isProRoute &&
+    location.pathname !== "/iniciar-sesion" &&
+    location.pathname !== "/crear-cuenta";
 
   return (
     <>
