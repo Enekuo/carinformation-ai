@@ -23,13 +23,10 @@ import ProTranslator from "@/components/ProAccount/ProTranslator";
 
 function App() {
   const location = useLocation();
-
-  const isProRoute = location.pathname.startsWith("/cuenta-pro");
-
   const showHeader =
-    !isProRoute &&
-    location.pathname !== "/iniciar-sesion" &&
-    location.pathname !== "/crear-cuenta";
+    location.pathname !== '/iniciar-sesion' &&
+    location.pathname !== '/crear-cuenta' &&
+    location.pathname !== '/cuenta-pro';
 
   return (
     <>
@@ -66,23 +63,8 @@ function App() {
             <Route path="/pricing" element={<PricingPage />} />
 
             {/* Pro-Account */}
-            <Route
-              path="/cuenta-pro"
-              element={
-                <ProLayout>
-                  <Home />
-                </ProLayout>
-              }
-            />
-
-            <Route
-              path="/cuenta-pro/traductor"
-              element={
-                <ProLayout>
-                  <ProTranslator />
-                </ProLayout>
-              }
-            />
+            <Route path="/cuenta-pro" element={<ProLayout><Home /></ProLayout>} />
+            <Route path="/cuenta-pro/ProTranslator" element={<ProLayout><ProTranslator /></ProLayout>} />
           </Routes>
         </main>
 
