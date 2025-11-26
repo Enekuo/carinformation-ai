@@ -135,7 +135,7 @@ export default function ProHelp() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className="min-h-screen w-full bg-[#F4F8FF]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
         {/* Título principal */}
         <header className="text-center mb-12">
