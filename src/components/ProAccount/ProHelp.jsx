@@ -1,235 +1,177 @@
-import React, { useState, useMemo } from "react";
-import { Search, ChevronDown } from "lucide-react";
+import React, { useState } from "react";
 import { useTranslation } from "@/lib/translations";
+import { Search, ChevronDown } from "lucide-react";
 
 export default function ProHelp() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
 
-  const [query, setQuery] = useState("");
-  const [openSection, setOpenSection] = useState(null);
+  const [activeSection, setActiveSection] = useState(null);
 
-  // Secciones del centro de ayuda (tipo NotebookLM)
-  const sections = useMemo(
-    () => [
-      {
-        id: "getting-started",
-        titleKey: "help_section_getting_started_title",
-        items: [
-          {
-            questionKey: "help_q_what_is_euskalia",
-            answerKey: "help_a_what_is_euskalia",
-          },
-          {
-            questionKey: "help_q_first_steps",
-            answerKey: "help_a_first_steps",
-          },
-          {
-            questionKey: "help_q_supported_languages",
-            answerKey: "help_a_supported_languages",
-          },
-        ],
-      },
-      {
-        id: "translator",
-        titleKey: "help_section_translator_title",
-        items: [
-          {
-            questionKey: "help_q_translate_text",
-            answerKey: "help_a_translate_text",
-          },
-          {
-            questionKey: "help_q_translate_document",
-            answerKey: "help_a_translate_document",
-          },
-          {
-            questionKey: "help_q_translate_url",
-            answerKey: "help_a_translate_url",
-          },
-        ],
-      },
-      {
-        id: "summary",
-        titleKey: "help_section_summary_title",
-        items: [
-          {
-            questionKey: "help_q_create_summary",
-            answerKey: "help_a_create_summary",
-          },
-          {
-            questionKey: "help_q_summary_length",
-            answerKey: "help_a_summary_length",
-          },
-          {
-            questionKey: "help_q_multiple_sources",
-            answerKey: "help_a_multiple_sources",
-          },
-        ],
-      },
-      {
-        id: "account_billing",
-        titleKey: "help_section_account_billing_title",
-        items: [
-          {
-            questionKey: "help_q_do_i_need_account",
-            answerKey: "help_a_do_i_need_account",
-          },
-          {
-            questionKey: "help_q_plans",
-            answerKey: "help_a_plans",
-          },
-          {
-            questionKey: "help_q_billing_issues",
-            answerKey: "help_a_billing_issues",
-          },
-        ],
-      },
-      {
-        id: "troubleshooting",
-        titleKey: "help_section_troubleshooting_title",
-        items: [
-          {
-            questionKey: "help_q_file_not_uploading",
-            answerKey: "help_a_file_not_uploading",
-          },
-          {
-            questionKey: "help_q_url_not_working",
-            answerKey: "help_a_url_not_working",
-          },
-          {
-            questionKey: "help_q_result_incomplete",
-            answerKey: "help_a_result_incomplete",
-          },
-        ],
-      },
-    ],
-    []
-  );
+  const sections = [
+    {
+      id: "getting_started",
+      titleKey: "proHelp.section_getting_started_title",
+      items: [
+        {
+          titleKey: "proHelp.section_getting_started_q1_title",
+          bodyKey: "proHelp.section_getting_started_q1_body",
+        },
+        {
+          titleKey: "proHelp.section_getting_started_q2_title",
+          bodyKey: "proHelp.section_getting_started_q2_body",
+        },
+        {
+          titleKey: "proHelp.section_getting_started_q3_title",
+          bodyKey: "proHelp.section_getting_started_q3_body",
+        },
+      ],
+    },
+    {
+      id: "translator",
+      titleKey: "proHelp.section_translator_title",
+      items: [
+        {
+          titleKey: "proHelp.section_translator_q1_title",
+          bodyKey: "proHelp.section_translator_q1_body",
+        },
+        {
+          titleKey: "proHelp.section_translator_q2_title",
+          bodyKey: "proHelp.section_translator_q2_body",
+        },
+        {
+          titleKey: "proHelp.section_translator_q3_title",
+          bodyKey: "proHelp.section_translator_q3_body",
+        },
+      ],
+    },
+    {
+      id: "summary",
+      titleKey: "proHelp.section_summary_title",
+      items: [
+        {
+          titleKey: "proHelp.section_summary_q1_title",
+          bodyKey: "proHelp.section_summary_q1_body",
+        },
+        {
+          titleKey: "proHelp.section_summary_q2_title",
+          bodyKey: "proHelp.section_summary_q2_body",
+        },
+        {
+          titleKey: "proHelp.section_summary_q3_title",
+          bodyKey: "proHelp.section_summary_q3_body",
+        },
+      ],
+    },
+    {
+      id: "billing",
+      titleKey: "proHelp.section_billing_title",
+      items: [
+        {
+          titleKey: "proHelp.section_billing_q1_title",
+          bodyKey: "proHelp.section_billing_q1_body",
+        },
+        {
+          titleKey: "proHelp.section_billing_q2_title",
+          bodyKey: "proHelp.section_billing_q2_body",
+        },
+        {
+          titleKey: "proHelp.section_billing_q3_title",
+          bodyKey: "proHelp.section_billing_q3_body",
+        },
+      ],
+    },
+    {
+      id: "problems",
+      titleKey: "proHelp.section_problems_title",
+      items: [
+        {
+          titleKey: "proHelp.section_problems_q1_title",
+          bodyKey: "proHelp.section_problems_q1_body",
+        },
+        {
+          titleKey: "proHelp.section_problems_q2_title",
+          bodyKey: "proHelp.section_problems_q2_body",
+        },
+        {
+          titleKey: "proHelp.section_problems_q3_title",
+          bodyKey: "proHelp.section_problems_q3_body",
+        },
+      ],
+    },
+  ];
 
-  // Filtro por texto del buscador
-  const filteredSections = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return sections;
-
-    return sections
-      .map((section) => {
-        const title = tr(section.titleKey, "").toLowerCase();
-        const matchedItems = section.items.filter((item) => {
-          const qText = tr(item.questionKey, "").toLowerCase();
-          const aText = tr(item.answerKey, "").toLowerCase();
-          return (
-            qText.includes(q) ||
-            aText.includes(q) ||
-            title.includes(q)
-          );
-        });
-
-        if (matchedItems.length === 0) return null;
-        return { ...section, items: matchedItems };
-      })
-      .filter(Boolean);
-  }, [sections, query, tr]);
-
-  const handleToggleSection = (id) => {
-    setOpenSection((current) => (current === id ? null : id));
+  const handleToggle = (id) => {
+    setActiveSection((current) => (current === id ? null : id));
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#F4F8FF]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
-        {/* Título principal */}
-        <header className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 mb-3">
-            {tr("help_title", "¿En qué podemos ayudarte?")}
+    <div className="flex-1 bg-[#F4F7FF] min-h-screen">
+      <div className="max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-12">
+        {/* HEADER */}
+        <header className="text-center mb-10 md:mb-12">
+          <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900 mb-2">
+            {tr("proHelp.title", "")}
           </h1>
-          <p className="text-slate-600 text-sm sm:text-base">
-            {tr(
-              "help_subtitle",
-              "Escribe tu duda y te mostraremos los artículos de ayuda relacionados."
-            )}
-          </p>
+          {/* Subtítulo eliminado intencionadamente */}
         </header>
 
-        {/* Buscador grande */}
-        <div className="mb-12 flex justify-center">
-          <div className="w-full max-w-3xl">
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                <Search className="w-5 h-5" />
-              </span>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={tr(
-                  "help_search_placeholder",
-                  "Describe tu problema o escribe una pregunta"
-                )}
-                className="w-full rounded-full border border-slate-200 bg-white px-11 py-3 sm:py-3.5 text-sm sm:text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
-              />
-            </div>
-            <p className="mt-2 text-xs text-slate-500 text-center">
-              {tr(
-                "help_search_hint",
-                "Ejemplos: “no se sube el PDF”, “cómo traducir una URL”, “límite del plan gratis…”"
-              )}
-            </p>
+        {/* BUSCADOR (sin texto de ejemplos) */}
+        <div className="max-w-3xl mx-auto mb-10">
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+              <Search className="w-4 h-4" />
+            </span>
+            <input
+              type="text"
+              className="w-full rounded-full border border-slate-200 bg-white shadow-sm px-11 py-3 text-sm md:text-base outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+              placeholder={tr("proHelp.search_placeholder", "")}
+            />
           </div>
         </div>
 
-        {/* Secciones estilo acordeón */}
-        <section className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-          {filteredSections.length === 0 ? (
-            <div className="px-6 py-10 text-center text-sm text-slate-500">
-              {tr(
-                "help_no_results",
-                "No hemos encontrado resultados para tu búsqueda. Prueba con otras palabras o revisa las categorías."
+        {/* SECCIONES (ACORDEÓN: SOLO UNA ABIERTA) */}
+        <div className="space-y-3">
+          {sections.map((section) => (
+            <div
+              key={section.id}
+              className="bg-white rounded-2xl border border-slate-200 shadow-sm"
+            >
+              <button
+                type="button"
+                onClick={() => handleToggle(section.id)}
+                className="w-full flex items-center justify-between px-5 py-4 md:px-6 md:py-5 text-left"
+              >
+                <span className="text-sm md:text-base font-semibold text-slate-900">
+                  {tr(section.titleKey, "")}
+                </span>
+                <ChevronDown
+                  className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${
+                    activeSection === section.id ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {activeSection === section.id && (
+                <div className="px-5 pb-5 pt-1 md:px-6 border-t border-slate-100">
+                  <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
+                    {section.items.map((item) => (
+                      <div key={item.titleKey}>
+                        <p className="font-semibold mb-1 text-slate-900">
+                          {tr(item.titleKey, "")}
+                        </p>
+                        <p className="text-slate-600 whitespace-pre-line">
+                          {tr(item.bodyKey, "")}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
-          ) : (
-            filteredSections.map((section, index) => {
-              const isOpen = openSection === section.id;
-              const title = tr(section.titleKey, "");
-              return (
-                <div
-                  key={section.id}
-                  className={index !== 0 ? "border-t border-slate-100" : ""}
-                >
-                  <button
-                    type="button"
-                    onClick={() => handleToggleSection(section.id)}
-                    className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors"
-                  >
-                    <span className="text-sm sm:text-base font-medium text-slate-900 text-left">
-                      {title}
-                    </span>
-                    <ChevronDown
-                      className={`w-5 h-5 text-slate-400 transition-transform ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {isOpen && (
-                    <div className="px-6 pb-4 pt-1 space-y-4 bg-white">
-                      {section.items.map((item) => (
-                        <div key={item.questionKey} className="text-left">
-                          <div className="text-sm font-medium text-slate-900 mb-1">
-                            {tr(item.questionKey, "")}
-                          </div>
-                          <p className="text-sm text-slate-600 whitespace-pre-line">
-                            {tr(item.answerKey, "")}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          )}
-        </section>
+          ))}
+        </div>
       </div>
-    </main>
+    </div>
   );
 }
