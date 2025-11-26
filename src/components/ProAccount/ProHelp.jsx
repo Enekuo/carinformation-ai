@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 import { Search, ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function ProHelp() {
   const { t } = useTranslation();
@@ -110,34 +110,32 @@ export default function ProHelp() {
     <div className="flex-1 bg-[#F4F7FF] min-h-screen">
       <div className="max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-12">
         {/* HEADER */}
-        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 md:mb-10">
-          <div className="text-center md:text-left flex-1">
-            <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900">
-              {tr("proHelp.title", "")}
-            </h1>
-          </div>
-          <div className="flex justify-center md:justify-end">
+        <header className="text-center mb-8 md:mb-10">
+          <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900">
+            {tr("proHelp.title", "")}
+          </h1>
+        </header>
+
+        {/* BUSCADOR + BOTÓN SOPORTE SUPERIOR (si no quieres este, puedes eliminar solo el Link) */}
+        <div className="max-w-4xl mx-auto mb-10">
+          <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center">
+            <div className="relative flex-1">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                <Search className="w-4 h-4" />
+              </span>
+              <input
+                type="text"
+                className="w-full rounded-full border border-slate-200 bg-white shadow-sm px-11 py-3 text-sm md:text-base outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                placeholder={tr("proHelp.search_placeholder", "")}
+              />
+            </div>
+
             <Link
-              to="/pro/soporte"
-              className="inline-flex items-center gap-2 rounded-full bg-sky-600 hover:bg-sky-700 text-white text-sm md:text-[15px] font-medium px-4 py-2 shadow-sm transition-colors"
-              aria-label={tr("proHelp.support_button_aria", "")}
+              to="/soporte"
+              className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
             >
               {tr("proHelp.support_button_label", "")}
             </Link>
-          </div>
-        </header>
-
-        {/* BUSCADOR */}
-        <div className="max-w-3xl mx-auto mb-10">
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-              <Search className="w-4 h-4" />
-            </span>
-            <input
-              type="text"
-              className="w-full rounded-full border border-slate-200 bg-white shadow-sm px-11 py-3 text-sm md:text-base outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
-              placeholder={tr("proHelp.search_placeholder", "")}
-            />
           </div>
         </div>
 
@@ -168,17 +166,9 @@ export default function ProHelp() {
                   <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
                     {section.items.map((item) => (
                       <div key={item.titleKey}>
-                        <button
-                          type="button"
-                          className="w-full text-left mb-1 font-semibold text-slate-900 hover:text-sky-700 transition-colors"
-                          onClick={() =>
-                            setActiveSection((current) =>
-                              current === section.id ? section.id : section.id
-                            )
-                          }
-                        >
+                        <p className="font-semibold mb-1 text-slate-900">
                           {tr(item.titleKey, "")}
-                        </button>
+                        </p>
                         <p className="text-slate-600 whitespace-pre-line">
                           {tr(item.bodyKey, "")}
                         </p>
@@ -191,31 +181,31 @@ export default function ProHelp() {
           ))}
         </div>
 
-        {/* BLOQUE FINAL: MASCOTA + TEXTO + BOTÓN SOPORTE */}
-        <div className="mt-10 md:mt-12">
-          <div className="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm px-5 py-5 md:px-7 md:py-6 flex items-center gap-4 md:gap-6">
-            <div className="flex-shrink-0">
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#E6F0FF] flex items-center justify-center overflow-hidden">
+        {/* BLOQUE FINAL: MASCOTA + BOCADILLO + BOTÓN ABAJO */}
+        <div className="mt-12 flex justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex items-end gap-4">
+              <div className="w-24 h-24 md:w-28 md:h-28">
                 <img
-                  src="/olondo-mascota-2.png" // ajusta esta ruta al archivo real de tu mascota
-                  alt={tr("proHelp.bottom_support_mascot_alt", "")}
-                  className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                  src="/olondo-mascota2.png"
+                  alt={tr("proHelp.support_mascot_alt", "")}
+                  className="w-full h-full object-contain"
                 />
               </div>
+
+              <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-5 py-3 md:px-6 md:py-3.5 max-w-md">
+                <p className="text-sm md:text-base text-slate-800">
+                  {tr("proHelp.support_bubble_text", "")}
+                </p>
+              </div>
             </div>
-            <div className="flex-1">
-              <p className="text-sm md:text-[15px] text-slate-700">
-                {tr("proHelp.bottom_support_text", "")}
-              </p>
-            </div>
-            <div className="flex-shrink-0">
-              <Link
-                to="/pro/soporte"
-                className="inline-flex items-center justify-center rounded-full bg-sky-600 hover:bg-sky-700 text-white text-sm md:text-[15px] font-medium px-4 py-2 shadow-sm transition-colors"
-              >
-                {tr("proHelp.bottom_support_cta", "")}
-              </Link>
-            </div>
+
+            <Link
+              to="/soporte"
+              className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
+            >
+              {tr("proHelp.support_button_label", "")}
+            </Link>
           </div>
         </div>
       </div>
