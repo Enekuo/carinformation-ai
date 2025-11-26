@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
-export default function ProAssistant() {
+export default function AssistantPage() {
   const { t } = useTranslation();
   const tr = (k) => t(k) || k;
 
@@ -80,6 +80,7 @@ export default function ProAssistant() {
 
   return (
     <div className="bg-slate-50 min-h-[calc(100vh-4rem)] flex flex-col">
+      
       {/* Botón "Txat berria" arriba a la derecha */}
       <div className="flex justify-end px-6 pt-6">
         <button
@@ -95,6 +96,7 @@ export default function ProAssistant() {
 
       {/* CONTENIDO CENTRAL */}
       <div className="flex-1 flex flex-col items-center px-4 pb-8">
+
         {/* Mascota + título solo si no hay mensajes */}
         {isEmpty && (
           <div className="mt-12 mb-10 flex flex-col items-center text-center">
@@ -113,7 +115,7 @@ export default function ProAssistant() {
           </div>
         )}
 
-        {/* ZONA DE MENSAJES (aparece debajo cuando ya hay mensajes) */}
+        {/* ZONA DE MENSAJES */}
         {!isEmpty && (
           <div className="w-full max-w-3xl flex-1 overflow-y-auto mt-6 mb-6 pr-1">
             {messages.map((m, idx) => (
@@ -137,14 +139,8 @@ export default function ProAssistant() {
           </div>
         )}
 
-        {/* BARRA DE ESCRITURA */}
-        <div
-          className={
-            isEmpty
-              ? "w-full flex justify-center"
-              : "w-full flex justify_center mt-auto mb-4"
-          }
-        >
+        {/* BARRA DE ESCRITURA — CENTRADA PERFECTAMENTE */}
+        <div className="w-full flex justify-center mt-8 mb-6">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -160,7 +156,7 @@ export default function ProAssistant() {
                 hover:shadow-md transition
               "
             >
-              {/* Botón + (reservado para adjuntar en el futuro) */}
+              {/* Botón + */}
               <button
                 type="button"
                 className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600"
@@ -168,13 +164,12 @@ export default function ProAssistant() {
                 <Plus className="w-4 h-4" />
               </button>
 
-              {/* INPUT CONTROLADO */}
+              {/* INPUT */}
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
-                  // Solo enviar con Enter (sin Shift)
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     handleSend();
@@ -184,7 +179,7 @@ export default function ProAssistant() {
                 className="flex-1 bg-transparent outline-none text-[15px] placeholder:text-slate-400 px-1"
               />
 
-              {/* Botón Enviar */}
+              {/* Enviar */}
               <button
                 type="submit"
                 disabled={!input.trim()}
