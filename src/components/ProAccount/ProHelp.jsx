@@ -7,6 +7,7 @@ export default function ProHelp() {
   const tr = (key, fallback) => t(key) || fallback;
 
   const [activeSection, setActiveSection] = useState(null);
+  const [openItems, setOpenItems] = useState({});
 
   const sections = [
     {
@@ -101,8 +102,15 @@ export default function ProHelp() {
     },
   ];
 
-  const handleToggle = (id) => {
+  const handleToggleSection = (id) => {
     setActiveSection((current) => (current === id ? null : id));
+  };
+
+  const handleToggleItem = (itemId) => {
+    setOpenItems((prev) => ({
+      ...prev,
+      [itemId]: !prev[itemId],
+    }));
   };
 
   return (
@@ -113,10 +121,9 @@ export default function ProHelp() {
           <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900 mb-2">
             {tr("proHelp.title", "")}
           </h1>
-          {/* Subtítulo eliminado intencionadamente */}
         </header>
 
-        {/* BUSCADOR (sin texto de ejemplos) */}
+        {/* BUSCADOR */}
         <div className="max-w-3xl mx-auto mb-10">
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
@@ -130,7 +137,7 @@ export default function ProHelp() {
           </div>
         </div>
 
-        {/* SECCIONES (ACORDEÓN: SOLO UNA ABIERTA) */}
+        {/* SECCIONES */}
         <div className="space-y-3">
           {sections.map((section) => (
             <div
@@ -139,7 +146,7 @@ export default function ProHelp() {
             >
               <button
                 type="button"
-                onClick={() => handleToggle(section.id)}
+                onClick={() => handleToggleSection(section.id)}
                 className="w-full flex items-center justify-between px-5 py-4 md:px-6 md:py-5 text-left"
               >
                 <span className="text-sm md:text-base font-semibold text-slate-900">
@@ -154,18 +161,38 @@ export default function ProHelp() {
 
               {activeSection === section.id && (
                 <div className="px-5 pb-5 pt-1 md:px-6 border-t border-slate-100">
-                  <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
-                    {section.items.map((item) => (
-                      <div key={item.titleKey}>
-                        <p className="font-semibold mb-1 text-slate-900">
-                          {tr(item.titleKey, "")}
-                        </p>
-                        <p className="text-slate-600 whitespace-pre-line">
-                          {tr(item.bodyKey, "")}
-                        </p>
+                  {section.items.map((item) => {
+                    const itemId = `${section.id}-${item.titleKey}`;
+                    const isOpen = !!openItems[itemId];
+
+                    return (
+                      <div
+                        key={item.titleKey}
+                        className="py-3 border-t border-slate-100 first:border-t-0"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => handleToggleItem(itemId)}
+                          className="w-full flex items-center justify-between text-left"
+                        >
+                          <span className="font-semibold text-sm md:text-[15px] text-slate-900">
+                            {tr(item.titleKey, "")}
+                          </span>
+                          <ChevronDown
+                            className={`h-3 w-3 text-slate-500 transition-transform duration-200 ${
+                              isOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+
+                        {isOpen && (
+                          <p className="mt-2 text-sm md:text-[15px] text-slate-600 whitespace-pre-line">
+                            {tr(item.bodyKey, "")}
+                          </p>
+                        )}
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
