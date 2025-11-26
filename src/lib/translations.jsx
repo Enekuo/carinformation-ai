@@ -1500,10 +1500,6 @@ cookies_last_update: {
     ES: "Nombre visible",
     EUS: "",
   },
-  settings_profile_display_name_placeholder: {
-    ES: "Ej. Eneko",
-    EUS: "",
-  },
   settings_profile_email: {
     ES: "Email",
     EUS: "",
