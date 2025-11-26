@@ -1464,7 +1464,141 @@ cookies_last_update: {
   ES: "Esta Política de Privacidad está actualizada a fecha [__________].",
     EUS: "Pribatutasun-politika hau eguneratuta dago honako data honetan: [__________].",
 },
-  };
+  
+
+
+
+
+
+                              //  PRO ACCOUNT  // 
+
+
+  //  PRO ACCOUNT – SETTINGS PAGE //
+
+  settings_title: {
+    ES: "Ajustes",
+    EUS: "",
+  },
+  settings_subtitle: {
+    ES: "Personaliza tu experiencia en Olondo.AI.",
+    EUS: "",
+  },
+
+  // =========================
+  //          PERFIL
+  // =========================
+
+  settings_profile_title: {
+    ES: "Perfil",
+    EUS: "",
+  },
+  settings_profile_desc: {
+    ES: "Información básica para identificar tu cuenta.",
+    EUS: "",
+  },
+  settings_profile_display_name: {
+    ES: "Nombre visible",
+    EUS: "",
+  },
+  settings_profile_display_name_placeholder: {
+    ES: "Ej. Eneko",
+    EUS: "",
+  },
+  settings_profile_email: {
+    ES: "Email",
+    EUS: "",
+  },
+  settings_profile_email_placeholder: {
+    ES: "nombre@ejemplo.com",
+    EUS: "",
+  },
+  settings_profile_security_hint: {
+    ES: "La edición de contraseña se gestiona desde tu área segura.",
+    EUS: "",
+  },
+  settings_manage_plan: {
+    ES: "Gestionar plan",
+    EUS: "",
+  },
+
+  // =========================
+  //        APARIENCIA
+  // =========================
+
+  settings_appearance_title: {
+    ES: "Apariencia",
+    EUS: "",
+  },
+  settings_appearance_desc: {
+    ES: "Elige cómo se ve la interfaz.",
+    EUS: "",
+  },
+  settings_appearance_theme: {
+    ES: "Tema",
+    EUS: "",
+  },
+  settings_appearance_theme_light: {
+    ES: "Claro",
+    EUS: "",
+  },
+  settings_appearance_language: {
+    ES: "Idioma",
+    EUS: "",
+  },
+  settings_appearance_language_hint: {
+    ES: "Cambia el idioma desde aquí.",
+    EUS: "",
+  },
+
+  // =========================
+  //      NOTIFICACIONES
+  // =========================
+
+  settings_notifications_title: {
+    ES: "Notificaciones",
+    EUS: "",
+  },
+  settings_notifications_desc: {
+    ES: "Elige qué correos o avisos quieres recibir.",
+    EUS: "",
+  },
+
+  settings_notifications_product: {
+    ES: "Novedades de producto",
+    EUS: "",
+  },
+  settings_notifications_product_hint: {
+    ES: "Lanzamientos, mejoras y anuncios importantes.",
+    EUS: "",
+  },
+
+  settings_notifications_tips: {
+    ES: "Consejos y buenas prácticas",
+    EUS: "",
+  },
+  settings_notifications_tips_hint: {
+    ES: "Emails breves para aprovechar mejor Olondo.AI.",
+    EUS: "",
+  },
+
+  settings_notifications_billing: {
+    ES: "Facturación",
+    EUS: "",
+  },
+  settings_notifications_billing_hint: {
+    ES: "Recibos, cambios de plan y recordatorios de pago.",
+    EUS: "",
+  },
+
+  // =========================
+  //            CTA
+  // =========================
+
+  settings_cta_save: {
+    ES: "Guardar cambios",
+    EUS: "",
+  },
+}
 
 
 
