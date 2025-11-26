@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ChevronDown, LifeBuoy } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
+import { Search, ChevronDown } from "lucide-react";
 
 export default function ProHelp() {
   const { t } = useTranslation();
@@ -110,15 +110,25 @@ export default function ProHelp() {
     <div className="flex-1 bg-[#F4F7FF] min-h-screen">
       <div className="max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-12">
         {/* HEADER */}
-        <header className="text-center mb-10 md:mb-12">
-          <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900 mb-2">
-            {tr("proHelp.title", "")}
-          </h1>
-          {/* Subtítulo eliminado intencionadamente */}
+        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 md:mb-10">
+          <div className="text-center md:text-left flex-1">
+            <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900">
+              {tr("proHelp.title", "")}
+            </h1>
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <Link
+              to="/pro/soporte"
+              className="inline-flex items-center gap-2 rounded-full bg-sky-600 hover:bg-sky-700 text-white text-sm md:text-[15px] font-medium px-4 py-2 shadow-sm transition-colors"
+              aria-label={tr("proHelp.support_button_aria", "")}
+            >
+              {tr("proHelp.support_button_label", "")}
+            </Link>
+          </div>
         </header>
 
         {/* BUSCADOR */}
-        <div className="max-w-3xl mx-auto mb-3">
+        <div className="max-w-3xl mx-auto mb-10">
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
               <Search className="w-4 h-4" />
@@ -129,19 +139,6 @@ export default function ProHelp() {
               placeholder={tr("proHelp.search_placeholder", "")}
             />
           </div>
-        </div>
-
-        {/* BOTÓN DE SOPORTE (debajo del buscador, alineado a la derecha) */}
-        <div className="max-w-3xl mx-auto mb-8 flex justify-end">
-          {/* Ajusta la ruta "support" al path real de tu página de soporte */}
-          <Link
-            to="/support"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-600 hover:bg-sky-700 text-white text-xs md:text-sm font-medium shadow-sm transition-colors"
-            aria-label={tr("support_cta", "")}
-          >
-            <LifeBuoy className="w-4 h-4" />
-            <span>{tr("support_cta", "")}</span>
-          </Link>
         </div>
 
         {/* SECCIONES (ACORDEÓN: SOLO UNA ABIERTA) */}
@@ -171,9 +168,17 @@ export default function ProHelp() {
                   <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
                     {section.items.map((item) => (
                       <div key={item.titleKey}>
-                        <p className="font-semibold mb-1 text-slate-900">
+                        <button
+                          type="button"
+                          className="w-full text-left mb-1 font-semibold text-slate-900 hover:text-sky-700 transition-colors"
+                          onClick={() =>
+                            setActiveSection((current) =>
+                              current === section.id ? section.id : section.id
+                            )
+                          }
+                        >
                           {tr(item.titleKey, "")}
-                        </p>
+                        </button>
                         <p className="text-slate-600 whitespace-pre-line">
                           {tr(item.bodyKey, "")}
                         </p>
@@ -184,6 +189,34 @@ export default function ProHelp() {
               )}
             </div>
           ))}
+        </div>
+
+        {/* BLOQUE FINAL: MASCOTA + TEXTO + BOTÓN SOPORTE */}
+        <div className="mt-10 md:mt-12">
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm px-5 py-5 md:px-7 md:py-6 flex items-center gap-4 md:gap-6">
+            <div className="flex-shrink-0">
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#E6F0FF] flex items-center justify-center overflow-hidden">
+                <img
+                  src="/olondo-mascota-2.png" // ajusta esta ruta al archivo real de tu mascota
+                  alt={tr("proHelp.bottom_support_mascot_alt", "")}
+                  className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                />
+              </div>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm md:text-[15px] text-slate-700">
+                {tr("proHelp.bottom_support_text", "")}
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <Link
+                to="/pro/soporte"
+                className="inline-flex items-center justify-center rounded-full bg-sky-600 hover:bg-sky-700 text-white text-sm md:text-[15px] font-medium px-4 py-2 shadow-sm transition-colors"
+              >
+                {tr("proHelp.bottom_support_cta", "")}
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

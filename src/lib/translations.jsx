@@ -956,7 +956,23 @@ faq_item7_answer: {
     ES: "Puede deberse a tráfico alto o a un documento muy grande. Prueba a reducir el contenido o reintentar unos segundos después.",
     EUS: "",
   },
+  bottom_support_text: {
+    ES: "Si sigues teniendo alguna duda, nuestro equipo está aquí para ayudarte.",
+    EUS: "",
+  },
+
+  bottom_support_cta: {
+    ES: "Contactar con soporte",
+    EUS: "",
+  },
+
+  bottom_support_mascot_alt: {
+    ES: "Mascota de Euskalia ofreciendo ayuda",
+    EUS: "",
+  },
 },
+
+
 
 
 
