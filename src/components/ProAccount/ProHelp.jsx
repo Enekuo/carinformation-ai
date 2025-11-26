@@ -11,91 +11,91 @@ export default function ProHelp() {
   const sections = [
     {
       id: "getting_started",
-      titleKey: "proHelp.section_getting_started_title",
+      titleKey: "proHelp_group_getting_started_title",
       items: [
         {
-          titleKey: "proHelp.section_getting_started_q1_title",
-          bodyKey: "proHelp.section_getting_started_q1_body",
+          titleKey: "proHelp_getting_started_q1_title",
+          bodyKey: "proHelp_getting_started_q1_body",
         },
         {
-          titleKey: "proHelp.section_getting_started_q2_title",
-          bodyKey: "proHelp.section_getting_started_q2_body",
+          titleKey: "proHelp_getting_started_q2_title",
+          bodyKey: "proHelp_getting_started_q2_body",
         },
         {
-          titleKey: "proHelp.section_getting_started_q3_title",
-          bodyKey: "proHelp.section_getting_started_q3_body",
+          titleKey: "proHelp_getting_started_q3_title",
+          bodyKey: "proHelp_getting_started_q3_body",
         },
       ],
     },
     {
       id: "translator",
-      titleKey: "proHelp.section_translator_title",
+      titleKey: "proHelp_group_translator_title",
       items: [
         {
-          titleKey: "proHelp.section_translator_q1_title",
-          bodyKey: "proHelp.section_translator_q1_body",
+          titleKey: "proHelp_translator_q1_title",
+          bodyKey: "proHelp_translator_q1_body",
         },
         {
-          titleKey: "proHelp.section_translator_q2_title",
-          bodyKey: "proHelp.section_translator_q2_body",
+          titleKey: "proHelp_translator_q2_title",
+          bodyKey: "proHelp_translator_q2_body",
         },
         {
-          titleKey: "proHelp.section_translator_q3_title",
-          bodyKey: "proHelp.section_translator_q3_body",
+          titleKey: "proHelp_translator_q3_title",
+          bodyKey: "proHelp_translator_q3_body",
         },
       ],
     },
     {
       id: "summary",
-      titleKey: "proHelp.section_summary_title",
+      titleKey: "proHelp_group_summary_title",
       items: [
         {
-          titleKey: "proHelp.section_summary_q1_title",
-          bodyKey: "proHelp.section_summary_q1_body",
+          titleKey: "proHelp_summary_q1_title",
+          bodyKey: "proHelp_summary_q1_body",
         },
         {
-          titleKey: "proHelp.section_summary_q2_title",
-          bodyKey: "proHelp.section_summary_q2_body",
+          titleKey: "proHelp_summary_q2_title",
+          bodyKey: "proHelp_summary_q2_body",
         },
         {
-          titleKey: "proHelp.section_summary_q3_title",
-          bodyKey: "proHelp.section_summary_q3_body",
+          titleKey: "proHelp_summary_q3_title",
+          bodyKey: "proHelp_summary_q3_body",
         },
       ],
     },
     {
       id: "billing",
-      titleKey: "proHelp.section_billing_title",
+      titleKey: "proHelp_group_billing_title",
       items: [
         {
-          titleKey: "proHelp.section_billing_q1_title",
-          bodyKey: "proHelp.section_billing_q1_body",
+          titleKey: "proHelp_billing_q1_title",
+          bodyKey: "proHelp_billing_q1_body",
         },
         {
-          titleKey: "proHelp.section_billing_q2_title",
-          bodyKey: "proHelp.section_billing_q2_body",
+          titleKey: "proHelp_billing_q2_title",
+          bodyKey: "proHelp_billing_q2_body",
         },
         {
-          titleKey: "proHelp.section_billing_q3_title",
-          bodyKey: "proHelp.section_billing_q3_body",
+          titleKey: "proHelp_billing_q3_title",
+          bodyKey: "proHelp_billing_q3_body",
         },
       ],
     },
     {
       id: "problems",
-      titleKey: "proHelp.section_problems_title",
+      titleKey: "proHelp_group_problems_title",
       items: [
         {
-          titleKey: "proHelp.section_problems_q1_title",
-          bodyKey: "proHelp.section_problems_q1_body",
+          titleKey: "proHelp_problems_q1_title",
+          bodyKey: "proHelp_problems_q1_body",
         },
         {
-          titleKey: "proHelp.section_problems_q2_title",
-          bodyKey: "proHelp.section_problems_q2_body",
+          titleKey: "proHelp_problems_q2_title",
+          bodyKey: "proHelp_problems_q2_body",
         },
         {
-          titleKey: "proHelp.section_problems_q3_title",
-          bodyKey: "proHelp.section_problems_q3_body",
+          titleKey: "proHelp_problems_q3_title",
+          bodyKey: "proHelp_problems_q3_body",
         },
       ],
     },
@@ -111,9 +111,11 @@ export default function ProHelp() {
         {/* HEADER */}
         <header className="text-center mb-10 md:mb-12">
           <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900 mb-2">
-            {tr("proHelp.title", "")}
+            {tr("proHelp_title", "")}
           </h1>
-          {/* Subtítulo eliminado intencionadamente */}
+          <p className="text-sm md:text-base text-slate-600">
+            {tr("proHelp_subtitle", "")}
+          </p>
         </header>
 
         {/* BUSCADOR (sin texto de ejemplos) */}
@@ -125,12 +127,12 @@ export default function ProHelp() {
             <input
               type="text"
               className="w-full rounded-full border border-slate-200 bg-white shadow-sm px-11 py-3 text-sm md:text-base outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
-              placeholder={tr("proHelp.search_placeholder", "")}
+              placeholder={tr("proHelp_search_placeholder", "")}
             />
           </div>
         </div>
 
-        {/* SECCIONES (ACORDEÓN: SOLO UNA ABIERTA) */}
+        {/* SECCIONES (solo una abierta a la vez) */}
         <div className="space-y-3">
           {sections.map((section) => (
             <div
