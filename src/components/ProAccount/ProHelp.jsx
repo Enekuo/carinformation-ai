@@ -199,11 +199,11 @@ export default function ProHelp() {
                 </div>
 
                 {/* COLITA DEL BOCADILLO */}
-                <div className="absolute -left-2 top-1/2 -translate-y-1/2
-                                w-4 h-4
-                                bg-white
-                                border border-slate-200 border-r-0 border-b-0
-                                rotate-45 shadow-sm"></div>
+                <div className="absolute -left-3 top-6
+    w-3 h-3
+    bg-white
+    border-l border-t border-slate-200
+    rotate-45"></div>
 
                 {/* BOTÓN JUSTO DEBAJO DEL BOCADILLO */}
                 <Link
