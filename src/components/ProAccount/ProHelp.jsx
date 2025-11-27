@@ -190,8 +190,8 @@ export default function ProHelp() {
                 />
               </div>
 
-              {/* BOCADILLO MÁS CERCA Y MÁS ABAJO */}
-              <div className="relative max-w-lg mt-10 -ml-4"> 
+              {/* BOCADILLO + BOTÓN DEBAJO */}
+              <div className="relative max-w-lg mt-10 -ml-4 flex flex-col items-start"> 
                 <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-6 py-4">
                   <p className="text-sm md:text-base text-slate-800">
                     {tr("proHelp.support_bubble_text", "")}
@@ -200,14 +200,11 @@ export default function ProHelp() {
 
                 {/* COLITA DEL BOCADILLO */}
                 <div className="absolute -left-3 top-6 w-4 h-4 bg-white border border-slate-200 border-r-0 border-b-0 rotate-45 shadow-sm"></div>
-              </div>
-            </div>
 
-            {/* BOTÓN A LA DERECHA */}
-            <div className="flex justify-end mt-4">
-              <Link
-                to="/soporte"
-                 className="
+                {/* BOTÓN JUSTO DEBAJO DEL BOCADILLO */}
+                <Link
+                  to="/soporte"
+                  className="
                     mt-4
                     inline-flex items-center justify-center
                     rounded-full px-5 py-2.5
@@ -215,10 +212,11 @@ export default function ProHelp() {
                     bg-[#0F82E9] text-white
                     shadow-sm hover:bg-[#0c6fcc]
                     transition-colors
-                "
-              >
-                {tr("proHelp.support_button_label", "")}
-              </Link>
+                  "
+                >
+                  {tr("proHelp.support_button_label", "")}
+                </Link>
+              </div>
             </div>
 
           </div>
