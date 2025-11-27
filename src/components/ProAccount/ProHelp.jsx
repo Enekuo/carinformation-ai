@@ -180,9 +180,8 @@ export default function ProHelp() {
           <div className="flex flex-col w-full max-w-4xl">
 
             {/* FILA: MASCOTA + BOCADILLO */}
-            <div className="flex items-start gap-4">
-
-              {/* MASCOTA IZQUIERDA */}
+            <div className="flex items-start gap-2">
+              {/* MASCOTA */}
               <div className="w-44 h-44 md:w-56 md:h-56 flex-shrink-0">
                 <img
                   src="/olondo-mascota2.png"
@@ -191,8 +190,8 @@ export default function ProHelp() {
                 />
               </div>
 
-              {/* BOCADILLO */}
-              <div className="relative max-w-lg">
+              {/* BOCADILLO MÁS CERCA Y MÁS ABAJO */}
+              <div className="relative max-w-lg mt-3">
                 <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-6 py-4">
                   <p className="text-sm md:text-base text-slate-800">
                     {tr("proHelp.support_bubble_text", "")}
@@ -200,7 +199,7 @@ export default function ProHelp() {
                 </div>
 
                 {/* COLITA DEL BOCADILLO */}
-                <div className="absolute -left-3 top-4 w-4 h-4 bg-white border border-slate-200 border-r-0 border-b-0 rotate-45 shadow-sm"></div>
+                <div className="absolute -left-3 top-6 w-4 h-4 bg-white border border-slate-200 border-r-0 border-b-0 rotate-45 shadow-sm"></div>
               </div>
             </div>
 
