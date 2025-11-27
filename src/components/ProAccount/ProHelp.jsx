@@ -191,7 +191,7 @@ export default function ProHelp() {
               </div>
 
               {/* BOCADILLO MÁS CERCA Y MÁS ABAJO */}
-              <div className="relative max-w-lg mt-3">
+              <div className="relative max-w-lg mt-5"> 
                 <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-6 py-4">
                   <p className="text-sm md:text-base text-slate-800">
                     {tr("proHelp.support_bubble_text", "")}
