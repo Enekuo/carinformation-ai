@@ -196,8 +196,8 @@ export default function ProHelp() {
                   </p>
                 </div>
 
-                {/* COLITA DEL BOCADILLO (MÁS GRANDE Y PEGADA) */}
-                <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                {/* COLITA DEL BOCADILLO, POSICIÓN COMO EN LA CAPTURA */}
+                <div className="absolute -left-3 top-6">
                   {/* borde */}
                   <div className="w-0 h-0 border-y-[12px] border-y-transparent border-r-[16px] border-r-slate-200"></div>
                   {/* relleno blanco */}
