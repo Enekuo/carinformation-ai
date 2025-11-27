@@ -637,8 +637,9 @@ faq_item7_answer: {
 
 
 
-
-/* ==== CTA FINAL ==== */
+ // =========================
+  //            CTA
+  // =========================
   cta: {
     title: {
       ES: "✨ Lleva tu experiencia Euskalia al siguiente nivel",
@@ -793,186 +794,7 @@ faq_item7_answer: {
 
 
 
-  // =========================
-  //       AYUDA
-  // =========================
-  proHelp: {
-  title: {
-    ES: "¿En qué podemos ayudarte?",
-    EUS: "",
-  },
-  search_placeholder: {
-    ES: "Describe tu problema o escribe una pregunta",
-    EUS: "",
-  },
-  // SECCIÓN: EMPEZAR A USAR EUSKALIA
-  section_getting_started_title: {
-    ES: "Empezar a usar Euskalia",
-    EUS: "",
-  },
-
-  section_getting_started_q1_title: {
-    ES: "¿Qué es Euskalia y para qué sirve?",
-    EUS: "",
-  },
-  section_getting_started_q1_body: {
-    ES: "Euskalia es una herramienta de inteligencia artificial centrada en el euskera. Permite traducir y resumir textos, documentos y páginas web entre euskera, castellano, inglés y francés.",
-    EUS: "",
-  },
-
-  section_getting_started_q2_title: {
-    ES: "Primeros pasos: ¿cómo empiezo a usar la web?",
-    EUS: "",
-  },
-  section_getting_started_q2_body: {
-    ES: "No necesitas cuenta. En la página principal puedes elegir entre Traductor o Crear resumen, pegar texto, subir un documento o añadir una URL, seleccionar idiomas y generar el resultado.",
-    EUS: "",
-  },
-
-  section_getting_started_q3_title: {
-    ES: "¿Qué idiomas soporta Euskalia?",
-    EUS: "",
-  },
-  section_getting_started_q3_body: {
-    ES: "Euskalia funciona con cuatro idiomas: euskera, castellano, inglés y francés. Todas las herramientas están diseñadas para usar siempre el euskera como idioma principal.",
-    EUS: "",
-  },
-  // SECCIÓN: TRADUCTOR
-  section_translator_title: {
-    ES: "Traductor",
-    EUS: "",
-  },
-
-  section_translator_q1_title: {
-    ES: "¿Cómo traduzco un texto?",
-    EUS: "",
-  },
-  section_translator_q1_body: {
-    ES: "Escribe o pega un texto en el cuadro principal, selecciona idioma de origen y destino, y pulsa Generar.",
-    EUS: "",
-  },
-
-  section_translator_q2_title: {
-    ES: "¿Puedo traducir documentos?",
-    EUS: "",
-  },
-  section_translator_q2_body: {
-    ES: "Sí. Puedes subir archivos PDF, DOCX o TXT pulsando el botón de Documentos en el Traductor.",
-    EUS: "",
-  },
-
-  section_translator_q3_title: {
-    ES: "¿Puedo traducir páginas web o URLs?",
-    EUS: "",
-  },
-  section_translator_q3_body: {
-    ES: "Sí. Copia la URL en la opción de traducir desde enlace. Euskalia obtendrá el contenido y lo convertirá al idioma deseado.",
-    EUS: "",
-  },
-  // SECCIÓN: RESUMEN
-  section_summary_title: {
-    ES: "Crear resumen",
-    EUS: "",
-  },
-  section_summary_q1_title: {
-    ES: "¿Cómo crear un resumen?",
-    EUS: "",
-  },
-  section_summary_q1_body: {
-    ES: "Pega un texto, sube un documento o introduce una URL. Elige el idioma del resumen y pulsa Generar.",
-    EUS: "",
-  },
-  section_summary_q2_title: {
-    ES: "¿Qué tipo de contenidos puedo resumir?",
-    EUS: "",
-  },
-  section_summary_q2_body: {
-    ES: "Puedes resumir artículos, PDFs, textos largos, trabajos, correos, apuntes y páginas web.",
-    EUS: "",
-  },
-  section_summary_q3_title: {
-    ES: "¿Se mantienen los detalles importantes?",
-    EUS: "",
-  },
-  section_summary_q3_body: {
-    ES: "Sí. Euskalia prioriza ideas clave, estructura lógica y contexto importante para mantener la coherencia del contenido.",
-    EUS: "",
-  },
-  // SECCIÓN: FACTURACIÓN Y PLANES
-  section_billing_title: {
-    ES: "Cuenta y facturación",
-    EUS: "",
-  },
-  section_billing_q1_title: {
-    ES: "¿Qué incluye el Plan Pro?",
-    EUS: "",
-  },
-  section_billing_q1_body: {
-    ES: "Traducciones y resúmenes más rápidos, límites ampliados, subida de documentos más pesados y funciones exclusivas.",
-    EUS: "",
-  },
-  section_billing_q2_title: {
-    ES: "¿Dónde veo mis recibos?",
-    EUS: "",
-  },
-  section_billing_q2_body: {
-    ES: "En tu área de Facturación puedes ver tus pagos, historial y gestionar tu suscripción.",
-    EUS: "",
-  },
-  section_billing_q3_title: {
-    ES: "¿Cómo cambio o cancelo mi plan?",
-    EUS: "",
-  },
-  section_billing_q3_body: {
-    ES: "Puedes cambiar entre planes o cancelar desde el apartado Ajustes → Suscripción.",
-    EUS: "",
-  }, 
-  // SECCIÓN: SOLUCIONAR PROBLEMAS
-  section_problems_title: {
-    ES: "Solucionar problemas",
-    EUS: "",
-  },
-  section_problems_q1_title: {
-    ES: "No puedo subir un PDF",
-    EUS: "",
-  },
-  section_problems_q1_body: {
-    ES: "Comprueba que el archivo no esté dañado y que no supere el límite del plan actual.",
-    EUS: "",
-  },
-  section_problems_q2_title: {
-    ES: "La URL no carga o no se puede traducir",
-    EUS: "",
-  },
-  section_problems_q2_body: {
-    ES: "Algunas páginas pueden bloquear el acceso automático. Intenta copiar y pegar el contenido manualmente.",
-    EUS: "",
-  },
-  section_problems_q3_title: {
-    ES: "Los resultados tardan demasiado",
-    EUS: "",
-  },
-  section_problems_q3_body: {
-    ES: "Puede deberse a tráfico alto o a un documento muy grande. Prueba a reducir el contenido o reintentar unos segundos después.",
-    EUS: "",
-  },
-  bottom_support_text: {
-    ES: "Si sigues teniendo alguna duda, nuestro equipo está aquí para ayudarte.",
-    EUS: "",
-  },
-
-  bottom_support_cta: {
-    ES: "Contactar con soporte",
-    EUS: "",
-  },
-
-  bottom_support_mascot_alt: {
-    ES: "Mascota de Euskalia ofreciendo ayuda",
-    EUS: "",
-  },
-},
-
-
+  
 
 
 
@@ -1659,6 +1481,185 @@ cookies_last_update: {
 
 
                               //  PRO ACCOUNT  // 
+
+
+proHelp: {
+  title: {
+    ES: "¿En qué podemos ayudarte?",
+    EUS: "Nola lagun diezazukegu?",
+  },
+  search_placeholder: {
+    ES: "Describe tu problema o escribe una pregunta",
+    EUS: "Deskribatu zure arazoa edo idatzi galdera bat",
+  },
+  // SECCIÓN: EMPEZAR A USAR EUSKALIA
+  section_getting_started_title: {
+    ES: "Empezar a usar Euskalia",
+    EUS: "Euskalia erabiltzen hasten",
+  },
+
+  section_getting_started_q1_title: {
+    ES: "¿Qué es Euskalia y para qué sirve?",
+    EUS: "Zer da Euskalia eta zertarako balio du?",
+  },
+  section_getting_started_q1_body: {
+    ES: "Euskalia es una herramienta de inteligencia artificial centrada en el euskera. Permite traducir y resumir textos, documentos y páginas web entre euskera, castellano, inglés y francés.",
+    EUS: "Euskalia adimen artifizialean oinarritutako tresna bat da, euskara ardatz duena. Testuak, dokumentuak eta webguneak euskararen, gaztelaniaren, ingelesaren eta frantsesaren artean itzuli eta laburtzeko aukera ematen du.",
+  },
+
+  section_getting_started_q2_title: {
+    ES: "Primeros pasos: ¿cómo empiezo a usar la web?",
+    EUS: "Lehen urratsak: nola hasi webgunea erabiltzen?",
+  },
+  section_getting_started_q2_body: {
+    ES: "No necesitas cuenta. En la página principal puedes elegir entre Traductor o Crear resumen, pegar texto, subir un documento o añadir una URL, seleccionar idiomas y generar el resultado.",
+    EUS: "Ez duzu konturik behar. Hasierako orrian Itzultzailea edo Laburpena sortzea aukera dezakezu, testua itsatsi, dokumentu bat igo edo URL bat gehitu, hizkuntzak aukeratu eta emaitza sortu.",
+  },
+
+  section_getting_started_q3_title: {
+    ES: "¿Qué idiomas soporta Euskalia?",
+    EUS: "Zein hizkuntza onartzen ditu Euskaliak?",
+  },
+  section_getting_started_q3_body: {
+    ES: "Euskalia funciona con cuatro idiomas: euskera, castellano, inglés y francés. Todas las herramientas están diseñadas para usar siempre el euskera como idioma principal.",
+    EUS: "Euskalia lau hizkuntzatan funtzionatzen du: euskaraz, gaztelaniaz, ingelesez eta frantsesez. Tresna guztiak euskara hizkuntza nagusi gisa erabiltzeko diseinatuta daude.",
+  },
+  // SECCIÓN: TRADUCTOR
+  section_translator_title: {
+    ES: "Traductor",
+    EUS: "Itzultzailea",
+  },
+
+  section_translator_q1_title: {
+    ES: "¿Cómo traduzco un texto?",
+    EUS: "Nola itzul dezaket testu bat?",
+  },
+  section_translator_q1_body: {
+    ES: "Escribe o pega un texto en el cuadro principal, selecciona idioma de origen y destino, y pulsa Generar.",
+    EUS: "Idatzi edo itsatsi testua kutxa nagusian, aukeratu jatorri- eta helburu-hizkuntzak, eta sakatu Sortu.",
+  },
+
+  section_translator_q2_title: {
+    ES: "¿Puedo traducir documentos?",
+    EUS: "Dokumentuak itzul ditzaket?",
+  },
+  section_translator_q2_body: {
+    ES: "Sí. Puedes subir archivos PDF, DOCX o TXT pulsando el botón de Documentos en el Traductor.",
+    EUS: "Bai. PDF, DOCX edo TXT fitxategiak igo ditzakezu Itzultzailean Dokumentuak botoia sakatuta.",
+  },
+
+  section_translator_q3_title: {
+    ES: "¿Puedo traducir páginas web o URLs?",
+    EUS: "Webguneak edo URLak itzul ditzaket?",
+  },
+  section_translator_q3_body: {
+    ES: "Sí. Copia la URL en la opción de traducir desde enlace. Euskalia obtendrá el contenido y lo convertirá al idioma deseado.",
+    EUS: "Bai. Kopiatu URL helbidea loturatik itzultzeko aukeran. Euskalik edukia eskuratuko du eta nahi duzun hizkuntzara bihurtuko du.",
+  },
+  // SECCIÓN: RESUMEN
+  section_summary_title: {
+    ES: "Crear resumen",
+    EUS: "Laburpena sortu",
+  },
+  section_summary_q1_title: {
+    ES: "¿Cómo crear un resumen?",
+    EUS: "Nola sortu laburpen bat?",
+  },
+  section_summary_q1_body: {
+    ES: "Pega un texto, sube un documento o introduce una URL. Elige el idioma del resumen y pulsa Generar.",
+    EUS: "Itsatsi testu bat, igo dokumentu bat edo sartu URL bat. Aukeratu laburpenaren hizkuntza eta sakatu Sortu.",
+  },
+  section_summary_q2_title: {
+    ES: "¿Qué tipo de contenidos puedo resumir?",
+    EUS: "Zein edukiren laburpenak sor ditzaket?",
+  },
+  section_summary_q2_body: {
+    ES: "Puedes resumir artículos, PDFs, textos largos, trabajos, correos, apuntes y páginas web.",
+    EUS: "Artikuluak, PDFak, testu luzeak, lanak, mezuak, apunteak eta webguneak labur ditzakezu.",
+  },
+  section_summary_q3_title: {
+    ES: "¿Se mantienen los detalles importantes?",
+    EUS: "Xehetasun garrantzitsuak mantentzen dira?",
+  },
+  section_summary_q3_body: {
+    ES: "Sí. Euskalia prioriza ideas clave, estructura lógica y contexto importante para mantener la coherencia del contenido.",
+    EUS: "Bai. Euskalik ideia nagusiak, egitura logikoa eta testuinguru garrantzitsua lehenesten ditu edukiaren koherentzia mantentzeko.",
+  },
+  // SECCIÓN: FACTURACIÓN Y PLANES
+  section_billing_title: {
+    ES: "Cuenta y facturación",
+    EUS: "Kontua eta fakturazioa",
+  },
+  section_billing_q1_title: {
+    ES: "¿Qué incluye el Plan Pro?",
+    EUS: "Zer dauka barne Pro Planak?",
+  },
+  section_billing_q1_body: {
+    ES: "Traducciones y resúmenes más rápidos, límites ampliados, subida de documentos más pesados y funciones exclusivas.",
+    EUS: "Itzulpen eta laburpen azkarragoak, muga zabalduak, dokumentu astunagoak igotzeko aukera eta funtzio esklusiboak.",
+  },
+  section_billing_q2_title: {
+    ES: "¿Dónde veo mis recibos?",
+    EUS: "Non ikus ditzaket nire ordainagiriak?",
+  },
+  section_billing_q2_body: {
+    ES: "En tu área de Facturación puedes ver tus pagos, historial y gestionar tu suscripción.",
+    EUS: "Fakturazio atalean zure ordainketak, historia eta harpidetzaren kudeaketa ikus ditzakezu.",
+  },
+  section_billing_q3_title: {
+    ES: "¿Cómo cambio o cancelo mi plan?",
+    EUS: "Nola aldatu edo ezeztatu dezaket nire plana?",
+  },
+  section_billing_q3_body: {
+    ES: "Puedes cambiar entre planes o cancelar desde el apartado Ajustes → Suscripción.",
+    EUS: "Planak aldatu edo ezeztatu ditzakezu Ezarpenak → Harpidetza ataletik.",
+  }, 
+  // SECCIÓN: SOLUCIONAR PROBLEMAS
+  section_problems_title: {
+    ES: "Solucionar problemas",
+    EUS: "Arazoak konpontzea",
+  },
+  section_problems_q1_title: {
+    ES: "No puedo subir un PDF",
+    EUS: "Ezin dut PDF bat igo",
+  },
+  section_problems_q1_body: {
+    ES: "Comprueba que el archivo no esté dañado y que no supere el límite del plan actual.",
+    EUS: "Egiaztatu fitxategia ez dagoela hondatuta eta uneko planaren mugak ez dituela gainditzen.",
+  },
+  section_problems_q2_title: {
+    ES: "La URL no carga o no se puede traducir",
+    EUS: "URLa ez da kargatzen edo ezin da itzuli",
+  },
+  section_problems_q2_body: {
+    ES: "Algunas páginas pueden bloquear el acceso automático. Intenta copiar y pegar el contenido manualmente.",
+    EUS: "Zenbait webgunek sarbide automatikoa blokeatzen dute. Saiatu edukia eskuz kopiatu eta itsasten.",
+  },
+  section_problems_q3_title: {
+    ES: "Los resultados tardan demasiado",
+    EUS: "Emaitzek gehiegi behar dute",
+  },
+  section_problems_q3_body: {
+    ES: "Puede deberse a tráfico alto o a un documento muy grande. Prueba a reducir el contenido o reintentar unos segundos después.",
+    EUS: "Trafiko handia edo dokumentu handiegia izan daiteke arrazoia. Saiatu edukia murrizten edo berriro saiatzen segundo batzuk geroago.",
+  },
+  bottom_support_text: {
+    ES: "Si sigues teniendo alguna duda, nuestro equipo está aquí para ayudarte.",
+    EUS: "Zalantzak izanez gero, gure taldea hemen dago laguntzeko.",
+  },
+
+  bottom_support_cta: {
+    ES: "Contactar con soporte",
+    EUS: "Jarri harremanetan laguntzarekin",
+  },
+
+  bottom_support_mascot_alt: {
+    ES: "Mascota de Euskalia ofreciendo ayuda",
+    EUS: "Euskaliaren maskota laguntza eskaintzen",
+  },
+},
+
+
 
 
   //  PRO ACCOUNT – SETTINGS PAGE //
