@@ -196,18 +196,27 @@ export default function ProHelp() {
                   </p>
                 </div>
 
-                {/* COLITA DEL BOCADILLO (TRIÁNGULO LIMPIO) */}
-                <div className="absolute -left-3 top-1/2 -translate-y-1/2">
+                {/* COLITA DEL BOCADILLO (MÁS GRANDE Y BIEN PEGADA) */}
+                <div className="absolute -left-4 top-1/2 -translate-y-1/2">
                   {/* borde */}
-                  <div className="w-0 h-0 border-y-[9px] border-y-transparent border-r-[11px] border-r-slate-200"></div>
+                  <div className="w-0 h-0 border-y-[12px] border-y-transparent border-r-[16px] border-r-slate-200"></div>
                   {/* relleno blanco */}
-                  <div className="absolute left-[1px] top-1/2 -translate-y-1/2 w-0 h-0 border-y-[8px] border-y-transparent border-r-[10px] border-r-white"></div>
+                  <div className="absolute left-[2px] top-1/2 -translate-y-1/2 w-0 h-0 border-y-[11px] border-y-transparent border-r-[15px] border-r-white"></div>
                 </div>
 
                 {/* BOTÓN JUSTO DEBAJO DEL BOCADILLO */}
                 <Link
                   to="/soporte"
-                  className="mt-4 self-center inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
+                  className="
+                    mt-4
+                    self-center
+                    inline-flex items-center justify-center
+                    rounded-full px-5 py-2.5
+                    text-sm md:text-[15px] font-semibold
+                    bg-[#0F82E9] text-white
+                    shadow-sm hover:bg-[#0c6fcc]
+                    transition-colors
+                  "
                 >
                   {tr("proHelp.support_button_label", "")}
                 </Link>
