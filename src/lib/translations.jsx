@@ -1664,13 +1664,13 @@ proHelp: {
 
   //  PRO ACCOUNT – SETTINGS PAGE //
 
-  settings_title: {
+ settings_title: {
     ES: "Ajustes",
-    EUS: "",
+    EUS: "Ezarpenak",
   },
   settings_subtitle: {
     ES: "Personaliza tu experiencia en Olondo.AI.",
-    EUS: "",
+    EUS: "Pertsonalizatu zure esperientzia Olondo.AI-n.",
   },
 
   // =========================
@@ -1679,31 +1679,31 @@ proHelp: {
 
   settings_profile_title: {
     ES: "Perfil",
-    EUS: "",
+    EUS: "Profila",
   },
   settings_profile_desc: {
     ES: "Información básica para identificar tu cuenta.",
-    EUS: "",
+    EUS: "Zure kontua identifikatzeko oinarrizko informazioa.",
   },
   settings_profile_display_name: {
     ES: "Nombre visible",
-    EUS: "",
+    EUS: "Izen ikusgaia",
   },
   settings_profile_email: {
     ES: "Email",
-    EUS: "",
+    EUS: "Emaila",
   },
   settings_profile_email_placeholder: {
     ES: "nombre@ejemplo.com",
-    EUS: "",
+    EUS: "izena@adierazpena.com",
   },
   settings_profile_security_hint: {
     ES: "La edición de contraseña se gestiona desde tu área segura.",
-    EUS: "",
+    EUS: "Pasahitzaren aldaketa zure eremu segurutik kudeatzen da.",
   },
   settings_manage_plan: {
     ES: "Gestionar plan",
-    EUS: "",
+    EUS: "Plana kudeatu",
   },
 
   // =========================
@@ -1712,27 +1712,27 @@ proHelp: {
 
   settings_appearance_title: {
     ES: "Apariencia",
-    EUS: "",
+    EUS: "Itxura",
   },
   settings_appearance_desc: {
     ES: "Elige cómo se ve la interfaz.",
-    EUS: "",
+    EUS: "Aukeratu interfazeak nola ikusten den.",
   },
   settings_appearance_theme: {
     ES: "Tema",
-    EUS: "",
+    EUS: "Gaia",
   },
   settings_appearance_theme_light: {
     ES: "Claro",
-    EUS: "",
+    EUS: "Argia",
   },
   settings_appearance_language: {
     ES: "Idioma",
-    EUS: "",
+    EUS: "Hizkuntza",
   },
   settings_appearance_language_hint: {
     ES: "Cambia el idioma desde aquí.",
-    EUS: "",
+    EUS: "Aldatu hizkuntza hemendik.",
   },
 
   // =========================
@@ -1741,38 +1741,38 @@ proHelp: {
 
   settings_notifications_title: {
     ES: "Notificaciones",
-    EUS: "",
+    EUS: "Jakinarazpenak",
   },
   settings_notifications_desc: {
     ES: "Elige qué correos o avisos quieres recibir.",
-    EUS: "",
+    EUS: "Aukeratu zein mezu edo abisu jaso nahi dituzun.",
   },
 
   settings_notifications_product: {
     ES: "Novedades de producto",
-    EUS: "",
+    EUS: "Produktu-berrikuntzak",
   },
   settings_notifications_product_hint: {
     ES: "Lanzamientos, mejoras y anuncios importantes.",
-    EUS: "",
+    EUS: "Kaleratzeak, hobekuntzak eta iragarki garrantzitsuak.",
   },
 
   settings_notifications_tips: {
     ES: "Consejos y buenas prácticas",
-    EUS: "",
+    EUS: "Aholkuak eta praktika onak",
   },
   settings_notifications_tips_hint: {
     ES: "Emails breves para aprovechar mejor Olondo.AI.",
-    EUS: "",
+    EUS: "Email laburrak Olondo.AI hobeto aprobetxatzeko.",
   },
 
   settings_notifications_billing: {
     ES: "Facturación",
-    EUS: "",
+    EUS: "Fakturazioa",
   },
   settings_notifications_billing_hint: {
     ES: "Recibos, cambios de plan y recordatorios de pago.",
-    EUS: "",
+    EUS: "Ordainagiriak, plan-aldaketak eta ordainketa-oharpenak.",
   },
 
   // =========================
@@ -1781,9 +1781,10 @@ proHelp: {
 
   settings_cta_save: {
     ES: "Guardar cambios",
-    EUS: "",
+    EUS: "Aldaketak gorde",
   },
 }
+
 
 
 
