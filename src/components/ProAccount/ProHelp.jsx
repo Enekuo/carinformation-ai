@@ -109,6 +109,7 @@ export default function ProHelp() {
   return (
     <div className="flex-1 bg-[#F4F7FF] min-h-screen">
       <div className="max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-12">
+        
         {/* HEADER */}
         <header className="text-center mb-8 md:mb-10">
           <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900">
@@ -132,7 +133,7 @@ export default function ProHelp() {
           </div>
         </div>
 
-        {/* SECCIONES (ACORDEÓN: SOLO UNA ABIERTA) */}
+        {/* SECCIONES */}
         <div className="space-y-3">
           {sections.map((section) => (
             <div
@@ -174,12 +175,15 @@ export default function ProHelp() {
           ))}
         </div>
 
-        {/* BLOQUE FINAL: MASCOTA + BOCADILLO + BOTÓN ABAJO */}
-        <div className="mt-12 flex justify-center">
-          <div className="flex flex-col items-center gap-4 w-full max-w-lg">
-            <div className="flex items-end gap-4">
-              {/* MASCOTA MÁS GRANDE */}
-              <div className="w-28 h-28 md:w-32 md:h-32">
+        {/* BLOQUE FINAL CON MASCOTA, BOCADILLO Y BOTÓN */}
+        <div className="mt-12 flex justify-start">
+          <div className="flex flex-col w-full max-w-4xl">
+
+            {/* FILA: MASCOTA + BOCADILLO */}
+            <div className="flex items-start gap-4">
+
+              {/* MASCOTA IZQUIERDA */}
+              <div className="w-28 h-28 md:w-32 md:h-32 flex-shrink-0">
                 <img
                   src="/olondo-mascota2.png"
                   alt={tr("proHelp.support_mascot_alt", "")}
@@ -187,19 +191,21 @@ export default function ProHelp() {
                 />
               </div>
 
-              {/* BOCADILLO CON COLA HACIA LA MASCOTA */}
-              <div className="relative">
-                <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-5 py-3 md:px-6 md:py-3.5 max-w-md">
+              {/* BOCADILLO */}
+              <div className="relative max-w-lg">
+                <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-6 py-4">
                   <p className="text-sm md:text-base text-slate-800">
                     {tr("proHelp.support_bubble_text", "")}
                   </p>
                 </div>
-                <div className="absolute left-6 -bottom-2 w-4 h-4 bg-white border border-slate-200 border-t-0 border-l-0 rotate-45 shadow-sm" />
+
+                {/* COLITA DEL BOCADILLO */}
+                <div className="absolute -left-3 top-4 w-4 h-4 bg-white border border-slate-200 border-r-0 border-b-0 rotate-45 shadow-sm"></div>
               </div>
             </div>
 
-            {/* BOTÓN MÁS A LA DERECHA */}
-            <div className="w-full flex justify-end">
+            {/* BOTÓN A LA DERECHA */}
+            <div className="flex justify-end mt-4">
               <Link
                 to="/soporte"
                 className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
@@ -207,8 +213,10 @@ export default function ProHelp() {
                 {tr("proHelp.support_button_label", "")}
               </Link>
             </div>
+
           </div>
         </div>
+
       </div>
     </div>
   );

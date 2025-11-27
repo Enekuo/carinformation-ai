@@ -1660,6 +1660,21 @@ proHelp: {
     ES: "Mascota de Euskalia ofreciendo ayuda",
     EUS: "Euskaliaren maskota laguntza eskaintzen",
   },
+  support_bubble_text: {
+    ES: "Si sigues teniendo alguna duda, nuestro equipo está aquí para ayudarte.",
+    EUS: "Zalantzak izanez gero, gure taldea hemen dago laguntzeko.",
+  },
+
+  support_button_label: {
+    ES: "Contactar con soporte",
+    EUS: "Jarri harremanetan laguntzarekin",
+  },
+
+  support_mascot_alt: {
+    ES: "Mascota de Euskalia ofreciendo ayuda",
+    EUS: "Euskaliaren maskota laguntza eskaintzen",
+  },
+
 },
 
 
