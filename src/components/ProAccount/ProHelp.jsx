@@ -109,7 +109,6 @@ export default function ProHelp() {
   return (
     <div className="flex-1 bg-[#F4F7FF] min-h-screen">
       <div className="max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-12">
-        
         {/* HEADER */}
         <header className="text-center mb-8 md:mb-10">
           <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-slate-900">
@@ -178,7 +177,6 @@ export default function ProHelp() {
         {/* BLOQUE FINAL CON MASCOTA, BOCADILLO Y BOTÓN */}
         <div className="mt-12 flex justify-start">
           <div className="flex flex-col w-full max-w-4xl">
-
             {/* FILA: MASCOTA + BOCADILLO */}
             <div className="flex items-start gap-2">
               {/* MASCOTA */}
@@ -191,42 +189,32 @@ export default function ProHelp() {
               </div>
 
               {/* BOCADILLO + BOTÓN DEBAJO */}
-              <div className="relative max-w-lg mt-10 -ml-4 flex flex-col items-start"> 
+              <div className="relative max-w-lg mt-10 -ml-4 flex flex-col items-start">
                 <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-6 py-4">
                   <p className="text-sm md:text-base text-slate-800">
                     {tr("proHelp.support_bubble_text", "")}
                   </p>
                 </div>
 
-                {/* COLITA DEL BOCADILLO */}
-                <div className="absolute -left-3 top-6
-    w-3 h-3
-    bg-white
-    border-l border-t border-slate-200
-    rotate-45"></div>
+                {/* COLITA DEL BOCADILLO (TRIÁNGULO LIMPIO) */}
+                <div className="absolute -left-3 top-1/2 -translate-y-1/2">
+                  {/* borde */}
+                  <div className="w-0 h-0 border-y-[9px] border-y-transparent border-r-[11px] border-r-slate-200"></div>
+                  {/* relleno blanco */}
+                  <div className="absolute left-[1px] top-1/2 -translate-y-1/2 w-0 h-0 border-y-[8px] border-y-transparent border-r-[10px] border-r-white"></div>
+                </div>
 
                 {/* BOTÓN JUSTO DEBAJO DEL BOCADILLO */}
                 <Link
                   to="/soporte"
-                  className="
-                     mt-4
-                     self-center
-                     inline-flex items-center justify-center
-                     rounded-full px-5 py-2.5
-                     text-sm md:text-[15px] font-semibold
-                     bg-[#0F82E9] text-white
-                     shadow-sm hover:bg-[#0c6fcc]
-                     transition-colors
-                  "
+                  className="mt-4 self-center inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
                 >
                   {tr("proHelp.support_button_label", "")}
                 </Link>
               </div>
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
   );
