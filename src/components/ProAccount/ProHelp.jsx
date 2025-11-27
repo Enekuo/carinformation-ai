@@ -182,7 +182,7 @@ export default function ProHelp() {
             {/* FILA: MASCOTA + BOCADILLO */}
             <div className="flex items-start gap-2">
               {/* MASCOTA */}
-              <div className="w-44 h-44 md:w-56 md:h-56 flex-shrink-0">
+              <div className="w-44 h-44 md:w-56 md:h-56 flex-shrink-6">
                 <img
                   src="/olondo-mascota2.png"
                   alt={tr("proHelp.support_mascot_alt", "")}
