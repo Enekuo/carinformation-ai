@@ -206,7 +206,7 @@ export default function ProHelp() {
                   to="/soporte"
                   className="
                      mt-4
-                     self
+                     self-center
                      inline-flex items-center justify-center
                      rounded-full px-5 py-2.5
                      text-sm md:text-[15px] font-semibold
