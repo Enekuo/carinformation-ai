@@ -116,7 +116,7 @@ export default function ProHelp() {
           </h1>
         </header>
 
-        {/* BUSCADOR + BOTÓN SOPORTE SUPERIOR (si no quieres este, puedes eliminar solo el Link) */}
+        {/* BUSCADOR */}
         <div className="max-w-4xl mx-auto mb-10">
           <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center">
             <div className="relative flex-1">
@@ -129,13 +129,6 @@ export default function ProHelp() {
                 placeholder={tr("proHelp.search_placeholder", "")}
               />
             </div>
-
-            <Link
-              to="/soporte"
-              className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
-            >
-              {tr("proHelp.support_button_label", "")}
-            </Link>
           </div>
         </div>
 
