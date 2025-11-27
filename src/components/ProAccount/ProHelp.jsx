@@ -183,7 +183,7 @@ export default function ProHelp() {
             <div className="flex items-start gap-4">
 
               {/* MASCOTA IZQUIERDA */}
-              <div className="w-28 h-28 md:w-32 md:h-32 flex-shrink-0">
+              <div className="w-36 h-36 md:w-44 md:h-44 flex-shrink-0">
                 <img
                   src="/olondo-mascota2.png"
                   alt={tr("proHelp.support_mascot_alt", "")}
