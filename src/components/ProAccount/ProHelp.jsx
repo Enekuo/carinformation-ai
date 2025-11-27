@@ -176,9 +176,10 @@ export default function ProHelp() {
 
         {/* BLOQUE FINAL: MASCOTA + BOCADILLO + BOTÓN ABAJO */}
         <div className="mt-12 flex justify-center">
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 w-full max-w-lg">
             <div className="flex items-end gap-4">
-              <div className="w-24 h-24 md:w-28 md:h-28">
+              {/* MASCOTA MÁS GRANDE */}
+              <div className="w-28 h-28 md:w-32 md:h-32">
                 <img
                   src="/olondo-mascota2.png"
                   alt={tr("proHelp.support_mascot_alt", "")}
@@ -186,19 +187,26 @@ export default function ProHelp() {
                 />
               </div>
 
-              <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-5 py-3 md:px-6 md:py-3.5 max-w-md">
-                <p className="text-sm md:text-base text-slate-800">
-                  {tr("proHelp.support_bubble_text", "")}
-                </p>
+              {/* BOCADILLO CON COLA HACIA LA MASCOTA */}
+              <div className="relative">
+                <div className="bg-white border border-slate-200 shadow-sm rounded-3xl px-5 py-3 md:px-6 md:py-3.5 max-w-md">
+                  <p className="text-sm md:text-base text-slate-800">
+                    {tr("proHelp.support_bubble_text", "")}
+                  </p>
+                </div>
+                <div className="absolute left-6 -bottom-2 w-4 h-4 bg-white border border-slate-200 border-t-0 border-l-0 rotate-45 shadow-sm" />
               </div>
             </div>
 
-            <Link
-              to="/soporte"
-              className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
-            >
-              {tr("proHelp.support_button_label", "")}
-            </Link>
+            {/* BOTÓN MÁS A LA DERECHA */}
+            <div className="w-full flex justify-end">
+              <Link
+                to="/soporte"
+                className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
+              >
+                {tr("proHelp.support_button_label", "")}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
