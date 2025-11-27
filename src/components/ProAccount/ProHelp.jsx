@@ -207,7 +207,15 @@ export default function ProHelp() {
             <div className="flex justify-end mt-4">
               <Link
                 to="/soporte"
-                className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm md:text-[15px] font-semibold bg-[#0F82E9] text-white shadow-sm hover:bg-[#0c6fcc] transition-colors"
+                 className="
+                    mt-4
+                    inline-flex items-center justify-center
+                    rounded-full px-5 py-2.5
+                    text-sm md:text-[15px] font-semibold
+                    bg-[#0F82E9] text-white
+                    shadow-sm hover:bg-[#0c6fcc]
+                    transition-colors
+                "
               >
                 {tr("proHelp.support_button_label", "")}
               </Link>
