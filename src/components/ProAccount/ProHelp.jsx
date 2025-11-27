@@ -197,7 +197,7 @@ export default function ProHelp() {
                 </div>
 
                 {/* COLITA DEL BOCADILLO, UN POCO MÁS ARRIBA */}
-                <div className="absolute -left-3 top-[35%] -translate-y-1/2">
+                <div className="absolute -left-3 top-[15%] -translate-y-1/2">
                   {/* borde */}
                   <div className="w-0 h-0 border-y-[12px] border-y-transparent border-r-[16px] border-r-slate-200"></div>
                   {/* relleno blanco */}
