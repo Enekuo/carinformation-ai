@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Send, CheckCircle2, Sparkles } from "lucide-react";
+import { useTranslation } from "@/lib/translations";
 
 const MAX_CHARS = 1000;
 
 export default function ProSuggestions() {
+  const { t } = useTranslation();
+  const tr = (key, fallback = "") => t(key) || fallback;
+
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -15,14 +19,12 @@ export default function ProSuggestions() {
     setSubmitted(false);
 
     if (!message.trim()) {
-      setError("Por favor, escribe tu sugerencia antes de enviarla.");
+      setError(tr("proSuggestions.error_required", ""));
       return;
     }
 
     if (message.trim().length < 20) {
-      setError(
-        "Añade un poco más de detalle para que podamos entender bien tu sugerencia."
-      );
+      setError(tr("proSuggestions.error_min_length", ""));
       return;
     }
 
@@ -44,21 +46,19 @@ export default function ProSuggestions() {
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-1 text-[11px] font-medium text-blue-700 shadow-sm">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Zona de ideas y sugerencias de Euskalia</span>
+            <span>{tr("proSuggestions.zone_badge", "")}</span>
           </div>
 
           <div className="space-y-3">
             <h1 className="text-2xl sm:text-3xl md:text-[30px] font-extrabold tracking-tight text-slate-900">
-              Ayúdanos a decidir las próximas mejoras de Euskalia
+              {tr("proSuggestions.title", "")}
             </h1>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-              Esta página es para que nos cuentes{" "}
+              {tr("proSuggestions.description_part1", "")}
               <span className="font-semibold text-slate-900">
-                qué te gustaría que añadamos o mejoremos en Euskalia
+                {tr("proSuggestions.description_highlight", "")}
               </span>
-              : nuevas herramientas, cambios en el diseño, límites, ideas para
-              estudiar mejor, cosas que te molestan… cualquier comentario es
-              bienvenido.
+              {tr("proSuggestions.description_part2", "")}
             </p>
           </div>
 
@@ -77,17 +77,16 @@ export default function ProSuggestions() {
           <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h2 className="text-sm sm:text-base font-semibold text-slate-900">
-                Enviar una sugerencia
+                {tr("proSuggestions.form_title", "")}
               </h2>
               <p className="text-xs sm:text-sm text-slate-500">
-                Escríbenos con total libertad. Leemos todas las ideas para
-                decidir las siguientes funciones de Euskalia.
+                {tr("proSuggestions.form_subtitle", "")}
               </p>
             </div>
 
             <div className="flex items-center gap-2 text-[11px] sm:text-xs text-blue-700 bg-blue-50/90 border border-blue-100 rounded-full px-3 py-1">
               <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              <span>Tus sugerencias nos ayudan a mejorar cada semana.</span>
+              <span>{tr("proSuggestions.form_badge", "")}</span>
             </div>
           </div>
 
@@ -95,7 +94,7 @@ export default function ProSuggestions() {
             {/* SUGERENCIA */}
             <div className="grid gap-1.5">
               <label className="text-xs font-semibold text-slate-800">
-                Escribe aquí tu sugerencia
+                {tr("proSuggestions.textarea_label", "")}
               </label>
               <textarea
                 value={message}
@@ -103,12 +102,13 @@ export default function ProSuggestions() {
                   setMessage(e.target.value.slice(0, MAX_CHARS))
                 }
                 rows={6}
-                placeholder="Cuéntanos qué herramienta, cambio o mejora te gustaría ver en Euskalia, y por qué crees que sería útil para ti o para otras personas."
+                placeholder={tr("proSuggestions.textarea_placeholder", "")}
                 className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 resize-none transition"
               />
               <div className="flex justify-end">
                 <span className="text-[11px] text-slate-500">
-                  {message.length}/{MAX_CHARS} caracteres
+                  {message.length}/{MAX_CHARS}{" "}
+                  {tr("proSuggestions.characters_suffix", "")}
                 </span>
               </div>
             </div>
@@ -116,13 +116,13 @@ export default function ProSuggestions() {
             {/* EMAIL OPCIONAL */}
             <div className="grid gap-1.5">
               <label className="text-xs font-semibold text-slate-800">
-                Correo electrónico (opcional)
+                {tr("proSuggestions.email_label", "")}
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Solo si quieres que podamos contactarte para aclarar algo."
+                placeholder={tr("proSuggestions.email_placeholder", "")}
                 className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/60 px-3.5 py-2 text-sm text-slate-900 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 transition"
               />
             </div>
@@ -138,10 +138,7 @@ export default function ProSuggestions() {
           {submitted && !error && (
             <div className="relative flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50/90 border border-emerald-100 rounded-2xl px-3.5 py-2">
               <CheckCircle2 className="w-4 h-4" />
-              <span>
-                Gracias por tu sugerencia. La tendremos en cuenta para las
-                próximas mejoras.
-              </span>
+              <span>{tr("proSuggestions.success_message", "")}</span>
             </div>
           )}
 
@@ -154,7 +151,7 @@ export default function ProSuggestions() {
               className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 px-6 py-3 text-xs sm:text-sm font-semibold text-white shadow-[0_10px_30px_rgba(56,132,255,0.35)] hover:shadow-[0_12px_40px_rgba(56,132,255,0.45)] hover:brightness-105 active:scale-95 transition"
             >
               <Send className="w-4 h-4" />
-              Enviar sugerencia
+              {tr("proSuggestions.button_label", "")}
             </button>
           </div>
         </form>

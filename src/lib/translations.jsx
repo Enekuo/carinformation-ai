@@ -1482,7 +1482,97 @@ cookies_last_update: {
                        //        PRO ACCOUNT 
                        // ========================= 
                        // =========================
-                             
+  // =========================
+  //        Pro Suggestions
+  // =========================                          
+  proSuggestions: {
+  zone_badge: {
+    ES: "Zona de ideas y sugerencias de Euskalia",
+    EUS: "",
+  },
+
+  title: {
+    ES: "Ayúdanos a decidir las próximas mejoras de Euskalia",
+    EUS: "",
+  },
+
+  description_part1: {
+    ES: "Esta página es para que nos cuentes ",
+    EUS: "",
+  },
+
+  description_highlight: {
+    ES: "qué te gustaría que añadamos o mejoremos en Euskalia",
+    EUS: "",
+  },
+
+  description_part2: {
+    ES: ": nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido.",
+    EUS: "",
+  },
+
+  form_title: {
+    ES: "Enviar una sugerencia",
+    EUS: "",
+  },
+
+  form_subtitle: {
+    ES: "Escríbenos con total libertad. Leemos todas las ideas para decidir las siguientes funciones de Euskalia.",
+    EUS: "",
+  },
+
+  form_badge: {
+    ES: "Tus sugerencias nos ayudan a mejorar cada semana.",
+    EUS: "",
+  },
+
+  textarea_label: {
+    ES: "Escribe aquí tu sugerencia",
+    EUS: "",
+  },
+
+  textarea_placeholder: {
+    ES: "Cuéntanos qué herramienta, cambio o mejora te gustaría ver en Euskalia, y por qué crees que sería útil para ti o para otras personas.",
+    EUS: "",
+  },
+
+  email_label: {
+    ES: "Correo electrónico (opcional)",
+    EUS: "",
+  },
+
+  email_placeholder: {
+    ES: "Solo si quieres que podamos contactarte para aclarar algo.",
+    EUS: "",
+  },
+
+  characters_suffix: {
+    ES: "caracteres",
+    EUS: "",
+  },
+
+  error_required: {
+    ES: "Por favor, escribe tu sugerencia antes de enviarla.",
+    EUS: "",
+  },
+
+  error_min_length: {
+    ES: "Añade un poco más de detalle para que podamos entender bien tu sugerencia.",
+    EUS: "",
+  },
+
+  success_message: {
+    ES: "Gracias por tu sugerencia. La tendremos en cuenta para las próximas mejoras.",
+    EUS: "",
+  },
+
+  button_label: {
+    ES: "Enviar sugerencia",
+    EUS: "",
+  },
+},
+
+
   // =========================
   //        Pro Help
   // =========================
