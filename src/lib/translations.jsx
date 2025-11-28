@@ -1488,89 +1488,90 @@ cookies_last_update: {
   proSuggestions: {
   zone_badge: {
     ES: "Zona de ideas y sugerencias de Euskalia",
-    EUS: "",
+    EUS: "Euskaliaren ideien eta iradokizunen gunea",
   },
 
   title: {
     ES: "Ayúdanos a decidir las próximas mejoras de Euskalia",
-    EUS: "",
+    EUS: "Lagundu Euskaliaren hurrengo hobekuntzak erabakitzen",
   },
 
   description_part1: {
     ES: "Esta página es para que nos cuentes ",
-    EUS: "",
+    EUS: "Orri hau horretarako da: esan diezagukezun ",
   },
 
   description_highlight: {
     ES: "qué te gustaría que añadamos o mejoremos en Euskalia",
-    EUS: "",
+    EUS: "Euskalien zer gehitzea edo hobetzea gustatuko litzaizukeen",
   },
 
   description_part2: {
     ES: ": nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido.",
-    EUS: "",
+    EUS: ": tresna berriak, diseinu-aldaketak, mugak, ikasteko hobekuntzak, molestatzen zaizkizun gauzak… edozein iradokizun ongi etorria da.",
   },
 
   form_title: {
     ES: "Enviar una sugerencia",
-    EUS: "",
+    EUS: "Bidali iradokizun bat",
   },
 
   form_subtitle: {
     ES: "Escríbenos con total libertad. Leemos todas las ideas para decidir las siguientes funciones de Euskalia.",
-    EUS: "",
+    EUS: "Idatzi nahi duzuna askatasunez. Jasotzen ditugun ideia guztiak irakurtzen ditugu Euskaliaren hurrengo funtzioak erabakitzeko.",
   },
 
   form_badge: {
     ES: "Tus sugerencias nos ayudan a mejorar cada semana.",
-    EUS: "",
+    EUS: "Zure iradokizunek astero laguntzen digute hobetzen.",
   },
 
   textarea_label: {
     ES: "Escribe aquí tu sugerencia",
-    EUS: "",
+    EUS: "Idatzi hemen zure iradokizuna",
   },
 
   textarea_placeholder: {
     ES: "Cuéntanos qué herramienta, cambio o mejora te gustaría ver en Euskalia, y por qué crees que sería útil para ti o para otras personas.",
-    EUS: "",
+    EUS: "Esan zein tresna, aldaketa edo hobekuntza gustatuko litzaizukeen Euskalian, eta zergatik izango litzatekeen erabilgarria zuretzat edo besteentzat.",
   },
 
   email_label: {
     ES: "Correo electrónico (opcional)",
-    EUS: "",
+    EUS: "Helbide elektronikoa (aukerakoa)",
   },
 
   email_placeholder: {
     ES: "Solo si quieres que podamos contactarte para aclarar algo.",
-    EUS: "",
+    EUS: "Zerbait argitzeko zurekin harremanetan jar gaitezen nahi baduzu bakarrik.",
   },
 
   characters_suffix: {
     ES: "caracteres",
-    EUS: "",
+    EUS: "karaktere",
   },
 
   error_required: {
     ES: "Por favor, escribe tu sugerencia antes de enviarla.",
-    EUS: "",
+    EUS: "Mesedez, bidali aurretik idatzi zure iradokizuna.",
   },
 
   error_min_length: {
     ES: "Añade un poco más de detalle para que podamos entender bien tu sugerencia.",
-    EUS: "",
+    EUS: "Gehitu xehetasun pixka bat gehiago zure iradokizuna hobeto ulertu dezagun.",
   },
 
   success_message: {
     ES: "Gracias por tu sugerencia. La tendremos en cuenta para las próximas mejoras.",
-    EUS: "",
+    EUS: "Eskerrik asko zure iradokizunagatik. Hurrengo hobekuntzetan kontuan hartuko dugu.",
   },
 
   button_label: {
     ES: "Enviar sugerencia",
-    EUS: "",
+    EUS: "Bidali iradokizuna",
   },
 },
+
 
 
   // =========================
