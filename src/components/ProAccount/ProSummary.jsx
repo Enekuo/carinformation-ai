@@ -320,9 +320,7 @@ export default function ProSummary() {
   ]);
 
   // ===== Documentos =====
-
-  // Lee como texto los archivos con extensión .txt o .md, conservando el mismo id del documento
-  const readTextFromFiles = async (items /* [{id,file}] */) => {
+  const readTextFromFiles = async (items) => {
     const results = await Promise.all(
       items.map(
         ({ id, file }) =>
@@ -346,21 +344,17 @@ export default function ProSummary() {
 
   const triggerPick = () => fileInputRef.current?.click();
 
-  // Añadir documentos y leer .txt/.md
   const addFiles = async (list) => {
     if (!list?.length) return;
 
     const arr = Array.from(list);
     const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
 
-    // 1) Añadir a la lista visible
     setDocuments((prev) => [...prev, ...withIds]);
 
-    // 2) Leer contenidos de TXT/MD y guardarlos
     const texts = await readTextFromFiles(withIds);
     if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
 
-    // 3) Igual que con URLs: al cambiar documentos, limpiamos el resultado
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
@@ -398,7 +392,6 @@ export default function ProSummary() {
   const removeDocument = (id) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
     setDocumentsText((prev) => prev.filter((d) => d.id !== id));
-    // limpiar salida (misma UX que en URLs)
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
@@ -421,7 +414,6 @@ export default function ProSummary() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // Limpiar resultado cuando cambie la lista de URLs
   useEffect(() => {
     setResult("");
     setErrorMsg("");
@@ -448,21 +440,17 @@ export default function ProSummary() {
         setCopiedFlash(true);
         setTimeout(() => setCopiedFlash(false), 1200);
       }
-    } catch {
-      // silencioso
-    }
+    } catch {}
   };
 
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
-    clearRight(); // limpia resultado y estados del panel derecho
+    clearRight();
   };
 
-  // === NUEVA FUNCIÓN: GUARDAR RESUMEN ===
   const handleSaveSummary = () => {
     if (!result) return;
-    // Aquí conectarás con tu API / biblioteca de guardados
     console.log("Guardar resumen:", result);
   };
 
@@ -531,7 +519,6 @@ export default function ProSummary() {
     </div>
   );
 
-  // ===== Helper: cache key (sha-256) para KV =====
   const sha256Hex = async (input) => {
     try {
       const enc = new TextEncoder().encode(input);
@@ -546,7 +533,6 @@ export default function ProSummary() {
 
   // ===== Generar =====
   const handleGenerate = async () => {
-    // Arreglo del parpadeo: activar loading primero y no limpiar result al iniciar
     setLoading(true);
     setErrorMsg("");
     setErrorKind(null);
@@ -579,11 +565,18 @@ export default function ProSummary() {
     const wordCount = words.length;
     const strictExtractive = onlyText && wordCount <= 120;
 
+    // 🔵 FRASE “TEXTO DEMASIADO BREVE” POR IDIOMA
+    const tooShortMsg =
+      outputLang === "es"
+        ? "El texto es demasiado breve para resumir con fidelidad."
+        : outputLang === "en"
+        ? "The text is too short to summarize reliably."
+        : "Testua laburregia da fideltasunez laburtzeko.";
+
     const formattingRules =
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
 
-    // ✅ instrucción de idioma reforzada
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: español (ISO: es). Redacta toda la respuesta en español."
@@ -598,7 +591,6 @@ export default function ProSummary() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // ✅ incrustar contenido real de .txt/.md en el prompt
     const docsInline = documentsText?.length
       ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
@@ -611,13 +603,13 @@ export default function ProSummary() {
 
     const userContent = [
       strictExtractive
-        ? "Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: 'El texto es demasiado breve para resumir con fidelidad.'"
+        ? `Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: "${tooShortMsg}".`
         : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList
         ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
         : "",
-      docsInline, // ⬅️ aquí metemos el contenido real de .txt/.md
+      docsInline,
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -657,8 +649,7 @@ export default function ProSummary() {
           messages,
           length: summaryLength,
           cacheKey,
-          // seguimos enviando el contenido por si el backend lo usa también
-          documentsText, // [{id,name,text}]
+          documentsText,
         }),
       });
 
@@ -696,14 +687,14 @@ export default function ProSummary() {
         .replace(/\s{2,}/g, " ")
         .trim();
 
+      // 🔵 Si la respuesta es exactamente la frase de “texto demasiado breve”,
+      // la mostramos tal cual, pero ya en el idioma seleccionado.
       if (
-        /^el texto es demasiado breve para resumir con fidelidad\.?$/i.test(
-          cleaned
-        )
+        cleaned &&
+        cleaned.trim().toLowerCase() ===
+          tooShortMsg.trim().toLowerCase()
       ) {
-        setResult(
-          "El texto es demasiado breve para resumir con fidelidad."
-        );
+        setResult(tooShortMsg);
         setLastSummarySig(canonicalize(textValue));
         setIsOutdated(false);
         setLoading(false);
@@ -813,7 +804,6 @@ export default function ProSummary() {
                       className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                       aria-label={labelTabText}
                     />
-                    {/* Contador + barra */}
                     <div className="mt-2">
                       <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
                         <div
@@ -1012,7 +1002,7 @@ export default function ProSummary() {
 
             {/* ===== Panel Derecho ===== */}
             <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-              {/* Barra superior con tabs + selector + acciones */}
+              {/* Barra superior */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
                   <LengthTab
@@ -1035,14 +1025,11 @@ export default function ProSummary() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {/* Selector de idioma */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
                         type="button"
-                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
-                                   flex items-center justify-between hover:border-slate-400
-                                   shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                         aria-label="Idioma de salida"
                       >
                         <span className="truncate">
@@ -1104,7 +1091,6 @@ export default function ProSummary() {
                     </DropdownMenuContent>
                   </DropdownMenu>
 
-                  {/* Copiar resultado: cambia a tic azul al copiar */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
@@ -1124,7 +1110,6 @@ export default function ProSummary() {
                     )}
                   </button>
 
-                  {/* Eliminar texto de la izquierda */}
                   <button
                     type="button"
                     onClick={handleClearLeft}
@@ -1140,13 +1125,12 @@ export default function ProSummary() {
                     <Trash className="w-4 h-4" />
                   </button>
 
-                  {/* BOTÓN GUARDAR ARRIBA, SOLO CUANDO HAY RESULTADO */}
                   {result && !loading && (
                     <button
                       type="button"
                       onClick={handleSaveSummary}
                       className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                      style={{ backgroundColor: "#22c55e" }} // verde
+                      style={{ backgroundColor: "#22c55e" }}
                     >
                       Guardar
                     </button>
@@ -1186,7 +1170,7 @@ export default function ProSummary() {
                 </>
               )}
 
-              {/* Resultado / errores / loader / aviso / límite */}
+              {/* Resultado / errores */}
               <div className="w-full">
                 {(result || errorMsg || loading || errorKind) && (
                   <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
@@ -1246,7 +1230,6 @@ export default function ProSummary() {
                       </article>
                     )}
 
-                    {/* Skeleton de carga */}
                     {loading && !result && (
                       <div className="space-y-3 animate-pulse">
                         <div className="h-4 bg-slate-200 rounded" />
