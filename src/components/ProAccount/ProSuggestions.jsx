@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, Sparkles } from "lucide-react";
 
 const MAX_CHARS = 1000;
 
@@ -26,7 +26,7 @@ export default function ProSuggestions() {
       return;
     }
 
-    // Aquí en el futuro podrás enviar la sugerencia a una API o a un backend
+    // Aquí en el futuro podrás enviar la sugerencia a una API o a un backend real
     console.log({
       message,
       email,
@@ -34,37 +34,67 @@ export default function ProSuggestions() {
 
     setSubmitted(true);
     setMessage("");
-    // Dejamos el email para que no tenga que volver a escribirlo si envía varias
+    // Dejamos el email por si quiere enviar más sugerencias seguidas
   };
 
   return (
-    <section className="w-full h-full">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10 space-y-8">
-        {/* Cabecera simple */}
-        <div className="space-y-3">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-            Ayúdanos a decidir las próximas mejoras de Euskalia
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            Esta página es para que nos cuentes{" "}
-            <span className="font-semibold text-slate-800">
-              qué te gustaría que añadamos o mejoremos en Euskalia
-            </span>
-            : nuevas herramientas, cambios en el diseño, límites, ideas para
-            estudiar mejor, cosas que te molestan… cualquier comentario es
-            bienvenido.
-          </p>
+    <section className="w-full h-full bg-gradient-to-b from-[#F4F8FF] via-white to-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-10 md:py-14 space-y-8">
+        {/* CABECERA */}
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-1 text-[11px] font-medium text-blue-700 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Zona de ideas y sugerencias de Euskalia</span>
+          </div>
+
+          <div className="space-y-3">
+            <h1 className="text-2xl sm:text-3xl md:text-[30px] font-extrabold tracking-tight text-slate-900">
+              Ayúdanos a decidir las próximas mejoras de Euskalia
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+              Esta página es para que nos cuentes{" "}
+              <span className="font-semibold text-slate-900">
+                qué te gustaría que añadamos o mejoremos en Euskalia
+              </span>
+              : nuevas herramientas, cambios en el diseño, límites, ideas para
+              estudiar mejor, cosas que te molestan… cualquier comentario es
+              bienvenido.
+            </p>
+          </div>
+
+          <div className="h-1 w-20 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-sky-400" />
         </div>
 
-        {/* Formulario muy simple */}
+        {/* TARJETA PRINCIPAL */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-slate-200 bg-white shadow-sm px-4 sm:px-6 py-5 sm:py-6 space-y-5"
+          className="relative rounded-3xl border border-blue-100 bg-white/95 shadow-[0_18px_45px_rgba(15,23,42,0.06)] px-4 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 space-y-6 overflow-hidden"
         >
-          <div className="grid gap-4">
-            {/* Sugerencia */}
+          {/* halo azul suave */}
+          <div className="pointer-events-none absolute -top-32 -right-32 h-56 w-56 rounded-full bg-blue-200/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 -left-32 h-56 w-56 rounded-full bg-sky-200/40 blur-3xl" />
+
+          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 className="text-sm sm:text-base font-semibold text-slate-900">
+                Enviar una sugerencia
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500">
+                Escríbenos con total libertad. Leemos todas las ideas para
+                decidir las siguientes funciones de Euskalia.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 text-[11px] sm:text-xs text-blue-700 bg-blue-50/90 border border-blue-100 rounded-full px-3 py-1">
+              <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span>Tus sugerencias nos ayudan a mejorar cada semana.</span>
+            </div>
+          </div>
+
+          <div className="relative grid gap-5">
+            {/* SUGERENCIA */}
             <div className="grid gap-1.5">
-              <label className="text-xs font-medium text-slate-700">
+              <label className="text-xs font-semibold text-slate-800">
                 Escribe aquí tu sugerencia
               </label>
               <textarea
@@ -73,8 +103,8 @@ export default function ProSuggestions() {
                   setMessage(e.target.value.slice(0, MAX_CHARS))
                 }
                 rows={6}
-                placeholder="Cuéntanos qué herramienta, cambio o mejora te gustaría ver en Euskalia, y por qué crees que sería útil."
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-slate-400 focus:bg-white focus:ring-1 focus:ring-slate-300 resize-none"
+                placeholder="Cuéntanos qué herramienta, cambio o mejora te gustaría ver en Euskalia, y por qué crees que sería útil para ti o para otras personas."
+                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 resize-none transition"
               />
               <div className="flex justify-end">
                 <span className="text-[11px] text-slate-500">
@@ -83,9 +113,9 @@ export default function ProSuggestions() {
               </div>
             </div>
 
-            {/* Email opcional */}
+            {/* EMAIL OPCIONAL */}
             <div className="grid gap-1.5">
-              <label className="text-xs font-medium text-slate-700">
+              <label className="text-xs font-semibold text-slate-800">
                 Correo electrónico (opcional)
               </label>
               <input
@@ -93,20 +123,20 @@ export default function ProSuggestions() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Solo si quieres que podamos contactarte para aclarar algo."
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-slate-400 focus:bg-white focus:ring-1 focus:ring-slate-300"
+                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/60 px-3.5 py-2 text-sm text-slate-900 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 transition"
               />
             </div>
           </div>
 
-          {/* Mensajes de error / éxito */}
+          {/* MENSAJES DE ESTADO */}
           {error && (
-            <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+            <p className="relative text-xs text-red-600 bg-red-50/90 border border-red-100 rounded-2xl px-3.5 py-2">
               {error}
             </p>
           )}
 
           {submitted && !error && (
-            <div className="flex items-center gap-2 text-xs text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2">
+            <div className="relative flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50/90 border border-emerald-100 rounded-2xl px-3.5 py-2">
               <CheckCircle2 className="w-4 h-4" />
               <span>
                 Gracias por tu sugerencia. La tendremos en cuenta para las
@@ -115,11 +145,11 @@ export default function ProSuggestions() {
             </div>
           )}
 
-          {/* Botón enviar */}
-          <div className="flex justify-end">
+          {/* BOTÓN ENVIAR */}
+          <div className="relative flex justify-end">
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs sm:text-sm font-medium text-white hover:bg-slate-800 active:scale-95 transition"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-95 transition"
             >
               <Send className="w-4 h-4" />
               Enviar sugerencia
