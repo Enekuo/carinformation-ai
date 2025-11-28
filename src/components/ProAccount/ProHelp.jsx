@@ -9,6 +9,7 @@ export default function ProHelp() {
 
   const [activeSection, setActiveSection] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [openItems, setOpenItems] = useState({}); // { [sectionId]: { [itemKey]: bool } }
 
   const sections = [
     {
@@ -107,8 +108,22 @@ export default function ProHelp() {
     setActiveSection((current) => (current === id ? null : id));
   };
 
+  const handleToggleItem = (sectionId, itemKey) => {
+    setOpenItems((prev) => {
+      const sectionItems = prev[sectionId] || {};
+      return {
+        ...prev,
+        [sectionId]: {
+          ...sectionItems,
+          [itemKey]: !sectionItems[itemKey],
+        },
+      };
+    });
+  };
+
   // === LÓGICA DE BÚSQUEDA ===
   const normalizedQuery = searchQuery.trim().toLowerCase();
+  const isSearching = normalizedQuery !== "";
 
   const sectionsWithContent = sections
     .map((section) => {
@@ -120,7 +135,7 @@ export default function ProHelp() {
       });
 
       const filteredItems =
-        normalizedQuery === ""
+        !isSearching
           ? itemsWithContent
           : itemsWithContent.filter((item) => {
               const titleMatch = item.title
@@ -142,7 +157,7 @@ export default function ProHelp() {
       };
     })
     .filter((section) =>
-      normalizedQuery === "" ? true : section.itemsRendered.length > 0
+      !isSearching ? true : section.itemsRendered.length > 0
     );
 
   return (
@@ -177,9 +192,7 @@ export default function ProHelp() {
         <div className="space-y-3">
           {sectionsWithContent.map((section) => {
             const isOpen =
-              normalizedQuery !== ""
-                ? true
-                : activeSection === section.id;
+              isSearching ? true : activeSection === section.id;
 
             return (
               <div
@@ -204,16 +217,37 @@ export default function ProHelp() {
                 {isOpen && section.itemsRendered.length > 0 && (
                   <div className="px-5 pb-5 pt-1 md:px-6 border-t border-slate-100">
                     <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
-                      {section.itemsRendered.map((item) => (
-                        <div key={item.titleKey}>
-                          <p className="font-semibold mb-1 text-slate-900">
-                            {item.title}
-                          </p>
-                          <p className="text-slate-600 whitespace-pre-line">
-                            {item.body}
-                          </p>
-                        </div>
-                      ))}
+                      {section.itemsRendered.map((item) => {
+                        const itemIsOpen =
+                          isSearching ||
+                          openItems[section.id]?.[item.titleKey];
+
+                        return (
+                          <div key={item.titleKey}>
+                            {/* TÍTULO PEQUEÑO (CLICKABLE) */}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                !isSearching &&
+                                handleToggleItem(
+                                  section.id,
+                                  item.titleKey
+                                )
+                              }
+                              className="w-full text-left font-semibold mb-1 text-slate-900 hover:text-sky-700 transition-colors"
+                            >
+                              {item.title}
+                            </button>
+
+                            {/* FRASE / CUERPO */}
+                            {itemIsOpen && (
+                              <p className="text-slate-600 whitespace-pre-line">
+                                {item.body}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -244,15 +278,13 @@ export default function ProHelp() {
                   </p>
                 </div>
 
-                {/* COLITA DEL BOCADILLO, UN POCO MÁS ARRIBA */}
+                {/* COLITA DEL BOCADILLO */}
                 <div className="absolute -left-3 top-[25%] -translate-y-1/2">
-                  {/* borde */}
                   <div className="w-0 h-0 border-y-[12px] border-y-transparent border-r-[16px] border-r-slate-200"></div>
-                  {/* relleno blanco */}
                   <div className="absolute left-[2px] top-1/2 -translate-y-1/2 w-0 h-0 border-y-[11px] border-y-transparent border-r-[15px] border-r-white"></div>
                 </div>
 
-                {/* BOTÓN JUSTO DEBAJO DEL BOCADILLO */}
+                {/* BOTÓN SOPORTE */}
                 <Link
                   to="/soporte"
                   className="
