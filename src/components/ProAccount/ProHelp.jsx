@@ -8,6 +8,7 @@ export default function ProHelp() {
   const tr = (key, fallback) => t(key) || fallback;
 
   const [activeSection, setActiveSection] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const sections = [
     {
@@ -106,6 +107,44 @@ export default function ProHelp() {
     setActiveSection((current) => (current === id ? null : id));
   };
 
+  // === LÓGICA DE BÚSQUEDA ===
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+
+  const sectionsWithContent = sections
+    .map((section) => {
+      const sectionTitle = tr(section.titleKey, "");
+      const itemsWithContent = section.items.map((item) => {
+        const title = tr(item.titleKey, "");
+        const body = tr(item.bodyKey, "");
+        return { ...item, title, body };
+      });
+
+      const filteredItems =
+        normalizedQuery === ""
+          ? itemsWithContent
+          : itemsWithContent.filter((item) => {
+              const titleMatch = item.title
+                .toLowerCase()
+                .includes(normalizedQuery);
+              const bodyMatch = item.body
+                .toLowerCase()
+                .includes(normalizedQuery);
+              const sectionMatch = sectionTitle
+                .toLowerCase()
+                .includes(normalizedQuery);
+              return titleMatch || bodyMatch || sectionMatch;
+            });
+
+      return {
+        ...section,
+        title: sectionTitle,
+        itemsRendered: filteredItems,
+      };
+    })
+    .filter((section) =>
+      normalizedQuery === "" ? true : section.itemsRendered.length > 0
+    );
+
   return (
     <div className="flex-1 bg-[#F4F7FF] min-h-screen">
       <div className="max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-12">
@@ -127,6 +166,8 @@ export default function ProHelp() {
                 type="text"
                 className="w-full rounded-full border border-slate-200 bg-white shadow-sm px-11 py-3 text-sm md:text-base outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                 placeholder={tr("proHelp.search_placeholder", "")}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -134,44 +175,51 @@ export default function ProHelp() {
 
         {/* SECCIONES */}
         <div className="space-y-3">
-          {sections.map((section) => (
-            <div
-              key={section.id}
-              className="bg-white rounded-2xl border border-slate-200 shadow-sm"
-            >
-              <button
-                type="button"
-                onClick={() => handleToggle(section.id)}
-                className="w-full flex items-center justify-between px-5 py-4 md:px-6 md:py-5 text-left"
-              >
-                <span className="text-sm md:text-base font-semibold text-slate-900">
-                  {tr(section.titleKey, "")}
-                </span>
-                <ChevronDown
-                  className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${
-                    activeSection === section.id ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+          {sectionsWithContent.map((section) => {
+            const isOpen =
+              normalizedQuery !== ""
+                ? true
+                : activeSection === section.id;
 
-              {activeSection === section.id && (
-                <div className="px-5 pb-5 pt-1 md:px-6 border-t border-slate-100">
-                  <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
-                    {section.items.map((item) => (
-                      <div key={item.titleKey}>
-                        <p className="font-semibold mb-1 text-slate-900">
-                          {tr(item.titleKey, "")}
-                        </p>
-                        <p className="text-slate-600 whitespace-pre-line">
-                          {tr(item.bodyKey, "")}
-                        </p>
-                      </div>
-                    ))}
+            return (
+              <div
+                key={section.id}
+                className="bg-white rounded-2xl border border-slate-200 shadow-sm"
+              >
+                <button
+                  type="button"
+                  onClick={() => handleToggle(section.id)}
+                  className="w-full flex items-center justify-between px-5 py-4 md:px-6 md:py-5 text-left"
+                >
+                  <span className="text-sm md:text-base font-semibold text-slate-900">
+                    {section.title}
+                  </span>
+                  <ChevronDown
+                    className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {isOpen && section.itemsRendered.length > 0 && (
+                  <div className="px-5 pb-5 pt-1 md:px-6 border-t border-slate-100">
+                    <div className="space-y-4 text-sm md:text-[15px] text-slate-700">
+                      {section.itemsRendered.map((item) => (
+                        <div key={item.titleKey}>
+                          <p className="font-semibold mb-1 text-slate-900">
+                            {item.title}
+                          </p>
+                          <p className="text-slate-600 whitespace-pre-line">
+                            {item.body}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* BLOQUE FINAL CON MASCOTA, BOCADILLO Y BOTÓN */}
