@@ -1034,7 +1034,7 @@ export default function ProSummary() {
                   />
                 </div>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   {/* Selector de idioma */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -1139,6 +1139,18 @@ export default function ProSummary() {
                   >
                     <Trash className="w-4 h-4" />
                   </button>
+
+                  {/* BOTÓN GUARDAR ARRIBA, SOLO CUANDO HAY RESULTADO */}
+                  {result && !loading && (
+                    <button
+                      type="button"
+                      onClick={handleSaveSummary}
+                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                      style={{ backgroundColor: "#22c55e" }} // verde
+                    >
+                      Guardar
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -1229,23 +1241,9 @@ export default function ProSummary() {
                     )}
 
                     {result && (
-                      <>
-                        <article className="prose prose-slate max-w-none">
-                          <p className="whitespace-normal">{result}</p>
-                        </article>
-
-                        {/* BOTÓN GUARDAR (VERDE) */}
-                        <div className="mt-4 flex justify-end">
-                          <button
-                            type="button"
-                            onClick={handleSaveSummary}
-                            className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                            style={{ backgroundColor: "#22c55e" }} // verde
-                          >
-                            Guardar
-                          </button>
-                        </div>
-                      </>
+                      <article className="prose prose-slate max-w-none">
+                        <p className="whitespace-normal">{result}</p>
+                      </article>
                     )}
 
                     {/* Skeleton de carga */}
