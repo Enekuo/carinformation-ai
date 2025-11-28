@@ -39,7 +39,7 @@ export default function ProSuggestions() {
 
   return (
     <section className="w-full h-full bg-gradient-to-b from-[#F4F8FF] via-white to-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-10 md:py-14 space-y-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10 space-y-6">
         {/* CABECERA */}
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-1 text-[11px] font-medium text-blue-700 shadow-sm">
@@ -68,9 +68,9 @@ export default function ProSuggestions() {
         {/* TARJETA PRINCIPAL */}
         <form
           onSubmit={handleSubmit}
-          className="relative rounded-3xl border border-blue-100 bg-white/95 shadow-[0_18px_45px_rgba(15,23,42,0.06)] px-4 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 space-y-6 overflow-hidden"
+          className="relative rounded-3xl border border-blue-100 bg-gradient-to-b from-white/95 to-[#F4F8FF]/85 shadow-[0_18px_45px_rgba(15,23,42,0.06)] px-4 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 space-y-6 overflow-hidden"
         >
-          {/* halo azul suave */}
+          {/* halos suaves */}
           <div className="pointer-events-none absolute -top-32 -right-32 h-56 w-56 rounded-full bg-blue-200/40 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-32 h-56 w-56 rounded-full bg-sky-200/40 blur-3xl" />
 
@@ -146,10 +146,12 @@ export default function ProSuggestions() {
           )}
 
           {/* BOTÓN ENVIAR */}
-          <div className="relative flex justify-end">
+          <div className="relative flex justify-end mt-1">
+            {/* halo del botón */}
+            <div className="pointer-events-none absolute inset-y-0 right-4 w-32 rounded-full bg-blue-400/30 blur-2xl" />
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-95 transition"
+              className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 px-6 py-3 text-xs sm:text-sm font-semibold text-white shadow-[0_10px_30px_rgba(56,132,255,0.35)] hover:shadow-[0_12px_40px_rgba(56,132,255,0.45)] hover:brightness-105 active:scale-95 transition"
             >
               <Send className="w-4 h-4" />
               Enviar sugerencia
