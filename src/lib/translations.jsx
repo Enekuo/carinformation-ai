@@ -1667,7 +1667,7 @@ proHelp: {
 
   support_button_label: {
     ES: "Contactar con soporte",
-    EUS: "Jarri harremanetan laguntzarekin",
+    EUS: "Jarri harremanetan",
   },
 
   support_mascot_alt: {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "@/lib/translations";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function ProHelp() {
@@ -134,21 +134,20 @@ export default function ProHelp() {
         return { ...item, title, body };
       });
 
-      const filteredItems =
-        !isSearching
-          ? itemsWithContent
-          : itemsWithContent.filter((item) => {
-              const titleMatch = item.title
-                .toLowerCase()
-                .includes(normalizedQuery);
-              const bodyMatch = item.body
-                .toLowerCase()
-                .includes(normalizedQuery);
-              const sectionMatch = sectionTitle
-                .toLowerCase()
-                .includes(normalizedQuery);
-              return titleMatch || bodyMatch || sectionMatch;
-            });
+      const filteredItems = !isSearching
+        ? itemsWithContent
+        : itemsWithContent.filter((item) => {
+            const titleMatch = item.title
+              .toLowerCase()
+              .includes(normalizedQuery);
+            const bodyMatch = item.body
+              .toLowerCase()
+              .includes(normalizedQuery);
+            const sectionMatch = sectionTitle
+              .toLowerCase()
+              .includes(normalizedQuery);
+            return titleMatch || bodyMatch || sectionMatch;
+          });
 
       return {
         ...section,
@@ -191,8 +190,7 @@ export default function ProHelp() {
         {/* SECCIONES */}
         <div className="space-y-3">
           {sectionsWithContent.map((section) => {
-            const isOpen =
-              isSearching ? true : activeSection === section.id;
+            const isOpen = isSearching ? true : activeSection === section.id;
 
             return (
               <div
@@ -229,10 +227,7 @@ export default function ProHelp() {
                               type="button"
                               onClick={() =>
                                 !isSearching &&
-                                handleToggleItem(
-                                  section.id,
-                                  item.titleKey
-                                )
+                                handleToggleItem(section.id, item.titleKey)
                               }
                               className="w-full text-left font-semibold mb-1 text-slate-900 hover:text-sky-700 transition-colors"
                             >
@@ -284,20 +279,25 @@ export default function ProHelp() {
                   <div className="absolute left-[2px] top-1/2 -translate-y-1/2 w-0 h-0 border-y-[11px] border-y-transparent border-r-[15px] border-r-white"></div>
                 </div>
 
-                {/* BOTÓN SOPORTE */}
+                {/* BOTÓN SOPORTE – ESTÉTICA NUEVA */}
                 <Link
                   to="/soporte"
                   className="
                     mt-4
                     self-center
                     inline-flex items-center justify-center
-                    rounded-full px-5 py-2.5
+                    gap-2
+                    rounded-full px-6 py-2.5
                     text-sm md:text-[15px] font-semibold
-                    bg-[#0F82E9] text-white
-                    shadow-sm hover:bg-[#0c6fcc]
-                    transition-colors
+                    text-white
+                    bg-gradient-to-r from-[#2563EB] to-[#06B6D4]
+                    shadow-md
+                    hover:brightness-110
+                    active:scale-[0.98]
+                    transition-all
                   "
                 >
+                  <Send className="w-4 h-4" />
                   {tr("proHelp.support_button_label", "")}
                 </Link>
               </div>
