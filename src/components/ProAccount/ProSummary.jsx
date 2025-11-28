@@ -459,6 +459,13 @@ export default function ProSummary() {
     clearRight(); // limpia resultado y estados del panel derecho
   };
 
+  // === NUEVA FUNCIÓN: GUARDAR RESUMEN ===
+  const handleSaveSummary = () => {
+    if (!result) return;
+    // Aquí conectarás con tu API / biblioteca de guardados
+    console.log("Guardar resumen:", result);
+  };
+
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
@@ -617,7 +624,7 @@ export default function ProSummary() {
       `\n${langInstruction}`,
     ].join("");
 
-  const systemBase =
+    const systemBase =
       "Eres un asistente que redacta resúmenes en formato de texto corrido. " +
       "No uses listas, viñetas, guiones ni numeraciones. " +
       "Entrega un único párrafo, sin encabezados, con frases completas y buena coherencia. " +
@@ -1222,9 +1229,23 @@ export default function ProSummary() {
                     )}
 
                     {result && (
-                      <article className="prose prose-slate max-w-none">
-                        <p className="whitespace-normal">{result}</p>
-                      </article>
+                      <>
+                        <article className="prose prose-slate max-w-none">
+                          <p className="whitespace-normal">{result}</p>
+                        </article>
+
+                        {/* BOTÓN GUARDAR (VERDE) */}
+                        <div className="mt-4 flex justify-end">
+                          <button
+                            type="button"
+                            onClick={handleSaveSummary}
+                            className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                            style={{ backgroundColor: "#22c55e" }} // verde
+                          >
+                            Guardar
+                          </button>
+                        </div>
+                      </>
                     )}
 
                     {/* Skeleton de carga */}
