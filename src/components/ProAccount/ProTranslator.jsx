@@ -408,7 +408,7 @@ export default function ProTranslator() {
 
   // 🔹 etiqueta para el botón Guardar (traductor)
   const labelSaveTranslation = tr(
-    "translator.save_button_label",
+    " save_button_label",
     "Guardar"
   );
 
