@@ -1531,8 +1531,8 @@ cookies_last_update: {
   EUS: "Denak",
 },
 library_filter_texts: {
-  ES: "Textos",
-  EUS: "Testuak",
+  ES: "Traducciones",
+  EUS: "Itzulpenak",
 },
 library_filter_summaries: {
   ES: "Resúmenes",
