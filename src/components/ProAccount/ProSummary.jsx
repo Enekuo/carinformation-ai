@@ -137,9 +137,12 @@ export default function ProSummary() {
   // Mensaje “resumen listo”
   const labelReadyMessage = tr(
     "summary.ready_message",
-    "Resumen listo · Guardar en tu biblioteca"
+    
   );
-
+  const labelSaveSummary = tr(
+    "summary.save_button_label",
+    
+  );
   // Ayuda izquierda
   const leftRaw = tr(
     "summary.create_help_left",
@@ -1243,7 +1246,7 @@ export default function ProSummary() {
                               className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
                               style={{ backgroundColor: "#22c55e" }}
                             >
-                              Guardar
+                              {labelSaveSummary}
                             </motion.button>
                           </div>
                         </div>

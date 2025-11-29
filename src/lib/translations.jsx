@@ -31,6 +31,12 @@ export const translations = {
     loading:    { ES: "Traduciendo…",      EUS: "Itzultzen…" },
   },
 
+
+
+
+
+
+
   /* === Bloque de Resumen (Euskalia) === */
   summary: {
     title:                 { ES: "Resumen", EUS: "Laburpena" },
@@ -76,6 +82,17 @@ export const translations = {
       ES: "Escribe o pega tu texto aquí…",
       EUS: "Idatzi edo itsatsi zure testua hemen…"
     },
+
+    ready_message: {
+      ES: "Resumen listo · Guardar en tu biblioteca",
+      EUS: "Laburpena prest · Gorde zure liburutegian",
+    },
+
+    save_button_label: {
+      ES: "Guardar",
+      EUS: "Gorde",
+    },
+
 
     // Documento (pestaña)
     choose_file_title: {
@@ -163,6 +180,16 @@ export const translations = {
 
 
 
+
+
+
+
+
+
+
+
+
+
   /* === Bloque anidado (por si lo usas en otras vistas) === */
   supportPage: {
     title:       { ES: "Soporte", EUS: "Laguntza" },
@@ -212,6 +239,13 @@ export const translations = {
   support_form_submit:              { ES: "Enviar", EUS: "Bidali" },
   support_form_privacy_hint:        { ES: "Al enviar, aceptas nuestra", EUS: "Bidaltzean, onartzen duzu gure" },
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
+
+
+
+
+
+
+
 
   // === CHAT IA / ASSISTANT === //
  assistant_title: {
