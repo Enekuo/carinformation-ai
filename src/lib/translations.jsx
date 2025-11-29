@@ -1520,6 +1520,33 @@ cookies_last_update: {
                        //        PRO ACCOUNT 
                        // ========================= 
                        // =========================
+
+
+  // =========================
+  //        Pro library
+  // =========================    
+
+  library_filter_all: {
+  ES: "Todos",
+  EUS: "Denak",
+},
+library_filter_texts: {
+  ES: "Textos",
+  EUS: "Testuak",
+},
+library_filter_summaries: {
+  ES: "Resúmenes",
+  EUS: "Laburpenak",
+},
+library_filter_folders: {
+  ES: "Mis carpetas",
+  EUS: "Nire karpetak",
+},
+library_create_new: {
+  ES: "Crear nuevo",
+  EUS: "Sortu berria",
+},
+
   // =========================
   //        Pro Suggestions
   // =========================                          
