@@ -66,7 +66,7 @@ export const translations = {
     output_language_eus: { ES: "Euskera",    EUS: "Euskara" },
     output_language_en:  { ES: "Inglés",     EUS: "Ingelesa" },
 
-    // CTA y buscador inferior
+    // Prompt
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {
       ES:  "Escribe el prompt aqui",

@@ -148,7 +148,7 @@ export default function ProTranslator() {
         const system = `${directionText(
           src,
           dst
-        )}\n\nResponde SOLO con la traducción final. Mantén el formato.`
+        )}\n\nResponde SOLO con la traducción final. Mantén el formato.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -286,7 +286,10 @@ export default function ProTranslator() {
           return;
         }
 
-        const system = `${directionText(src, dst)}\n\nResponde SOLO con la traducción final.`;
+        const system = `${directionText(
+          src,
+          dst
+        )}\n\nResponde SOLO con la traducción final.`;
 
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -336,7 +339,7 @@ export default function ProTranslator() {
     <button
       type="button"
       onClick={onClick}
-      className={`w-full px-3 py-2.5 text-left text-[14px] rounded-md transition ${
+      className={`w-full px-3 py-2.5 text_left text-[14px] rounded-md transition ${
         active ? "bg-slate-100" : "hover:bg-slate-100"
       } text-slate-800`}
     >
@@ -376,17 +379,38 @@ export default function ProTranslator() {
   const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
   const labelTabUrl = tr("summary.sources_tab_url", "URLa");
 
-  const labelChooseFileTitle = tr("summary.choose_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr("summary.accepted_formats", "Formatos admitidos");
-  const labelFolderHint = tr("summary.folder_hint", "Puedes arrastrar varios archivos.");
+  const labelChooseFileTitle = tr(
+    "summary.choose_file_title",
+    "Elige tu archivo o carpeta"
+  );
+  const labelAcceptedFormats = tr(
+    "summary.accepted_formats",
+    "Formatos admitidos"
+  );
+  const labelFolderHint = tr(
+    "summary.folder_hint",
+    "Puedes arrastrar varios archivos."
+  );
 
   const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible.");
-  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
+  const labelUrlsNoteVisible = tr(
+    "summary.urls_note_visible",
+    "Solo se importará el texto visible."
+  );
+  const labelUrlsNotePaywalled = tr(
+    "summary.urls_note_paywalled",
+    "No se admiten artículos de pago."
+  );
   const labelRemove = tr("summary.remove", "Quitar");
+
+  // 🔹 etiqueta para el botón Guardar (traductor)
+  const labelSaveTranslation = tr(
+    "translator.save_button_label",
+    "Guardar"
+  );
 
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
@@ -574,6 +598,12 @@ export default function ProTranslator() {
     w.print();
   };
 
+  // 🔹 handler placeholder para guardar traducción
+  const handleSaveTranslation = () => {
+    // Aquí luego conectarás con la API / biblioteca Pro
+    console.log("Guardar traducción:", rightText);
+  };
+
   const addFiles = async (list) => {
     if (!list?.length) return;
     const arr = Array.from(list);
@@ -652,10 +682,13 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
+  // 🔹 solo mostramos "Guardar" cuando haya resultado y no esté cargando
+  const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
+
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-2 pb-20 md:pb-32">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx_auto px-6">
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
             {/* barra superior */}
             <div className="relative h-12 border-b border-slate-200">
@@ -1056,6 +1089,7 @@ export default function ProTranslator() {
                   </div>
                 )}
 
+                {/* ICONOS + BOTÓN GUARDAR */}
                 <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
                   <button
                     type="button"
@@ -1102,6 +1136,17 @@ export default function ProTranslator() {
                       {t("translator.pdf")}
                     </span>
                   </button>
+
+                  {hasResult && (
+                    <button
+                      type="button"
+                      onClick={handleSaveTranslation}
+                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                      style={{ backgroundColor: "#22c55e" }}
+                    >
+                      {labelSaveTranslation}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
