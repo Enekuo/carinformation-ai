@@ -320,8 +320,7 @@ export default function ProSummary() {
   ]);
 
   // ===== Documentos =====
-
-  const readTextFromFiles = async (items /* [{id,file}] */) => {
+  const readTextFromFiles = async (items) => {
     const results = await Promise.all(
       items.map(
         ({ id, file }) =>
@@ -351,14 +350,11 @@ export default function ProSummary() {
     const arr = Array.from(list);
     const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
 
-    // 1) Añadir a la lista visible
     setDocuments((prev) => [...prev, ...withIds]);
 
-    // 2) Leer contenidos de TXT/MD y guardarlos
     const texts = await readTextFromFiles(withIds);
     if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
 
-    // 3) Igual que con URLs: al cambiar documentos, limpiamos el resultado
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
@@ -396,7 +392,6 @@ export default function ProSummary() {
   const removeDocument = (id) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
     setDocumentsText((prev) => prev.filter((d) => d.id !== id));
-    // limpiar salida (misma UX que en URLs)
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
@@ -419,7 +414,6 @@ export default function ProSummary() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // Limpiar resultado cuando cambie la lista de URLs
   useEffect(() => {
     setResult("");
     setErrorMsg("");
@@ -446,21 +440,18 @@ export default function ProSummary() {
         setCopiedFlash(true);
         setTimeout(() => setCopiedFlash(false), 1200);
       }
-    } catch {
-      // silencioso
-    }
+    } catch {}
   };
 
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
-    clearRight(); // limpia resultado y estados del panel derecho
+    clearRight();
   };
 
   const handleSaveSummary = () => {
     if (!result) return;
-    // Aquí implementarás guardado real (API / biblioteca).
-    // Por ahora solo dejamos un placeholder:
+    // Aquí irá la lógica real de guardado (API / biblioteca)
     console.log("Guardar resumen:", result);
   };
 
@@ -544,7 +535,6 @@ export default function ProSummary() {
 
   // ===== Generar =====
   const handleGenerate = async () => {
-    // Arreglo del parpadeo: activar loading primero y no limpiar result al iniciar
     setLoading(true);
     setErrorMsg("");
     setErrorKind(null);
@@ -581,7 +571,7 @@ export default function ProSummary() {
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
 
-    // 🔵 Mensaje “texto demasiado breve” según idioma
+    // Mensaje “texto demasiado breve” según idioma
     const tooShortMsg =
       outputLang === "es"
         ? "El texto es demasiado breve para resumir con fidelidad."
@@ -589,7 +579,7 @@ export default function ProSummary() {
         ? "The text is too short to summarize reliably."
         : "Testua laburregia da fideltasunez laburtzeko.";
 
-    // ✅ instrucción de idioma reforzada
+    // Instrucción de idioma
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: español (ISO: es). Redacta toda la respuesta en español."
@@ -604,7 +594,6 @@ export default function ProSummary() {
         ? "Extensión: 4–6 frases, ~120–180 palabras."
         : "Extensión: 8–10 frases, ~200–260 palabras.";
 
-    // ✅ incrustar contenido real de .txt/.md en el prompt
     const docsInline = documentsText?.length
       ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
@@ -623,7 +612,7 @@ export default function ProSummary() {
       urlsList
         ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
         : "",
-      docsInline, // ⬅️ aquí metemos el contenido real de .txt/.md
+      docsInline,
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -663,8 +652,7 @@ export default function ProSummary() {
           messages,
           length: summaryLength,
           cacheKey,
-          // seguimos enviando el contenido por si el backend lo usa también
-          documentsText, // [{id,name,text}]
+          documentsText,
         }),
       });
 
@@ -702,7 +690,6 @@ export default function ProSummary() {
         .replace(/\s{2,}/g, " ")
         .trim();
 
-      // 🔵 Caso “texto demasiado breve”
       if (
         cleaned &&
         cleaned.trim().toLowerCase() ===
@@ -818,7 +805,6 @@ export default function ProSummary() {
                       className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                       aria-label={labelTabText}
                     />
-                    {/* Contador + barra */}
                     <div className="mt-2">
                       <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
                         <div
@@ -1045,9 +1031,7 @@ export default function ProSummary() {
                     <DropdownMenuTrigger asChild>
                       <button
                         type="button"
-                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
-                                   flex items-center justify-between hover:border-slate-400
-                                   shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                         aria-label="Idioma de salida"
                       >
                         <span className="truncate">
@@ -1109,7 +1093,7 @@ export default function ProSummary() {
                     </DropdownMenuContent>
                   </DropdownMenu>
 
-                  {/* Copiar resultado: cambia a tic azul al copiar */}
+                  {/* Copiar resultado */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
@@ -1234,23 +1218,24 @@ export default function ProSummary() {
                     )}
 
                     {result && (
-                      <div className="flex items-start justify-between gap-4">
-                        <article className="prose prose-slate max-w-none flex-1">
+                      <div className="flex flex-col gap-4">
+                        <article className="prose prose-slate max-w-none">
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        <button
-                          type="button"
-                          onClick={handleSaveSummary}
-                          className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                          style={{ backgroundColor: "#22c55e" }}
-                        >
-                          Guardar
-                        </button>
+                        <div className="flex justify-end">
+                          <button
+                            type="button"
+                            onClick={handleSaveSummary}
+                            className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                            style={{ backgroundColor: "#22c55e" }}
+                          >
+                            Guardar
+                          </button>
+                        </div>
                       </div>
                     )}
 
-                    {/* Skeleton de carga */}
                     {loading && !result && (
                       <div className="space-y-3 animate-pulse">
                         <div className="h-4 bg-slate-200 rounded" />
