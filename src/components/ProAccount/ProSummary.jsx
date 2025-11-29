@@ -134,6 +134,12 @@ export default function ProSummary() {
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
 
+  // Mensaje “resumen listo”
+  const labelReadyMessage = tr(
+    "summary.ready_message",
+    "Resumen listo · Guardar en tu biblioteca"
+  );
+
   // Ayuda izquierda
   const leftRaw = tr(
     "summary.create_help_left",
@@ -451,7 +457,7 @@ export default function ProSummary() {
 
   const handleSaveSummary = () => {
     if (!result) return;
-    // Aquí irá la lógica real de guardado (API / biblioteca)
+    // Lógica real de guardado irá aquí
     console.log("Guardar resumen:", result);
   };
 
@@ -1224,14 +1230,22 @@ export default function ProSummary() {
                         </article>
 
                         <div className="flex justify-end">
-                          <button
-                            type="button"
-                            onClick={handleSaveSummary}
-                            className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                            style={{ backgroundColor: "#22c55e" }}
-                          >
-                            Guardar
-                          </button>
+                          <div className="flex flex-col items-end gap-1">
+                            <p className="text-xs text-slate-500">
+                              {labelReadyMessage}
+                            </p>
+                            <motion.button
+                              type="button"
+                              onClick={handleSaveSummary}
+                              initial={{ opacity: 0, y: 4 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.25 }}
+                              className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                              style={{ backgroundColor: "#22c55e" }}
+                            >
+                              Guardar
+                            </motion.button>
+                          </div>
                         </div>
                       </div>
                     )}
