@@ -14,8 +14,9 @@ export const translations = {
     support: { ES: "Soporte", EUS: "Laguntza" },
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
-
-  /* === Placeholders del traductor === */
+  // =========================
+  //        TRADUCTOR
+  // =========================
   translator: {
     left_placeholder:  { ES: "Escribe o pega el texto aquí.", EUS: "Idatzi edo itsatsi testua hemen." },
     right_placeholder: { ES: "Aquí aparecerá la traducción.", EUS: "Hemen agertuko da itzulpena." },
@@ -30,7 +31,10 @@ export const translations = {
     listening:  { ES: "Escuchando…",       EUS: "Entzuten…" },
     loading:    { ES: "Traduciendo…",      EUS: "Itzultzen…" },
   },
-
+   save_button_label: {
+    ES: "Guardar",
+    EUS: "Gorde",
+  },
 
 
 
