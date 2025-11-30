@@ -410,7 +410,10 @@ export default function ProTranslator() {
   const labelRemove = tr("summary.remove", "Quitar");
 
   // 🔹 etiqueta para el botón Guardar (traductor)
-  const labelSaveTranslation = tr("save_button_label", "Guardar");
+  const labelSaveTranslation = tr(
+    "save_button_label",
+    "Guardar"
+  );
 
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
@@ -598,7 +601,7 @@ export default function ProTranslator() {
     w.print();
   };
 
-  // 🔹 guardar traducción en la biblioteca Pro
+  // 🔹 handler para guardar traducción en la biblioteca Pro
   const handleSaveTranslation = () => {
     if (!rightText) return;
 
@@ -694,7 +697,7 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // solo mostramos el botón Guardar cuando haya resultado y no esté cargando
+  // 🔹 solo mostramos "Guardar" cuando haya resultado y no esté cargando
   const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
 
   return (
