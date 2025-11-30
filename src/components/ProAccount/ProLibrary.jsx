@@ -6,12 +6,12 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
-  Mic,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
-/** Icono igual que en la otra web (asegúrate de tenerlo en /public) */
-const DOC_ICON_SRC = "/doc-blue.png";
+// Iconos para las tarjetas (asegúrate de tenerlos en /public)
+const TRANSLATOR_ICON_SRC = "/Library1.png";
+const SUMMARY_ICON_SRC = "/Library2.jpg";
 
 export default function ProLibrary() {
   const { t } = useTranslation();
@@ -56,17 +56,17 @@ export default function ProLibrary() {
       })
       .replace(".", "");
 
-  // Una tarjeta tipo documento + una tipo audio
+  // Tarjeta de traductor + tarjeta de resumen
   const [docs, setDocs] = useState([
     {
-      id: "doc-olondo-basic",
-      kind: "text", // tarjeta tipo documento (icono papel, fondo azul)
-      title: "Olondo.ai",
+      id: "doc-translator-1",
+      kind: "translator", // usa Library1.png
+      title: "Traducción Olondo.ai",
       date: formatDate(new Date()),
     },
     {
-      id: "doc-olondo-audio",
-      kind: "audio", // tarjeta tipo audio (micrófono, fondo crema)
+      id: "doc-summary-1",
+      kind: "summary", // usa Library2.png
       title: "Olondo.AI: Flujo y Valor de Creación de...",
       date: "23 sept 2025",
       sources: 1,
@@ -238,7 +238,15 @@ export default function ProLibrary() {
               {/* Tarjetas documento */}
               {(type === "all" || type === "text" || type === "summary") &&
                 docs.map((doc) => {
-                  const isAudio = doc.kind === "audio";
+                  const isTranslator = doc.kind === "translator";
+                  const isSummary = doc.kind === "summary";
+
+                  const bgColor = isSummary ? "#F7F6EE" : "#EDF5FF";
+                  const borderColor = isSummary ? "#E5E1D0" : "#D9E7FF";
+
+                  const iconSrc = isSummary
+                    ? SUMMARY_ICON_SRC
+                    : TRANSLATOR_ICON_SRC;
 
                   return (
                     <div
@@ -248,8 +256,8 @@ export default function ProLibrary() {
                         width: 280,
                         height: 196,
                         borderRadius: 16,
-                        backgroundColor: isAudio ? "#F7F6EE" : "#EDF5FF",
-                        borderColor: isAudio ? "#E5E1D0" : "#D9E7FF",
+                        backgroundColor: bgColor,
+                        borderColor: borderColor,
                       }}
                     >
                       {/* Menú (3 puntos) */}
@@ -303,24 +311,15 @@ export default function ProLibrary() {
                       )}
 
                       {/* Contenido tarjeta */}
-                      <div
-                        className={`h-full w-full px-5 ${
-                          isAudio ? "pt-6" : "pt-12"
-                        } pb-6`}
-                      >
-                        {/* Icono diferente según el tipo */}
-                        {isAudio ? (
-                          // Icono estilo NotebookLM: arriba a la izquierda
-                          <Mic className="w-7 h-7 text-slate-700 mt-1 mb-6" />
-                        ) : (
-                          <img
-                            src={DOC_ICON_SRC}
-                            alt=""
-                            width={60}
-                            height={60}
-                            className="block select-none -mt-6"
-                          />
-                        )}
+                      <div className="h-full w-full px-5 pt-8 pb-6">
+                        {/* Icono (Library1 / Library2) */}
+                        <img
+                          src={iconSrc}
+                          alt=""
+                          width={56}
+                          height={56}
+                          className="block select-none mb-6"
+                        />
 
                         <h3
                           className="text-[20px] leading-[28px] font-semibold text-slate-900 pr-4"
@@ -335,7 +334,7 @@ export default function ProLibrary() {
                         </h3>
 
                         <p className="mt-3 text-[13px] leading-[18px] text-slate-700">
-                          {isAudio
+                          {isSummary
                             ? `${doc.date} · ${doc.sources || 1} fuente`
                             : doc.date}
                         </p>
