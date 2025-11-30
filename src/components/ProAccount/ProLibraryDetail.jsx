@@ -27,10 +27,10 @@ export default function ProLibraryDetail() {
               className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>{tr("library_back", "Volver a la biblioteca")}</span>
+              <span>{tr("library_back", "Atzera")}</span>
             </button>
 
-            <div className="mx-auto max-w-3xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8">
+            <div className="mx-auto max-w-5xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8">
               <p className="text-base text-slate-700">
                 {tr(
                   "library_not_found",
@@ -79,11 +79,11 @@ export default function ProLibraryDetail() {
             className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>{tr("library_back", "library_back")}</span>
+            <span>{tr("library_back", "Atzera")}</span>
           </button>
 
           {/* Tarjeta grande */}
-          <div className="mx-auto max-w-5xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8 md:py-9">
+          <div className="mx-auto max-w-6xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8 md:py-9">
             {/* Título */}
             <p className="text-[18px] md:text-[20px] leading-[28px]">
               <span className="font-semibold text-slate-900">{typeLabel}</span>
@@ -96,7 +96,7 @@ export default function ProLibraryDetail() {
             )}
 
             {/* Contenido */}
-            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 md:px-6 py-4 md:py-5 min-h-[220px]">
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 md:px-6 py-4 md:py-5 min-h-[260px]">
               <p className="text-[15px] leading-7 text-slate-800 whitespace-pre-wrap">
                 {doc.content}
               </p>
