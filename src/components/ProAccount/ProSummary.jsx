@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
+import { addLibraryDoc } from "./proLibraryStore";
 
 export default function ProSummary() {
   const { t } = useTranslation();
@@ -460,8 +461,21 @@ export default function ProSummary() {
 
   const handleSaveSummary = () => {
     if (!result) return;
-    // Lógica real de guardado irá aquí
-    console.log("Guardar resumen:", result);
+
+    // Crear título automático a partir del propio resumen
+    const raw = result.trim();
+    const firstLine = raw.split("\n")[0];
+    const maxTitleLength = 80;
+    let title = firstLine;
+    if (title.length > maxTitleLength) {
+      title = title.slice(0, maxTitleLength).trimEnd() + "…";
+    }
+
+    addLibraryDoc({
+      kind: "summary",
+      title,
+      content: result,
+    });
   };
 
   // ===== Tarjetas =====
