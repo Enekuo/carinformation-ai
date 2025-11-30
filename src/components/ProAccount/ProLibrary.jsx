@@ -1,25 +1,15 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Plus,
-  Folder,
-  MoreVertical,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
-import {
-  loadLibraryDocs,
-  saveLibraryDocs,
-} from "@/components/ProAccount/proLibraryStore";
-
-// Iconos para las tarjetas (asegúrate de tenerlos en /public)
-const TRANSLATOR_ICON_SRC = "/Library1.png"; // traductor
-const SUMMARY_ICON_SRC = "/Library2.jpg";    // resumen
+import { useLibraryDocs } from "@/lib/proLibraryStore";
 
 export default function ProLibrary() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
+
+  // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
+  const { docs, renameDoc, deleteDoc } = useLibraryDocs();
 
   // ===== Filtros (all | text | summary | folders) =====
   const [type, setType] = useState("all");
@@ -50,23 +40,8 @@ export default function ProLibrary() {
     }
   }, [type, tr]);
 
-  // ===== Documentos DINÁMICOS (desde localStorage) =====
-  const [docs, setDocs] = useState(() => loadLibraryDocs());
-
-  // Para aplicar filtros a las tarjetas
-  const filteredDocs = useMemo(() => {
-    if (type === "text") {
-      return docs.filter((d) => d.kind === "translator");
-    }
-    if (type === "summary") {
-      return docs.filter((d) => d.kind === "summary");
-    }
-    // "all" o cualquier otro → todo
-    return docs;
-  }, [docs, type]);
-
-  // Menú contextual (por doc)
-  const [menuOpenFor, setMenuOpenFor] = useState(null);
+  // ===== Menú contextual por documento =====
+  const [menuOpenFor, setMenuOpenFor] = useState(null); // id
   const menuRef = useRef(null);
   const menuBtnRef = useRef(null);
 
@@ -81,7 +56,7 @@ export default function ProLibrary() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [menuOpenFor]);
 
-  // Modal editar título
+  // ===== Modal editar título =====
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editingDocId, setEditingDocId] = useState(null);
@@ -98,26 +73,17 @@ export default function ProLibrary() {
   };
   const saveEditTitle = () => {
     const title = editTitle.trim();
-    if (!title) return;
-    setDocs((prev) => {
-      const updated = prev.map((d) =>
-        d.id === editingDocId ? { ...d, title } : d
-      );
-      saveLibraryDocs(updated);
-      return updated;
-    });
+    if (!title || !editingDocId) return;
+    renameDoc(editingDocId, title);
     closeEditModal();
   };
 
-  const deleteDoc = (docId) => {
-    setDocs((prev) => {
-      const updated = prev.filter((d) => d.id !== docId);
-      saveLibraryDocs(updated);
-      return updated;
-    });
+  const handleDeleteDoc = (docId) => {
+    deleteDoc(docId);
+    setMenuOpenFor(null);
   };
 
-  // ===== Carpetas (de momento solo en memoria) =====
+  // ===== Carpetas (solo local, no store) =====
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
@@ -141,6 +107,45 @@ export default function ProLibrary() {
     setFolderModalOpen(false);
   };
 
+  // ========= Helpers visuales =========
+  const getDocVisual = (doc) => {
+    const kind = doc.kind === "translation" ? "translation" : "summary";
+
+    if (kind === "translation") {
+      return {
+        bg: "#EAF3FF",
+        border: "#D9E7FF",
+        iconSrc: "/Library1.png",
+        labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
+      };
+    }
+    return {
+      bg: "#F9F6E9",
+      border: "#EFE5C7",
+      iconSrc: "/Library2.jpg",
+      labelPrefix: tr("library_prefix_summary", "Laburpena:"),
+    };
+  };
+
+  const formatDateLabel = (doc) => {
+    if (doc.createdAtLabel) return doc.createdAtLabel;
+    if (doc.createdAt) {
+      try {
+        return new Date(doc.createdAt)
+          .toLocaleDateString("es-ES", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(".", "");
+      } catch {
+        return "";
+      }
+    }
+    return "";
+  };
+
+  // ===== Render =====
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
@@ -235,121 +240,113 @@ export default function ProLibrary() {
                 </Link>
               )}
 
-              {/* Tarjetas documento (Itzulpena / Laburpena) */}
-              {(type === "all" ||
-                type === "text" ||
-                type === "summary") &&
-                filteredDocs.map((doc) => {
-                  const isSummary = doc.kind === "summary";
+              {/* Tarjetas documento (traducciones / resúmenes) */}
+              {(type === "all" || type === "text" || type === "summary") &&
+                docs
+                  .filter((doc) => {
+                    if (type === "text") return doc.kind === "translation";
+                    if (type === "summary") return doc.kind === "summary";
+                    return true;
+                  })
+                  .map((doc) => {
+                    const { bg, border, iconSrc, labelPrefix } =
+                      getDocVisual(doc);
+                    const dateLabel = formatDateLabel(doc);
 
-                  const bgColor = isSummary ? "#F7F6EE" : "#EDF5FF";
-                  const borderColor = isSummary ? "#E5E1D0" : "#D9E7FF";
-
-                  const iconSrc = isSummary
-                    ? SUMMARY_ICON_SRC
-                    : TRANSLATOR_ICON_SRC;
-
-                  return (
-                    <div
-                      key={doc.id}
-                      className="relative rounded-2xl shadow-sm border hover:shadow-md transition cursor-default"
-                      style={{
-                        width: 280,
-                        height: 196,
-                        borderRadius: 16,
-                        backgroundColor: bgColor,
-                        borderColor: borderColor,
-                      }}
-                    >
-                      {/* Menú (3 puntos) */}
-                      <button
-                        ref={menuBtnRef}
-                        aria-label="Opciones"
-                        className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
-                        onClick={() =>
-                          setMenuOpenFor((prev) =>
-                            prev === doc.id ? null : doc.id
-                          )
-                        }
-                        type="button"
+                    return (
+                      <div
+                        key={doc.id}
+                        className="relative shadow-sm hover:shadow-md transition cursor-pointer"
+                        style={{
+                          width: 280,
+                          height: 196,
+                          borderRadius: 16,
+                          backgroundColor: bg,
+                          border: `1px solid ${border}`,
+                        }}
                       >
-                        <MoreVertical className="w-5 h-5 text-slate-600" />
-                      </button>
-
-                      {menuOpenFor === doc.id && (
-                        <div
-                          ref={menuRef}
-                          className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[200px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
+                        {/* Menú (3 puntos) */}
+                        <button
+                          ref={menuBtnRef}
+                          aria-label="Opciones"
+                          className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setMenuOpenFor((prev) =>
+                              prev === doc.id ? null : doc.id
+                            );
+                          }}
+                          type="button"
                         >
-                          <button
-                            className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                            onClick={() => {
-                              setMenuOpenFor(null);
-                              openEditModal(doc);
-                            }}
+                          <MoreVertical className="w-5 h-5 text-slate-600" />
+                        </button>
+
+                        {menuOpenFor === doc.id && (
+                          <div
+                            ref={menuRef}
+                            className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[200px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            <Pencil className="w-5 h-5 text-slate-600" />
-                            <span>
-                              {tr(
-                                "library_doc_edit_title",
-                                "Editar título"
-                              )}
-                            </span>
-                          </button>
-                          <button
-                            className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                            onClick={() => {
-                              setMenuOpenFor(null);
-                              deleteDoc(doc.id);
-                            }}
-                          >
-                            <Trash2 className="w-5 h-5 text-slate-600" />
-                            <span>
-                              {tr("library_doc_delete", "Eliminar")}
-                            </span>
-                          </button>
-                        </div>
-                      )}
-
-                      {/* Contenido tarjeta */}
-                      <div className="h-full w-full px-5 pt-8 pb-6">
-                        {/* Icono */}
-                        <img
-                          src={iconSrc}
-                          alt=""
-                          className="w-[48px] h-[48px] object-contain mb-6"
-                        />
-
-                        {/* Título tipo + nombre del doc */}
-                        <h3 className="text-[16px] leading-[22px] font-semibold text-slate-900 pr-4">
-                          {isSummary
-                            ? `${tr(
-                                "library_doc_type_summary",
-                                "Resumen:"
-                              )} ${doc.title || ""}`
-                            : `${tr(
-                                "library_doc_type_translation",
-                                "Traducción:"
-                              )} ${doc.title || ""}`}
-                        </h3>
-
-                        {/* Fecha (si está) */}
-                        {doc.createdAt && (
-                          <p className="mt-3 text-[13px] leading-[18px] text-slate-700">
-                            {new Date(doc.createdAt).toLocaleDateString(
-                              "es-ES",
-                              {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )}
-                          </p>
+                            <button
+                              className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                              onClick={() => {
+                                openEditModal(doc);
+                              }}
+                            >
+                              <Pencil className="w-5 h-5 text-slate-600" />
+                              <span>
+                                {tr(
+                                  "library_doc_edit_title",
+                                  "Editar título"
+                                )}
+                              </span>
+                            </button>
+                            <button
+                              className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                              onClick={() => handleDeleteDoc(doc.id)}
+                            >
+                              <Trash2 className="w-5 h-5 text-slate-600" />
+                              <span>
+                                {tr("library_doc_delete", "Eliminar")}
+                              </span>
+                            </button>
+                          </div>
                         )}
+
+                        {/* Contenido tarjeta */}
+                        <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                          <img
+                            src={iconSrc}
+                            alt=""
+                            width={40}
+                            height={40}
+                            className="block select-none"
+                          />
+
+                          {/* Título muy corto + prefijo */}
+                          <h3
+                            className="mt-6 text-[18px] leading-[24px] font-semibold text-slate-900 pr-4"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                            }}
+                          >
+                            {labelPrefix}{" "}
+                            {doc.title || tr("library_untitled", "Sin título")}
+                          </h3>
+
+                          {/* Fecha SIEMPRE abajo */}
+                          {dateLabel && (
+                            <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
+                              {dateLabel}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
 
               {/* Carpetas */}
               {type === "folders" && folders.length === 0 && (

@@ -1597,6 +1597,14 @@ folder_modal_save: {
   ES: "Guardar",
   EUS: "Gorde",
 },
+library_doc_edit_title: {
+  ES: "Editar documento",
+  EUS: "Editatu dokumentua",
+},
+library_doc_delete: {
+  ES: "Eliminar",
+  EUS: "Ezabatu",
+},
 
   // =========================
   //        Pro Suggestions
