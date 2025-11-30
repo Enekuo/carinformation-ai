@@ -1546,6 +1546,15 @@ library_create_new: {
   ES: "Crear nuevo",
   EUS: "Sortu berria",
 },
+library_doc_type_translation: {
+  ES: "Traducción:",
+  EUS: "Itzulpena:",
+},
+
+library_doc_type_summary: {
+  ES: "Resumen:",
+  EUS: "Laburpena:",
+},
 
   // =========================
   //        Pro Suggestions
