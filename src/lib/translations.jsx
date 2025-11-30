@@ -1555,6 +1555,48 @@ library_doc_type_summary: {
   ES: "Resumen:",
   EUS: "Laburpena:",
 },
+library_create_text: {
+  ES: "Crear traducción",
+  EUS: "Sortu itzulpena",
+},
+library_create_summary: {
+  ES: "Crear resumen",
+  EUS: "Sortu laburpena",
+},
+library_no_folders: {
+  ES: "Aún no tienes carpetas. Crea la primera.",
+  EUS: "Ez duzu karpetarik oraindik. Sortu lehena.",
+},
+
+library_create_folder: {
+  ES: "Crear nueva carpeta",
+  EUS: "Karpeta berria sortu",
+},
+
+folder_modal_title: {
+  ES: "Crear nueva carpeta",
+  EUS: "Karpeta berria sortu",
+},
+
+folder_modal_label: {
+  ES: "Nombre de la carpeta",
+  EUS: "Karpetaren izena",
+},
+
+folder_modal_placeholder: {
+  ES: "Ponle un nombre…",
+  EUS: "Eman izen bat…",
+},
+
+folder_modal_cancel: {
+  ES: "Cancelar",
+  EUS: "Utzi",
+},
+
+folder_modal_save: {
+  ES: "Guardar",
+  EUS: "Gorde",
+},
 
   // =========================
   //        Pro Suggestions
