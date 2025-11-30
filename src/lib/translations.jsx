@@ -1553,7 +1553,7 @@ library_doc_type_translation: {
 
 library_doc_type_summary: {
   ES: "Resumen:",
-  EUS: "Laburpena:",
+  EUS: "Laburpena:", 
 },
 library_create_text: {
   ES: "Crear traducción",
