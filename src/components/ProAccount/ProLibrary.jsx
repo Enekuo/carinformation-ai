@@ -6,6 +6,7 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
+  Mic,          // <--- AÑADIDO
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
@@ -55,8 +56,21 @@ export default function ProLibrary() {
       })
       .replace(".", "");
 
+  // Ahora dos tarjetas de ejemplo con estilos distintos
   const [docs, setDocs] = useState([
-    { id: "doc-olondo", title: "Olondo.ai", date: formatDate(new Date()) },
+    {
+      id: "doc-olondo-basic",
+      kind: "text", // tarjeta tipo documento (icono papel, fondo azul)
+      title: "Olondo.ai",
+      date: formatDate(new Date()),
+    },
+    {
+      id: "doc-olondo-audio",
+      kind: "audio", // tarjeta tipo audio (micrófono, fondo crema)
+      title: "Olondo.AI: Flujo y Valor de Creación de...",
+      date: "23 sept 2025",
+      sources: 1,
+    },
   ]);
 
   // Menú contextual (por doc)
@@ -133,7 +147,7 @@ export default function ProLibrary() {
         <div className="max-w-7xl mx-auto w-full px-6">
           <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-8">
             {/* Filtros arriba */}
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items_center justify-between mb-5">
               <div className="flex items-center gap-3">
                 {[
                   {
@@ -222,95 +236,111 @@ export default function ProLibrary() {
               )}
 
               {/* Tarjetas documento */}
-              {(type === "all" || type === "text") &&
-                docs.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="relative rounded-2xl shadow-sm border hover:shadow-md transition cursor-default"
-                    style={{
-                      width: 280,
-                      height: 196,
-                      borderRadius: 16,
-                      backgroundColor: "#EDF5FF",
-                      borderColor: "#D9E7FF",
-                    }}
-                  >
-                    {/* Menú (3 puntos) */}
-                    <button
-                      ref={menuBtnRef}
-                      aria-label="Opciones"
-                      className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
-                      onClick={() =>
-                        setMenuOpenFor((prev) =>
-                          prev === doc.id ? null : doc.id
-                        )
-                      }
-                      type="button"
+              {(type === "all" || type === "text" || type === "summary") &&
+                docs.map((doc) => {
+                  const isAudio = doc.kind === "audio";
+
+                  return (
+                    <div
+                      key={doc.id}
+                      className="relative rounded-2xl shadow-sm border hover:shadow-md transition cursor-default"
+                      style={{
+                        width: 280,
+                        height: 196,
+                        borderRadius: 16,
+                        // estilos distintos según el tipo
+                        backgroundColor: isAudio ? "#F7F6EE" : "#EDF5FF",
+                        borderColor: isAudio ? "#E5E1D0" : "#D9E7FF",
+                      }}
                     >
-                      <MoreVertical className="w-5 h-5 text-slate-600" />
-                    </button>
-
-                    {menuOpenFor === doc.id && (
-                      <div
-                        ref={menuRef}
-                        className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[200px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
+                      {/* Menú (3 puntos) */}
+                      <button
+                        ref={menuBtnRef}
+                        aria-label="Opciones"
+                        className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
+                        onClick={() =>
+                          setMenuOpenFor((prev) =>
+                            prev === doc.id ? null : doc.id
+                          )
+                        }
+                        type="button"
                       >
-                        <button
-                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                          onClick={() => {
-                            setMenuOpenFor(null);
-                            openEditModal(doc);
+                        <MoreVertical className="w-5 h-5 text-slate-600" />
+                      </button>
+
+                      {menuOpenFor === doc.id && (
+                        <div
+                          ref={menuRef}
+                          className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[200px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
+                        >
+                          <button
+                            className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                            onClick={() => {
+                              setMenuOpenFor(null);
+                              openEditModal(doc);
+                            }}
+                          >
+                            <Pencil className="w-5 h-5 text-slate-600" />
+                            <span>
+                              {tr(
+                                "library_doc_edit_title",
+                                "Editar título"
+                              )}
+                            </span>
+                          </button>
+                          <button
+                            className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                            onClick={() => {
+                              setMenuOpenFor(null);
+                              deleteDoc(doc.id);
+                            }}
+                          >
+                            <Trash2 className="w-5 h-5 text-slate-600" />
+                            <span>
+                              {tr("library_doc_delete", "Eliminar")}
+                            </span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Contenido tarjeta */}
+                      <div className="h-full w-full px-5 pt-12 pb-6">
+                        {/* Icono diferente según el tipo */}
+                        {isAudio ? (
+                          <div className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center -mt-4">
+                            <Mic className="w-5 h-5 text-slate-700" />
+                          </div>
+                        ) : (
+                          <img
+                            src={DOC_ICON_SRC}
+                            alt=""
+                            width={60}
+                            height={60}
+                            className="block select-none -mt-6"
+                          />
+                        )}
+
+                        <h3
+                          className="mt-8 text-[22px] leading-[30px] font-semibold text-slate-900 pr-8"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
                           }}
                         >
-                          <Pencil className="w-5 h-5 text-slate-600" />
-                          <span>
-                            {tr(
-                              "library_doc_edit_title",
-                              "Editar título"
-                            )}
-                          </span>
-                        </button>
-                        <button
-                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                          onClick={() => {
-                            setMenuOpenFor(null);
-                            deleteDoc(doc.id);
-                          }}
-                        >
-                          <Trash2 className="w-5 h-5 text-slate-600" />
-                          <span>
-                            {tr("library_doc_delete", "Eliminar")}
-                          </span>
-                        </button>
+                          {doc.title}
+                        </h3>
+
+                        <p className="mt-4 text-[14px] leading-[20px] text-slate-700">
+                          {isAudio
+                            ? `${doc.date} · ${doc.sources || 1} fuente`
+                            : doc.date}
+                        </p>
                       </div>
-                    )}
-
-                    {/* Contenido tarjeta */}
-                    <div className="h-full w-full px-5 pt-12 pb-6">
-                      <img
-                        src={DOC_ICON_SRC}
-                        alt=""
-                        width={60}
-                        height={60}
-                        className="block select-none -mt-6"
-                      />
-                      <h3
-                        className="mt-8 text-[22px] leading-[30px] font-semibold text-slate-900 pr-8"
-                        style={{
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
-                        {doc.title}
-                      </h3>
-                      <p className="mt-4 text-[14px] leading-[20px] text-slate-700">
-                        {doc.date}
-                      </p>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
               {/* Carpetas */}
               {type === "folders" && folders.length === 0 && (
