@@ -1605,6 +1605,10 @@ library_doc_delete: {
   ES: "Eliminar",
   EUS: "Ezabatu",
 },
+library_back: {
+  ES: "Atras",
+  EUS: "Atzera",
+},
 
   // =========================
   //        Pro Suggestions

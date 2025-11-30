@@ -1,8 +1,9 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useLibraryDocs } from "@/proLibraryStore";
+import ProLayout from "./ProLayout";
 
 export default function ProLibraryDetail() {
   const { t } = useTranslation();
@@ -14,84 +15,95 @@ export default function ProLibraryDetail() {
   const { docs } = useLibraryDocs();
   const doc = docs.find((d) => d.id === id);
 
+  // Si no hay documento, mostramos un mensaje sencillo
   if (!doc) {
     return (
-      <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
-        <div className="max-w-4xl mx-auto px-6">
-          <button
-            type="button"
-            onClick={() => navigate("/cuenta-pro/biblioteca")}
-            className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {tr("library_back", "Volver a la biblioteca")}
-          </button>
+      <ProLayout>
+        <div className="min-h-screen bg-[#F4F8FF]">
+          <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-10">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 mb-6"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{tr("library_back", "Volver a la biblioteca")}</span>
+            </button>
 
-          <div className="rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 p-8">
-            <p className="text-slate-700">
-              {tr(
-                "library_doc_not_found",
-                "No se ha encontrado este documento en la biblioteca."
-              )}
-            </p>
+            <div className="mx-auto max-w-3xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8">
+              <p className="text-base text-slate-700">
+                {tr(
+                  "library_not_found",
+                  "No se ha encontrado este documento en tu biblioteca."
+                )}
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+      </ProLayout>
     );
   }
 
   const isTranslation = doc.kind === "translation";
 
-  const prefix = isTranslation
-    ? tr("library_prefix_translation", "Itzulpena:")
-    : tr("library_prefix_summary", "Laburpena:");
+  const typeLabel = isTranslation
+    ? tr("library_doc_type_translation", "Traducción:")
+    : tr("library_doc_type_summary", "Resumen:");
 
-  const dateLabel = doc.createdAt
-    ? new Date(doc.createdAt)
+  const dateLabel = (() => {
+    if (doc.createdAtLabel) return doc.createdAtLabel;
+    if (!doc.createdAt) return "";
+    try {
+      return new Date(doc.createdAt)
         .toLocaleDateString("es-ES", {
           day: "numeric",
           month: "short",
           year: "numeric",
         })
-        .replace(".", "")
-    : "";
+        .replace(".", "");
+    } catch {
+      return "";
+    }
+  })();
+
+  const titleText = doc.title || tr("library_untitled", "Sin título");
 
   return (
-    <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
-      <div className="max-w-5xl mx-auto px-6">
-        {/* Botón volver */}
-        <button
-          type="button"
-          onClick={() => navigate("/cuenta-pro/biblioteca")}
-          className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {tr("library_back", "Volver a la biblioteca")}
-        </button>
+    <ProLayout>
+      <div className="min-h-screen bg-[#F4F8FF]">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-10">
+          {/* Botón volver */}
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 mb-6"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>{tr("library_back", "library_back")}</span>
+          </button>
 
-        {/* “Hoja” central tipo NotebookLM */}
-        <div className="rounded-3xl bg-white shadow-[0_18px_60px_rgba(15,23,42,0.12)] ring-1 ring-slate-200 px-7 py-6 md:px-10 md:py-8">
-          <div className="flex flex-col gap-2 mb-6">
-            <h1 className="text-[20px] md:text-[22px] font-semibold text-slate-900">
-              <span className="font-semibold text-slate-900">
-                {prefix}&nbsp;
-              </span>
-              <span className="font-normal text-slate-700">
-                {doc.title || tr("library_untitled", "Sin título")}
-              </span>
-            </h1>
+          {/* Tarjeta grande */}
+          <div className="mx-auto max-w-5xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8 md:py-9">
+            {/* Título */}
+            <p className="text-[18px] md:text-[20px] leading-[28px]">
+              <span className="font-semibold text-slate-900">{typeLabel}</span>
+              <span className="text-slate-600"> {titleText}</span>
+            </p>
+
+            {/* Fecha */}
             {dateLabel && (
-              <p className="text-sm text-slate-500">{dateLabel}</p>
+              <p className="mt-2 text-sm text-slate-500">{dateLabel}</p>
             )}
-          </div>
 
-          <div className="border border-slate-200 rounded-2xl bg-slate-50/40 px-5 py-4 md:px-6 md:py-5">
-            <div className="text-[15px] leading-7 text-slate-800 whitespace-pre-line">
-              {doc.content}
+            {/* Contenido */}
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 md:px-6 py-4 md:py-5 min-h-[220px]">
+              <p className="text-[15px] leading-7 text-slate-800 whitespace-pre-wrap">
+                {doc.content}
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </ProLayout>
   );
 }
