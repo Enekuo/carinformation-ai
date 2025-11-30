@@ -1,47 +1,124 @@
-// src/lib/proLibraryStore.js
+import { useSyncExternalStore } from "react";
 
-const STORAGE_KEY = "euskalia_pro_library_docs";
+// Clave de localStorage
+const STORAGE_KEY = "euskalia_pro_library";
 
-// Leer todo lo guardado
-export function loadLibraryDocs() {
+// ===== Estado interno (fuera de React) =====
+let docs = loadInitialDocs();
+const listeners = new Set();
+
+function loadInitialDocs() {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed;
   } catch {
     return [];
   }
 }
 
-// Guardar el array completo
-export function saveLibraryDocs(docs) {
+function persist() {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(docs));
   } catch {
-    // ignoramos errores de cuota, modo incógnito, etc.
+    // ignorar errores de almacenamiento
   }
 }
 
-// Añadir un nuevo documento (traductor / resumen)
-export function addLibraryDoc({ kind, title, content }) {
-  const docs = loadLibraryDocs();
-  const now = new Date();
-
-  const newDoc = {
-    id: crypto.randomUUID?.() || String(now.getTime()),
-    kind, // "translator" | "summary"
-    title,
-    content,
-    createdAt: now.toISOString(),
-  };
-
-  const updated = [newDoc, ...docs];
-  saveLibraryDocs(updated);
-  return newDoc;
+function emit() {
+  persist();
+  for (const l of listeners) l();
 }
 
-// Leer un documento concreto (lo usaremos más adelante para la página de detalle)
-export function getLibraryDocById(id) {
-  return loadLibraryDocs().find((d) => d.id === id) || null;
+// ===== Helpers =====
+function makeId() {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return String(Date.now() + Math.random());
+}
+
+function formatDateLabel(dateIso) {
+  try {
+    return new Date(dateIso)
+      .toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(".", "");
+  } catch {
+    return "";
+  }
+}
+
+function clipTitle(raw, maxLen = 35) {
+  const base = String(raw || "").trim();
+  if (!base) return "";
+  if (base.length <= maxLen) return base;
+  return base.slice(0, maxLen).trimEnd() + "…";
+}
+
+// ===== API de escritura =====
+export function addLibraryDoc({ kind, title, content }) {
+  const id = makeId();
+  const createdAt = new Date().toISOString();
+  const createdAtLabel = formatDateLabel(createdAt);
+
+  const safeKind = kind === "translation" ? "translation" : "summary";
+
+  const doc = {
+    id,
+    kind: safeKind, // "translation" | "summary"
+    title: clipTitle(title, 35),
+    content: String(content || ""),
+    createdAt,
+    createdAtLabel,
+  };
+
+  docs = [doc, ...docs];
+  emit();
+  return id;
+}
+
+export function renameDoc(id, newTitle) {
+  const title = clipTitle(newTitle, 35);
+  if (!title) return;
+
+  docs = docs.map((d) =>
+    d.id === id
+      ? {
+          ...d,
+          title,
+        }
+      : d
+  );
+  emit();
+}
+
+export function deleteDoc(id) {
+  docs = docs.filter((d) => d.id !== id);
+  emit();
+}
+
+// ===== Hook React para leer el store =====
+export function useLibraryDocs() {
+  const subscribe = (listener) => {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  };
+
+  const getSnapshot = () => docs;
+
+  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+
+  return {
+    docs: snapshot,
+    renameDoc,
+    deleteDoc,
+  };
 }
