@@ -6,7 +6,7 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
-  Mic,          // <--- AÑADIDO
+  Mic,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
@@ -56,7 +56,7 @@ export default function ProLibrary() {
       })
       .replace(".", "");
 
-  // Ahora dos tarjetas de ejemplo con estilos distintos
+  // Una tarjeta tipo documento + una tipo audio
   const [docs, setDocs] = useState([
     {
       id: "doc-olondo-basic",
@@ -147,7 +147,7 @@ export default function ProLibrary() {
         <div className="max-w-7xl mx-auto w-full px-6">
           <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-8">
             {/* Filtros arriba */}
-            <div className="flex items_center justify-between mb-5">
+            <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
                 {[
                   {
@@ -248,7 +248,6 @@ export default function ProLibrary() {
                         width: 280,
                         height: 196,
                         borderRadius: 16,
-                        // estilos distintos según el tipo
                         backgroundColor: isAudio ? "#F7F6EE" : "#EDF5FF",
                         borderColor: isAudio ? "#E5E1D0" : "#D9E7FF",
                       }}
@@ -304,12 +303,15 @@ export default function ProLibrary() {
                       )}
 
                       {/* Contenido tarjeta */}
-                      <div className="h-full w-full px-5 pt-12 pb-6">
+                      <div
+                        className={`h-full w-full px-5 ${
+                          isAudio ? "pt-6" : "pt-12"
+                        } pb-6`}
+                      >
                         {/* Icono diferente según el tipo */}
                         {isAudio ? (
-                          <div className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center -mt-4">
-                            <Mic className="w-5 h-5 text-slate-700" />
-                          </div>
+                          // Icono estilo NotebookLM: arriba a la izquierda
+                          <Mic className="w-7 h-7 text-slate-700 mt-1 mb-6" />
                         ) : (
                           <img
                             src={DOC_ICON_SRC}
@@ -321,7 +323,7 @@ export default function ProLibrary() {
                         )}
 
                         <h3
-                          className="mt-8 text-[22px] leading-[30px] font-semibold text-slate-900 pr-8"
+                          className="text-[20px] leading-[28px] font-semibold text-slate-900 pr-4"
                           style={{
                             display: "-webkit-box",
                             WebkitLineClamp: 2,
@@ -332,7 +334,7 @@ export default function ProLibrary() {
                           {doc.title}
                         </h3>
 
-                        <p className="mt-4 text-[14px] leading-[20px] text-slate-700">
+                        <p className="mt-3 text-[13px] leading-[18px] text-slate-700">
                           {isAudio
                             ? `${doc.date} · ${doc.sources || 1} fuente`
                             : doc.date}
@@ -445,7 +447,7 @@ export default function ProLibrary() {
       {/* MODAL Editar título del documento */}
       {editModalOpen && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify_center"
+          className="fixed inset-0 z-[70] flex items-center justify-center"
           role="dialog"
           aria-modal="true"
         >
@@ -499,7 +501,7 @@ export default function ProLibrary() {
             <div className="px-6 pb-6 flex items-center justify-end gap-3">
               <button
                 onClick={closeEditModal}
-                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg_white text-slate-700 hover:bg-slate-50 shadow-sm"
+                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow-sm"
               >
                 {tr("cancel", "Cancelar")}
               </button>
