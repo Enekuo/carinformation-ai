@@ -11,7 +11,7 @@ export default function PricingPage() {
     {
       id: "pro",
       titleKey: "pricing.pro_name",
-      priceText: "6,99€",
+      priceText: "4,99€",
       priceSuffixKey: "pricing.perMonth",
       featuresKeys: [
         "pricing.features.limits_pro",
@@ -38,7 +38,7 @@ export default function PricingPage() {
     {
       id: "premium",
       titleKey: "pricing.premium_name",
-      priceText: "12,99€",
+      priceText: "14,99€",
       priceSuffixKey: "pricing.perMonth",
       featuresKeys: [
         "pricing.features.library_premium",

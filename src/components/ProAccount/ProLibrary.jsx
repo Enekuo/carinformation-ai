@@ -311,17 +311,15 @@ export default function ProLibrary() {
 
                       {/* Contenido tarjeta */}
                       <div className="h-full w-full px-5 pt-8 pb-6">
-                        {/* Icono (Library1 / Library2) */}
+                        {/* Icono */}
                         <img
                           src={iconSrc}
                           alt=""
                           className="w-[48px] h-[48px] object-contain mb-6"
                         />
 
-                        {/* AQUÍ van las claves nuevas */}
-                        <h3
-                          className="text-[18px] leading-[22px] font-semibold text-slate-900 pr-4"
-                        >
+                        {/* Título: solo tipo, sin fecha */}
+                        <h3 className="text-[16px] leading-[22px] font-semibold text-slate-900 pr-4">
                           {isSummary
                             ? tr(
                                 "library_doc_type_summary",
@@ -332,12 +330,6 @@ export default function ProLibrary() {
                                 "Traducción:"
                               )}
                         </h3>
-
-                        <p className="mt-3 text-[13px] leading-[18px] text-slate-700">
-                          {isSummary
-                            ? `${doc.date} · ${doc.sources || 1} fuente`
-                            : doc.date}
-                        </p>
                       </div>
                     </div>
                   );
@@ -387,7 +379,7 @@ export default function ProLibrary() {
           <div className="relative w-full max-w-lg bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
-                {tr("folder_modal_title", "Nueva carpeta")}
+                {tr("folder_modal_title", "Crear nueva carpeta")}
               </h3>
               <button
                 onClick={closeFolderModal}
@@ -419,7 +411,7 @@ export default function ProLibrary() {
                 onChange={(e) => setFolderName(e.target.value)}
                 placeholder={tr(
                   "folder_modal_placeholder",
-                  "Ej. Traducciones importantes"
+                  "Ponle un nombre…"
                 )}
                 className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
               />
@@ -436,7 +428,7 @@ export default function ProLibrary() {
                 disabled={!folderName.trim()}
                 className="px-4 py-2 text-[14px] font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
-                {tr("folder_modal_save", "Guardar carpeta")}
+                {tr("folder_modal_save", "Guardar")}
               </button>
             </div>
           </div>
