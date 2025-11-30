@@ -1546,7 +1546,7 @@ library_create_new: {
   ES: "Crear nuevo",
   EUS: "Sortu berria",
 },
-library_prefix_translation: {
+library_create_text: {
   ES: "Traducción:",
   EUS: "Itzulpena:",
 },

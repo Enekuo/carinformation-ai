@@ -2,14 +2,15 @@ import React, { useMemo, useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
-import { useLibraryDocs } from "@/proLibraryStore";
+import { useLibraryDocs, renameDoc, deleteDoc } from "@/proLibraryStore";
+
+/** Iconos */
+const ICON_TRANSLATION = "/Library1.png";
+const ICON_SUMMARY = "/Library2.jpg";
 
 export default function ProLibrary() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
-
-  // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
-  const { docs, renameDoc, deleteDoc } = useLibraryDocs();
 
   // ===== Filtros (all | text | summary | folders) =====
   const [type, setType] = useState("all");
@@ -40,8 +41,26 @@ export default function ProLibrary() {
     }
   }, [type, tr]);
 
-  // ===== Menú contextual por documento =====
-  const [menuOpenFor, setMenuOpenFor] = useState(null); // id
+  // ===== Documentos desde el store =====
+  const docs = useLibraryDocs(); // [{ id, kind, title, content, createdAt }]
+
+  const formatDate = (iso) => {
+    try {
+      const d = iso ? new Date(iso) : new Date();
+      return d
+        .toLocaleDateString("es-ES", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+        .replace(".", "");
+    } catch {
+      return "";
+    }
+  };
+
+  // Menú contextual (por doc)
+  const [menuOpenFor, setMenuOpenFor] = useState(null); // id del doc con menú abierto
   const menuRef = useRef(null);
   const menuBtnRef = useRef(null);
 
@@ -56,7 +75,7 @@ export default function ProLibrary() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [menuOpenFor]);
 
-  // ===== Modal editar título =====
+  // Modal editar título
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editingDocId, setEditingDocId] = useState(null);
@@ -78,12 +97,11 @@ export default function ProLibrary() {
     closeEditModal();
   };
 
-  const handleDeleteDoc = (docId) => {
+  const deleteDocHandler = (docId) => {
     deleteDoc(docId);
-    setMenuOpenFor(null);
   };
 
-  // ===== Carpetas (solo local, no store) =====
+  // ===== Carpetas =====
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
@@ -107,45 +125,17 @@ export default function ProLibrary() {
     setFolderModalOpen(false);
   };
 
-  // ========= Helpers visuales =========
-  const getDocVisual = (doc) => {
-    const kind = doc.kind === "translation" ? "translation" : "summary";
-
-    if (kind === "translation") {
-      return {
-        bg: "#EAF3FF",
-        border: "#D9E7FF",
-        iconSrc: "/Library1.png",
-        labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
-      };
+  // Filtrado de docs según pestaña
+  const filteredDocs = useMemo(() => {
+    if (type === "text") {
+      return docs.filter((d) => d.kind === "translation");
     }
-    return {
-      bg: "#F9F6E9",
-      border: "#EFE5C7",
-      iconSrc: "/Library2.jpg",
-      labelPrefix: tr("library_prefix_summary", "Laburpena:"),
-    };
-  };
-
-  const formatDateLabel = (doc) => {
-    if (doc.createdAtLabel) return doc.createdAtLabel;
-    if (doc.createdAt) {
-      try {
-        return new Date(doc.createdAt)
-          .toLocaleDateString("es-ES", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })
-          .replace(".", "");
-      } catch {
-        return "";
-      }
+    if (type === "summary") {
+      return docs.filter((d) => d.kind === "summary");
     }
-    return "";
-  };
+    return docs;
+  }, [docs, type]);
 
-  // ===== Render =====
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
@@ -240,92 +230,97 @@ export default function ProLibrary() {
                 </Link>
               )}
 
-              {/* Tarjetas documento (traducciones / resúmenes) */}
+              {/* Tarjetas documento */}
               {(type === "all" || type === "text" || type === "summary") &&
-                docs
-                  .filter((doc) => {
-                    if (type === "text") return doc.kind === "translation";
-                    if (type === "summary") return doc.kind === "summary";
-                    return true;
-                  })
-                  .map((doc) => {
-                    const { bg, border, iconSrc, labelPrefix } =
-                      getDocVisual(doc);
-                    const dateLabel = formatDateLabel(doc);
+                filteredDocs.map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="relative rounded-2xl shadow-sm border hover:shadow-md transition cursor-default"
+                    style={{
+                      width: 280,
+                      height: 196,
+                      borderRadius: 16,
+                      backgroundColor:
+                        doc.kind === "translation" ? "#EDF5FF" : "#FBF9ED",
+                      borderColor:
+                        doc.kind === "translation" ? "#D9E7FF" : "#F0EAD2",
+                    }}
+                  >
+                    {/* Menú (3 puntos) */}
+                    <button
+                      ref={menuBtnRef}
+                      aria-label="Opciones"
+                      className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
+                      onClick={() =>
+                        setMenuOpenFor((prev) =>
+                          prev === doc.id ? null : doc.id
+                        )
+                      }
+                      type="button"
+                    >
+                      <MoreVertical className="w-5 h-5 text-slate-600" />
+                    </button>
 
-                    return (
+                    {menuOpenFor === doc.id && (
                       <div
-                        key={doc.id}
-                        className="relative shadow-sm hover:shadow-md transition cursor-pointer"
-                        style={{
-                          width: 280,
-                          height: 196,
-                          borderRadius: 16,
-                          backgroundColor: bg,
-                          border: `1px solid ${border}`,
-                        }}
+                        ref={menuRef}
+                        className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[240px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
                       >
-                        {/* Menú (3 puntos) */}
                         <button
-                          ref={menuBtnRef}
-                          aria-label="Opciones"
-                          className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setMenuOpenFor((prev) =>
-                              prev === doc.id ? null : doc.id
-                            );
+                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                          onClick={() => {
+                            setMenuOpenFor(null);
+                            openEditModal(doc);
                           }}
-                          type="button"
                         >
-                          <MoreVertical className="w-5 h-5 text-slate-600" />
+                          <Pencil className="w-5 h-5 text-slate-600" />
+                          <span>
+                            {tr("library_doc_edit_title", "Editar documento")}
+                          </span>
                         </button>
+                        <button
+                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                          onClick={() => {
+                            setMenuOpenFor(null);
+                            deleteDocHandler(doc.id);
+                          }}
+                        >
+                          <Trash2 className="w-5 h-5 text-slate-600" />
+                          <span>
+                            {tr("library_doc_delete", "Eliminar documento")}
+                          </span>
+                        </button>
+                      </div>
+                    )}
 
-                        {menuOpenFor === doc.id && (
-                          <div
-                            ref={menuRef}
-                            className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[200px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <button
-                              className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                              onClick={() => {
-                                openEditModal(doc);
-                              }}
-                            >
-                              <Pencil className="w-5 h-5 text-slate-600" />
-                              <span>
-                                {tr(
-                                  "library_doc_edit_title",
-                                  "Editar título"
-                                )}
-                              </span>
-                            </button>
-                            <button
-                              className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                              onClick={() => handleDeleteDoc(doc.id)}
-                            >
-                              <Trash2 className="w-5 h-5 text-slate-600" />
-                              <span>
-                                {tr("library_doc_delete", "Eliminar")}
-                              </span>
-                            </button>
-                          </div>
-                        )}
+                    {/* Contenido tarjeta */}
+                    <div className="h-full w-full px-5 pt-12 pb-6">
+                      <img
+                        src={
+                          doc.kind === "translation"
+                            ? ICON_TRANSLATION
+                            : ICON_SUMMARY
+                        }
+                        alt=""
+                        width={60}
+                        height={60}
+                        className="block select-none -mt-6"
+                      />
 
-                        {/* Contenido tarjeta */}
-                        <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                          <img
-                            src={iconSrc}
-                            alt=""
-                            width={40}
-                            height={40}
-                            className="block select-none"
-                          />
+                      {(() => {
+                        const rawTitle = doc.title || "";
+                        let prefixPart = rawTitle;
+                        let restPart = "";
 
-                          {/* Título muy corto + prefijo */}
+                        const colonIndex = rawTitle.indexOf(":");
+                        if (colonIndex !== -1) {
+                          prefixPart = rawTitle.slice(0, colonIndex + 1);
+                          restPart = rawTitle.slice(colonIndex + 1).trim();
+                        }
+
+                        return (
                           <h3
-                            className="mt-6 text-[18px] leading-[24px] font-semibold text-slate-900 pr-4"
+                            className="mt-8 text-[22px] leading-[30px] pr-8"
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 2,
@@ -333,20 +328,25 @@ export default function ProLibrary() {
                               overflow: "hidden",
                             }}
                           >
-                            {labelPrefix}{" "}
-                            {doc.title || tr("library_untitled", "Sin título")}
+                            <span className="font-semibold text-slate-900">
+                              {prefixPart}
+                            </span>
+                            {restPart && (
+                              <span className="font-normal text-slate-600">
+                                {" "}
+                                {restPart}
+                              </span>
+                            )}
                           </h3>
+                        );
+                      })()}
 
-                          {/* Fecha SIEMPRE abajo */}
-                          {dateLabel && (
-                            <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
-                              {dateLabel}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                      <p className="mt-4 text-[14px] leading-[20px] text-slate-700">
+                        {formatDate(doc.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
 
               {/* Carpetas */}
               {type === "folders" && folders.length === 0 && (
@@ -392,7 +392,7 @@ export default function ProLibrary() {
           <div className="relative w-full max-w-lg bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
-                {tr("folder_modal_title", "Crear nueva carpeta")}
+                {tr("folder_modal_title", "Nueva carpeta")}
               </h3>
               <button
                 onClick={closeFolderModal}
@@ -424,7 +424,7 @@ export default function ProLibrary() {
                 onChange={(e) => setFolderName(e.target.value)}
                 placeholder={tr(
                   "folder_modal_placeholder",
-                  "Ponle un nombre…"
+                  "Ej. Traducciones importantes"
                 )}
                 className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
               />
@@ -441,7 +441,7 @@ export default function ProLibrary() {
                 disabled={!folderName.trim()}
                 className="px-4 py-2 text-[14px] font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
-                {tr("folder_modal_save", "Guardar")}
+                {tr("folder_modal_save", "Guardar carpeta")}
               </button>
             </div>
           </div>
@@ -451,7 +451,7 @@ export default function ProLibrary() {
       {/* MODAL Editar título del documento */}
       {editModalOpen && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center"
+          className="fixed inset-0 z-[70] flex items-center justify_center"
           role="dialog"
           aria-modal="true"
         >
@@ -505,7 +505,7 @@ export default function ProLibrary() {
             <div className="px-6 pb-6 flex items-center justify-end gap-3">
               <button
                 onClick={closeEditModal}
-                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow-sm"
+                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg_white text-slate-700 hover:bg-slate-50 shadow-sm"
               >
                 {tr("cancel", "Cancelar")}
               </button>
