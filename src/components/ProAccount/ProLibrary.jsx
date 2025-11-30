@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useLibraryDocs } from "@/proLibraryStore";
@@ -7,6 +7,8 @@ import { useLibraryDocs } from "@/proLibraryStore";
 export default function ProLibrary() {
   const { t } = useTranslation();
   const tr = (k, f) => t(k) || f;
+
+  const navigate = useNavigate();
 
   // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
   const { docs, renameDoc, deleteDoc } = useLibraryDocs();
@@ -264,6 +266,9 @@ export default function ProLibrary() {
                           backgroundColor: bg,
                           border: `1px solid ${border}`,
                         }}
+                        onClick={() =>
+                          navigate(`/cuenta-pro/biblioteca/${doc.id}`)
+                        }
                       >
                         {/* Menú (3 puntos) */}
                         <button
@@ -284,7 +289,7 @@ export default function ProLibrary() {
                         {menuOpenFor === doc.id && (
                           <div
                             ref={menuRef}
-                            className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[200px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
+                            className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[220px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <button
@@ -307,7 +312,7 @@ export default function ProLibrary() {
                             >
                               <Trash2 className="w-5 h-5 text-slate-600" />
                               <span>
-                                {tr("library_doc_delete", "Eliminar")}
+                                {tr("library_doc_delete", "Eliminar documento")}
                               </span>
                             </button>
                           </div>
@@ -323,7 +328,7 @@ export default function ProLibrary() {
                             className="block select-none"
                           />
 
-                          {/* Título: prefijo en negrita negro, resto en gris */}
+                          {/* Título: prefijo en negrita + resto gris */}
                           <h3
                             className="mt-6 text-[18px] leading-[24px] pr-4"
                             style={{
@@ -335,9 +340,8 @@ export default function ProLibrary() {
                           >
                             <span className="font-semibold text-slate-900">
                               {labelPrefix}
-                            </span>
-                            <span className="font-normal text-slate-600">
-                              {" "}
+                            </span>{" "}
+                            <span className="font-normal text-slate-700">
                               {doc.title ||
                                 tr("library_untitled", "Sin título")}
                             </span>

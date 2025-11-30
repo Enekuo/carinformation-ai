@@ -26,6 +26,7 @@ import ProChat from "@/components/ProAccount/ProChat";
 import ProSuggestions from "@/components/ProAccount/ProSuggestions";
 import ProHelp from "@/components/ProAccount/ProHelp";
 import ProSettings from "@/components/ProAccount/ProSettings";
+import ProLibraryDetail from "@/components/ProAccount/ProLibraryDetail";
 
 function App() {
   const location = useLocation();
@@ -80,6 +81,8 @@ function App() {
             <Route path="/cuenta-pro/sugerencias" element={<ProLayout><ProSuggestions /></ProLayout>} />
             <Route path="/cuenta-pro/ayuda" element={<ProLayout><ProHelp /></ProLayout>} />
             <Route path="/cuenta-pro/ajustes" element={<ProLayout><ProSettings /></ProLayout>} />
+            <Route path="/cuenta-pro/biblioteca/:id" element={<ProLibraryDetail />} />
+            
           </Routes>
         </main>
 
