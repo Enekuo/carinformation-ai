@@ -8,6 +8,10 @@ import {
   Trash2,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
+import {
+  loadLibraryDocs,
+  saveLibraryDocs,
+} from "@/lib/proLibraryStore";
 
 // Iconos para las tarjetas (asegúrate de tenerlos en /public)
 const TRANSLATOR_ICON_SRC = "/Library1.png"; // traductor
@@ -46,35 +50,23 @@ export default function ProLibrary() {
     }
   }, [type, tr]);
 
-  // ===== Documentos (demo) =====
-  const formatDate = (d) =>
-    d
-      .toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-      .replace(".", "");
+  // ===== Documentos DINÁMICOS (desde localStorage) =====
+  const [docs, setDocs] = useState(() => loadLibraryDocs());
 
-  // Tarjeta de traductor + tarjeta de resumen
-  const [docs, setDocs] = useState([
-    {
-      id: "doc-translator-1",
-      kind: "translator", // usa Library1.png
-      title: "Traducción Olondo.ai",
-      date: formatDate(new Date()),
-    },
-    {
-      id: "doc-summary-1",
-      kind: "summary", // usa Library2.jpg
-      title: "Olondo.AI: Flujo y Valor de Creación de...",
-      date: "23 sept 2025",
-      sources: 1,
-    },
-  ]);
+  // Para aplicar filtros a las tarjetas
+  const filteredDocs = useMemo(() => {
+    if (type === "text") {
+      return docs.filter((d) => d.kind === "translator");
+    }
+    if (type === "summary") {
+      return docs.filter((d) => d.kind === "summary");
+    }
+    // "all" o cualquier otro → todo
+    return docs;
+  }, [docs, type]);
 
   // Menú contextual (por doc)
-  const [menuOpenFor, setMenuOpenFor] = useState(null); // id del doc con menú abierto
+  const [menuOpenFor, setMenuOpenFor] = useState(null);
   const menuRef = useRef(null);
   const menuBtnRef = useRef(null);
 
@@ -96,7 +88,7 @@ export default function ProLibrary() {
 
   const openEditModal = (doc) => {
     setEditingDocId(doc.id);
-    setEditTitle(doc.title);
+    setEditTitle(doc.title || "");
     setEditModalOpen(true);
   };
   const closeEditModal = () => {
@@ -107,17 +99,25 @@ export default function ProLibrary() {
   const saveEditTitle = () => {
     const title = editTitle.trim();
     if (!title) return;
-    setDocs((prev) =>
-      prev.map((d) => (d.id === editingDocId ? { ...d, title } : d))
-    );
+    setDocs((prev) => {
+      const updated = prev.map((d) =>
+        d.id === editingDocId ? { ...d, title } : d
+      );
+      saveLibraryDocs(updated);
+      return updated;
+    });
     closeEditModal();
   };
 
   const deleteDoc = (docId) => {
-    setDocs((prev) => prev.filter((d) => d.id !== docId));
+    setDocs((prev) => {
+      const updated = prev.filter((d) => d.id !== docId);
+      saveLibraryDocs(updated);
+      return updated;
+    });
   };
 
-  // ===== Carpetas =====
+  // ===== Carpetas (de momento solo en memoria) =====
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
@@ -235,9 +235,11 @@ export default function ProLibrary() {
                 </Link>
               )}
 
-              {/* Tarjetas documento */}
-              {(type === "all" || type === "text" || type === "summary") &&
-                docs.map((doc) => {
+              {/* Tarjetas documento (Itzulpena / Laburpena) */}
+              {(type === "all" ||
+                type === "text" ||
+                type === "summary") &&
+                filteredDocs.map((doc) => {
                   const isSummary = doc.kind === "summary";
 
                   const bgColor = isSummary ? "#F7F6EE" : "#EDF5FF";
@@ -318,18 +320,32 @@ export default function ProLibrary() {
                           className="w-[48px] h-[48px] object-contain mb-6"
                         />
 
-                        {/* Título: solo tipo, sin fecha */}
+                        {/* Título tipo + nombre del doc */}
                         <h3 className="text-[16px] leading-[22px] font-semibold text-slate-900 pr-4">
                           {isSummary
-                            ? tr(
+                            ? `${tr(
                                 "library_doc_type_summary",
                                 "Resumen:"
-                              )
-                            : tr(
+                              )} ${doc.title || ""}`
+                            : `${tr(
                                 "library_doc_type_translation",
                                 "Traducción:"
-                              )}
+                              )} ${doc.title || ""}`}
                         </h3>
+
+                        {/* Fecha (si está) */}
+                        {doc.createdAt && (
+                          <p className="mt-3 text-[13px] leading-[18px] text-slate-700">
+                            {new Date(doc.createdAt).toLocaleDateString(
+                              "es-ES",
+                              {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
+                          </p>
+                        )}
                       </div>
                     </div>
                   );
