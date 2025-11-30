@@ -1546,16 +1546,16 @@ library_create_new: {
   ES: "Crear nuevo",
   EUS: "Sortu berria",
 },
-library_doc_type_translation: {
+library_prefix_translation: {
   ES: "Traducción:",
   EUS: "Itzulpena:",
 },
 
-library_doc_type_summary: {
+library_prefix_summary: {
   ES: "Resumen:",
   EUS: "Laburpena:", 
 },
-library_create_text: {
+library_prefix_translation: {
   ES: "Crear traducción",
   EUS: "Sortu itzulpena",
 },
