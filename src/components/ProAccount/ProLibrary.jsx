@@ -10,8 +10,8 @@ import {
 import { useTranslation } from "@/lib/translations";
 
 // Iconos para las tarjetas (asegúrate de tenerlos en /public)
-const TRANSLATOR_ICON_SRC = "/Library1.png";
-const SUMMARY_ICON_SRC = "/Library2.jpg";
+const TRANSLATOR_ICON_SRC = "/Library1.png"; // traductor
+const SUMMARY_ICON_SRC = "/Library2.jpg";    // resumen
 
 export default function ProLibrary() {
   const { t } = useTranslation();
@@ -66,7 +66,7 @@ export default function ProLibrary() {
     },
     {
       id: "doc-summary-1",
-      kind: "summary", // usa Library2.png
+      kind: "summary", // usa Library2.jpg
       title: "Olondo.AI: Flujo y Valor de Creación de...",
       date: "23 sept 2025",
       sources: 1,
@@ -312,14 +312,14 @@ export default function ProLibrary() {
 
                       {/* Contenido tarjeta */}
                       <div className="h-full w-full px-5 pt-8 pb-6">
-                        {/* Icono (Library1 / Library2) */}
-                        <img
-                          src={iconSrc}
-                          alt=""
-                          width={56}
-                          height={56}
-                          className="block select-none mb-6"
-                        />
+                        {/* Icono (Library1 / Library2) dentro de cuadro */}
+                        <div className="w-[52px] h-[52px] rounded-xl bg-white/80 flex items-center justify-center mb-6 overflow-hidden">
+                          <img
+                            src={iconSrc}
+                            alt=""
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
 
                         <h3
                           className="text-[20px] leading-[28px] font-semibold text-slate-900 pr-4"
