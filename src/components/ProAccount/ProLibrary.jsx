@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
-import { useLibraryDocs } from "@/lib/proLibraryStore";
+import { useLibraryDocs } from "@/proLibraryStore";
 
 export default function ProLibrary() {
   const { t } = useTranslation();
