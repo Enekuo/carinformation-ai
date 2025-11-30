@@ -90,17 +90,17 @@ export default function ProLibraryDetail() {
               <span className="text-slate-600"> {titleText}</span>
             </p>
 
-            {/* Fecha */}
-            {dateLabel && (
-              <p className="mt-2 text-sm text-slate-500">{dateLabel}</p>
-            )}
-
             {/* Contenido */}
-            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 md:px-6 py-4 md:py-5 min-h-[260px]">
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 md:px-6 py-4 md:py-5 min-h-[220px]">
               <p className="text-[15px] leading-7 text-slate-800 whitespace-pre-wrap">
                 {doc.content}
               </p>
             </div>
+
+            {/* Fecha abajo a la izquierda */}
+            {dateLabel && (
+              <p className="mt-4 text-sm text-slate-500">{dateLabel}</p>
+            )}
           </div>
         </div>
       </div>
