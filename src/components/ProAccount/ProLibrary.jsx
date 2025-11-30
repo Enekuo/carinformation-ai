@@ -311,23 +311,26 @@ export default function ProLibrary() {
 
                       {/* Contenido tarjeta */}
                       <div className="h-full w-full px-5 pt-8 pb-6">
-                        {/* Icono (Library1 / Library2) SIN cuadro blanco */}
+                        {/* Icono (Library1 / Library2) */}
                         <img
                           src={iconSrc}
                           alt=""
                           className="w-[48px] h-[48px] object-contain mb-6"
                         />
 
+                        {/* AQUÍ van las claves nuevas */}
                         <h3
                           className="text-[20px] leading-[28px] font-semibold text-slate-900 pr-4"
-                          style={{
-                            display: "-webkit-box",
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: "vertical",
-                            overflow: "hidden",
-                          }}
                         >
-                          {doc.title}
+                          {isSummary
+                            ? tr(
+                                "library_doc_type_summary",
+                                "Resumen:"
+                              )
+                            : tr(
+                                "library_doc_type_translation",
+                                "Traducción:"
+                              )}
                         </h3>
 
                         <p className="mt-3 text-[13px] leading-[18px] text-slate-700">
