@@ -7,7 +7,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/translations";
 import {
   loadLibraryDocs,
   saveLibraryDocs,
