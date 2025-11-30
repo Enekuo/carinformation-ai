@@ -22,13 +22,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function LayoutPro({ children }) {
   const { language, setLanguage } = useTranslation();
-  const [collapsed, setCollapsed] = useState(false);
-  const [toolsOpen, setToolsOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const [collapsed, setCollapsed] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(
+    pathname === "/cuenta-pro/traductor" || pathname === "/cuenta-pro/resumen"
+  );
 
   const languages = [
     { code: "ES", name: "Español" },
@@ -37,9 +42,12 @@ export default function LayoutPro({ children }) {
 
   const showText = !collapsed;
 
+  const isActive = (target) => pathname === target;
+  const isToolsSection =
+    pathname === "/cuenta-pro/traductor" || pathname === "/cuenta-pro/resumen";
+
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
-
       {/* ========== SIDEBAR FIJO ========== */}
       <aside
         className={`
@@ -67,15 +75,18 @@ export default function LayoutPro({ children }) {
 
         {/* Contenido */}
         <div className="flex-1 flex flex-col">
-
           {/* Home */}
           <nav className="space-y-1 text-sm">
             <button
               onClick={() => navigate("/cuenta-pro")}
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
-                bg-slate-900 text-white font-medium
                 ${collapsed ? "justify-center" : ""}
+                ${
+                  isActive("/cuenta-pro")
+                    ? "bg-slate-900 text-white font-medium"
+                    : "hover:bg-slate-100 text-slate-700"
+                }
               `}
             >
               <HomeIcon size={18} />
@@ -88,8 +99,12 @@ export default function LayoutPro({ children }) {
                 onClick={() => setToolsOpen((v) => !v)}
                 className={`
                   w-full flex items-center gap-2 px-3 h-11 rounded-lg
-                  hover:bg-slate-100 text-slate-700
                   ${collapsed ? "justify-center" : "justify-between"}
+                  ${
+                    isToolsSection
+                      ? "bg-slate-900 text-white"
+                      : "hover:bg-slate-100 text-slate-700"
+                  }
                 `}
               >
                 <div className="flex items-center gap-2">
@@ -111,12 +126,16 @@ export default function LayoutPro({ children }) {
                 <div className="ml-3 mt-1 space-y-1">
                   <button
                     onClick={() => navigate("/cuenta-pro/traductor")}
-                    className="
+                    className={`
                       w-full flex items-center
                       pl-6 pr-3 h-9
-                      text-sm text-slate-700
-                      hover:text-slate-900
-                    "
+                      text-sm
+                      ${
+                        isActive("/cuenta-pro/traductor")
+                          ? "text-slate-900 font-semibold"
+                          : "text-slate-700 hover:text-slate-900"
+                      }
+                    `}
                   >
                     <span className="mr-2 text-slate-200">│</span>
                     <span>Traductor</span>
@@ -124,12 +143,16 @@ export default function LayoutPro({ children }) {
 
                   <button
                     onClick={() => navigate("/cuenta-pro/resumen")}
-                    className="
+                    className={`
                       w-full flex items-center
                       pl-6 pr-3 h-9
-                      text-sm text-slate-700
-                      hover:text-slate-900
-                    "
+                      text-sm
+                      ${
+                        isActive("/cuenta-pro/resumen")
+                          ? "text-slate-900 font-semibold"
+                          : "text-slate-700 hover:text-slate-900"
+                      }
+                    `}
                   >
                     <span className="mr-2 text-slate-200">└</span>
                     <span>Resumen</span>
@@ -143,8 +166,12 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/biblioteca")}
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
-                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
+                ${
+                  isActive("/cuenta-pro/biblioteca")
+                    ? "bg-slate-900 text-white font-medium"
+                    : "hover:bg-slate-100 text-slate-700"
+                }
               `}
             >
               <Folder size={18} />
@@ -156,8 +183,12 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/chat-ia")}
               className={`
                 w-full flex items-center gap-2 px-3 h-11 rounded-lg
-                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
+                ${
+                  isActive("/cuenta-pro/chat-ia")
+                    ? "bg-slate-900 text-white font-medium"
+                    : "hover:bg-slate-100 text-slate-700"
+                }
               `}
             >
               <MessageSquare size={18} />
@@ -174,8 +205,12 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/sugerencias")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
+                ${
+                  isActive("/cuenta-pro/sugerencias")
+                    ? "bg-slate-900 text-white font-medium"
+                    : "hover:bg-slate-100 text-slate-700"
+                }
               `}
             >
               <Lightbulb size={18} />
@@ -186,8 +221,12 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/ayuda")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
+                ${
+                  isActive("/cuenta-pro/ayuda")
+                    ? "bg-slate-900 text-white font-medium"
+                    : "hover:bg-slate-100 text-slate-700"
+                }
               `}
             >
               <LifeBuoy size={18} />
@@ -198,8 +237,12 @@ export default function LayoutPro({ children }) {
               onClick={() => navigate("/cuenta-pro/ajustes")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
-                hover:bg-slate-100 text-slate-700
                 ${collapsed ? "justify-center" : ""}
+                ${
+                  isActive("/cuenta-pro/ajustes")
+                    ? "bg-slate-900 text-white font-medium"
+                    : "hover:bg-slate-100 text-slate-700"
+                }
               `}
             >
               <Settings size={18} />
@@ -229,8 +272,11 @@ export default function LayoutPro({ children }) {
       </aside>
 
       {/* ========== COLUMNA DERECHA ========== */}
-      <div className={`flex-1 flex flex-col transition-all ${collapsed ? "ml-16" : "ml-48"}`}>
-
+      <div
+        className={`flex-1 flex flex-col transition-all ${
+          collapsed ? "ml-16" : "ml-48"
+        }`}
+      >
         <header className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200">
           <div />
 
@@ -283,7 +329,6 @@ export default function LayoutPro({ children }) {
                     {lang.name}
                   </DropdownMenuItem>
                 ))}
-
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -293,10 +338,7 @@ export default function LayoutPro({ children }) {
           </div>
         </header>
 
-        <main className="flex-1 px-8 py-8">
-          {children}
-        </main>
-
+        <main className="flex-1 px-8 py-8">{children}</main>
       </div>
     </div>
   );
