@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-import { addLibraryDoc } from "./proLibraryStore";
+import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProSummary() {
   const { t } = useTranslation();
