@@ -53,17 +53,6 @@ export default function ProTranslator() {
 
   const { addDoc } = useLibraryDocs();
 
-  // Textos para el mensaje y botón de guardado en biblioteca
-  const libraryReadyMessage = tr(
-    "library_ready_message",
-    "Traducción lista. Puedes guardarla en tu biblioteca."
-  );
-
-  const librarySaveButtonLabel = tr(
-    "library_save_button_label",
-    "Guardar en biblioteca"
-  );
-
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
@@ -420,6 +409,9 @@ export default function ProTranslator() {
   );
   const labelRemove = tr("summary.remove", "Quitar");
 
+  // 🔹 etiqueta para el botón Guardar (traductor)
+  const labelSaveTranslation = tr("save_button_label", "Guardar");
+
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
       try {
@@ -606,7 +598,7 @@ export default function ProTranslator() {
     w.print();
   };
 
-  // 🔹 ahora sí: guardar traducción en la biblioteca Pro
+  // 🔹 guardar traducción en la biblioteca Pro
   const handleSaveTranslation = () => {
     if (!rightText) return;
 
@@ -702,7 +694,7 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // 🔹 solo mostramos el bloque de guardado cuando haya resultado y no esté cargando
+  // solo mostramos el botón Guardar cuando haya resultado y no esté cargando
   const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
 
   return (
@@ -1103,22 +1095,6 @@ export default function ProTranslator() {
                   }`}
                 />
 
-                {hasResult && (
-                  <div className="mt-4 flex justify-end">
-                    <div className="flex flex-col items-end gap-1">
-                      <p className="text-xs text-slate-500">{libraryReadyMessage}</p>
-                      <button
-                        type="button"
-                        onClick={handleSaveTranslation}
-                        className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                        style={{ backgroundColor: "#22c55e" }}
-                      >
-                        {librarySaveButtonLabel}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
                 {err && (
                   <div className="absolute bottom-4 left-8 text-sm text-red-500">
                     {err}
@@ -1172,6 +1148,17 @@ export default function ProTranslator() {
                       {t("translator.pdf")}
                     </span>
                   </button>
+
+                  {hasResult && (
+                    <button
+                      type="button"
+                      onClick={handleSaveTranslation}
+                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                      style={{ backgroundColor: "#22c55e" }}
+                    >
+                      {labelSaveTranslation}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
