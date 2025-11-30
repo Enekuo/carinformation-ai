@@ -1551,7 +1551,7 @@ library_create_text: {
   EUS: "Itzulpena:",
 },
 
-library_doc_type_summary: {
+library_prefix_summary: {
   ES: "Resumen:",
   EUS: "Laburpena:", 
 },
