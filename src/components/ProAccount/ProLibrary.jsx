@@ -238,7 +238,6 @@ export default function ProLibrary() {
               {/* Tarjetas documento */}
               {(type === "all" || type === "text" || type === "summary") &&
                 docs.map((doc) => {
-                  const isTranslator = doc.kind === "translator";
                   const isSummary = doc.kind === "summary";
 
                   const bgColor = isSummary ? "#F7F6EE" : "#EDF5FF";
@@ -312,14 +311,12 @@ export default function ProLibrary() {
 
                       {/* Contenido tarjeta */}
                       <div className="h-full w-full px-5 pt-8 pb-6">
-                        {/* Icono (Library1 / Library2) dentro de cuadro */}
-                        <div className="w-[52px] h-[52px] rounded-xl bg-white/80 flex items-center justify-center mb-6 overflow-hidden">
-                          <img
-                            src={iconSrc}
-                            alt=""
-                            className="max-w-full max-h-full object-contain"
-                          />
-                        </div>
+                        {/* Icono (Library1 / Library2) SIN cuadro blanco */}
+                        <img
+                          src={iconSrc}
+                          alt=""
+                          className="w-[48px] h-[48px] object-contain mb-6"
+                        />
 
                         <h3
                           className="text-[20px] leading-[28px] font-semibold text-slate-900 pr-4"
