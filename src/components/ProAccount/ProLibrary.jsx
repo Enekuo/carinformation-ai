@@ -320,7 +320,7 @@ export default function ProLibrary() {
 
                         {/* AQUÍ van las claves nuevas */}
                         <h3
-                          className="text-[20px] leading-[28px] font-semibold text-slate-900 pr-4"
+                          className="text-[16px] leading-[22px] font-semibold text-slate-900 pr-4"
                         >
                           {isSummary
                             ? tr(
