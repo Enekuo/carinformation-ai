@@ -7,11 +7,11 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import { useTranslation } from "@/translations";
+import { useTranslation } from "@/lib/translations";
 import {
   loadLibraryDocs,
   saveLibraryDocs,
-} from "@/lib/proLibraryStore";
+} from "@/components/ProAccount/proLibraryStore";
 
 // Iconos para las tarjetas (asegúrate de tenerlos en /public)
 const TRANSLATOR_ICON_SRC = "/Library1.png"; // traductor
