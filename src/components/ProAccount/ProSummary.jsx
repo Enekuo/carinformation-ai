@@ -61,6 +61,10 @@ export default function ProSummary() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
+  // Estado y timer para mensaje "Guardado en biblioteca"
+  const [savedToLibrary, setSavedToLibrary] = useState(false);
+  const savedTimerRef = useRef(null);
+
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
@@ -135,7 +139,7 @@ export default function ProSummary() {
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
 
-  // Mensaje “resumen listo”
+  // Mensajes panel derecho
   const labelReadyMessage = tr(
     "summary.ready_message",
     
@@ -144,6 +148,11 @@ export default function ProSummary() {
     "summary.save_button_label",
     
   );
+  const librarySavedMessage = tr(
+    "library_saved_toast",
+    "Guardado en biblioteca"
+  );
+
   // Ayuda izquierda
   const leftRaw = tr(
     "summary.create_help_left",
@@ -329,6 +338,21 @@ export default function ProSummary() {
     outputLang,
   ]);
 
+  // URLs → reset resultado
+  useEffect(() => {
+    setResult("");
+    setErrorMsg("");
+    setErrorKind(null);
+    setIsOutdated(false);
+  }, [urlItems]);
+
+  // Efecto de limpieza del timer de "Guardado en biblioteca"
+  useEffect(() => {
+    return () => {
+      if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+    };
+  }, []);
+
   // ===== Documentos =====
   const readTextFromFiles = async (items) => {
     const results = await Promise.all(
@@ -424,13 +448,6 @@ export default function ProSummary() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  useEffect(() => {
-    setResult("");
-    setErrorMsg("");
-    setErrorKind(null);
-    setIsOutdated(false);
-  }, [urlItems]);
-
   // ===== Validación =====
   const textIsValid = useMemo(() => {
     const trimmed = (textValue || "").trim();
@@ -476,6 +493,13 @@ export default function ProSummary() {
       title,
       content: result,
     });
+
+    // Activar mensaje "Guardado en biblioteca" durante 2 segundos
+    setSavedToLibrary(true);
+    if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+    savedTimerRef.current = setTimeout(() => {
+      setSavedToLibrary(false);
+    }, 2000);
   };
 
   // ===== Tarjetas =====
@@ -1248,6 +1272,11 @@ export default function ProSummary() {
 
                         <div className="flex justify-end">
                           <div className="flex flex-col items-end gap-1">
+                            {savedToLibrary && (
+                              <p className="text-xs text-emerald-600">
+                                {librarySavedMessage}
+                              </p>
+                            )}
                             <p className="text-xs text-slate-500">
                               {labelReadyMessage}
                             </p>
