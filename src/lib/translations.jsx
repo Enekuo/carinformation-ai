@@ -1609,6 +1609,14 @@ library_back: {
   ES: "Atras",
   EUS: "Atzera",
 },
+folder_back: {
+  ES: "Atras",
+  EUS: "Atzera",
+},
+folder_modal_select_docs: {
+  ES: "Elige qué documentos quieres guardar en esta carpeta",
+  EUS: "Aukeratu karpeta honetan gorde nahi dituzun dokumentuak",
+},
 
   // =========================
   //        Pro Suggestions
