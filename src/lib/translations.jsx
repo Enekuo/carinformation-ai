@@ -1557,7 +1557,7 @@ library_prefix_summary: {
 },
 library_prefix_translation: {
   ES: "Crear traducción",
-  EUS: "Sortu itzulpena",
+  EUS: "Itzulpena",
 },
 library_create_summary: {
   ES: "Crear resumen",
