@@ -36,7 +36,7 @@ No cambies de idioma en la traducción.
     return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
 Itzuli BETI gaztelaniatik euskarara.
-Erantzun BETI euskaraz itzulpena ematean.
+Erantzun BETI euskaraz itzulpenean.
 Ez aldatu hizkuntza itzulpenean.
 `.trim();
   }
@@ -127,7 +127,7 @@ export default function ProTranslator() {
     autoResize(rightTA.current);
   }, [rightText]);
 
-  // === Traducción MODO TEXTO (idéntico)
+  // === Traducción MODO TEXTO
   useEffect(() => {
     if (sourceMode !== "text") return;
 
@@ -195,7 +195,7 @@ export default function ProTranslator() {
     };
   }, [leftText, src, dst, sourceMode]);
 
-  // === Traducción MODO URL (igual)
+  // === Traducción MODO URL
   useEffect(() => {
     if (sourceMode !== "url") return;
 
@@ -261,7 +261,7 @@ export default function ProTranslator() {
       reader.readAsText(file);
     });
 
-  // === Traducción MODO DOCUMENTO (igual)
+  // === Traducción MODO DOCUMENTO
   useEffect(() => {
     if (sourceMode !== "document") return;
 
@@ -409,11 +409,8 @@ export default function ProTranslator() {
   );
   const labelRemove = tr("summary.remove", "Quitar");
 
-  // 🔹 etiqueta para el botón Guardar (traductor)
-  const labelSaveTranslation = tr(
-    "save_button_label",
-    "Guardar"
-  );
+  // etiqueta del botón Guardar
+  const labelSaveTranslation = tr("save_button_label", "Guardar");
 
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
@@ -601,7 +598,7 @@ export default function ProTranslator() {
     w.print();
   };
 
-  // 🔹 handler para guardar traducción en la biblioteca Pro
+  // 🔹 guardar traducción en la biblioteca Pro (CAMBIO: añadimos id)
   const handleSaveTranslation = () => {
     if (!rightText) return;
 
@@ -612,6 +609,7 @@ export default function ProTranslator() {
     if (clean.length > maxLen) title += "...";
 
     addDoc({
+      id: crypto.randomUUID(),       // 🔹 añadimos id como en el resumen
       kind: "translation",
       title,
       content: rightText,
@@ -697,7 +695,7 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // 🔹 solo mostramos "Guardar" cuando haya resultado y no esté cargando
+  // solo mostramos "Guardar" cuando haya resultado y no esté cargando
   const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
 
   return (
