@@ -89,12 +89,21 @@ export default function ProLibrary() {
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
+  const [selectedDocIds, setSelectedDocIds] = useState([]);
 
   const openFolderModal = () => {
     setFolderName("");
+    setSelectedDocIds([]);
     setFolderModalOpen(true);
   };
   const closeFolderModal = () => setFolderModalOpen(false);
+
+  const toggleSelectedDoc = (id) => {
+    setSelectedDocIds((prev) =>
+      prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]
+    );
+  };
+
   const saveFolder = () => {
     const name = folderName.trim();
     if (!name) return;
@@ -103,6 +112,7 @@ export default function ProLibrary() {
         id: crypto.randomUUID?.() || String(Date.now()),
         name,
         createdAt: new Date().toISOString(),
+        docIds: selectedDocIds.slice(),
       },
       ...prev,
     ]);
@@ -216,7 +226,13 @@ export default function ProLibrary() {
             </div>
 
             {/* Contenedor de tarjetas */}
-            <div className="flex flex-wrap gap-[38px]">
+            <div
+              className={
+                type === "folders"
+                  ? "flex flex-col gap-4"
+                  : "flex flex-wrap gap-[38px]"
+              }
+            >
               {/* Crear nuevo */}
               {type !== "folders" && (
                 <Link
@@ -371,14 +387,14 @@ export default function ProLibrary() {
                 folders.map((f) => (
                   <div
                     key={f.id}
-                    className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                    className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex items-center justify-between"
                     style={{ width: 280 }}
                   >
                     <div className="flex items-center gap-2 text-slate-700">
                       <Folder className="w-5 h-5 text-sky-500" />
                       <span className="font-medium truncate">{f.name}</span>
                     </div>
-                    <p className="mt-2 text-xs text-slate-500">
+                    <p className="ml-4 text-xs text-slate-500">
                       {new Date(f.createdAt).toLocaleString()}
                     </p>
                   </div>
@@ -424,20 +440,84 @@ export default function ProLibrary() {
                 </svg>
               </button>
             </div>
-            <div className="px-6 pb-5">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                {tr("folder_modal_label", "Nombre de la carpeta")}
-              </label>
-              <input
-                autoFocus
-                value={folderName}
-                onChange={(e) => setFolderName(e.target.value)}
-                placeholder={tr(
-                  "folder_modal_placeholder",
-                  "Ponle un nombre…"
-                )}
-                className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
-              />
+            <div className="px-6 pb-5 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {tr("folder_modal_label", "Nombre de la carpeta")}
+                </label>
+                <input
+                  autoFocus
+                  value={folderName}
+                  onChange={(e) => setFolderName(e.target.value)}
+                  placeholder={tr(
+                    "folder_modal_placeholder",
+                    "Ponle un nombre…"
+                  )}
+                  className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              {docs.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-slate-700 mb-2">
+                    {tr(
+                      "folder_modal_select_docs",
+                      "Elige qué documentos quieres guardar en esta carpeta"
+                    )}
+                  </p>
+                  <div className="max-h-64 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50/60">
+                    {docs.map((doc) => {
+                      const { labelPrefix } = getDocVisual(doc);
+                      const dateLabel = formatDateLabel(doc);
+                      const checked = selectedDocIds.includes(doc.id);
+                      return (
+                        <button
+                          key={doc.id}
+                          type="button"
+                          onClick={() => toggleSelectedDoc(doc.id)}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-sm ${
+                            checked
+                              ? "bg-white"
+                              : "bg-transparent hover:bg-slate-100/70"
+                          }`}
+                        >
+                          <div className="flex-1 text-left pr-3">
+                            <p className="font-medium text-slate-800 truncate">
+                              <span className="text-slate-900">
+                                {labelPrefix}
+                              </span>{" "}
+                              <span className="text-slate-700">
+                                {doc.title ||
+                                  tr("library_untitled", "Sin título")}
+                              </span>
+                            </p>
+                            {dateLabel && (
+                              <p className="text-xs text-slate-500 mt-0.5">
+                                {dateLabel}
+                              </p>
+                            )}
+                          </div>
+                          <input
+                            type="checkbox"
+                            readOnly
+                            checked={checked}
+                            className="h-4 w-4 rounded border-slate-300 text-sky-600"
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {docs.length === 0 && (
+                <p className="text-xs text-slate-500">
+                  {tr(
+                    "folder_modal_no_docs",
+                    "Todavía no hay documentos en tu biblioteca."
+                  )}
+                </p>
+              )}
             </div>
             <div className="px-6 pb-6 flex items-center justify-end gap-3">
               <button
