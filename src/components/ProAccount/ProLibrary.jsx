@@ -85,16 +85,22 @@ export default function ProLibrary() {
     setMenuOpenFor(null);
   };
 
-  // ===== Carpetas (solo local, no store) =====
+  // ===== Carpetas (local) =====
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
+  const [selectedDocIds, setSelectedDocIds] = useState([]);
+  const [viewFolderId, setViewFolderId] = useState(null); // carpeta abierta
 
   const openFolderModal = () => {
     setFolderName("");
+    setSelectedDocIds([]);
     setFolderModalOpen(true);
   };
-  const closeFolderModal = () => setFolderModalOpen(false);
+  const closeFolderModal = () => {
+    setFolderModalOpen(false);
+    setSelectedDocIds([]);
+  };
   const saveFolder = () => {
     const name = folderName.trim();
     if (!name) return;
@@ -103,10 +109,12 @@ export default function ProLibrary() {
         id: crypto.randomUUID?.() || String(Date.now()),
         name,
         createdAt: new Date().toISOString(),
+        docIds: selectedDocIds,
       },
       ...prev,
     ]);
     setFolderModalOpen(false);
+    setSelectedDocIds([]);
   };
 
   // ========= Helpers visuales =========
@@ -146,6 +154,17 @@ export default function ProLibrary() {
     }
     return "";
   };
+
+  // ===== Datos carpeta abierta =====
+  const currentFolder =
+    type === "folders" && viewFolderId
+      ? folders.find((f) => f.id === viewFolderId)
+      : null;
+
+  const folderDocs =
+    currentFolder && currentFolder.docIds && currentFolder.docIds.length
+      ? docs.filter((d) => currentFolder.docIds.includes(d.id))
+      : [];
 
   // ===== Render =====
   return (
@@ -191,7 +210,10 @@ export default function ProLibrary() {
                     <button
                       key={id}
                       type="button"
-                      onClick={() => setType(id)}
+                      onClick={() => {
+                        setType(id);
+                        setViewFolderId(null);
+                      }}
                       className={btnBase}
                       aria-pressed={active}
                       style={{ backfaceVisibility: "hidden" }}
@@ -214,10 +236,10 @@ export default function ProLibrary() {
               )}
             </div>
 
-            {/* Contenedor de tarjetas */}
-            <div className="flex flex-wrap gap-[38px]">
-              {/* Crear nuevo */}
-              {type !== "folders" && (
+            {/* ===== TARJETAS NORMALES (ALL / TEXT / SUMMARY) ===== */}
+            {(type === "all" || type === "text" || type === "summary") && (
+              <div className="flex flex-wrap gap-[38px]">
+                {/* Crear nuevo */}
                 <Link
                   to={createAction.href}
                   className="rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition"
@@ -239,11 +261,9 @@ export default function ProLibrary() {
                     </span>
                   </div>
                 </Link>
-              )}
 
-              {/* Tarjetas documento (traducciones / resúmenes) */}
-              {(type === "all" || type === "text" || type === "summary") &&
-                docs
+                {/* Tarjetas documento (traducciones / resúmenes) */}
+                {docs
                   .filter((doc) => {
                     if (type === "text") return doc.kind === "translation";
                     if (type === "summary") return doc.kind === "summary";
@@ -311,7 +331,10 @@ export default function ProLibrary() {
                             >
                               <Trash2 className="w-5 h-5 text-slate-600" />
                               <span>
-                                {tr("library_doc_delete", "Eliminar documento")}
+                                {tr(
+                                  "library_doc_delete",
+                                  "Eliminar documento"
+                                )}
                               </span>
                             </button>
                           </div>
@@ -346,7 +369,7 @@ export default function ProLibrary() {
                             </span>
                           </h3>
 
-                          {/* Fecha SIEMPRE abajo */}
+                          {/* Fecha abajo */}
                           {dateLabel && (
                             <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
                               {dateLabel}
@@ -356,33 +379,129 @@ export default function ProLibrary() {
                       </div>
                     );
                   })}
+              </div>
+            )}
 
-              {/* Carpetas */}
-              {type === "folders" && folders.length === 0 && (
-                <div className="rounded-xl border border-dashed border-slate-300 p-6 text-slate-500">
-                  {tr(
-                    "library_no_folders",
-                    "Aún no tienes carpetas. Crea la primera."
-                  )}
-                </div>
-              )}
-              {type === "folders" &&
-                folders.map((f) => (
-                  <div
-                    key={f.id}
-                    className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
-                    style={{ width: 280 }}
-                  >
-                    <div className="flex items-center gap-2 text-slate-700">
-                      <Folder className="w-5 h-5 text-sky-500" />
-                      <span className="font-medium truncate">{f.name}</span>
+            {/* ===== MIS CARPETAS ===== */}
+            {type === "folders" && (
+              <>
+                {/* Vista carpeta abierta */}
+                {currentFolder && (
+                  <>
+                    <div className="mb-4 flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setViewFolderId(null)}
+                        className="text-sm text-sky-700 hover:text-sky-900"
+                      >
+                        ← {tr("folder_back", "Volver a mis carpetas")}
+                      </button>
+                      <span className="text-sm text-slate-500">/</span>
+                      <span className="text-base font-semibold text-slate-900 truncate">
+                        {currentFolder.name}
+                      </span>
                     </div>
-                    <p className="mt-2 text-xs text-slate-500">
-                      {new Date(f.createdAt).toLocaleString()}
-                    </p>
+
+                    {folderDocs.length === 0 ? (
+                      <p className="text-sm text-slate-500">
+                        {tr(
+                          "folder_empty",
+                          "Esta carpeta todavía no tiene documentos."
+                        )}
+                      </p>
+                    ) : (
+                      <div className="flex flex-wrap gap-[38px]">
+                        {folderDocs.map((doc) => {
+                          const { bg, border, iconSrc, labelPrefix } =
+                            getDocVisual(doc);
+                          const dateLabel = formatDateLabel(doc);
+
+                          return (
+                            <div
+                              key={doc.id}
+                              className="relative shadow-sm hover:shadow-md transition cursor-pointer"
+                              style={{
+                                width: 280,
+                                height: 196,
+                                borderRadius: 16,
+                                backgroundColor: bg,
+                                border: `1px solid ${border}`,
+                              }}
+                              onClick={() =>
+                                navigate(`/cuenta-pro/biblioteca/${doc.id}`)
+                              }
+                            >
+                              <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                                <img
+                                  src={iconSrc}
+                                  alt=""
+                                  width={40}
+                                  height={40}
+                                  className="block select-none"
+                                />
+                                <h3
+                                  className="mt-6 text-[18px] leading-[24px] pr-4"
+                                  style={{
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 2,
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden",
+                                  }}
+                                >
+                                  <span className="font-semibold text-slate-900">
+                                    {labelPrefix}
+                                  </span>{" "}
+                                  <span className="font-normal text-slate-700">
+                                    {doc.title ||
+                                      tr("library_untitled", "Sin título")}
+                                  </span>
+                                </h3>
+                                {dateLabel && (
+                                  <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
+                                    {dateLabel}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Lista vertical de carpetas (sin carpeta abierta) */}
+                {!currentFolder && (
+                  <div className="flex flex-col gap-3 w-full max-w-xl">
+                    {folders.length === 0 && (
+                      <div className="rounded-xl border border-dashed border-slate-300 p-6 text-slate-500">
+                        {tr(
+                          "library_no_folders",
+                          "Aún no tienes carpetas. Crea la primera."
+                        )}
+                      </div>
+                    )}
+
+                    {folders.map((f) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setViewFolderId(f.id)}
+                        className="w-full flex items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm hover:shadow-md hover:border-sky-200 transition text-left"
+                      >
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <Folder className="w-5 h-5 text-sky-500" />
+                          <span className="font-medium truncate">{f.name}</span>
+                        </div>
+                        <p className="text-xs text-slate-500">
+                          {new Date(f.createdAt).toLocaleString()}
+                        </p>
+                      </button>
+                    ))}
                   </div>
-                ))}
-            </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -437,6 +556,68 @@ export default function ProLibrary() {
                 )}
                 className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
               />
+
+              {/* Lista de documentos para seleccionar */}
+              <div className="mt-4">
+                <p className="text-xs font-medium text-slate-600 mb-2">
+                  {tr(
+                    "folder_modal_select_docs",
+                    "Elige qué documentos quieres guardar en esta carpeta"
+                  )}
+                </p>
+                <div className="max-h-64 overflow-y-auto space-y-2 rounded-[12px] border border-slate-200 bg-slate-50/60 px-1.5 py-2">
+                  {docs.length === 0 ? (
+                    <p className="px-3 py-2 text-xs text-slate-500">
+                      {tr(
+                        "folder_modal_no_docs",
+                        "Todavía no tienes documentos guardados en tu biblioteca."
+                      )}
+                    </p>
+                  ) : (
+                    docs.map((doc) => {
+                      const { labelPrefix } = getDocVisual(doc);
+                      const dateLabel = formatDateLabel(doc);
+                      const checked = selectedDocIds.includes(doc.id);
+
+                      return (
+                        <label
+                          key={doc.id}
+                          className="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2 text-[13px] leading-[18px] text-slate-800 shadow-sm hover:bg-slate-50 cursor-pointer"
+                        >
+                          <div className="flex flex-col">
+                            <span className="truncate">
+                              <span className="font-semibold">
+                                {labelPrefix}
+                              </span>{" "}
+                              <span className="font-normal">
+                                {doc.title ||
+                                  tr("library_untitled", "Sin título")}
+                              </span>
+                            </span>
+                            {dateLabel && (
+                              <span className="text-[11px] text-slate-500 mt-0.5">
+                                {dateLabel}
+                              </span>
+                            )}
+                          </div>
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-slate-300 text-sky-600"
+                            checked={checked}
+                            onChange={() => {
+                              setSelectedDocIds((prev) =>
+                                prev.includes(doc.id)
+                                  ? prev.filter((id) => id !== doc.id)
+                                  : [...prev, doc.id]
+                              );
+                            }}
+                          />
+                        </label>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
             </div>
             <div className="px-6 pb-6 flex items-center justify-end gap-3">
               <button
