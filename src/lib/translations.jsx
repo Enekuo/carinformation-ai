@@ -1556,8 +1556,8 @@ library_prefix_summary: {
   EUS: "Laburpena:", 
 },
 library_prefix_translation: {
-  ES: "Traducción",
-  EUS: "Itzulpena",
+  ES: "Traducción:",
+  EUS: "Itzulpena:",
 },
 library_create_summary: {
   ES: "Crear resumen",
