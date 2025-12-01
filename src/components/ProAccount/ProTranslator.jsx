@@ -90,9 +90,14 @@ export default function ProTranslator() {
   const mediaStreamRef = useRef(null);
   const micChunksRef = useRef([]);
 
+  // 🔹 estado para el mensaje "Guardado en biblioteca"
+  const [savedToLibrary, setSavedToLibrary] = useState(false);
+  const savedTimerRef = useRef(null);
+
   useEffect(
     () => () => {
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+      if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
     },
     []
   );
@@ -125,7 +130,7 @@ export default function ProTranslator() {
     autoResize(rightTA.current);
   }, [rightText]);
 
-  // === Traducción MODO TEXTO (idéntico)
+  // === Traducción MODO TEXTO
   useEffect(() => {
     if (sourceMode !== "text") return;
 
@@ -193,7 +198,7 @@ export default function ProTranslator() {
     };
   }, [leftText, src, dst, sourceMode]);
 
-  // === Traducción MODO URL (igual)
+  // === Traducción MODO URL
   useEffect(() => {
     if (sourceMode !== "url") return;
 
@@ -259,7 +264,7 @@ export default function ProTranslator() {
       reader.readAsText(file);
     });
 
-  // === Traducción MODO DOCUMENTO (igual)
+  // === Traducción MODO DOCUMENTO
   useEffect(() => {
     if (sourceMode !== "document") return;
 
@@ -408,9 +413,12 @@ export default function ProTranslator() {
   const labelRemove = tr("summary.remove", "Quitar");
 
   // 🔹 etiqueta para el botón Guardar (traductor)
-  const labelSaveTranslation = tr(
-    "save_button_label",
-    "Guardar"
+  const labelSaveTranslation = tr("save_button_label", "Guardar");
+
+  // 🔹 mensaje cuando ya se ha guardado
+  const librarySavedMessage = tr(
+    "library_saved_toast",
+    "Guardado en biblioteca"
   );
 
   const stopPlayback = () => {
@@ -599,25 +607,28 @@ export default function ProTranslator() {
     w.print();
   };
 
-  // 🔹 handler para guardar traducción en la biblioteca Pro
+  // 🔹 guardar traducción en la biblioteca + mostrar mensaje
   const handleSaveTranslation = () => {
-    const content = (rightText || "").trim();
-    if (!content) return;
+    const text = rightText?.trim();
+    if (!text) return;
 
     const maxLen = 90;
-    const firstLine = content.split("\n")[0].trim();
+    const firstLine = text.split("\n")[0].trim();
     const clean = firstLine.replace(/\s+/g, " ").trim();
-
-    let title = clean || tr("library_untitled", "Sin título");
-    if (title.length > maxLen) {
-      title = title.slice(0, maxLen).trimEnd() + "...";
-    }
+    let title = clean.slice(0, maxLen);
+    if (clean.length > maxLen) title += "...";
 
     addLibraryDoc({
-      kind: "translation",   // 🔵 muy importante para que use la plantilla azul
+      kind: "translation",
       title,
-      content: rightText,
+      content: text,
     });
+
+    setSavedToLibrary(true);
+    if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+    savedTimerRef.current = setTimeout(() => {
+      setSavedToLibrary(false);
+    }, 2000);
   };
 
   const addFiles = async (list) => {
@@ -710,7 +721,6 @@ export default function ProTranslator() {
             <div className="relative h-12 border-b border-slate-200">
               <div className="flex items-center h-full px-6">
                 <div className="flex items-center text-sm font-medium text-slate-600">
-                  
                   <button
                     type="button"
                     onClick={() => setSourceMode("text")}
@@ -884,7 +894,6 @@ export default function ProTranslator() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
-                
                 {sourceMode === "text" && (
                   <>
                     <textarea
@@ -951,8 +960,12 @@ export default function ProTranslator() {
                       <div className="text-xl font-semibold text-slate-800">
                         {labelChooseFileTitle}
                       </div>
-                      <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
-                      <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
+                      <div className="mt-4 text-sm text-slate-500">
+                        {labelAcceptedFormats}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-400">
+                        {labelFolderHint}
+                      </div>
                     </button>
 
                     {documents.length > 0 && (
@@ -1105,64 +1118,74 @@ export default function ProTranslator() {
                   </div>
                 )}
 
-                {/* ICONOS + BOTÓN GUARDAR */}
-                <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
-                  <button
-                    type="button"
-                    onClick={handleSpeakToggle}
-                    aria-label={speaking ? t("translator.stop") : t("translator.listen")}
-                    className={`group relative p-2 rounded-md hover:bg-slate-100 ${
-                      speaking ? "text-slate-900" : ""
-                    }`}
-                  >
-                    {speaking ? (
-                      <span className="inline-block w-[10px] h-[10px] rounded-[2px] bg-slate-600" />
-                    ) : (
-                      <Volume2 className="w-5 h-5" />
-                    )}
-                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {speaking ? t("translator.stop") : t("translator.listen")}
-                    </span>
-                  </button>
+                {/* ICONOS + BOTÓN GUARDAR + MENSAJE */}
+                <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
+                  {savedToLibrary && (
+                    <p className="text-xs text-emerald-600 mb-1">
+                      {librarySavedMessage}
+                    </p>
+                  )}
 
-                  <button
-                    type="button"
-                    onClick={handleCopy}
-                    aria-label={t("translator.copy")}
-                    className="group relative p-2 rounded-md hover:bg-slate-100"
-                  >
-                    {copied ? (
-                      <Check className="w-5 h-5" />
-                    ) : (
-                      <CopyIcon className="w-5 h-5" />
-                    )}
-                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copied ? t("translator.copied") : t("translator.copy")}
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleDownloadPdf}
-                    aria-label={t("translator.pdf")}
-                    className="group relative p-2 rounded-md hover:bg-slate-100"
-                  >
-                    <FileDown className="w-5 h-5" />
-                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {t("translator.pdf")}
-                    </span>
-                  </button>
-
-                  {hasResult && (
+                  <div className="flex items-center gap-4">
                     <button
                       type="button"
-                      onClick={handleSaveTranslation}
-                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                      style={{ backgroundColor: "#22c55e" }}
+                      onClick={handleSpeakToggle}
+                      aria-label={
+                        speaking ? t("translator.stop") : t("translator.listen")
+                      }
+                      className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                        speaking ? "text-slate-900" : ""
+                      }`}
                     >
-                      {labelSaveTranslation}
+                      {speaking ? (
+                        <span className="inline-block w-[10px] h-[10px] rounded-[2px] bg-slate-600" />
+                      ) : (
+                        <Volume2 className="w-5 h-5" />
+                      )}
+                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {speaking ? t("translator.stop") : t("translator.listen")}
+                      </span>
                     </button>
-                  )}
+
+                    <button
+                      type="button"
+                      onClick={handleCopy}
+                      aria-label={t("translator.copy")}
+                      className="group relative p-2 rounded-md hover:bg-slate-100"
+                    >
+                      {copied ? (
+                        <Check className="w-5 h-5" />
+                      ) : (
+                        <CopyIcon className="w-5 h-5" />
+                      )}
+                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {copied ? t("translator.copied") : t("translator.copy")}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleDownloadPdf}
+                      aria-label={t("translator.pdf")}
+                      className="group relative p-2 rounded-md hover:bg-slate-100"
+                    >
+                      <FileDown className="w-5 h-5" />
+                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {t("translator.pdf")}
+                      </span>
+                    </button>
+
+                    {hasResult && (
+                      <button
+                        type="button"
+                        onClick={handleSaveTranslation}
+                        className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                        style={{ backgroundColor: "#22c55e" }}
+                      >
+                        {labelSaveTranslation}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
