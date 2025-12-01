@@ -35,7 +35,10 @@ export const translations = {
     ES: "Guardar",
     EUS: "Gorde",
   },
-
+    library_saved_toast: {
+    ES: "Guardado en biblioteca",
+    EUS: "Liburutegian gordeta",
+  },
 
 
 
@@ -1622,6 +1625,7 @@ folder_empty: {
   EUS: "Karpeta hutsa",
 },
  
+
 // =========================
   //        Pro Suggestions
   // =========================                          
