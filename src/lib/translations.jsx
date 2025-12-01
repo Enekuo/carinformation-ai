@@ -1617,8 +1617,12 @@ folder_modal_select_docs: {
   ES: "Elige qué documentos quieres guardar en esta carpeta",
   EUS: "Aukeratu karpeta honetan gorde nahi dituzun dokumentuak",
 },
-
-  // =========================
+folder_empty: {
+  ES: "Carpeta vacía",
+  EUS: "Karpeta hutsa",
+},
+ 
+// =========================
   //        Pro Suggestions
   // =========================                          
   proSuggestions: {
