@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Plus, Folder, MoreVertical, Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useLibraryDocs } from "@/proLibraryStore";
+import { useLibraryFolders, addLibraryFolder } from "@/proLibraryFoldersStore";
 
 export default function ProLibrary() {
   const { t } = useTranslation();
@@ -12,6 +13,9 @@ export default function ProLibrary() {
 
   // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
   const { docs, renameDoc, deleteDoc } = useLibraryDocs();
+
+  // ===== STORE CARPETAS =====
+  const { folders } = useLibraryFolders();
 
   // ===== Filtros (all | text | summary | folders) =====
   const [type, setType] = useState("all");
@@ -85,10 +89,9 @@ export default function ProLibrary() {
     setMenuOpenFor(null);
   };
 
-  // ===== Carpetas (solo local, no store) =====
+  // ===== Carpetas (UI) =====
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
-  const [folders, setFolders] = useState([]);
   const [selectedDocIds, setSelectedDocIds] = useState([]);
   const [activeFolderId, setActiveFolderId] = useState(null);
 
@@ -111,16 +114,13 @@ export default function ProLibrary() {
   const saveFolder = () => {
     const name = folderName.trim();
     if (!name) return;
-    setFolders((prev) => [
-      {
-        id: crypto.randomUUID?.() || String(Date.now()),
-        name,
-        createdAt: new Date().toISOString(),
-        docIds: selectedDocIds.slice(),
-      },
-      ...prev,
-    ]);
+    const newId = addLibraryFolder({
+      name,
+      docIds: selectedDocIds.slice(),
+    });
     setFolderModalOpen(false);
+    // opcional: entrar directamente en la carpeta recién creada
+    // setActiveFolderId(newId);
   };
 
   // ========= Helpers visuales =========
@@ -168,7 +168,7 @@ export default function ProLibrary() {
         <div className="max-w-7xl mx-auto w-full px-6">
           <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-8">
             {/* Filtros arriba */}
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify_between mb-5">
               <div className="flex items-center gap-3">
                 {[
                   {
@@ -399,7 +399,8 @@ export default function ProLibrary() {
                         <span className="font-medium truncate">{f.name}</span>
                       </div>
                       <p className="ml-4 text-xs text-slate-500">
-                        {new Date(f.createdAt).toLocaleString()}
+                        {f.createdAtLabel ||
+                          new Date(f.createdAt).toLocaleString()}
                       </p>
                     </button>
                   ))}
@@ -417,9 +418,7 @@ export default function ProLibrary() {
                       className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900"
                     >
                       <ArrowLeft className="w-4 h-4" />
-                      <span>
-                        {tr("folder_back", "Mis carpetas")}
-                      </span>
+                      <span>{tr("folder_back", "Mis carpetas")}</span>
                     </button>
                   </div>
 
@@ -508,7 +507,7 @@ export default function ProLibrary() {
       {/* MODAL Crear carpeta */}
       {isFolderModalOpen && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center"
+          className="fixed inset-0 z-[60] flex items_center justify-center"
           role="dialog"
           aria-modal="true"
         >
