@@ -48,7 +48,7 @@ export default function ProLibraryDetail() {
 
   const typeLabel = isTranslation
     ? tr("library_prefix_translation", "Traducción:")
-    : tr("library_doc_type_summary", "Resumen:");
+    : tr("library_prefix_summary", "Resumen:");
 
   const dateLabel = (() => {
     if (doc.createdAtLabel) return doc.createdAtLabel;
