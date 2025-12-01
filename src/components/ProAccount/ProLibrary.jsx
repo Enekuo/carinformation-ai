@@ -90,6 +90,7 @@ export default function ProLibrary() {
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
   const [selectedDocIds, setSelectedDocIds] = useState([]);
+  const [openFolderId, setOpenFolderId] = useState(null);
 
   const openFolderModal = () => {
     setFolderName("");
@@ -384,21 +385,84 @@ export default function ProLibrary() {
                 </div>
               )}
               {type === "folders" &&
-                folders.map((f) => (
-                  <div
-                    key={f.id}
-                    className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex items-center justify-between"
-                    style={{ width: 280 }}
-                  >
-                    <div className="flex items-center gap-2 text-slate-700">
-                      <Folder className="w-5 h-5 text-sky-500" />
-                      <span className="font-medium truncate">{f.name}</span>
+                folders.map((f) => {
+                  const isOpen = openFolderId === f.id;
+                  const docsInFolder = docs.filter((d) =>
+                    (f.docIds || []).includes(d.id)
+                  );
+                  return (
+                    <div key={f.id} className="flex flex-col gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenFolderId((prev) =>
+                            prev === f.id ? null : f.id
+                          )
+                        }
+                        className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex items-center justify-between hover:bg-slate-50 transition"
+                        style={{ width: 280 }}
+                      >
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <Folder className="w-5 h-5 text-sky-500" />
+                          <span className="font-medium truncate">
+                            {f.name}
+                          </span>
+                        </div>
+                        <p className="ml-4 text-xs text-slate-500">
+                          {new Date(f.createdAt).toLocaleString()}
+                        </p>
+                      </button>
+
+                      {isOpen && docsInFolder.length > 0 && (
+                        <div className="ml-6 mt-1 flex flex-col gap-2">
+                          {docsInFolder.map((doc) => {
+                            const { labelPrefix } = getDocVisual(doc);
+                            const dateLabel = formatDateLabel(doc);
+                            return (
+                              <button
+                                key={doc.id}
+                                type="button"
+                                onClick={() =>
+                                  navigate(
+                                    `/cuenta-pro/biblioteca/${doc.id}`
+                                  )
+                                }
+                                className="w-[260px] text-left rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm hover:bg-slate-100 transition"
+                              >
+                                <p className="font-medium text-slate-800 truncate">
+                                  <span className="text-slate-900">
+                                    {labelPrefix}
+                                  </span>{" "}
+                                  <span className="text-slate-700">
+                                    {doc.title ||
+                                      tr(
+                                        "library_untitled",
+                                        "Sin título"
+                                      )}
+                                  </span>
+                                </p>
+                                {dateLabel && (
+                                  <p className="text-xs text-slate-500 mt-0.5">
+                                    {dateLabel}
+                                  </p>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {isOpen && docsInFolder.length === 0 && (
+                        <div className="ml-6 mt-1 text-xs text-slate-500">
+                          {tr(
+                            "folder_empty",
+                            "Esta carpeta todavía no tiene documentos."
+                          )}
+                        </div>
+                      )}
                     </div>
-                    <p className="ml-4 text-xs text-slate-500">
-                      {new Date(f.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           </div>
         </div>
