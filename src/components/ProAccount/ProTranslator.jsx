@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLibraryDocs } from "@/proLibraryStore";
+import { addLibraryDoc } from "@/proLibraryStore";
 
 const OPTIONS = [
   { value: "eus", label: "euskera" },
@@ -36,7 +36,7 @@ No cambies de idioma en la traducción.
     return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
 Itzuli BETI gaztelaniatik euskarara.
-Erantzun BETI euskaraz itzulpenean.
+Erantzun BETI euskaraz itzulpena ematean.
 Ez aldatu hizkuntza itzulpenean.
 `.trim();
   }
@@ -50,8 +50,6 @@ Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
 export default function ProTranslator() {
   const { t, language } = useTranslation();
   const tr = (k, f) => t(k) || f;
-
-  const { addDoc } = useLibraryDocs();
 
   const [src, setSrc] = useState("eus");
   const [dst, setDst] = useState("es");
@@ -127,7 +125,7 @@ export default function ProTranslator() {
     autoResize(rightTA.current);
   }, [rightText]);
 
-  // === Traducción MODO TEXTO
+  // === Traducción MODO TEXTO (idéntico)
   useEffect(() => {
     if (sourceMode !== "text") return;
 
@@ -195,7 +193,7 @@ export default function ProTranslator() {
     };
   }, [leftText, src, dst, sourceMode]);
 
-  // === Traducción MODO URL
+  // === Traducción MODO URL (igual)
   useEffect(() => {
     if (sourceMode !== "url") return;
 
@@ -261,7 +259,7 @@ export default function ProTranslator() {
       reader.readAsText(file);
     });
 
-  // === Traducción MODO DOCUMENTO
+  // === Traducción MODO DOCUMENTO (igual)
   useEffect(() => {
     if (sourceMode !== "document") return;
 
@@ -409,8 +407,11 @@ export default function ProTranslator() {
   );
   const labelRemove = tr("summary.remove", "Quitar");
 
-  // etiqueta del botón Guardar
-  const labelSaveTranslation = tr("save_button_label", "Guardar");
+  // 🔹 etiqueta para el botón Guardar (traductor)
+  const labelSaveTranslation = tr(
+    "save_button_label",
+    "Guardar"
+  );
 
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
@@ -598,22 +599,24 @@ export default function ProTranslator() {
     w.print();
   };
 
-  // 🔹 guardar traducción en la biblioteca Pro (CAMBIO: añadimos id)
+  // 🔹 handler para guardar traducción en la biblioteca Pro
   const handleSaveTranslation = () => {
-    if (!rightText) return;
+    const content = (rightText || "").trim();
+    if (!content) return;
 
     const maxLen = 90;
-    const firstLine = rightText.split("\n")[0].trim();
+    const firstLine = content.split("\n")[0].trim();
     const clean = firstLine.replace(/\s+/g, " ").trim();
-    let title = clean.slice(0, maxLen);
-    if (clean.length > maxLen) title += "...";
 
-    addDoc({
-      id: crypto.randomUUID(),       // 🔹 añadimos id como en el resumen
-      kind: "translation",
+    let title = clean || tr("library_untitled", "Sin título");
+    if (title.length > maxLen) {
+      title = title.slice(0, maxLen).trimEnd() + "...";
+    }
+
+    addLibraryDoc({
+      kind: "translation",   // 🔵 muy importante para que use la plantilla azul
       title,
       content: rightText,
-      createdAt: new Date().toISOString(),
     });
   };
 
@@ -695,7 +698,7 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // solo mostramos "Guardar" cuando haya resultado y no esté cargando
+  // 🔹 solo mostramos "Guardar" cuando haya resultado y no esté cargando
   const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
 
   return (
