@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { Plus, Folder, MoreVertical, Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useLibraryDocs } from "@/proLibraryStore";
 
@@ -90,7 +90,10 @@ export default function ProLibrary() {
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
   const [selectedDocIds, setSelectedDocIds] = useState([]);
-  const [openFolderId, setOpenFolderId] = useState(null);
+  const [activeFolderId, setActiveFolderId] = useState(null);
+
+  const activeFolder =
+    folders.find((f) => f.id === activeFolderId) || null;
 
   const openFolderModal = () => {
     setFolderName("");
@@ -202,7 +205,10 @@ export default function ProLibrary() {
                     <button
                       key={id}
                       type="button"
-                      onClick={() => setType(id)}
+                      onClick={() => {
+                        setType(id);
+                        if (id !== "folders") setActiveFolderId(null);
+                      }}
                       className={btnBase}
                       aria-pressed={active}
                       style={{ backfaceVisibility: "hidden" }}
@@ -214,7 +220,7 @@ export default function ProLibrary() {
                 })}
               </div>
 
-              {type === "folders" && (
+              {type === "folders" && !activeFolder && (
                 <button
                   onClick={openFolderModal}
                   className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium
@@ -227,14 +233,8 @@ export default function ProLibrary() {
             </div>
 
             {/* Contenedor de tarjetas */}
-            <div
-              className={
-                type === "folders"
-                  ? "flex flex-col gap-4"
-                  : "flex flex-wrap gap-[38px]"
-              }
-            >
-              {/* Crear nuevo */}
+            <div className="flex flex-wrap gap-[38px]">
+              {/* Crear nuevo (traducción / resumen) */}
               {type !== "folders" && (
                 <Link
                   to={createAction.href}
@@ -375,94 +375,131 @@ export default function ProLibrary() {
                     );
                   })}
 
-              {/* Carpetas */}
-              {type === "folders" && folders.length === 0 && (
-                <div className="rounded-xl border border-dashed border-slate-300 p-6 text-slate-500">
-                  {tr(
-                    "library_no_folders",
-                    "Aún no tienes carpetas. Crea la primera."
-                  )}
-                </div>
-              )}
-              {type === "folders" &&
-                folders.map((f) => {
-                  const isOpen = openFolderId === f.id;
-                  const docsInFolder = docs.filter((d) =>
-                    (f.docIds || []).includes(d.id)
-                  );
-                  return (
-                    <div key={f.id} className="flex flex-col gap-2">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOpenFolderId((prev) =>
-                            prev === f.id ? null : f.id
-                          )
-                        }
-                        className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex items-center justify-between hover:bg-slate-50 transition"
-                        style={{ width: 280 }}
-                      >
-                        <div className="flex items-center gap-2 text-slate-700">
-                          <Folder className="w-5 h-5 text-sky-500" />
-                          <span className="font-medium truncate">
-                            {f.name}
-                          </span>
-                        </div>
-                        <p className="ml-4 text-xs text-slate-500">
-                          {new Date(f.createdAt).toLocaleString()}
-                        </p>
-                      </button>
-
-                      {isOpen && docsInFolder.length > 0 && (
-                        <div className="ml-6 mt-1 flex flex-col gap-2">
-                          {docsInFolder.map((doc) => {
-                            const { labelPrefix } = getDocVisual(doc);
-                            const dateLabel = formatDateLabel(doc);
-                            return (
-                              <button
-                                key={doc.id}
-                                type="button"
-                                onClick={() =>
-                                  navigate(
-                                    `/cuenta-pro/biblioteca/${doc.id}`
-                                  )
-                                }
-                                className="w-[260px] text-left rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm hover:bg-slate-100 transition"
-                              >
-                                <p className="font-medium text-slate-800 truncate">
-                                  <span className="text-slate-900">
-                                    {labelPrefix}
-                                  </span>{" "}
-                                  <span className="text-slate-700">
-                                    {doc.title ||
-                                      tr(
-                                        "library_untitled",
-                                        "Sin título"
-                                      )}
-                                  </span>
-                                </p>
-                                {dateLabel && (
-                                  <p className="text-xs text-slate-500 mt-0.5">
-                                    {dateLabel}
-                                  </p>
-                                )}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-
-                      {isOpen && docsInFolder.length === 0 && (
-                        <div className="ml-6 mt-1 text-xs text-slate-500">
-                          {tr(
-                            "folder_empty",
-                            "Esta carpeta todavía no tiene documentos."
-                          )}
-                        </div>
+              {/* LISTA DE CARPETAS (vista principal de "Mis carpetas") */}
+              {type === "folders" && !activeFolder && (
+                <div className="w-full flex flex-col gap-3">
+                  {folders.length === 0 && (
+                    <div className="rounded-xl border border-dashed border-slate-300 p-6 text-slate-500">
+                      {tr(
+                        "library_no_folders",
+                        "Aún no tienes carpetas. Crea la primera."
                       )}
                     </div>
-                  );
-                })}
+                  )}
+
+                  {folders.map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setActiveFolderId(f.id)}
+                      className="w-full max-w-xl flex items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm hover:bg-slate-50 transition"
+                    >
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <Folder className="w-5 h-5 text-sky-500" />
+                        <span className="font-medium truncate">{f.name}</span>
+                      </div>
+                      <p className="ml-4 text-xs text-slate-500">
+                        {new Date(f.createdAt).toLocaleString()}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* DETALLE DE UNA CARPETA (dentro de la carpeta) */}
+              {type === "folders" && activeFolder && (
+                <div className="w-full flex flex-col gap-6">
+                  {/* Cabecera de la carpeta */}
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveFolderId(null)}
+                      className="inline-flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>
+                        {tr("folder_back", "Mis carpetas")}
+                      </span>
+                    </button>
+                  </div>
+
+                  <h2 className="text-[20px] leading-[28px] font-semibold text-slate-900">
+                    {activeFolder.name}
+                  </h2>
+
+                  <div className="flex flex-wrap gap-[38px]">
+                    {docs
+                      .filter((d) =>
+                        (activeFolder.docIds || []).includes(d.id)
+                      )
+                      .map((doc) => {
+                        const { bg, border, iconSrc, labelPrefix } =
+                          getDocVisual(doc);
+                        const dateLabel = formatDateLabel(doc);
+
+                        return (
+                          <div
+                            key={doc.id}
+                            className="relative shadow-sm hover:shadow-md transition cursor-pointer"
+                            style={{
+                              width: 280,
+                              height: 196,
+                              borderRadius: 16,
+                              backgroundColor: bg,
+                              border: `1px solid ${border}`,
+                            }}
+                            onClick={() =>
+                              navigate(`/cuenta-pro/biblioteca/${doc.id}`)
+                            }
+                          >
+                            <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                              <img
+                                src={iconSrc}
+                                alt=""
+                                width={40}
+                                height={40}
+                                className="block select-none"
+                              />
+                              <h3
+                                className="mt-6 text-[18px] leading-[24px] pr-4"
+                                style={{
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: "vertical",
+                                  overflow: "hidden",
+                                }}
+                              >
+                                <span className="font-semibold text-slate-900">
+                                  {labelPrefix}
+                                </span>{" "}
+                                <span className="font-normal text-slate-700">
+                                  {doc.title ||
+                                    tr("library_untitled", "Sin título")}
+                                </span>
+                              </h3>
+                              {dateLabel && (
+                                <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
+                                  {dateLabel}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                    {docs.filter((d) =>
+                      (activeFolder.docIds || []).includes(d.id)
+                    ).length === 0 && (
+                      <p className="text-sm text-slate-500">
+                        {tr(
+                          "folder_empty",
+                          "Esta carpeta todavía no tiene documentos."
+                        )}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
