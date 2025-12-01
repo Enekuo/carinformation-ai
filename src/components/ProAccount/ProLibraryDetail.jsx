@@ -19,7 +19,7 @@ export default function ProLibraryDetail() {
   if (!doc) {
     return (
       <ProLayout>
-        <div className="min-h-screen bg-[#F4F8FF]">
+        <div className="min-h-screen bg-gradient-to-b from-[#F4F8FF] via-[#F9FBFF] to-[#ECF3FF]">
           <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-10">
             <button
               type="button"
@@ -30,8 +30,8 @@ export default function ProLibraryDetail() {
               <span>{tr("library_back", "Atzera")}</span>
             </button>
 
-            <div className="mx-auto max-w-5xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8">
-              <p className="text-base text-slate-700">
+            <div className="mx-auto max-w-5xl bg-gradient-to-br from-white via-white to-[#F3F7FF] rounded-[24px] shadow-[0_20px_70px_rgba(15,23,42,0.16)] border border-slate-200/80 px-6 md:px-10 py-8">
+              <p className="text-base md:text-[17px] leading-relaxed text-slate-700">
                 {tr(
                   "library_not_found",
                   "No se ha encontrado este documento en tu biblioteca."
@@ -70,7 +70,7 @@ export default function ProLibraryDetail() {
 
   return (
     <ProLayout>
-      <div className="min-h-screen bg-[#F4F8FF]">
+      <div className="min-h-screen bg-gradient-to-b from-[#F4F8FF] via-[#F9FBFF] to-[#ECF3FF]">
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-10">
           {/* Botón volver */}
           <button
@@ -83,15 +83,15 @@ export default function ProLibraryDetail() {
           </button>
 
           {/* Tarjeta grande */}
-          <div className="mx-auto max-w-6xl bg-white rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.18)] border border-slate-200 px-6 md:px-10 py-8 md:py-9">
+          <div className="mx-auto max-w-6xl bg-gradient-to-br from-white via-white to-[#F3F7FF] rounded-[24px] shadow-[0_20px_70px_rgba(15,23,42,0.16)] border border-slate-200/80 px-6 md:px-10 py-8 md:py-9">
             {/* Título */}
-            <p className="text-[18px] md:text-[20px] leading-[28px]">
+            <p className="text-[19px] md:text-[22px] leading-[30px] tracking-tight">
               <span className="font-semibold text-slate-900">{typeLabel}</span>
-              <span className="text-slate-600"> {titleText}</span>
+              <span className="text-slate-700 font-medium"> {titleText}</span>
             </p>
 
             {/* Contenido */}
-            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 md:px-6 py-4 md:py-5 min-h-[220px]">
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-[#F5F8FF] px-4 md:px-6 py-4 md:py-5 min-h-[220px]">
               <p className="text-[15px] leading-7 text-slate-800 whitespace-pre-wrap">
                 {doc.content}
               </p>
