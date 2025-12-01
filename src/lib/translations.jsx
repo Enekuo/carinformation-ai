@@ -1547,8 +1547,8 @@ library_create_new: {
   EUS: "Sortu berria",
 },
 library_create_text: {
-  ES: "Traducción:",
-  EUS: "Itzulpena:",
+  ES: "Crear traducción:",
+  EUS: "Sortu itzulpena:",
 },
 
 library_prefix_summary: {
@@ -1556,7 +1556,7 @@ library_prefix_summary: {
   EUS: "Laburpena:", 
 },
 library_prefix_translation: {
-  ES: "Crear traducción",
+  ES: "Traducción",
   EUS: "Itzulpena",
 },
 library_create_summary: {
