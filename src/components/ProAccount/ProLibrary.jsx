@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useLibraryDocs } from "@/proLibraryStore";
+import { useLibraryFolders, addFolder } from "@/proLibraryFoldersStore";
 
 export default function ProLibrary() {
   const { t } = useTranslation();
@@ -12,6 +13,9 @@ export default function ProLibrary() {
 
   // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
   const { docs, renameDoc, deleteDoc } = useLibraryDocs();
+
+  // ===== STORE CARPETAS =====
+  const { folders } = useLibraryFolders();
 
   // ===== Filtros (all | text | summary | folders) =====
   const [type, setType] = useState("all");
@@ -85,10 +89,9 @@ export default function ProLibrary() {
     setMenuOpenFor(null);
   };
 
-  // ===== Carpetas (local) =====
+  // ===== Carpetas: estado solo para el modal / selección =====
   const [isFolderModalOpen, setFolderModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
-  const [folders, setFolders] = useState([]);
   const [selectedDocIds, setSelectedDocIds] = useState([]);
   const [viewFolderId, setViewFolderId] = useState(null); // carpeta abierta
 
@@ -104,15 +107,7 @@ export default function ProLibrary() {
   const saveFolder = () => {
     const name = folderName.trim();
     if (!name) return;
-    setFolders((prev) => [
-      {
-        id: crypto.randomUUID?.() || String(Date.now()),
-        name,
-        createdAt: new Date().toISOString(),
-        docIds: selectedDocIds,
-      },
-      ...prev,
-    ]);
+    addFolder({ name, docIds: selectedDocIds });
     setFolderModalOpen(false);
     setSelectedDocIds([]);
   };

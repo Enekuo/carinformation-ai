@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "euskalia_pro_folders";
 
-// ===== Estado interno =====
+// ===== Estado interno (fuera de React) =====
 let folders = loadInitialFolders();
 const listeners = new Set();
 
@@ -24,7 +24,7 @@ function persist() {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(folders));
   } catch {
-    // ignoramos errores de storage
+    // ignorar errores de almacenamiento
   }
 }
 
@@ -40,56 +40,21 @@ function makeId() {
   return String(Date.now() + Math.random());
 }
 
-function formatDateLabel(dateIso) {
-  try {
-    return new Date(dateIso)
-      .toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-      .replace(".", "");
-  } catch {
-    return "";
-  }
-}
-
-// ===== API escritura =====
-export function addLibraryFolder({ name, docIds }) {
+// ===== API de escritura =====
+export function addFolder({ name, docIds }) {
   const id = makeId();
   const createdAt = new Date().toISOString();
-  const createdAtLabel = formatDateLabel(createdAt);
 
   const folder = {
     id,
     name: String(name || "").trim(),
-    createdAt,
-    createdAtLabel,
     docIds: Array.isArray(docIds) ? docIds : [],
+    createdAt,
   };
 
   folders = [folder, ...folders];
   emit();
   return id;
-}
-
-export function deleteFolder(id) {
-  folders = folders.filter((f) => f.id !== id);
-  emit();
-}
-
-export function renameFolder(id, newName) {
-  const name = String(newName || "").trim();
-  if (!name) return;
-  folders = folders.map((f) =>
-    f.id === id
-      ? {
-          ...f,
-          name,
-        }
-      : f
-  );
-  emit();
 }
 
 export function updateFolderDocs(id, docIds) {
@@ -104,7 +69,12 @@ export function updateFolderDocs(id, docIds) {
   emit();
 }
 
-// ===== Hook lectura =====
+export function deleteFolder(id) {
+  folders = folders.filter((f) => f.id !== id);
+  emit();
+}
+
+// ===== Hook React para leer el store =====
 export function useLibraryFolders() {
   const subscribe = (listener) => {
     listeners.add(listener);
@@ -118,7 +88,6 @@ export function useLibraryFolders() {
   return {
     folders: snapshot,
     deleteFolder,
-    renameFolder,
     updateFolderDocs,
   };
 }
