@@ -1533,8 +1533,8 @@ cookies_last_update: {
     EUS: "Kaixo",
   },
   title: {
-    ES: "Bienvenido a Euskalia Pro",
-    EUS: "Ongi etorri Euskalia Pro-ra",
+    ES: "Bienvenido a Euskalia",
+    EUS: "Ongi etorri Euskalia-ra",
   },
   },
  
