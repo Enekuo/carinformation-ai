@@ -26,7 +26,8 @@ export default function ProHome() {
             Traductor
           </h3>
           <p className="text-sm text-slate-500">
-            Traduce entre euskera, español e inglés con calidad profesional.
+            Traduce entre euskera, español, inglés y francés con calidad
+            profesional.
           </p>
         </div>
 
@@ -39,7 +40,8 @@ export default function ProHome() {
             Resumidor
           </h3>
           <p className="text-sm text-slate-500">
-            Sintetiza textos largos en segundos manteniendo claridad y fidelidad.
+            Sintetiza textos largos en segundos manteniendo claridad y
+            fidelidad.
           </p>
         </div>
 
