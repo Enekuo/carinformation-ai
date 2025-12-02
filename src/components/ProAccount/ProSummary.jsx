@@ -1282,7 +1282,7 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        <div className="flex justify-end">
+                        <div className="flex justify-end mt-10">
                           <div className="flex flex-col items-end gap-1">
                             {savedToLibrary && (
                               <p className="text-xs text-emerald-600">
