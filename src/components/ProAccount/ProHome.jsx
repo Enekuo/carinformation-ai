@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
 
-export default function Home() {
+export default function ProHome() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
 

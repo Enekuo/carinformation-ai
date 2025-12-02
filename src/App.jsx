@@ -18,7 +18,7 @@ import PricingPage from "@/pages/PricingPage";
 
 // Pro-Account //
 import ProLayout from "@/components/ProAccount/ProLayout";
-import Home from "@/components/ProAccount/Home";
+import Home from "@/components/ProAccount/ProHome";
 import ProTranslator from "@/components/ProAccount/ProTranslator";
 import ProSummary from "@/components/ProAccount/ProSummary";
 import ProLibrary from "@/components/ProAccount/ProLibrary";
@@ -73,7 +73,7 @@ function App() {
             <Route path="/pricing" element={<PricingPage />} />
 
             {/* Pro-Account */}
-            <Route path="/cuenta-pro" element={<ProLayout><Home /></ProLayout>} />
+            <Route path="/cuenta-pro" element={<ProLayout><ProHome /></ProLayout>} />
             <Route path="/cuenta-pro/traductor" element={<ProLayout><ProTranslator /></ProLayout>} />
             <Route path="/cuenta-pro/resumen" element={<ProLayout><ProSummary /></ProLayout>} />
             <Route path="/cuenta-pro/biblioteca" element={<ProLayout><ProLibrary /></ProLayout>} />
