@@ -20,10 +20,10 @@ export default function ProHome() {
         {/* Traductor */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
           <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
-            {/* Icono personalizado tipo "T +" como en la captura */}
+            {/* Icono personalizado tipo "T +" más grande */}
             <svg
               viewBox="0 0 24 24"
-              className="w-6 h-6 text-blue-500"
+              className="w-8 h-8 text-blue-500"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
