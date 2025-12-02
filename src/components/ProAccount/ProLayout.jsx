@@ -32,7 +32,9 @@ export default function LayoutPro({ children }) {
 
   const [collapsed, setCollapsed] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(
-    pathname === "/cuenta-pro/traductor" || pathname === "/cuenta-pro/resumen"
+    pathname === "/cuenta-pro/traductor" ||
+      pathname === "/cuenta-pro/resumen" ||
+      pathname === "/cuenta-pro/corrector"
   );
 
   const languages = [
@@ -44,7 +46,9 @@ export default function LayoutPro({ children }) {
 
   const isActive = (target) => pathname === target;
   const isToolsSection =
-    pathname === "/cuenta-pro/traductor" || pathname === "/cuenta-pro/resumen";
+    pathname === "/cuenta-pro/traductor" ||
+    pathname === "/cuenta-pro/resumen" ||
+    pathname === "/cuenta-pro/corrector";
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
@@ -154,8 +158,25 @@ export default function LayoutPro({ children }) {
                       }
                     `}
                   >
-                    <span className="mr-2 text-slate-200">└</span>
+                    <span className="mr-2 text-slate-200">│</span>
                     <span>Resumen</span>
+                  </button>
+
+                  <button
+                    onClick={() => navigate("/cuenta-pro/corrector")}
+                    className={`
+                      w-full flex items-center
+                      pl-6 pr-3 h-9
+                      text-sm
+                      ${
+                        isActive("/cuenta-pro/corrector")
+                          ? "text-slate-900 font-semibold"
+                          : "text-slate-700 hover:text-slate-900"
+                      }
+                    `}
+                  >
+                    <span className="mr-2 text-slate-200">└</span>
+                    <span>Corrector gramatical</span>
                   </button>
                 </div>
               )}
