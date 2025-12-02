@@ -77,7 +77,7 @@ function App() {
             <Route path="/cuenta-pro" element={<ProLayout><ProHome /></ProLayout>} />
             <Route path="/cuenta-pro/traductor" element={<ProLayout><ProTranslator /></ProLayout>} />
             <Route path="/cuenta-pro/resumen" element={<ProLayout><ProSummary /></ProLayout>} />
-            <Route path="/cuenta-pro/ProGrammarCorrector" element={<LayoutPro><ProGrammarCorrector /></LayoutPro>} />
+            <Route path="/cuenta-pro/ProGrammarCorrector" element={<ProLayout><ProGrammarCorrector /></ProLayout>} />
             <Route path="/cuenta-pro/biblioteca" element={<ProLayout><ProLibrary /></ProLayout>} />
             <Route path="/cuenta-pro/chat-ia" element={<ProLayout><ProChat /></ProLayout>} />
             <Route path="/cuenta-pro/sugerencias" element={<ProLayout><ProSuggestions /></ProLayout>} />
