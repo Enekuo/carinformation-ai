@@ -3,7 +3,7 @@ import React from "react";
 export default function Home() {
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">
+      <h1 className="text-2xl font-semibold mb-6 mt-6 ml-10">
         Bienvenido a Euskalia Pro
       </h1>
 
