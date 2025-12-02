@@ -1212,7 +1212,7 @@ export default function ProSummary() {
                   </div>
 
                   <div
-                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
+                    className="absolute left-1/2 -translate-x-1/2 text-center px-6" 
                     style={{ top: "40%" }}
                   >
                     <p className="text-sm leading-6 text-slate-600 max-w-xl">
