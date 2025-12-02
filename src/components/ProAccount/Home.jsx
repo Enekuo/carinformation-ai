@@ -1,11 +1,20 @@
 import React from "react";
 
 export default function Home() {
+  // Más adelante esto podrá venir de tu sistema de usuario / login
+  const userName = "Eneko";
+
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6 mt-6 ml-10">
-        Bienvenido a Euskalia Pro
-      </h1>
+      {/* Bloque saludo + título */}
+      <div className="mt-6 ml-10 mb-6">
+        <p className="text-sm text-slate-400">
+          Hola {userName}
+        </p>
+        <h1 className="text-2xl font-semibold">
+          Bienvenido a Euskalia Pro
+        </h1>
+      </div>
 
       <section className="grid gap-6 md:grid-cols-2">
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
