@@ -21,6 +21,7 @@ import ProLayout from "@/components/ProAccount/ProLayout";
 import ProHome from "@/components/ProAccount/ProHome";
 import ProTranslator from "@/components/ProAccount/ProTranslator";
 import ProSummary from "@/components/ProAccount/ProSummary";
+import ProGrammarCorrector from "@/components/ProAccount/ProGrammarCorrector";
 import ProLibrary from "@/components/ProAccount/ProLibrary";
 import ProChat from "@/components/ProAccount/ProChat";
 import ProSuggestions from "@/components/ProAccount/ProSuggestions";
@@ -76,6 +77,7 @@ function App() {
             <Route path="/cuenta-pro" element={<ProLayout><ProHome /></ProLayout>} />
             <Route path="/cuenta-pro/traductor" element={<ProLayout><ProTranslator /></ProLayout>} />
             <Route path="/cuenta-pro/resumen" element={<ProLayout><ProSummary /></ProLayout>} />
+            <Route path="/pro/grammar-corrector" element={<LayoutPro><ProGrammarCorrector /></LayoutPro>} />
             <Route path="/cuenta-pro/biblioteca" element={<ProLayout><ProLibrary /></ProLayout>} />
             <Route path="/cuenta-pro/chat-ia" element={<ProLayout><ProChat /></ProLayout>} />
             <Route path="/cuenta-pro/sugerencias" element={<ProLayout><ProSuggestions /></ProLayout>} />
