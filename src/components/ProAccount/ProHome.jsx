@@ -1,4 +1,5 @@
 import React from "react";
+import { Languages, FileText, CheckCircle2 } from "lucide-react";
 
 export default function ProHome() {
   // Más adelante este nombre vendrá del usuario logueado
@@ -8,9 +9,7 @@ export default function ProHome() {
     <>
       {/* Saludo + título */}
       <div className="mt-6 ml-10 mb-6">
-        <p className="text-base text-slate-400">
-          Hola {userName}
-        </p>
+        <p className="text-base text-slate-400">Hola {userName}</p>
         <h1 className="text-3xl font-semibold text-slate-900">
           Bienvenido a Euskalia Pro
         </h1>
@@ -21,20 +20,7 @@ export default function ProHome() {
         {/* Traductor */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
           <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-blue-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 5h12M9 3v2m0 4v14m4-10h8m-4-4v8"
-              />
-            </svg>
+            <Languages className="h-6 w-6 text-blue-500" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             Traductor
@@ -47,20 +33,7 @@ export default function ProHome() {
         {/* Resumidor */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
           <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-green-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h10M4 18h7"
-              />
-            </svg>
+            <FileText className="h-6 w-6 text-green-600" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             Resumidor
@@ -73,20 +46,7 @@ export default function ProHome() {
         {/* Corregidor gramatical */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
           <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-purple-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <CheckCircle2 className="h-6 w-6 text-purple-600" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             Corregidor gramatical
