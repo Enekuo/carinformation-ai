@@ -1,5 +1,5 @@
 import React from "react";
-import { Languages, FileText, CheckCircle2 } from "lucide-react";
+import { FileText, CheckCircle2 } from "lucide-react";
 
 export default function ProHome() {
   // Más adelante este nombre vendrá del usuario logueado
@@ -20,7 +20,24 @@ export default function ProHome() {
         {/* Traductor */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
           <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
-            <Languages className="h-6 w-6 text-blue-500" />
+            {/* Icono personalizado tipo "T +" como en la captura */}
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6 text-blue-500"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {/* Barra horizontal superior */}
+              <line x1="7" y1="7" x2="15" y2="7" />
+              {/* Palo vertical */}
+              <line x1="11" y1="7" x2="11" y2="17" />
+              {/* Cruz tipo “+” a la derecha */}
+              <line x1="15.5" y1="11" x2="19" y2="11" />
+              <line x1="17.25" y1="9.25" x2="17.25" y2="12.75" />
+            </svg>
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             Traductor
