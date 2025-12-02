@@ -18,7 +18,7 @@ import PricingPage from "@/pages/PricingPage";
 
 // Pro-Account //
 import ProLayout from "@/components/ProAccount/ProLayout";
-import Home from "@/components/ProAccount/ProHome";
+import ProHome from "@/components/ProAccount/ProHome";
 import ProTranslator from "@/components/ProAccount/ProTranslator";
 import ProSummary from "@/components/ProAccount/ProSummary";
 import ProLibrary from "@/components/ProAccount/ProLibrary";
