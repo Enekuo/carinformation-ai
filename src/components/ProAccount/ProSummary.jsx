@@ -47,6 +47,9 @@ export default function ProSummary() {
   const [lastSummarySig, setLastSummarySig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
+  // Resultado es el mensaje "texto demasiado breve"
+  const [isTooShortResult, setIsTooShortResult] = useState(false);
+
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]
@@ -286,6 +289,7 @@ export default function ProSummary() {
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setIsTooShortResult(false);
     setLoading(false);
   };
 
@@ -344,6 +348,7 @@ export default function ProSummary() {
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setIsTooShortResult(false);
   }, [urlItems]);
 
   // Efecto de limpieza del timer de "Guardado en biblioteca"
@@ -393,6 +398,7 @@ export default function ProSummary() {
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setIsTooShortResult(false);
   };
 
   const onFiles = async (e) => {
@@ -430,6 +436,7 @@ export default function ProSummary() {
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setIsTooShortResult(false);
   };
 
   // ===== URLs =====
@@ -477,7 +484,8 @@ export default function ProSummary() {
   };
 
   const handleSaveSummary = () => {
-    if (!result) return;
+    // No permitir guardar si no hay resultado o si es el mensaje de "texto demasiado breve"
+    if (!result || isTooShortResult) return;
 
     // Crear título automático a partir del propio resumen
     const raw = result.trim();
@@ -585,6 +593,7 @@ export default function ProSummary() {
     setLoading(true);
     setErrorMsg("");
     setErrorKind(null);
+    setIsTooShortResult(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -737,12 +746,14 @@ export default function ProSummary() {
         .replace(/\s{2,}/g, " ")
         .trim();
 
+      // Caso "texto demasiado breve": mostrar mensaje pero marcar que NO es guardable
       if (
         cleaned &&
         cleaned.trim().toLowerCase() ===
           tooShortMsg.trim().toLowerCase()
       ) {
         setResult(tooShortMsg);
+        setIsTooShortResult(true);
         setLastSummarySig(canonicalize(textValue));
         setIsOutdated(false);
         setLoading(false);
@@ -752,6 +763,7 @@ export default function ProSummary() {
       const clipped = enforceLength(cleaned, summaryLength);
 
       setResult(clipped);
+      setIsTooShortResult(false);
       setLastSummarySig(canonicalize(textValue));
       setIsOutdated(false);
     } catch (err) {
@@ -1222,7 +1234,7 @@ export default function ProSummary() {
                       </div>
                     )}
 
-                    {isOutdated && !loading && result && (
+                    {isOutdated && !loading && result && !isTooShortResult && (
                       <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
                         <span className="truncate">
                           {tr(
@@ -1277,20 +1289,27 @@ export default function ProSummary() {
                                 {librarySavedMessage}
                               </p>
                             )}
-                            <p className="text-xs text-slate-500">
-                              {labelReadyMessage}
-                            </p>
-                            <motion.button
-                              type="button"
-                              onClick={handleSaveSummary}
-                              initial={{ opacity: 0, y: 4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.25 }}
-                              className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                              style={{ backgroundColor: "#22c55e" }}
-                            >
-                              {labelSaveSummary}
-                            </motion.button>
+
+                            {/* Solo mostrar mensaje "Listo" + botón guardar
+                                si NO es el aviso de texto demasiado breve */}
+                            {!isTooShortResult && (
+                              <>
+                                <p className="text-xs text-slate-500">
+                                  {labelReadyMessage}
+                                </p>
+                                <motion.button
+                                  type="button"
+                                  onClick={handleSaveSummary}
+                                  initial={{ opacity: 0, y: 4 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.25 }}
+                                  className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                                  style={{ backgroundColor: "#22c55e" }}
+                                >
+                                  {labelSaveSummary}
+                                </motion.button>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
