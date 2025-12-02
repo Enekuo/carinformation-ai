@@ -1282,6 +1282,7 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
+                        {/* BLOQUE "LISTO PARA GUARDAR" + BOTÓN */}
                         <div className="flex justify-end mt-10">
                           <div className="flex flex-col items-end gap-1">
                             {savedToLibrary && (
@@ -1293,7 +1294,7 @@ export default function ProSummary() {
                             {/* Solo mostrar mensaje "Listo" + botón guardar
                                 si NO es el aviso de texto demasiado breve */}
                             {!isTooShortResult && (
-                              <>
+                              <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
                                 <p className="text-xs text-slate-500">
                                   {labelReadyMessage}
                                 </p>
@@ -1303,12 +1304,12 @@ export default function ProSummary() {
                                   initial={{ opacity: 0, y: 4 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.25 }}
-                                  className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                                  className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
                                   style={{ backgroundColor: "#22c55e" }}
                                 >
                                   {labelSaveSummary}
                                 </motion.button>
-                              </>
+                              </div>
                             )}
                           </div>
                         </div>
