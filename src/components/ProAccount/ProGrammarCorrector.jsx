@@ -114,19 +114,17 @@ export default function ProGrammarCorrector() {
     "grammar.create_help_right",
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
   );
-  const labelBottomInputPh = tr(
-    "grammar.bottom_input_ph",
-    "Indica aquí el estilo que prefieres (opcional): más formal, más sencillo, tono neutro…"
-  );
-  const labelGenerateWithPrompt = tr(
-    "grammar.generate_with_prompt",
-    "Explicar cómo funciona (próximamente)"
-  );
 
-  // Intensidad de corrección
-  const LBL_LIGHT = tr("grammar.mode_light", "Ligera");
-  const LBL_STANDARD = tr("grammar.mode_standard", "Estándar");
-  const LBL_DEEP = tr("grammar.mode_deep", "Profunda");
+  // ▼▼▼ CLAVES EN ROJO CAMBIADAS A TEXTO FIJO ▼▼▼
+  const labelBottomInputPh =
+    "Indica aquí el estilo que prefieres (opcional): más formal, más sencillo, tono neutro…";
+  const labelGenerateWithPrompt =
+    "Explicar cómo funciona (próximamente)";
+
+  const LBL_LIGHT = "Ligera";
+  const LBL_STANDARD = "Estándar";
+  const LBL_DEEP = "Profunda";
+  // ▲▲▲ CLAVES EN ROJO CAMBIADAS A TEXTO FIJO ▲▲▲
 
   // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
@@ -1115,7 +1113,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Input inferior (prompt opcional, de momento solo visual) */}
+            {/* Input inferior (prompt opcional, solo visual) */}
             <div className="absolute left-0 right-0 p-4 bottom-[8px] md:bottom-2">
               <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
                 <div className="flex items-center gap-2 px-4 py-2">
@@ -1134,7 +1132,6 @@ export default function ProGrammarCorrector() {
                       color: "#ffffff",
                     }}
                     onClick={() => {
-                      // Por ahora, este botón solo muestra una nota futura
                       alert(
                         "Próximamente podrás usar este campo para controlar el estilo de la corrección de forma avanzada."
                       );
