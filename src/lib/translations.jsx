@@ -1539,6 +1539,72 @@ cookies_last_update: {
   },
  
   // =========================
+  //        Pro Grammar Corrector
+  // ========================= 
+  grammar: {
+  sources_title: {
+    ES: "Fuentes",
+    EUS: "Iturriak",
+  },
+  sources_tab_text: {
+    ES: "Texto",
+    EUS: "Testua",
+  },
+  sources_tab_document: {
+    ES: "Documento",
+    EUS: "Dokumentua",
+  },
+  sources_tab_url: {
+    ES: "URL",
+    EUS: "URL",
+  },
+  enter_text_here_full: {
+    ES: "Escribe o pega el texto que quieras corregir aquí…",
+    EUS: "Idatzi edo itsatsi zuzendu nahi duzun testua hemen…",
+  },
+  choose_file_title: {
+    ES: "Elige tu archivo o carpeta.",
+    EUS: "Aukeratu zure fitxategia edo karpeta.",
+  },
+  accepted_formats: {
+    ES: "Formatos admitidos: PDF, DOCX, TXT, MD, imágenes…",
+    EUS: "Onartutako formatuak: PDF, DOCX, TXT, MD, irudiak…",
+  },
+  folder_hint: {
+    ES: "Aquí aparecerán los textos o documentos que subas para corregir.",
+    EUS: "Hemen agertuko dira zuzendu nahi dituzun testuak edo dokumentuak.",
+  },
+  paste_urls_label: {
+    ES: "Pegar URLs*",
+    EUS: "URLak itsatsi*",
+  },
+  add_url: {
+    ES: "Añadir URLs",
+    EUS: "URLak gehitu",
+  },
+  save_urls: {
+    ES: "Guardar",
+    EUS: "Gorde",
+  },
+  cancel: {
+    ES: "Cancelar",
+    EUS: "Ezeztatu",
+  },
+  urls_note_visible: {
+    ES: "Solo se importará el texto visible de la página web.",
+    EUS: "Webguneko testu ikusgarria bakarrik inportatuko da.",
+  },
+  urls_note_paywalled: {
+    ES: "No se admiten artículos de pago.",
+    EUS: "Ordaineko artikuluak ez dira onartzen.",
+  },
+  create_help_left: {
+    ES: "Aquí verás los textos o documentos que subas para corregir. Puedes añadir archivos PDF, texto copiado o enlaces web…",
+    EUS: "Hemen agertuko dira zuzendu nahi dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…",
+  },
+},
+
+  // =========================
   //        Pro library
   // =========================    
 
