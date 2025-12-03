@@ -27,7 +27,6 @@ export default function ProGrammarCorrector() {
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
-  const [chatInput, setChatInput] = useState("");
 
   // Resultado / carga / error
   const [result, setResult] = useState("");
@@ -35,8 +34,8 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Intensidad de la corrección
-  const [correctionMode, setCorrectionMode] = useState("light"); // "light" | "standard" | "deep"
+  // Modo de corrección fijo (ya no hay pestañas)
+  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
 
   // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
@@ -72,7 +71,7 @@ export default function ProGrammarCorrector() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== i18n (por ahora nuevas claves 'grammar.*', con fallback en ES) =====
+  // ===== i18n (claves 'grammar.*') =====
   const labelSources = tr("grammar.sources_title", "Fuentes");
   const labelTabText = tr("grammar.sources_tab_text", "Texto");
   const labelTabDocument = tr("grammar.sources_tab_document", "Documento");
@@ -115,17 +114,6 @@ export default function ProGrammarCorrector() {
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
   );
 
-  // ▼▼▼ CLAVES EN ROJO CAMBIADAS A TEXTO FIJO ▼▼▼
-  const labelBottomInputPh =
-    "Indica aquí el estilo que prefieres (opcional): más formal, más sencillo, tono neutro…";
-  const labelGenerateWithPrompt =
-    "Explicar cómo funciona (próximamente)";
-
-  const LBL_LIGHT = "Ligera";
-  const LBL_STANDARD = "Estándar";
-  const LBL_DEEP = "Profunda";
-  // ▲▲▲ CLAVES EN ROJO CAMBIADAS A TEXTO FIJO ▲▲▲
-
   // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
@@ -158,34 +146,6 @@ export default function ProGrammarCorrector() {
           className="w-[18px] h-[18px] shrink-0"
           style={{ color: active ? BLUE : GRAY_ICON }}
         />
-        <span className="truncate">{label}</span>
-        {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
-        )}
-      </button>
-      {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
-      )}
-    </div>
-  );
-
-  const ModeTab = ({ active, label, onClick, showDivider }) => (
-    <div className="relative flex items-stretch">
-      <button
-        type="button"
-        onClick={onClick}
-        className="relative inline-flex items-center gap-2 h-[44px] px-3 text-[14px] font-medium"
-        style={{ color: active ? BLUE : GRAY_TEXT }}
-        aria-pressed={active}
-        aria-label={label}
-      >
         <span className="truncate">{label}</span>
         {active && (
           <span
@@ -240,12 +200,6 @@ export default function ProGrammarCorrector() {
     setLoading(false);
   };
 
-  const handleModeChange = (mode) => {
-    if (mode === correctionMode) return;
-    setCorrectionMode(mode);
-    clearRight();
-  };
-
   // ===== Reglas UX =====
   useEffect(() => {
     const sig = canonicalize(textValue);
@@ -278,7 +232,7 @@ export default function ProGrammarCorrector() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen, textValue, urlItems, documents, correctionMode, outputLang]);
+  }, [loading, result, urlInputOpen, textValue, urlItems, documents, outputLang]);
 
   // ===== Documentos =====
   const readTextFromFiles = async (items) => {
@@ -487,11 +441,7 @@ export default function ProGrammarCorrector() {
       .join(", ");
 
     const modeInstruction =
-      correctionMode === "light"
-        ? "Haz una corrección LIGERA: solo ortografía, tildes, puntuación y errores básicos. No reescribas el estilo salvo cuando sea necesario para que la frase sea correcta."
-        : correctionMode === "standard"
-        ? "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general."
-        : "Haz una corrección PROFUNDA: corrige ortografía, gramática y puntuación, y reescribe las frases para que suenen más naturales y claras, manteniendo siempre el mismo significado.";
+      "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
 
     const langInstruction =
       outputLang === "es"
@@ -520,7 +470,6 @@ export default function ProGrammarCorrector() {
         ? `\nURLs (extrae solo lo visible y corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
         : "",
       docsInline,
-      chatInput ? `\nPREFERENCIAS DE ESTILO (opcionales): ${chatInput}` : "",
       `\n${langInstruction}`,
     ].join("");
 
@@ -538,7 +487,7 @@ export default function ProGrammarCorrector() {
       textValue,
       urls: urlItems.map((u) => u.url),
       docNames,
-      correctionMode,
+      mode: CORRECTION_MODE,
       outputLang,
     });
     const cacheKey = await sha256Hex(cacheBase);
@@ -549,7 +498,7 @@ export default function ProGrammarCorrector() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages,
-          mode: correctionMode,
+          mode: CORRECTION_MODE,
           cacheKey,
           documentsText,
         }),
@@ -886,27 +835,9 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con modos + selector idioma + acciones */}
+            {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              <div className="flex items-center gap-2">
-                <ModeTab
-                  active={correctionMode === "light"}
-                  label={LBL_LIGHT}
-                  onClick={() => handleModeChange("light")}
-                  showDivider
-                />
-                <ModeTab
-                  active={correctionMode === "standard"}
-                  label={LBL_STANDARD}
-                  onClick={() => handleModeChange("standard")}
-                  showDivider
-                />
-                <ModeTab
-                  active={correctionMode === "deep"}
-                  label={LBL_DEEP}
-                  onClick={() => handleModeChange("deep")}
-                />
-              </div>
+              <div />{/* izquierda vacía, hemos quitado los modos */}
 
               <div className="flex items-center gap-1">
                 {/* Selector de idioma de referencia */}
@@ -1113,35 +1044,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Input inferior (prompt opcional, solo visual) */}
-            <div className="absolute left-0 right-0 p-4 bottom-[8px] md:bottom-2">
-              <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
-                <div className="flex items-center gap-2 px-4 py-2">
-                  <input
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    placeholder={labelBottomInputPh}
-                    className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-slate-400"
-                    aria-label={labelBottomInputPh}
-                  />
-                  <Button
-                    type="button"
-                    className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
-                    style={{
-                      backgroundColor: "#2563eb",
-                      color: "#ffffff",
-                    }}
-                    onClick={() => {
-                      alert(
-                        "Próximamente podrás usar este campo para controlar el estilo de la corrección de forma avanzada."
-                      );
-                    }}
-                  >
-                    {labelGenerateWithPrompt}
-                  </Button>
-                </div>
-              </div>
-            </div>
+            {/* Ya NO hay input inferior ni botón extra */}
           </section>
         </motion.section>
       </div>
