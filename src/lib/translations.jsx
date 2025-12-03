@@ -1583,8 +1583,8 @@ cookies_last_update: {
     EUS: "URLak gehitu",
   },
   paste_urls_placeholder: {
-    ES: "",
-    EUS: "",
+    ES: "Introduce aquí una o mas URLs (separadas por línea)",
+    EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)",
   },
   save_urls: {
     ES: "Guardar",
