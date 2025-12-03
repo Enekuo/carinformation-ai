@@ -1582,6 +1582,10 @@ cookies_last_update: {
     ES: "Añadir URLs",
     EUS: "URLak gehitu",
   },
+  paste_urls_placeholder: {
+    ES: "",
+    EUS: "",
+  },
   save_urls: {
     ES: "Guardar",
     EUS: "Gorde",
