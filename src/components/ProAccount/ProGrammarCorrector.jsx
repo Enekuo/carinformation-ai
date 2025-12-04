@@ -476,12 +476,17 @@ export default function ProGrammarCorrector() {
       docsInline,
     ].join("");
 
+    // 🔴 Aquí es donde afinamos la detección para que no salte "mismatch" tan fácil
     const systemBase = [
       "Eres Euskalia Pro, un corrector gramatical y de estilo.",
+      "Tu tarea principal es corregir el texto en el idioma en el que realmente está escrito.",
+      `El usuario indica que el texto debería estar en: ${expectedLangName}.`,
       "Primero, detecta el idioma REAL del texto principal.",
-      `Si el idioma detectado NO coincide con el idioma indicado por el usuario (${expectedLangName}), responde ÚNICAMENTE con el texto: __LANG_MISMATCH__`,
-      "y nada más (sin explicaciones, sin texto corregido).",
-      "Si el idioma detectado SÍ coincide, devuelve el mismo texto pero corregido en ese mismo idioma.",
+      "Solo considera que hay un idioma diferente si la MAYOR PARTE del texto (por ejemplo, más del 70%) está escrita en otro idioma distinto.",
+      "Si el texto está mezclado (por ejemplo, euskera con algunos fragmentos en castellano) o no estás completamente seguro del idioma, asume que coincide con el idioma indicado por el usuario y corrige en ese idioma.",
+      "En el caso de Euskara/Euskera, acepta que aparezcan nombres propios, cifras o frases cortas en castellano dentro del texto sin marcarlo como idioma distinto.",
+      `Solo si estás MUY seguro de que el texto está mayoritariamente en otro idioma distinto al indicado por el usuario (${expectedLangName}), responde ÚNICAMENTE con el texto: __LANG_MISMATCH__ y nada más (sin explicaciones, sin texto corregido).`,
+      "En cualquier otro caso, corrige el texto en el idioma indicado por el usuario, respetando el significado original.",
       "No traduzcas el texto a otro idioma en ningún caso.",
       "No resumas ni expliques nada.",
       "Cuando corrijas, tu salida debe ser SIEMPRE el texto completo corregido en un solo bloque, sin listas ni viñetas y sin comentarios adicionales.",
