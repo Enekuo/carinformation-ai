@@ -1627,8 +1627,11 @@ cookies_last_update: {
     ES: "Corrección estándar: ortografía, gramática y fluidez básica.",
     EUS: "Zuzenketa estandarra: ortografia, gramatika eta oinarrizko arintasuna.",
   },
+  lang_mismatch: {
+  ES: "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia.",
+  EUS: "Badirudi testua hautatutako hizkuntzatik desberdina dela. Aldatu goiko hizkuntza-hautatzailea edo erabili Euskaliaren itzultzailea.",
+  },
 },
-
   // =========================
   //        Pro library
   // =========================    
