@@ -114,13 +114,13 @@ export default function ProGrammarCorrector() {
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
   );
 
-  // Nuevo mensaje para idioma no coincidente
+  // Mensaje idioma no coincidente
   const labelLangMismatch = tr(
     "grammar.lang_mismatch",
     "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia."
   );
 
-  // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
+  // Etiquetas de idioma (solo para UI / explicaciones)
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
   const LBL_EN = tr("grammar.language_en", "Inglés");
@@ -620,8 +620,8 @@ export default function ProGrammarCorrector() {
                 active={sourceMode === "url"}
                 icon={UrlIcon}
                 label={labelTabUrl}
-                onClick={() => setSourceMode("url")}
                 showDivider={false}
+                onClick={() => setSourceMode("url")}
               />
             </div>
 
@@ -653,6 +653,7 @@ export default function ProGrammarCorrector() {
                     placeholder={labelEnterText}
                     className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
+                    spellCheck={false}
                   />
                   <div className="mt-2">
                     <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
@@ -783,6 +784,7 @@ export default function ProGrammarCorrector() {
                         )}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
+                        spellCheck={false}
                       />
                       <div className="mt-2 flex items-center gap-2">
                         <Button
@@ -854,7 +856,7 @@ export default function ProGrammarCorrector() {
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              <div />{/* izquierda vacía, hemos quitado los modos */}
+              <div />{/* izquierda vacía */}
 
               <div className="flex items-center gap-1">
                 {/* Selector de idioma de referencia */}
@@ -1060,8 +1062,6 @@ export default function ProGrammarCorrector() {
                 </div>
               )}
             </div>
-
-            {/* Ya NO hay input inferior ni botón extra */}
           </section>
         </motion.section>
       </div>
