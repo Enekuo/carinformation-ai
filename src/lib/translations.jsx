@@ -1606,6 +1606,27 @@ cookies_last_update: {
     ES: "Aquí verás los textos o documentos que subas para corregir. Puedes añadir archivos PDF, texto copiado o enlaces web…",
     EUS: "Hemen agertuko dira zuzendu nahi dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…",
   },
+  language_es: {
+    ES: "Español",
+    EUS: "Gaztelania",
+  },
+  language_eus: {
+    ES: "Euskera",
+    EUS: "Euskara",
+  },
+  language_en: {
+    ES: "Inglés",
+    EUS: "Ingelesa",
+  },
+
+  correct_button: {
+    ES: "Corregir texto",
+    EUS: "Testua zuzendu",
+  },
+  create_help_right: {
+    ES: "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto».",
+    EUS: "Aukeratu testuaren iturria (idatzi, dokumentua igo edo URLak gehitu) eta sakatu «Testua zuzendu».",
+  },
 },
 
   // =========================
