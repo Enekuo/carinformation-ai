@@ -114,6 +114,12 @@ export default function ProGrammarCorrector() {
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
   );
 
+  // Nuevo mensaje para idioma no coincidente
+  const labelLangMismatch = tr(
+    "grammar.lang_mismatch",
+    "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia."
+  );
+
   // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
@@ -443,15 +449,12 @@ export default function ProGrammarCorrector() {
     const modeInstruction =
       "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
 
-    const langInstruction =
-      outputLang === "es"
-        ? "Usa ortografía y gramática del español estándar (España). NO traduzcas el texto a otro idioma. Devuelve siempre el texto completo corregido."
-        : outputLang === "en"
-        ? "Use standard English grammar and spelling. Do NOT translate the text into another language. Always return the full corrected text."
-        : "Erabili euskara batuaren ortografia eta gramatika. EZ itzuli testua beste hizkuntza batera. Itzuli beti testu osoa zuzenduta.";
+    // Nombre legible del idioma esperado (para el LLM)
+    const expectedLangName =
+      outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS;
 
     const docsInline = documentsText?.length
-      ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
+      ? "\nDOCUMENTOS (texto extraído):\n" +
         documentsText
           .map(
             (d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`
@@ -464,19 +467,25 @@ export default function ProGrammarCorrector() {
       "\nTarea principal: devuelve el mismo texto, pero corregido y mejorado.",
       "\nNo resumas, no acortes y no añadas información nueva.",
       modeInstruction,
+      `\nEl usuario indica que el texto debería estar en: ${expectedLangName}.`,
       "\nTEXTO PRINCIPAL PARA CORREGIR:",
       textValue ? `\n${textValue}` : "",
       urlsList
-        ? `\nURLs (extrae solo lo visible y corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
+        ? `\nURLs (si puedes extraer texto visible, corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
         : "",
       docsInline,
-      `\n${langInstruction}`,
     ].join("");
 
-    const systemBase =
-      "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
-      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
-      "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.";
+    const systemBase = [
+      "Eres Euskalia Pro, un corrector gramatical y de estilo.",
+      "Primero, detecta el idioma REAL del texto principal.",
+      `Si el idioma detectado NO coincide con el idioma indicado por el usuario (${expectedLangName}), responde ÚNICAMENTE con el texto: __LANG_MISMATCH__`,
+      "y nada más (sin explicaciones, sin texto corregido).",
+      "Si el idioma detectado SÍ coincide, devuelve el mismo texto pero corregido en ese mismo idioma.",
+      "No traduzcas el texto a otro idioma en ningún caso.",
+      "No resumas ni expliques nada.",
+      "Cuando corrijas, tu salida debe ser SIEMPRE el texto completo corregido en un solo bloque, sin listas ni viñetas y sin comentarios adicionales.",
+    ].join(" ");
 
     const messages = [
       { role: "system", content: systemBase },
@@ -529,6 +538,14 @@ export default function ProGrammarCorrector() {
         "";
 
       if (!rawText) throw new Error("No se recibió texto de la API.");
+
+      // Caso especial: idioma detectado distinto al seleccionado
+      if (rawText.trim().startsWith("__LANG_MISMATCH__")) {
+        setResult("");
+        setErrorMsg(labelLangMismatch);
+        setIsOutdated(false);
+        return;
+      }
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -948,7 +965,7 @@ export default function ProGrammarCorrector() {
             </div>
 
             {/* Estado inicial */}
-            {!loading && !result && !errorKind && (
+            {!loading && !result && !errorKind && !errorMsg && (
               <>
                 <div
                   className="absolute left-1/2 -translate-x-1/2 z-10"
@@ -1051,4 +1068,3 @@ export default function ProGrammarCorrector() {
     </section>
   );
 }
- 
