@@ -1624,8 +1624,8 @@ cookies_last_update: {
     EUS: "Testua zuzendu",
   },
   create_help_right: {
-    ES: "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto».",
-    EUS: "Aukeratu testuaren iturria (idatzi, dokumentua igo edo URLak gehitu) eta sakatu «Testua zuzendu».",
+    ES: "Corrección estándar: ortografía, gramática y fluidez básica.",
+    EUS: "Zuzenketa estandarra: ortografia, gramatika eta oinarrizko arintasuna.",
   },
 },
 
