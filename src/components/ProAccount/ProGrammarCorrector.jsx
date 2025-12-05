@@ -45,7 +45,7 @@ export default function ProGrammarCorrector() {
   const [lastSig, setLastSig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
-  // Mostrar bloque resaltado
+  // Mostrar resaltado de cambios
   const [showDiff, setShowDiff] = useState(false);
 
   // Documentos
@@ -142,39 +142,7 @@ export default function ProGrammarCorrector() {
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
 
-  // ===== Tabs =====
-  const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
-    <div className="relative flex-1 min-w-0 flex items-stretch">
-      <button
-        type="button"
-        onClick={onClick}
-        className="relative inline-flex w-full items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
-        style={{ color: active ? BLUE : GRAY_TEXT }}
-        aria-pressed={active}
-        aria-label={label}
-      >
-        <Icon
-          className="w-[18px] h-[18px] shrink-0"
-          style={{ color: active ? BLUE : GRAY_ICON }}
-        />
-        <span className="truncate">{label}</span>
-        {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
-        )}
-      </button>
-      {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
-      )}
-    </div>
-  );
-
+  // ===== Utils =====
   const canonicalize = (s) =>
     (s || "")
       .normalize("NFD")
@@ -182,6 +150,53 @@ export default function ProGrammarCorrector() {
       .toLowerCase()
       .replace(/\s+/g, " ")
       .trim();
+
+  // Diff palabra a palabra para resaltar cambios
+  const diffWords = (original, corrected) => {
+    const o = (original || "").split(/\s+/).filter(Boolean);
+    const c = (corrected || "").split(/\s+/).filter(Boolean);
+
+    const m = o.length;
+    const n = c.length;
+
+    const dp = Array(m + 1)
+      .fill(null)
+      .map(() => Array(n + 1).fill(0));
+
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        if (o[i - 1] === c[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    const segments = [];
+    let i = m;
+    let j = n;
+
+    while (i > 0 && j > 0) {
+      if (o[i - 1] === c[j - 1]) {
+        segments.unshift({ text: c[j - 1], changed: false });
+        i--;
+        j--;
+      } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+        i--;
+      } else {
+        segments.unshift({ text: c[j - 1], changed: true });
+        j--;
+      }
+    }
+
+    while (j > 0) {
+      segments.unshift({ text: c[j - 1], changed: true });
+      j--;
+    }
+
+    return segments;
+  };
 
   // ===== Limpieza panel derecho =====
   const clearRight = () => {
@@ -431,7 +446,7 @@ export default function ProGrammarCorrector() {
   const renderResult = () => {
     if (!result) return null;
 
-    if (!showDiff) {
+    if (!showDiff || !textValue) {
       return (
         <p className="whitespace-pre-wrap leading-7 text-slate-800">
           {result}
@@ -439,13 +454,24 @@ export default function ProGrammarCorrector() {
       );
     }
 
-    // Bloque verde claro bonito
+    const segments = diffWords(textValue, result);
+
     return (
-      <div className="rounded-2xl bg-emerald-50 border border-emerald-100 px-4 py-3">
-        <p className="whitespace-pre-wrap leading-7 text-emerald-900">
-          {result}
-        </p>
-      </div>
+      <p className="whitespace-pre-wrap leading-7 text-slate-800">
+        {segments.map((seg, idx) => (
+          <span
+            key={idx}
+            className={
+              seg.changed
+                ? "bg-emerald-100 text-emerald-900 rounded px-[2px]"
+                : undefined
+            }
+          >
+            {seg.text}
+            {idx < segments.length - 1 ? " " : ""}
+          </span>
+        ))}
+      </p>
     );
   };
 
@@ -722,7 +748,6 @@ export default function ProGrammarCorrector() {
                   className={`h-full w-full flex flex-col relative ${
                     dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                   }`}
-
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -1121,7 +1146,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
           </section>
-        </motion.section> 
+        </motion.section>
       </div>
     </section>
   );
