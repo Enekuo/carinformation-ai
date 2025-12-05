@@ -1641,6 +1641,11 @@ cookies_last_update: {
     EUS: "Aldaketak ezkutatu",
     EN: "Hide changes",
   },
+  no_errors_message: {
+    ES: "¡Muy bien! No hemos detectado errores.",
+    EUS: "Oso ondo! Ez dugu akatsik aurkitu.",
+    EN: "Nice job! We didn’t spot any mistakes.",
+  },
 },
   // =========================
   //        Pro library

@@ -9,7 +9,7 @@ import {
   Copy,
   Trash,
   Check,
-} from "lucide-react"; // 👈 ya sin Search
+} from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
@@ -1107,9 +1107,27 @@ export default function ProGrammarCorrector() {
                   )}
 
                   {result && (
-                    <article className="prose prose-slate max-w-none">
-                      {renderResult()}
-                    </article>
+                    <>
+                      {/* NUEVO: caso sin diferencias → solo tic + frase */}
+                      {!hasDiff ? (
+                        <div className="mt-6 flex flex-col items-center text-center gap-2">
+                          <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                            <span className="text-lg">✅</span>
+                          </div>
+                          <p className="text-sm font-medium text-emerald-800">
+                            {tr(
+                              "grammar.no_errors_message",
+                              "¡Muy bien! No hemos detectado errores."
+                            )}
+                          </p>
+                        </div>
+                      ) : (
+                        // Caso normal: sí hay cambios → renderResult (con o sin resaltado)
+                        <article className="prose prose-slate max-w-none">
+                          {renderResult()}
+                        </article>
+                      )}
+                    </>
                   )}
 
                   {loading && !result && (
