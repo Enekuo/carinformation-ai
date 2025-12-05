@@ -1631,6 +1631,10 @@ cookies_last_update: {
   ES: "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia.",
   EUS: "Badirudi testua hautatutako hizkuntzatik desberdina dela. Aldatu goiko hizkuntza-hautatzailea edo erabili Euskaliaren itzultzailea.",
   },
+  view_changes: {
+    ES: "",
+    EUS: "",
+  },
 },
   // =========================
   //        Pro library
