@@ -1121,7 +1121,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
           </section>
-        </motion.section>
+        </motion.section> 
       </div>
     </section>
   );
