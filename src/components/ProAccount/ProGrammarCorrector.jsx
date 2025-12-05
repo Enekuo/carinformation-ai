@@ -35,17 +35,17 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Modo de corrección fijo (ya no hay pestañas)
-  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
+  // Modo de corrección fijo
+  const CORRECTION_MODE = "standard";
 
-  // Idioma de referencia para la corrección (ES/EUS/EN)
+  // Idioma de referencia
   const [outputLang, setOutputLang] = useState("es");
 
-  // Track “texto desactualizado”
+  // “Texto desactualizado”
   const [lastSig, setLastSig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
-  // Mostrar cambios resaltados
+  // Mostrar bloque resaltado
   const [showDiff, setShowDiff] = useState(false);
 
   // Documentos
@@ -59,7 +59,7 @@ export default function ProGrammarCorrector() {
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
-  // Copia: flash de tic azul
+  // Copia
   const [copiedFlash, setCopiedFlash] = useState(false);
 
   // ===== Estilos / constantes =====
@@ -118,17 +118,14 @@ export default function ProGrammarCorrector() {
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
   );
 
-  // Mensaje idioma no coincidente
   const labelLangMismatch = tr(
     "grammar.lang_mismatch",
     "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia."
   );
 
-  // Botón ver/ocultar cambios
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
 
-  // Etiquetas de idioma (solo para UI / explicaciones)
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskara");
   const LBL_EN = tr("grammar.language_en", "Inglés");
@@ -178,25 +175,6 @@ export default function ProGrammarCorrector() {
     </div>
   );
 
-  // ===== Utils =====
-  const parseUrlsFromText = (text) => {
-    const raw = text
-      .split(/[\s\n]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const valid = [];
-    for (const u of raw) {
-      try {
-        const url = new URL(u);
-        valid.push({ href: url.href, host: url.host });
-      } catch {}
-    }
-    const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
-  };
-
   const canonicalize = (s) =>
     (s || "")
       .normalize("NFD")
@@ -205,7 +183,7 @@ export default function ProGrammarCorrector() {
       .replace(/\s+/g, " ")
       .trim();
 
-  // ===== Limpieza del panel derecho =====
+  // ===== Limpieza panel derecho =====
   const clearRight = () => {
     setResult("");
     setErrorMsg("");
@@ -229,12 +207,12 @@ export default function ProGrammarCorrector() {
     }
   }, [textValue, lastSig]);
 
-  // Si cambia el resultado o el texto, ocultamos el diff
+  // Cuando cambia resultado o texto, ocultar diff
   useEffect(() => {
     setShowDiff(false);
   }, [result, textValue]);
 
-  // Atajos de teclado
+  // Atajos teclado
   useEffect(() => {
     const onKey = (e) => {
       const meta = e.metaKey || e.ctrlKey;
@@ -290,11 +268,7 @@ export default function ProGrammarCorrector() {
     const texts = await readTextFromFiles(withIds);
     if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
 
-    setResult("");
-    setErrorMsg("");
-    setErrorKind(null);
-    setIsOutdated(false);
-    setShowDiff(false);
+    clearRight();
   };
 
   const onFiles = async (e) => {
@@ -328,14 +302,28 @@ export default function ProGrammarCorrector() {
   const removeDocument = (id) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
     setDocumentsText((prev) => prev.filter((d) => d.id !== id));
-    setResult("");
-    setErrorMsg("");
-    setErrorKind(null);
-    setIsOutdated(false);
-    setShowDiff(false);
+    clearRight();
   };
 
   // ===== URLs =====
+  const parseUrlsFromText = (text) => {
+    const raw = text
+      .split(/[\s\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const valid = [];
+    for (const u of raw) {
+      try {
+        const url = new URL(u);
+        valid.push({ href: url.href, host: url.host });
+      } catch {}
+    }
+    const seen = new Set();
+    return valid.filter((v) =>
+      seen.has(v.href) ? false : (seen.add(v.href), true)
+    );
+  };
+
   const addUrlsFromTextarea = () => {
     const parsed = parseUrlsFromText(urlsTextarea);
     if (!parsed.length) return;
@@ -347,20 +335,16 @@ export default function ProGrammarCorrector() {
     setUrlItems((prev) => [...prev, ...newItems]);
     setUrlsTextarea("");
     setUrlInputOpen(false);
-    setShowDiff(false);
+    clearRight();
   };
   const removeUrl = (id) => {
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
-    setShowDiff(false);
+    clearRight();
   };
 
   useEffect(() => {
-    setResult("");
-    setErrorMsg("");
-    setErrorKind(null);
-    setIsOutdated(false);
-    setShowDiff(false);
-  }, [urlItems]);
+    clearRight();
+  }, [urlItems.length]);
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -390,7 +374,7 @@ export default function ProGrammarCorrector() {
     clearRight();
   };
 
-  // ===== Tarjetas =====
+  // ===== Tarjeta límite =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
@@ -423,7 +407,7 @@ export default function ProGrammarCorrector() {
     </div>
   );
 
-  // ===== Helper: cache key (sha-256) =====
+  // ===== Helper cache key =====
   const sha256Hex = async (input) => {
     try {
       const enc = new TextEncoder().encode(input);
@@ -436,60 +420,36 @@ export default function ProGrammarCorrector() {
     }
   };
 
-  // ===== Detección de si hay cambios =====
-  const hasDiff = useMemo(() => {
-    if (!result || !textValue) return false;
-    const origWords = textValue.split(/\s+/).filter(Boolean);
-    const corrWords = result.split(/\s+/).filter(Boolean);
-    const max = Math.min(origWords.length, corrWords.length);
-    for (let i = 0; i < max; i++) {
-      if (origWords[i] !== corrWords[i]) return true;
-    }
-    return origWords.length !== corrWords.length;
-  }, [result, textValue]);
+  // ===== ¿Hay cambios? (para mostrar lupa) =====
+  const hasDiff = !!(
+    textValue &&
+    result &&
+    textValue.trim() !== result.trim()
+  );
 
-  // ===== Render diff (verde claro) =====
-  const renderDiff = () => {
-    if (!showDiff || !result || !textValue) {
-      return <p className="whitespace-pre-wrap">{result}</p>;
-    }
+  // ===== Render resultado (normal / resaltado) =====
+  const renderResult = () => {
+    if (!result) return null;
 
-    const origTokens = textValue.split(/(\s+)/);
-    const corrTokens = result.split(/(\s+)/);
-    const len = corrTokens.length;
-    const nodes = [];
-
-    for (let i = 0; i < len; i++) {
-      const cw = corrTokens[i] ?? "";
-      const ow = origTokens[i] ?? "";
-
-      if (/^\s+$/.test(cw)) {
-        nodes.push(<span key={i}>{cw}</span>);
-        continue;
-      }
-
-      const changed = ow && ow !== cw;
-
-      nodes.push(
-        <span
-          key={i}
-          className={
-            changed
-              ? "bg-emerald-50 text-emerald-900 rounded-sm px-0.5"
-              : undefined
-          }
-        >
-          {cw}
-        </span>
+    if (!showDiff) {
+      return (
+        <p className="whitespace-pre-wrap leading-7 text-slate-800">
+          {result}
+        </p>
       );
     }
 
+    // Bloque verde claro bonito
     return (
-      <p className="whitespace-pre-wrap leading-7 text-slate-800">{nodes}</p>
+      <div className="rounded-2xl bg-emerald-50 border border-emerald-100 px-4 py-3">
+        <p className="whitespace-pre-wrap leading-7 text-emerald-900">
+          {result}
+        </p>
+      </div>
     );
   };
 
-  // ===== Generar (corrección gramatical) =====
+  // ===== Generar =====
   const handleGenerate = async () => {
     setLoading(true);
     setErrorMsg("");
@@ -554,14 +514,12 @@ export default function ProGrammarCorrector() {
       "Tu tarea principal es corregir el texto en el idioma en el que realmente está escrito.",
       `El usuario indica que el texto debería estar en: ${expectedLangName}.`,
       "Primero, detecta el idioma REAL del texto principal.",
-      "Solo considera que hay un idioma diferente si la MAYOR PARTE del texto (por ejemplo, más del 70%) está escrita en otro idioma distinto.",
-      "Si el texto está mezclado (por ejemplo, euskera con algunos fragmentos en castellano) o no estás completamente seguro del idioma, asume que coincide con el idioma indicado por el usuario y corrige en ese idioma.",
-      "En el caso de Euskara/Euskera, acepta que aparezcan nombres propios, cifras o frases cortas en castellano dentro del texto sin marcarlo como idioma distinto.",
-      `Solo si estás MUY seguro de que el texto está mayoritariamente en otro idioma distinto al indicado por el usuario (${expectedLangName}), responde ÚNICAMENTE con el texto: __LANG_MISMATCH__ y nada más (sin explicaciones, sin texto corregido).`,
-      "En cualquier otro caso, corrige el texto en el idioma indicado por el usuario, respetando el significado original.",
-      "No traduzcas el texto a otro idioma en ningún caso.",
+      "Solo considera que hay un idioma diferente si la MAYOR PARTE del texto está en otro idioma.",
+      "Si el texto está mezclado o tienes dudas, asume el idioma indicado por el usuario.",
+      "No traduzcas el texto a otro idioma.",
       "No resumas ni expliques nada.",
-      "Cuando corrijas, tu salida debe ser SIEMPRE el texto completo corregido en un solo bloque, sin listas ni viñetas y sin comentarios adicionales.",
+      "Cuando corrijas, tu salida debe ser SIEMPRE el texto completo corregido en un solo bloque.",
+      "Si estás muy seguro de que el idioma es distinto al indicado, responde SOLO con '__LANG_MISMATCH__'.",
     ].join(" ");
 
     const messages = [
@@ -664,7 +622,7 @@ export default function ProGrammarCorrector() {
           variants={pageVariants}
           transition={{ duration: 0.3 }}
         >
-          {/* ===== Panel Fuentes (izquierda) ===== */}
+          {/* ===== Panel Izquierdo ===== */}
           <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
@@ -764,6 +722,7 @@ export default function ProGrammarCorrector() {
                   className={`h-full w-full flex flex-col relative ${
                     dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                   }`}
+
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -933,11 +892,11 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones (sin modos) */}
+            {/* Barra superior */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* Aquí va el botón con lupa */}
+              {/* Botón lupa (solo si hay cambios) */}
               <div className="flex items-center">
-                {hasDiff && result && (
+                {hasDiff && (
                   <button
                     type="button"
                     onClick={() => setShowDiff((v) => !v)}
@@ -958,7 +917,7 @@ export default function ProGrammarCorrector() {
               </div>
 
               <div className="flex items-center gap-1">
-                {/* Selector de idioma de referencia */}
+                {/* Selector idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -1027,7 +986,7 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
+                {/* Copiar */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -1047,7 +1006,7 @@ export default function ProGrammarCorrector() {
                   )}
                 </button>
 
-                {/* Eliminar texto de la izquierda */}
+                {/* Borrar */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -1094,7 +1053,7 @@ export default function ProGrammarCorrector() {
               </>
             )}
 
-            {/* Resultado / errores / loader / límite */}
+            {/* Resultado / errores */}
             <div className="w-full">
               {(result || errorMsg || loading || errorKind) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
@@ -1147,7 +1106,7 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <article className="prose prose-slate max-w-none">
-                      {renderDiff()}
+                      {renderResult()}
                     </article>
                   )}
 
