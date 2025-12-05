@@ -9,7 +9,7 @@ import {
   Copy,
   Trash,
   Check,
-  Search,
+  Search, // 👈 añadido
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
@@ -35,17 +35,17 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Modo de corrección fijo
-  const CORRECTION_MODE = "standard";
+  // Modo de corrección fijo (ya no hay pestañas)
+  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
 
-  // Idioma de referencia
+  // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
 
-  // “Texto desactualizado”
+  // Track “texto desactualizado”
   const [lastSig, setLastSig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
-  // Mostrar resaltado de cambios
+  // Mostrar / ocultar resaltado de cambios
   const [showDiff, setShowDiff] = useState(false);
 
   // Documentos
@@ -59,7 +59,7 @@ export default function ProGrammarCorrector() {
   const [urlsTextarea, setUrlsTextarea] = useState("");
   const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
 
-  // Copia
+  // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
   // ===== Estilos / constantes =====
@@ -118,16 +118,12 @@ export default function ProGrammarCorrector() {
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
   );
 
-  const labelLangMismatch = tr(
-    "grammar.lang_mismatch",
-    "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia."
-  );
-
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
 
+  // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
-  const LBL_EUS = tr("grammar.language_eus", "Euskara");
+  const LBL_EUS = tr("grammar.language_eus", "Euskera");
   const LBL_EN = tr("grammar.language_en", "Inglés");
 
   // Ayuda izquierda
@@ -142,7 +138,58 @@ export default function ProGrammarCorrector() {
     return [first.endsWith(".") ? first : `${first}.`, rest];
   }, [leftRaw]);
 
+  // ===== Tabs =====
+  const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
+    <div className="relative flex-1 min-w-0 flex items-stretch">
+      <button
+        type="button"
+        onClick={onClick}
+        className="relative inline-flex w-full items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
+        style={{ color: active ? BLUE : GRAY_TEXT }}
+        aria-pressed={active}
+        aria-label={label}
+      >
+        <Icon
+          className="w-[18px] h-[18px] shrink-0"
+          style={{ color: active ? BLUE : GRAY_ICON }}
+        />
+        <span className="truncate">{label}</span>
+        {active && (
+          <span
+            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
+            style={{ backgroundColor: BLUE }}
+          />
+        )}
+      </button>
+      {showDivider && (
+        <span
+          aria-hidden
+          className="self-center"
+          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
+        />
+      )}
+    </div>
+  );
+
   // ===== Utils =====
+  const parseUrlsFromText = (text) => {
+    const raw = text
+      .split(/[\s\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const valid = [];
+    for (const u of raw) {
+      try {
+        const url = new URL(u);
+        valid.push({ href: url.href, host: url.host });
+      } catch {}
+    }
+    const seen = new Set();
+    return valid.filter((v) =>
+      seen.has(v.href) ? false : (seen.add(v.href), true)
+    );
+  };
+
   const canonicalize = (s) =>
     (s || "")
       .normalize("NFD")
@@ -151,54 +198,58 @@ export default function ProGrammarCorrector() {
       .replace(/\s+/g, " ")
       .trim();
 
-  // Diff palabra a palabra para resaltar cambios
+  // Diff palabra a palabra (simple) para resaltar cambios
   const diffWords = (original, corrected) => {
     const o = (original || "").split(/\s+/).filter(Boolean);
     const c = (corrected || "").split(/\s+/).filter(Boolean);
-
-    const m = o.length;
-    const n = c.length;
-
-    const dp = Array(m + 1)
-      .fill(null)
-      .map(() => Array(n + 1).fill(0));
-
-    for (let i = 1; i <= m; i++) {
-      for (let j = 1; j <= n; j++) {
-        if (o[i - 1] === c[j - 1]) {
-          dp[i][j] = dp[i - 1][j - 1] + 1;
-        } else {
-          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-        }
-      }
-    }
-
+    const len = Math.max(o.length, c.length);
     const segments = [];
-    let i = m;
-    let j = n;
 
-    while (i > 0 && j > 0) {
-      if (o[i - 1] === c[j - 1]) {
-        segments.unshift({ text: c[j - 1], changed: false });
-        i--;
-        j--;
-      } else if (dp[i - 1][j] >= dp[i][j - 1]) {
-        i--;
-      } else {
-        segments.unshift({ text: c[j - 1], changed: true });
-        j--;
-      }
-    }
-
-    while (j > 0) {
-      segments.unshift({ text: c[j - 1], changed: true });
-      j--;
+    for (let i = 0; i < len; i++) {
+      const word = c[i];
+      if (!word) continue;
+      const changed = o[i] !== word;
+      segments.push({ text: word, changed });
     }
 
     return segments;
   };
 
-  // ===== Limpieza panel derecho =====
+  const hasDiff = useMemo(() => {
+    if (!textValue || !result) return false;
+    return canonicalize(textValue) !== canonicalize(result);
+  }, [textValue, result]);
+
+  const renderResult = () => {
+    if (!result) return null;
+
+    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal
+    if (!showDiff || !textValue || !hasDiff) {
+      return <p className="whitespace-pre-wrap">{result}</p>;
+    }
+
+    const segments = diffWords(textValue, result);
+
+    return (
+      <p className="whitespace-pre-wrap">
+        {segments.map((seg, index) => (
+          <span
+            key={index}
+            className={
+              seg.changed
+                ? "bg-emerald-100 text-emerald-900 rounded px-[2px]"
+                : undefined
+            }
+          >
+            {seg.text}
+            {index < segments.length - 1 ? " " : ""}
+          </span>
+        ))}
+      </p>
+    );
+  };
+
+  // ===== Limpieza del panel derecho =====
   const clearRight = () => {
     setResult("");
     setErrorMsg("");
@@ -222,12 +273,7 @@ export default function ProGrammarCorrector() {
     }
   }, [textValue, lastSig]);
 
-  // Cuando cambia resultado o texto, ocultar diff
-  useEffect(() => {
-    setShowDiff(false);
-  }, [result, textValue]);
-
-  // Atajos teclado
+  // Atajos de teclado
   useEffect(() => {
     const onKey = (e) => {
       const meta = e.metaKey || e.ctrlKey;
@@ -321,24 +367,6 @@ export default function ProGrammarCorrector() {
   };
 
   // ===== URLs =====
-  const parseUrlsFromText = (text) => {
-    const raw = text
-      .split(/[\s\n]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const valid = [];
-    for (const u of raw) {
-      try {
-        const url = new URL(u);
-        valid.push({ href: url.href, host: url.host });
-      } catch {}
-    }
-    const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
-  };
-
   const addUrlsFromTextarea = () => {
     const parsed = parseUrlsFromText(urlsTextarea);
     if (!parsed.length) return;
@@ -389,7 +417,7 @@ export default function ProGrammarCorrector() {
     clearRight();
   };
 
-  // ===== Tarjeta límite =====
+  // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
@@ -422,7 +450,7 @@ export default function ProGrammarCorrector() {
     </div>
   );
 
-  // ===== Helper cache key =====
+  // ===== Helper: cache key (sha-256) =====
   const sha256Hex = async (input) => {
     try {
       const enc = new TextEncoder().encode(input);
@@ -435,47 +463,7 @@ export default function ProGrammarCorrector() {
     }
   };
 
-  // ===== ¿Hay cambios? (para mostrar lupa) =====
-  const hasDiff = !!(
-    textValue &&
-    result &&
-    textValue.trim() !== result.trim()
-  );
-
-  // ===== Render resultado (normal / resaltado) =====
-  const renderResult = () => {
-    if (!result) return null;
-
-    if (!showDiff || !textValue) {
-      return (
-        <p className="whitespace-pre-wrap leading-7 text-slate-800">
-          {result}
-        </p>
-      );
-    }
-
-    const segments = diffWords(textValue, result);
-
-    return (
-      <p className="whitespace-pre-wrap leading-7 text-slate-800">
-        {segments.map((seg, idx) => (
-          <span
-            key={idx}
-            className={
-              seg.changed
-                ? "bg-emerald-100 text-emerald-900 rounded px-[2px]"
-                : undefined
-            }
-          >
-            {seg.text}
-            {idx < segments.length - 1 ? " " : ""}
-          </span>
-        ))}
-      </p>
-    );
-  };
-
-  // ===== Generar =====
+  // ===== Generar (corrección gramatical) =====
   const handleGenerate = async () => {
     setLoading(true);
     setErrorMsg("");
@@ -509,11 +497,15 @@ export default function ProGrammarCorrector() {
     const modeInstruction =
       "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
 
-    const expectedLangName =
-      outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS;
+    const langInstruction =
+      outputLang === "es"
+        ? "Usa ortografía y gramática del español estándar (España). NO traduzcas el texto a otro idioma. Devuelve siempre el texto completo corregido."
+        : outputLang === "en"
+        ? "Use standard English grammar and spelling. Do NOT translate the text into another language. Always return the full corrected text."
+        : "Erabili euskara batuaren ortografia eta gramatika. EZ itzuli testua beste hizkuntza batera. Itzuli beti testu osoa zuzenduta.";
 
     const docsInline = documentsText?.length
-      ? "\nDOCUMENTOS (texto extraído):\n" +
+      ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
           .map(
             (d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`
@@ -526,27 +518,19 @@ export default function ProGrammarCorrector() {
       "\nTarea principal: devuelve el mismo texto, pero corregido y mejorado.",
       "\nNo resumas, no acortes y no añadas información nueva.",
       modeInstruction,
-      `\nEl usuario indica que el texto debería estar en: ${expectedLangName}.`,
       "\nTEXTO PRINCIPAL PARA CORREGIR:",
       textValue ? `\n${textValue}` : "",
       urlsList
-        ? `\nURLs (si puedes extraer texto visible, corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
+        ? `\nURLs (extrae solo lo visible y corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
         : "",
       docsInline,
+      `\n${langInstruction}`,
     ].join("");
 
-    const systemBase = [
-      "Eres Euskalia Pro, un corrector gramatical y de estilo.",
-      "Tu tarea principal es corregir el texto en el idioma en el que realmente está escrito.",
-      `El usuario indica que el texto debería estar en: ${expectedLangName}.`,
-      "Primero, detecta el idioma REAL del texto principal.",
-      "Solo considera que hay un idioma diferente si la MAYOR PARTE del texto está en otro idioma.",
-      "Si el texto está mezclado o tienes dudas, asume el idioma indicado por el usuario.",
-      "No traduzcas el texto a otro idioma.",
-      "No resumas ni expliques nada.",
-      "Cuando corrijas, tu salida debe ser SIEMPRE el texto completo corregido en un solo bloque.",
-      "Si estás muy seguro de que el idioma es distinto al indicado, responde SOLO con '__LANG_MISMATCH__'.",
-    ].join(" ");
+    const systemBase =
+      "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
+      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
+      "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.";
 
     const messages = [
       { role: "system", content: systemBase },
@@ -600,13 +584,6 @@ export default function ProGrammarCorrector() {
 
       if (!rawText) throw new Error("No se recibió texto de la API.");
 
-      if (rawText.trim().startsWith("__LANG_MISMATCH__")) {
-        setResult("");
-        setErrorMsg(labelLangMismatch);
-        setIsOutdated(false);
-        return;
-      }
-
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
         .replace(/^\s*\d+\.\s+/gm, "")
@@ -617,6 +594,7 @@ export default function ProGrammarCorrector() {
       setResult(cleaned);
       setLastSig(canonicalize(textValue));
       setIsOutdated(false);
+      setShowDiff(false);
     } catch (err) {
       setErrorMsg(err.message || "Error realizando la corrección.");
     } finally {
@@ -648,7 +626,7 @@ export default function ProGrammarCorrector() {
           variants={pageVariants}
           transition={{ duration: 0.3 }}
         >
-          {/* ===== Panel Izquierdo ===== */}
+          {/* ===== Panel Fuentes (izquierda) ===== */}
           <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
@@ -917,9 +895,9 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior */}
+            {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* Botón lupa (solo si hay cambios) */}
+              {/* Botón lupa a la izquierda */}
               <div className="flex items-center">
                 {hasDiff && (
                   <button
@@ -942,7 +920,7 @@ export default function ProGrammarCorrector() {
               </div>
 
               <div className="flex items-center gap-1">
-                {/* Selector idioma */}
+                {/* Selector de idioma de referencia */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -1011,7 +989,7 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar */}
+                {/* Copiar resultado */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -1031,7 +1009,7 @@ export default function ProGrammarCorrector() {
                   )}
                 </button>
 
-                {/* Borrar */}
+                {/* Eliminar texto de la izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -1050,7 +1028,7 @@ export default function ProGrammarCorrector() {
             </div>
 
             {/* Estado inicial */}
-            {!loading && !result && !errorKind && !errorMsg && (
+            {!loading && !result && !errorKind && (
               <>
                 <div
                   className="absolute left-1/2 -translate-x-1/2 z-10"
@@ -1078,7 +1056,7 @@ export default function ProGrammarCorrector() {
               </>
             )}
 
-            {/* Resultado / errores */}
+            {/* Resultado / errores / loader / límite */}
             <div className="w-full">
               {(result || errorMsg || loading || errorKind) && (
                 <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
