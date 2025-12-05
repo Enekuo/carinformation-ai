@@ -9,8 +9,7 @@ import {
   Copy,
   Trash,
   Check,
-  Search, // 👈 añadido
-} from "lucide-react";
+} from "lucide-react"; // 👈 ya sin Search
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
@@ -911,7 +910,7 @@ export default function ProGrammarCorrector() {
                       }`}
                     title={showDiff ? labelHideChanges : labelViewChanges}
                   >
-                    <Search className="w-3.5 h-3.5" />
+                    <span className="text-sm leading-none">🔍</span>
                     <span className="truncate">
                       {showDiff ? labelHideChanges : labelViewChanges}
                     </span>

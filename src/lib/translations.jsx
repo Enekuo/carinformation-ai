@@ -1632,8 +1632,14 @@ cookies_last_update: {
   EUS: "Badirudi testua hautatutako hizkuntzatik desberdina dela. Aldatu goiko hizkuntza-hautatzailea edo erabili Euskaliaren itzultzailea.",
   },
   view_changes: {
-    ES: "",
-    EUS: "",
+    ES: "Ver cambios",
+    EUS: "Ikusi aldaketak",
+    EN: "View changes",
+  },
+  hide_changes: {
+    ES: "Ocultar cambios",
+    EUS: "Aldaketak ezkutatu",
+    EN: "Hide changes",
   },
 },
   // =========================
