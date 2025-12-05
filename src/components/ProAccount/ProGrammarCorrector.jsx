@@ -9,6 +9,7 @@ import {
   Copy,
   Trash,
   Check,
+  Search,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,9 @@ export default function ProGrammarCorrector() {
   // Track “texto desactualizado”
   const [lastSig, setLastSig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
+
+  // Mostrar cambios resaltados
+  const [showDiff, setShowDiff] = useState(false);
 
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
@@ -120,9 +124,13 @@ export default function ProGrammarCorrector() {
     "Parece que el texto está en otro idioma distinto al seleccionado. Cambia el idioma del selector o usa el traductor de Euskalia."
   );
 
+  // Botón ver/ocultar cambios
+  const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
+  const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
+
   // Etiquetas de idioma (solo para UI / explicaciones)
   const LBL_ES = tr("grammar.language_es", "Español");
-  const LBL_EUS = tr("grammar.language_eus", "Euskera");
+  const LBL_EUS = tr("grammar.language_eus", "Euskara");
   const LBL_EN = tr("grammar.language_en", "Inglés");
 
   // Ayuda izquierda
@@ -204,6 +212,7 @@ export default function ProGrammarCorrector() {
     setErrorKind(null);
     setIsOutdated(false);
     setLoading(false);
+    setShowDiff(false);
   };
 
   // ===== Reglas UX =====
@@ -219,6 +228,11 @@ export default function ProGrammarCorrector() {
       setIsOutdated(false);
     }
   }, [textValue, lastSig]);
+
+  // Si cambia el resultado o el texto, ocultamos el diff
+  useEffect(() => {
+    setShowDiff(false);
+  }, [result, textValue]);
 
   // Atajos de teclado
   useEffect(() => {
@@ -280,6 +294,7 @@ export default function ProGrammarCorrector() {
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setShowDiff(false);
   };
 
   const onFiles = async (e) => {
@@ -317,6 +332,7 @@ export default function ProGrammarCorrector() {
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setShowDiff(false);
   };
 
   // ===== URLs =====
@@ -331,15 +347,19 @@ export default function ProGrammarCorrector() {
     setUrlItems((prev) => [...prev, ...newItems]);
     setUrlsTextarea("");
     setUrlInputOpen(false);
+    setShowDiff(false);
   };
-  const removeUrl = (id) =>
+  const removeUrl = (id) => {
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
+    setShowDiff(false);
+  };
 
   useEffect(() => {
     setResult("");
     setErrorMsg("");
     setErrorKind(null);
     setIsOutdated(false);
+    setShowDiff(false);
   }, [urlItems]);
 
   // ===== Validación =====
@@ -416,11 +436,65 @@ export default function ProGrammarCorrector() {
     }
   };
 
+  // ===== Detección de si hay cambios =====
+  const hasDiff = useMemo(() => {
+    if (!result || !textValue) return false;
+    const origWords = textValue.split(/\s+/).filter(Boolean);
+    const corrWords = result.split(/\s+/).filter(Boolean);
+    const max = Math.min(origWords.length, corrWords.length);
+    for (let i = 0; i < max; i++) {
+      if (origWords[i] !== corrWords[i]) return true;
+    }
+    return origWords.length !== corrWords.length;
+  }, [result, textValue]);
+
+  // ===== Render diff (verde claro) =====
+  const renderDiff = () => {
+    if (!showDiff || !result || !textValue) {
+      return <p className="whitespace-pre-wrap">{result}</p>;
+    }
+
+    const origTokens = textValue.split(/(\s+)/);
+    const corrTokens = result.split(/(\s+)/);
+    const len = corrTokens.length;
+    const nodes = [];
+
+    for (let i = 0; i < len; i++) {
+      const cw = corrTokens[i] ?? "";
+      const ow = origTokens[i] ?? "";
+
+      if (/^\s+$/.test(cw)) {
+        nodes.push(<span key={i}>{cw}</span>);
+        continue;
+      }
+
+      const changed = ow && ow !== cw;
+
+      nodes.push(
+        <span
+          key={i}
+          className={
+            changed
+              ? "bg-emerald-50 text-emerald-900 rounded-sm px-0.5"
+              : undefined
+          }
+        >
+          {cw}
+        </span>
+      );
+    }
+
+    return (
+      <p className="whitespace-pre-wrap leading-7 text-slate-800">{nodes}</p>
+    );
+  };
+
   // ===== Generar (corrección gramatical) =====
   const handleGenerate = async () => {
     setLoading(true);
     setErrorMsg("");
     setErrorKind(null);
+    setShowDiff(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -449,7 +523,6 @@ export default function ProGrammarCorrector() {
     const modeInstruction =
       "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
 
-    // Nombre legible del idioma esperado (para el LLM)
     const expectedLangName =
       outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS;
 
@@ -476,7 +549,6 @@ export default function ProGrammarCorrector() {
       docsInline,
     ].join("");
 
-    // 🔴 Aquí es donde afinamos la detección para que no salte "mismatch" tan fácil
     const systemBase = [
       "Eres Euskalia Pro, un corrector gramatical y de estilo.",
       "Tu tarea principal es corregir el texto en el idioma en el que realmente está escrito.",
@@ -544,7 +616,6 @@ export default function ProGrammarCorrector() {
 
       if (!rawText) throw new Error("No se recibió texto de la API.");
 
-      // Caso especial: idioma detectado distinto al seleccionado
       if (rawText.trim().startsWith("__LANG_MISMATCH__")) {
         setResult("");
         setErrorMsg(labelLangMismatch);
@@ -625,8 +696,8 @@ export default function ProGrammarCorrector() {
                 active={sourceMode === "url"}
                 icon={UrlIcon}
                 label={labelTabUrl}
-                showDivider={false}
                 onClick={() => setSourceMode("url")}
+                showDivider={false}
               />
             </div>
 
@@ -654,7 +725,10 @@ export default function ProGrammarCorrector() {
                 <div className="flex flex-col h-full">
                   <textarea
                     value={textValue}
-                    onChange={(e) => setTextValue(e.target.value)}
+                    onChange={(e) => {
+                      setTextValue(e.target.value);
+                      setShowDiff(false);
+                    }}
                     placeholder={labelEnterText}
                     className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
@@ -861,7 +935,27 @@ export default function ProGrammarCorrector() {
           <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              <div />{/* izquierda vacía */}
+              {/* Aquí va el botón con lupa */}
+              <div className="flex items-center">
+                {hasDiff && result && (
+                  <button
+                    type="button"
+                    onClick={() => setShowDiff((v) => !v)}
+                    className={`inline-flex items-center gap-1 px-3 h-8 rounded-full text-xs font-medium border shadow-sm transition
+                      ${
+                        showDiff
+                          ? "border-emerald-300 bg-emerald-50 text-emerald-800"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-800"
+                      }`}
+                    title={showDiff ? labelHideChanges : labelViewChanges}
+                  >
+                    <Search className="w-3.5 h-3.5" />
+                    <span className="truncate">
+                      {showDiff ? labelHideChanges : labelViewChanges}
+                    </span>
+                  </button>
+                )}
+              </div>
 
               <div className="flex items-center gap-1">
                 {/* Selector de idioma de referencia */}
@@ -1053,7 +1147,7 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <article className="prose prose-slate max-w-none">
-                      <p className="whitespace-pre-wrap">{result}</p>
+                      {renderDiff()}
                     </article>
                   )}
 
