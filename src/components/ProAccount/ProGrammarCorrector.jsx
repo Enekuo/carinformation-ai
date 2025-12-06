@@ -35,13 +35,13 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Modo de corrección fijo (ya no hay pestañas)
-  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
+  // Modo de corrección fijo
+  const CORRECTION_MODE = "standard";
 
   // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
 
-  // Track “texto desactualizado”
+  // Track “texto desactualizado” (solo para lógica interna)
   const [lastSig, setLastSig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
@@ -62,8 +62,8 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Toast "guardado en biblioteca"
-  const [savedToastVisible, setSavedToastVisible] = useState(false);
+  // Toast de guardado
+  const [saveToast, setSaveToast] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -79,64 +79,59 @@ export default function ProGrammarCorrector() {
   };
 
   // ===== i18n (claves 'grammar.*') =====
-  const labelSources = tr("grammar.sources_title", "Fuentes");
-  const labelTabText = tr("grammar.sources_tab_text", "Texto");
-  const labelTabDocument = tr("grammar.sources_tab_document", "Documento");
+  const labelSources = tr("grammar.sources_title", "Iturriak");
+  const labelTabText = tr("grammar.sources_tab_text", "Testua");
+  const labelTabDocument = tr("grammar.sources_tab_document", "Dokumentua");
   const labelTabUrl = tr("grammar.sources_tab_url", "URL");
   const labelEnterText = tr(
     "grammar.enter_text_here_full",
-    "Escribe o pega aquí el texto que quieres corregir…"
+    "Idatzi edo itsatsi zuzendu nahi duzun testua hemen..."
   );
   const labelChooseFileTitle = tr(
     "grammar.choose_file_title",
-    "Elige tu archivo o carpeta"
+    "Aukeratu zure fitxategia edo karpeta"
   );
   const labelAcceptedFormats = tr(
     "grammar.accepted_formats",
-    "Puedes añadir archivos de texto (.txt, .md) o documentos para corregir su contenido."
+    "Testu-fitxategiak (.txt, .md) edo dokumentuak gehi ditzakezu haien edukia zuzentzeko."
   );
   const labelFolderHint = tr(
     "grammar.folder_hint",
-    "Aquí aparecerán tus textos o documentos subidos."
+    "Hemen agertuko dira igo dituzun testuak edo dokumentuak."
   );
-  const labelPasteUrls = tr("grammar.paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("grammar.add_url", "Añadir URLs");
-  const labelSaveUrls = tr("grammar.save_urls", "Guardar");
-  const labelCancel = tr("grammar.cancel", "Cancelar");
+  const labelPasteUrls = tr("grammar.paste_urls_label", "URLak itsatsi");
+  const labelAddUrl = tr("grammar.add_url", "Gehitu URLak");
+  const labelSaveUrls = tr("grammar.save_urls", "Gorde");
+  const labelCancel = tr("grammar.cancel", "Utzi");
   const labelUrlsNoteVisible = tr(
     "grammar.urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
+    "Webguneko testu ikusgarria bakarrik inportatuko da."
   );
   const labelUrlsNotePaywalled = tr(
     "grammar.urls_note_paywalled",
-    "No se admiten artículos de pago."
+    "Ez dira onartzen ordainpeko artikuluak."
   );
-  const labelRemove = tr("grammar.remove", "Quitar");
+  const labelRemove = tr("grammar.remove", "Kendu");
   const labelGenerateFromSources = tr(
     "grammar.correct_button",
-    "Corregir texto"
+    "Testua zuzendu"
   );
   const labelHelpRight = tr(
     "grammar.create_help_right",
-    "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
+    "Aukeratu testuaren iturria (idatzi, dokumentua igo edo URLak) eta sakatu «Testua zuzendu»."
   );
 
-  const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
-  const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
-  const labelSavedToast = tr(
-    "grammar.saved_to_library",
-    "Guardado en biblioteca"
-  );
+  const labelViewChanges = tr("grammar.view_changes", "Ikusi aldaketak");
+  const labelHideChanges = tr("grammar.hide_changes", "Ezkutatu aldaketak");
 
-  // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
-  const LBL_ES = tr("grammar.language_es", "Español");
-  const LBL_EUS = tr("grammar.language_eus", "Euskera");
-  const LBL_EN = tr("grammar.language_en", "Inglés");
+  // Etiquetas de idioma
+  const LBL_ES = tr("grammar.language_es", "Gaztelania");
+  const LBL_EUS = tr("grammar.language_eus", "Euskara");
+  const LBL_EN = tr("grammar.language_en", "Ingelesa");
 
-  // Ayuda izquierda
   const leftRaw = tr(
     "grammar.create_help_left",
-    "Aquí aparecerán los textos o documentos que quieras corregir. Puedes pegar texto, subir archivos de texto o añadir URLs."
+    "Hemen agertuko dira zuzendu nahi dituzun testuak edo dokumentuak. Testua itsatsi, fitxategiak igo edo URLak gehi ditzakezu."
   );
   const [leftTitle, leftBody] = useMemo(() => {
     const parts = (leftRaw || "").split(".");
@@ -205,7 +200,6 @@ export default function ProGrammarCorrector() {
       .replace(/\s+/g, " ")
       .trim();
 
-  // Diff palabra a palabra (simple) para resaltar cambios
   const diffWords = (original, corrected) => {
     const o = (original || "").split(/\s+/).filter(Boolean);
     const c = (corrected || "").split(/\s+/).filter(Boolean);
@@ -230,7 +224,6 @@ export default function ProGrammarCorrector() {
   const renderResult = () => {
     if (!result) return null;
 
-    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal
     if (!showDiff || !textValue || !hasDiff) {
       return <p className="whitespace-pre-wrap">{result}</p>;
     }
@@ -418,32 +411,46 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
+  const handleDownload = () => {
+    if (!result) return;
+    const blob = new Blob([result], {
+      type: "text/plain;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "euskalia-correccion.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleSave = () => {
+    if (!result) return;
+    setSaveToast(true);
+    setTimeout(() => setSaveToast(false), 2000);
+  };
+
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
     clearRight();
   };
 
-  const handleSaveToLibrary = () => {
-    setSavedToastVisible(true);
-    setTimeout(() => {
-      setSavedToastVisible(false);
-    }, 1800);
-  };
-
-  // ===== Tarjetas =====
+  // ===== Tarjeta límite plan =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
         {tr(
           "grammar.limit_title",
-          "Has alcanzado el límite del plan Gratis"
+          "Doako planaren muga lortu duzu"
         )}
       </div>
       <p className="text-xs text-slate-600 mt-1">
         {tr(
           "grammar.limit_note",
-          "Límite actual: 12.000 caracteres por petición."
+          "Uneko muga: 12.000 karaktere eskaera bakoitzeko."
         )}
       </p>
       <div className="mt-4 flex items-center justify-center gap-3">
@@ -452,13 +459,13 @@ export default function ProGrammarCorrector() {
           className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
           style={{ backgroundColor: "#2563eb" }}
         >
-          {tr("grammar.limit_cta", "Probar plan Premium")}
+          {tr("grammar.limit_cta", "Probatu Premium plana")}
         </a>
         <button
           onClick={() => setErrorKind(null)}
           className="h-9 px-4 rounded-full border border-slate-300 bg-white text-sm hover:bg-white"
         >
-          {tr("grammar.limit_dismiss", "Seguir con plan Gratis")}
+          {tr("grammar.limit_dismiss", "Jarraitu doako planarekin")}
         </button>
       </div>
     </div>
@@ -496,7 +503,7 @@ export default function ProGrammarCorrector() {
     }
     if (!validNow) {
       setErrorMsg(
-        "Añade algo de texto, documentos o URLs antes de pedir la corrección."
+        "Gehitu testua, dokumentuak edo URLak zuzenketa eskatu aurretik."
       );
       setLoading(false);
       return;
@@ -509,17 +516,17 @@ export default function ProGrammarCorrector() {
       .join(", ");
 
     const modeInstruction =
-      "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
+      "Egin ZUZENKETA ESTANDARRA: zuzendu ortografia, gramatika eta puntuazioa eta hobetu apur bat jariotasuna, tonu eta egitura orokorra mantenduz.";
 
     const langInstruction =
       outputLang === "es"
-        ? "Usa ortografía y gramática del español estándar (España). NO traduzcas el texto a otro idioma. Devuelve siempre el texto completo corregido."
+        ? "Erabili gaztelaniaren ortografia eta gramatika estandarra (Espainia). EZ itzuli testua beste hizkuntza batera. Itzuli beti testu osoa zuzenduta."
         : outputLang === "en"
         ? "Use standard English grammar and spelling. Do NOT translate the text into another language. Always return the full corrected text."
         : "Erabili euskara batuaren ortografia eta gramatika. EZ itzuli testua beste hizkuntza batera. Itzuli beti testu osoa zuzenduta.";
 
     const docsInline = documentsText?.length
-      ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
+      ? "\nDOKUMENTUAK (testu erauzia):\n" +
         documentsText
           .map(
             (d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`
@@ -528,23 +535,23 @@ export default function ProGrammarCorrector() {
       : "";
 
     const userContent = [
-      "Quiero que actúes como un corrector gramatical y de estilo.",
-      "\nTarea principal: devuelve el mismo texto, pero corregido y mejorado.",
-      "\nNo resumas, no acortes y no añadas información nueva.",
+      "Jokatu zuzentzaile gramatikal eta estilo zuzentzaile gisa.",
+      "\nZeregin nagusia: itzuli testu bera, baina zuzendua eta pixka bat hobetua.",
+      "\nEz laburtu, ez motzitu eta ez gehitu informazio berririk.",
       modeInstruction,
-      "\nTEXTO PRINCIPAL PARA CORREGIR:",
+      "\nZUZENDU BEHARREKO TESTU NAGUSIA:",
       textValue ? `\n${textValue}` : "",
       urlsList
-        ? `\nURLs (extrae solo lo visible y corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
+        ? `\nURLak (atera bakarrik ikusgarria den edukia eta zuzendu; ezin baduzu atera, ez ikusi egin):\n${urlsList}`
         : "",
       docsInline,
       `\n${langInstruction}`,
     ].join("");
 
     const systemBase =
-      "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
-      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
-      "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.";
+      "Euskalia Pro zara, zuzentzaile gramatikal eta estilo zuzentzaile bat. " +
+      "Zure irteera BETI testu oso zuzendua izan behar da, bloke bakarrean, buletik gabe. " +
+      "Errespetatu jatorrizko esanahia eta ez gehitu azalpenik; soilik testu zuzendua.";
 
     const messages = [
       { role: "system", content: systemBase },
@@ -580,7 +587,7 @@ export default function ProGrammarCorrector() {
         }
         if (res.status === 429) {
           throw new Error(
-            "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
+            "Eskari-muga lortu duzu. Saiatu berriro geroago edo probatu Premium plana."
           );
         }
         const txt = await res.text();
@@ -596,7 +603,7 @@ export default function ProGrammarCorrector() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error("No se recibió texto de la API.");
+      if (!rawText) throw new Error("Ez da testurik jaso APItik.");
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -610,7 +617,7 @@ export default function ProGrammarCorrector() {
       setIsOutdated(false);
       setShowDiff(false);
     } catch (err) {
-      setErrorMsg(err.message || "Error realizando la corrección.");
+      setErrorMsg(err.message || "Errorea zuzenketa egiterakoan.");
     } finally {
       setLoading(false);
     }
@@ -706,7 +713,7 @@ export default function ProGrammarCorrector() {
                       setShowDiff(false);
                     }}
                     placeholder={labelEnterText}
-                    className="w-full h-[360px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full h-[320px] md:h-[420px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -835,7 +842,7 @@ export default function ProGrammarCorrector() {
                         onChange={(e) => setUrlsTextarea(e.target.value)}
                         placeholder={tr(
                           "grammar.paste_urls_placeholder",
-                          "Introduce aquí una o más URLs (separadas por línea)"
+                          "Idatzi edo itsatsi hemen URL bat edo gehiago (lerroz bereizita)"
                         )}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
@@ -909,9 +916,8 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[560px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones (sin modos) */}
+            {/* Barra superior */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* Botón lupa a la izquierda */}
               <div className="flex items-center">
                 {hasDiff && (
                   <button
@@ -934,7 +940,7 @@ export default function ProGrammarCorrector() {
               </div>
 
               <div className="flex items-center gap-1">
-                {/* Selector de idioma de referencia */}
+                {/* Selector de idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -942,7 +948,7 @@ export default function ProGrammarCorrector() {
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
                                  flex items-center justify-between hover:border-slate-400
                                  shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label="Idioma principal del texto"
+                      aria-label="Testuaren hizkuntza nagusia"
                     >
                       <span className="truncate">
                         {outputLang === "es"
@@ -1003,37 +1009,37 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
+                {/* Copiar resultado (arriba) */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
-                  title="Copiar texto corregido"
+                  title="Testu zuzendua kopiatu"
                   className={`h-9 w-9 flex items-center justify-center ${
                     result
                       ? "text-slate-600 hover:text-slate-800"
                       : "text-slate-300 cursor-not-allowed"
                   }`}
-                  aria-label="Copiar resultado"
+                  aria-label="Emaitza kopiatu"
                   disabled={!result}
                 >
                   {copiedFlash ? (
                     <Check className="w-4 h-4" style={{ color: BLUE }} />
                   ) : (
-                    <Copy className="w-5 h-5" />
+                    <Copy className="w-4 h-4" />
                   )}
                 </button>
 
-                {/* Eliminar texto de la izquierda */}
+                {/* Garbitu ezkerreko testua */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
-                  title="Eliminar texto de entrada y resultado"
+                  title="Sarrera-testua eta emaitza ezabatu"
                   className={`h-9 w-9 flex items-center justify-center ${
                     sourceMode === "text" && textValue
                       ? "text-slate-600 hover:text-slate-800"
                       : "text-slate-300 cursor-not-allowed"
                   }`}
-                  aria-label="Eliminar texto de entrada y resultado"
+                  aria-label="Sarrera-testua eta emaitza ezabatu"
                   disabled={!(sourceMode === "text" && textValue)}
                 >
                   <Trash className="w-4 h-4" />
@@ -1082,45 +1088,6 @@ export default function ProGrammarCorrector() {
                     </div>
                   )}
 
-                  {isOutdated && !loading && result && (
-                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                      <span className="truncate">
-                        {tr(
-                          "grammar.outdated_notice",
-                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
-                        )}
-                      </span>
-                      <div className="shrink-0 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={handleGenerate}
-                          className="h-8 px-3 rounded-full text-[13px]"
-                          style={{
-                            backgroundColor: "#2563eb",
-                            color: "#fff",
-                          }}
-                        >
-                          {tr("grammar.outdated_update", "Volver a corregir")}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => setIsOutdated(false)}
-                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                          title={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                          aria-label={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
                   {result && (
                     <>
                       {!hasDiff ? (
@@ -1131,7 +1098,7 @@ export default function ProGrammarCorrector() {
                           <p className="text-sm font-medium text-emerald-800">
                             {tr(
                               "grammar.no_errors_message",
-                              "¡Muy bien! No hemos detectado errores."
+                              "Oso ondo! Ez dugu akatsik aurkitu."
                             )}
                           </p>
                         </div>
@@ -1154,46 +1121,50 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* BOTONES FLOTEANDO ABAJO DERECHA (copiar, descargar, guardar) */}
+            {/* Toast de guardado */}
+            {saveToast && (
+              <div className="absolute right-6 bottom-[88px] rounded-full bg-emerald-100 text-emerald-800 text-xs px-3 py-1 shadow-sm">
+                {tr(
+                  "grammar.saved_to_library",
+                  "Gordeta liburutegian"
+                )}
+              </div>
+            )}
+
+            {/* Botones inferiores derecha (un poco más pequeños) */}
             {result && (
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 pb-4 pr-6 flex justify-end">
-                <div className="pointer-events-auto flex flex-col items-end gap-2">
-                  {savedToastVisible && (
-                    <div className="rounded-full bg-emerald-500 text-white text-xs font-medium px-4 py-1 shadow-sm">
-                      {labelSavedToast}
-                    </div>
+              <div className="absolute right-6 bottom-6 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleCopy(true)}
+                  className="h-8 w-8 flex items-center justify-center rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm"
+                  title={tr("grammar.copy_result", "Kopiatu testua")}
+                  aria-label={tr("grammar.copy_result", "Kopiatu testua")}
+                >
+                  {copiedFlash ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
                   )}
+                </button>
 
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(true)}
-                      className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
-                      aria-label="Copiar resultado"
-                    >
-                      <Copy className="w-6 h-6" />
-                    </button>
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  className="h-8 w-8 flex items-center justify-center rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm"
+                  title={tr("grammar.download_result", "Deskargatu testua")}
+                  aria-label={tr("grammar.download_result", "Deskargatu testua")}
+                >
+                  <FileDown className="w-4 h-4" />
+                </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        // lógica real de descarga más adelante
-                      }}
-                      className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
-                      aria-label="Descargar como archivo"
-                    >
-                      <FileDown className="w-6 h-6" />
-                    </button>
-
-                    <Button
-                      type="button"
-                      onClick={handleSaveToLibrary}
-                      className="h-9 px-5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-[14px] font-semibold shadow-sm"
-                    >
-                      Gorde
-                    </Button>
-                  </div>
-                </div>
+                <Button
+                  type="button"
+                  onClick={handleSave}
+                  className="h-9 px-5 rounded-full text-sm font-medium bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm"
+                >
+                  {tr("grammar.save_to_library", "Gorde")}
+                </Button>
               </div>
             )}
           </section>
