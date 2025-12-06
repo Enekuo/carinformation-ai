@@ -114,7 +114,11 @@ export default function ProLibrary() {
 
   // ========= Helpers visuales =========
   const getDocVisual = (doc) => {
-    const kind = doc.kind === "translation" ? "translation" : "summary";
+    // Soportamos 3 tipos: translation | summary | corrector
+    let kind = "translation";
+    if (doc.kind === "translation") kind = "translation";
+    else if (doc.kind === "summary") kind = "summary";
+    else if (doc.kind === "corrector") kind = "corrector";
 
     if (kind === "translation") {
       return {
@@ -124,11 +128,22 @@ export default function ProLibrary() {
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
       };
     }
+
+    if (kind === "summary") {
+      return {
+        bg: "#F9F6E9",
+        border: "#EFE5C7",
+        iconSrc: "/Library2.jpg",
+        labelPrefix: tr("library_prefix_summary", "Laburpena:"),
+      };
+    }
+
+    // 🟣 Nueva plantilla para documentos del corrector
     return {
-      bg: "#F9F6E9",
-      border: "#EFE5C7",
-      iconSrc: "/Library2.jpg",
-      labelPrefix: tr("library_prefix_summary", "Laburpena:"),
+      bg: "#F4E9FF",
+      border: "#E1D0FF",
+      iconSrc: "/LibraryCorrector.png", // pon aquí el nombre real del icono morado
+      labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
   };
 
@@ -257,7 +272,7 @@ export default function ProLibrary() {
                   </div>
                 </Link>
 
-                {/* Tarjetas documento (traducciones / resúmenes) */}
+                {/* Tarjetas documento (traducciones / resúmenes / corrector) */}
                 {docs
                   .filter((doc) => {
                     if (type === "text") return doc.kind === "translation";
