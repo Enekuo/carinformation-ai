@@ -35,8 +35,8 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Modo de corrección fijo (ya no hay pestañas)
-  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
+  // Modo de corrección fijo
+  const CORRECTION_MODE = "standard";
 
   // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
@@ -710,7 +710,7 @@ export default function ProGrammarCorrector() {
                       setShowDiff(false);
                     }}
                     placeholder={labelEnterText}
-                    className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full flex-1 resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -913,7 +913,7 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[560px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones (sin modos) */}
+            {/* Barra superior con selector idioma + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
               <div className="flex items-center">
@@ -1066,6 +1066,45 @@ export default function ProGrammarCorrector() {
                     </div>
                   )}
 
+                  {isOutdated && !loading && result && (
+                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      <span className="truncate">
+                        {tr(
+                          "grammar.outdated_notice",
+                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
+                        )}
+                      </span>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={handleGenerate}
+                          className="h-8 px-3 rounded-full text-[13px]"
+                          style={{
+                            backgroundColor: "#2563eb",
+                            color: "#fff",
+                          }}
+                        >
+                          {tr("grammar.outdated_update", "Volver a corregir")}
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => setIsOutdated(false)}
+                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                          title={tr(
+                            "grammar.outdated_close",
+                            "Ocultar aviso"
+                          )}
+                          aria-label={tr(
+                            "grammar.outdated_close",
+                            "Ocultar aviso"
+                          )}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {result && (
                     <>
                       {!hasDiff ? (
@@ -1099,7 +1138,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* ===== Barra de acciones abajo a la derecha (copiar / descargar / guardar) ===== */}
+            {/* Barra de acciones abajo a la derecha */}
             {result && (
               <div className="absolute right-6 bottom-5 flex items-center gap-4">
                 {/* Copiar */}
@@ -1140,7 +1179,7 @@ export default function ProGrammarCorrector() {
                   <FileDown className="w-4 h-4" />
                 </button>
 
-                {/* Guardar en biblioteca (solo UI, lógica la añadiremos luego) */}
+                {/* Guardar (UI) */}
                 <Button
                   type="button"
                   className="h-9 px-5 rounded-full text-sm font-medium bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm"
