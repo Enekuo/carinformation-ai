@@ -61,7 +61,7 @@ export default function LayoutPro({ children }) {
           bg-white flex flex-col pt-4 pb-2
           transition-all duration-200
           border-r border-slate-200
-          ${collapsed ? "w-16 px-2" : "w-48"}
+          ${collapsed ? "w-16" : "w-48"}
         `}
       >
         {/* Marca (siempre igual, esté contraído o no) */}
