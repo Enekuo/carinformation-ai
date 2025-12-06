@@ -99,8 +99,8 @@ export default function ProHome() {
             active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
         >
-          <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
-            <CheckCircle2 className="h-6 w-6 text-purple-600" />
+          <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+            <CheckCircle2 className="h-6 w-6 text-[#16A34A]" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             {tr("proHome.cardCorrector_title", "Corrector gramatical")}
