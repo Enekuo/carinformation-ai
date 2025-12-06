@@ -138,8 +138,8 @@ export default function ProLibrary() {
 
     if (kind === "translation") {
       return {
-        bg: "#FFF7E0",          // amarillo muy claro
-        border: "#FFE2A8",      // borde amarillo suave
+        bg: "#FFF7E0",
+        border: "#FFE2A8",
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
       };
@@ -147,7 +147,7 @@ export default function ProLibrary() {
 
     if (kind === "summary") {
       return {
-        bg: "#EAF3FF", // azul
+        bg: "#EAF3FF",
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
@@ -156,8 +156,8 @@ export default function ProLibrary() {
 
     // Corrector (cuando empecemos a guardar correcciones)
     return {
-      bg: "#E6F9EE", // verde muy claro
-      border: "#C6EED9", // borde verde suave
+      bg: "#E6F9EE",
+      border: "#C6EED9",
       iconSrc: "/Library3.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
@@ -202,14 +202,8 @@ export default function ProLibrary() {
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
                 {[
-                  {
-                    id: "all",
-                    label: tr("library_filter_all", "Todos"),
-                  },
-                  {
-                    id: "text",
-                    label: tr("library_filter_texts", "Textos"),
-                  },
+                  { id: "all", label: tr("library_filter_all", "Todos") },
+                  { id: "text", label: tr("library_filter_texts", "Textos") },
                   {
                     id: "summary",
                     label: tr("library_filter_summaries", "Resúmenes"),
@@ -296,11 +290,11 @@ export default function ProLibrary() {
                       width: 280,
                       height: 196,
                       borderRadius: 16,
-                      backgroundColor: "#E6F9EE", // verde claro
-                      border: "1px solid #C6EED9", // borde verde
+                      backgroundColor: "#E6F9EE",
+                      border: "1px solid #C6EED9",
                     }}
                   >
-                    {/* BOTÓN 3 PUNTOS + MENÚ (igual estilo que las otras tarjetas) */}
+                    {/* BOTÓN 3 PUNTOS + MENÚ (idéntico al de documentos) */}
                     <button
                       ref={correctorMenuBtnRef}
                       aria-label="Opciones"
@@ -330,9 +324,21 @@ export default function ProLibrary() {
                           <Pencil className="w-5 h-5 text-slate-600" />
                           <span>
                             {tr(
-                              "library_corrector_open",
-                              "Ireki zuzentzailea"
+                              "library_doc_edit_title",
+                              "Editar documento"
                             )}
+                          </span>
+                        </button>
+                        <button
+                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
+                          onClick={() => {
+                            // No hay nada que eliminar en la tarjeta estática.
+                            setCorrectorMenuOpen(false);
+                          }}
+                        >
+                          <Trash2 className="w-5 h-5 text-slate-600" />
+                          <span>
+                            {tr("library_doc_delete", "Eliminar")}
                           </span>
                         </button>
                       </div>
@@ -440,8 +446,6 @@ export default function ProLibrary() {
                             height={40}
                             className="block select-none"
                           />
-
-                          {/* Título: prefijo en negrita + resto gris */}
                           <h3
                             className="mt-6 text-[18px] leading-[24px] pr-4"
                             style={{
@@ -459,8 +463,6 @@ export default function ProLibrary() {
                                 tr("library_untitled", "Sin título")}
                             </span>
                           </h3>
-
-                          {/* Fecha abajo */}
                           {dateLabel && (
                             <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
                               {dateLabel}
@@ -673,7 +675,7 @@ export default function ProLibrary() {
                       return (
                         <label
                           key={doc.id}
-                          className="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2 text-[13px] leading-[18px] text-slate-800 shadow-sm hover:bg-slate-50 cursor-pointer"
+                          className="flex items-center justify_between gap-3 rounded-lg bg-white px-3 py-2 text-[13px] leading-[18px] text-slate-800 shadow-sm hover:bg-slate-50 cursor-pointer"
                         >
                           <div className="flex flex-col">
                             <span className="truncate">
@@ -740,7 +742,7 @@ export default function ProLibrary() {
             className="absolute inset-0 bg-black/45"
             onClick={closeEditModal}
           />
-          <div className="relative w-full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
+          <div className="relative w_full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
                 {tr("library_doc_edit_title", "Editar título")}
@@ -793,7 +795,7 @@ export default function ProLibrary() {
               <button
                 onClick={saveEditTitle}
                 disabled={!editTitle.trim()}
-                className="px-4 py-2 text-[14px] font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                className="px-4 py-2 text-[14px] font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed shadow_sm"
               >
                 {tr("save", "Guardar")}
               </button>
