@@ -441,7 +441,7 @@ export default function ProGrammarCorrector() {
         </a>
         <button
           onClick={() => setErrorKind(null)}
-          className="h-9 px-4 rounded-full border border-slate-300 bg-white text-sm hover:bg-white"
+          className="h-9 px-4 rounded-full border border-slate-300 bg-white text-sm hover:bg:white"
         >
           {tr("grammar.limit_dismiss", "Seguir con plan Gratis")}
         </button>
@@ -1067,44 +1067,7 @@ export default function ProGrammarCorrector() {
                     </div>
                   )}
 
-                  {isOutdated && !loading && result && (
-                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                      <span className="truncate">
-                        {tr(
-                          "grammar.outdated_notice",
-                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
-                        )}
-                      </span>
-                      <div className="shrink-0 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={handleGenerate}
-                          className="h-8 px-3 rounded-full text-[13px]"
-                          style={{
-                            backgroundColor: "#2563eb",
-                            color: "#fff",
-                          }}
-                        >
-                          {tr("grammar.outdated_update", "Volver a corregir")}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => setIsOutdated(false)}
-                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                          title={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                          aria-label={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  {/* AVISO DE TEXTO DESACTUALIZADO ELIMINADO */}
 
                   {result && (
                     <>
@@ -1144,5 +1107,5 @@ export default function ProGrammarCorrector() {
         </motion.section>
       </div>
     </section>
-  ); 
+  );
 }
