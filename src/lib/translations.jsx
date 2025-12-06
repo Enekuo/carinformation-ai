@@ -1524,7 +1524,7 @@ cookies_last_update: {
                                     // ========================= 
                                     // =========================
   // =========================
-  //        Pro Home
+  //        Pro Layout
   // ========================= 
   proSidebar_tools: {
   ES: "Herramientas",
@@ -1585,9 +1585,40 @@ cookies_last_update: {
     ES: "Hola",
     EUS: "Kaixo",
   },
+
   title: {
-    ES: "Bienvenido a Euskalia",
-    EUS: "Ongi etorri Euskalia-ra",
+    ES: "Bienvenido a Euskalia Pro",
+    EUS: "Ongi etorri Euskalia Prora",
+  },
+
+  cardTranslator_title: {
+    ES: "Traductor",
+    EUS: "Itzultzailea",
+  },
+
+  cardTranslator_desc: {
+    ES: "Traduce entre euskera, español, inglés y francés con calidad profesional.",
+    EUS: "Itzuli euskara, gaztelania, ingelesa eta frantsesa maila profesionalarekin.",
+  },
+
+  cardSummary_title: {
+    ES: "Resumidor",
+    EUS: "Laburtzailea",
+  },
+
+  cardSummary_desc: {
+    ES: "Sintetiza textos largos en segundos manteniendo claridad y fidelidad.",
+    EUS: "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz.",
+  },
+
+  cardCorrector_title: {
+    ES: "Corrector gramatical",
+    EUS: "Zuzenketa gramatikala",
+  },
+
+  cardCorrector_desc: {
+    ES: "Mejora tu texto corrigiendo gramática, claridad y fluidez.",
+    EUS: "Zure testua hobetzen du gramatika, argitasuna eta jariotasuna zuzenduz.",
   },
   },
  
