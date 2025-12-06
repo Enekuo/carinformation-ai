@@ -288,8 +288,8 @@ export default function ProLibrary() {
                       <img
                         src="/Library3.png"
                         alt=""
-                        width={40}
-                        height={40}
+                        width={80}
+                        height={80}
                         className="block select-none"
                       />
                       {/* h3 copiado con el mismo estilo que el de las otras tarjetas */}
