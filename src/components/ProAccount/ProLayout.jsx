@@ -60,7 +60,6 @@ export default function LayoutPro({ children }) {
           fixed top-0 left-0 h-screen
           bg-white flex flex-col pt-3 pb-2
           transition-[width] duration-200
-          border-r border-slate-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
@@ -367,7 +366,10 @@ export default function LayoutPro({ children }) {
           </div>
         </header>
 
-        <main className="flex-1 px-8 py-8">{children}</main>
+        {/* Aquí ponemos el borde vertical, solo bajo el header */}
+        <main className="flex-1 px-8 py-8 border-l border-slate-200">
+          {children}
+        </main>
       </div>
     </div>
   );
