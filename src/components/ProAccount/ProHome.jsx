@@ -89,19 +89,19 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ CORRECTOR GRAMATICAL */}
+        {/* ⭐ CORRECTOR GRAMATICAL (EN VERDE) */}
         <div
           onClick={() => navigate("/cuenta-pro/corrector")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-purple-50 active:border-2 active:border-purple-500
+            active:bg-[#DCFCE7] active:border-2 active:border-[#22C55E]
             active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
         >
-          <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
-            <CheckCircle2 className="h-6 w-6 text-purple-600" />
+          <div className="w-12 h-12 rounded-xl bg-[#ECFDF3] flex items-center justify-center mb-4">
+            <CheckCircle2 className="h-6 w-6 text-green-600" />
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
