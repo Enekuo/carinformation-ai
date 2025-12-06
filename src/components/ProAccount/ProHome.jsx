@@ -22,36 +22,36 @@ export default function ProHome() {
         </h1>
       </div>
 
-      {/* Tarjetas principales: Traductor / Resumidor / Corrector */}
+      {/* Tarjetas principales */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
-        {/* Traductor */}
+
+        {/* ⭐ TRADUCTOR (icono nuevo amarillo con flechas) */}
         <div
           onClick={() => navigate("/cuenta-pro/traductor")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-[#D7FBE8] active:border-2 active:border-[#16A34A]
+            active:bg-[#FEF9C3] active:border-2 active:border-[#FACC15]
             active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
         >
-          <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
-            {/* Icono personalizado tipo "T +" más grande */}
+          <div className="w-12 h-12 rounded-xl bg-[#FEF3C7] flex items-center justify-center mb-4">
+            {/* Icono flechas amarillo */}
             <svg
               viewBox="0 0 24 24"
-              className="w-8 h-8 text-blue-500"
+              className="w-7 h-7 text-yellow-500"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <line x1="7" y1="7" x2="15" y2="7" />
-              <line x1="11" y1="7" x2="11" y2="17" />
-              <line x1="15.5" y1="11" x2="19" y2="11" />
-              <line x1="17.25" y1="9.25" x2="17.25" y2="12.75" />
+              <path d="M7 7h10M17 7l-3-3M17 7l-3 3" />
+              <path d="M17 17H7M7 17l3 3M7 17l3-3" />
             </svg>
           </div>
+
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             {tr("proHome.cardTranslator_title", "Traductor")}
           </h3>
@@ -63,20 +63,21 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* Resumidor */}
+        {/* ⭐ RESUMIDOR (icono azul nuevo) */}
         <div
           onClick={() => navigate("/cuenta-pro/resumen")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-[#D7FBE8] active:border-2 active:border-[#16A34A]
+            active:bg-[#DBEAFE] active:border-2 active:border-[#3B82F6]
             active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
         >
-          <div className="w-12 h-12 rounded-xl bg-[#FFF7E6] flex items-center justify-center mb-4">
-            <FileText className="h-6 w-6 text-[#FACC15]" />
+          <div className="w-12 h-12 rounded-xl bg-[#E0EAFF] flex items-center justify-center mb-4">
+            <FileText className="h-6 w-6 text-blue-500" />
           </div>
+
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             {tr("proHome.cardSummary_title", "Resumidor")}
           </h3>
@@ -88,20 +89,21 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* Corrector gramatical */}
+        {/* ⭐ CORRECTOR GRAMATICAL */}
         <div
           onClick={() => navigate("/cuenta-pro/corrector")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-[#D7FBE8] active:border-2 active:border-[#16A34A]
+            active:bg-purple-50 active:border-2 active:border-purple-500
             active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
         >
-          <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
-            <CheckCircle2 className="h-6 w-6 text-[#16A34A]" />
+          <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
+            <CheckCircle2 className="h-6 w-6 text-purple-600" />
           </div>
+
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             {tr("proHome.cardCorrector_title", "Corrector gramatical")}
           </h3>
@@ -112,6 +114,7 @@ export default function ProHome() {
             )}
           </p>
         </div>
+
       </section>
     </>
   );
