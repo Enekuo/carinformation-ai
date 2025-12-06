@@ -1617,8 +1617,8 @@ cookies_last_update: {
   },
 
   cardCorrector_desc: {
-    ES: "Mejora tu texto corrigiendo gramática, claridad y fluidez.",
-    EUS: "Zure testua hobetzen du gramatika, argitasuna eta jariotasuna zuzenduz.",
+    ES: "Revisa tu texto y corrige los errores gramaticales.",
+    EUS: "Testua berrikusi eta akats gramatikoak zuzentzen ditu.",
   },
   },
  
