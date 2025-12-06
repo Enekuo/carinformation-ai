@@ -116,7 +116,7 @@ export default function LayoutPro({ children }) {
                 <div className="flex items-center gap-2">
                   <Wrench size={18} />
                   {showText && (
-                    <span>{tr("proSidebar.tools", "Herramientas")}</span>
+                    <span>{tr("proSidebar_tools", "Herramientas")}</span>
                   )}
                 </div>
 
@@ -146,7 +146,7 @@ export default function LayoutPro({ children }) {
                     `}
                   >
                     <span className="mr-2 text-slate-200">│</span>
-                    <span>{tr("proSidebar.translator", "Traductor")}</span>
+                    <span>{tr("proSidebar_translator", "Traductor")}</span>
                   </button>
 
                   <button
@@ -163,7 +163,7 @@ export default function LayoutPro({ children }) {
                     `}
                   >
                     <span className="mr-2 text-slate-200">│</span>
-                    <span>{tr("proSidebar.summary", "Resumen")}</span>
+                    <span>{tr("proSidebar_summary", "Resumen")}</span>
                   </button>
 
                   <button
@@ -180,7 +180,7 @@ export default function LayoutPro({ children }) {
                     `}
                   >
                     <span className="mr-2 text-slate-200">└</span>
-                    <span>{tr("proSidebar.corrector", "Corrector")}</span>
+                    <span>{tr("proSidebar_corrector", "Corrector")}</span>
                   </button>
                 </div>
               )}
@@ -201,7 +201,7 @@ export default function LayoutPro({ children }) {
             >
               <Folder size={18} />
               {showText && (
-                <span>{tr("proSidebar.library", "Biblioteca")}</span>
+                <span>{tr("proSidebar_library", "Biblioteca")}</span>
               )}
             </button>
 
@@ -220,7 +220,7 @@ export default function LayoutPro({ children }) {
             >
               <MessageSquare size={18} />
               {showText && (
-                <span>{tr("proSidebar.chat", "Chat con IA")}</span>
+                <span>{tr("proSidebar_chat", "Chat con IA")}</span>
               )}
             </button>
           </nav>
@@ -244,7 +244,7 @@ export default function LayoutPro({ children }) {
             >
               <Lightbulb size={18} />
               {showText && (
-                <span>{tr("proSidebar.suggestions", "Sugerencias")}</span>
+                <span>{tr("proSidebar_suggestions", "Sugerencias")}</span>
               )}
             </button>
 
@@ -261,7 +261,7 @@ export default function LayoutPro({ children }) {
               `}
             >
               <LifeBuoy size={18} />
-              {showText && <span>{tr("proSidebar.help", "Ayuda")}</span>}
+              {showText && <span>{tr("proSidebar_help", "Ayuda")}</span>}
             </button>
 
             <button
@@ -278,7 +278,7 @@ export default function LayoutPro({ children }) {
             >
               <Settings size={18} />
               {showText && (
-                <span>{tr("proSidebar.settings", "Ajustes")}</span>
+                <span>{tr("proSidebar_settings", "Ajustes")}</span>
               )}
             </button>
           </div>
@@ -297,7 +297,7 @@ export default function LayoutPro({ children }) {
             ) : (
               <>
                 <ChevronsLeft size={18} />
-                <span>{tr("proSidebar.collapse", "Contraer")}</span>
+                <span>{tr("proSidebar_collapse", "Contraer")}</span>
               </>
             )}
           </button>
