@@ -41,7 +41,7 @@ export default function ProGrammarCorrector() {
   // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
 
-  // Track “texto desactualizado” (aunque ya no mostramos el aviso)
+  // Track “texto desactualizado”
   const [lastSig, setLastSig] = useState(null);
   const [isOutdated, setIsOutdated] = useState(false);
 
@@ -62,8 +62,8 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Guardado en biblioteca (solo mensaje UX por ahora)
-  const [savedInfo, setSavedInfo] = useState(false);
+  // Guardado en biblioteca: cambiar texto del botón
+  const [savedFlash, setSavedFlash] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -124,7 +124,6 @@ export default function ProGrammarCorrector() {
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
 
-  // NUEVAS etiquetas para guardar
   const labelSaveButton = tr("grammar.save_button", "Guardar");
   const labelSavedToLibrary = tr(
     "grammar.saved_to_library",
@@ -184,7 +183,7 @@ export default function ProGrammarCorrector() {
   // ===== Utils =====
   const parseUrlsFromText = (text) => {
     const raw = text
-      .split(/[\s\n]+/g)
+      .split(/[\s\n]+/)
       .map((s) => s.trim())
       .filter(Boolean);
     const valid = [];
@@ -192,9 +191,7 @@ export default function ProGrammarCorrector() {
       try {
         const url = new URL(u);
         valid.push({ href: url.href, host: url.host });
-      } catch {
-        // ignorar
-      }
+      } catch {}
     }
     const seen = new Set();
     return valid.filter((v) =>
@@ -235,7 +232,6 @@ export default function ProGrammarCorrector() {
   const renderResult = () => {
     if (!result) return null;
 
-    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal
     if (!showDiff || !textValue || !hasDiff) {
       return <p className="whitespace-pre-wrap">{result}</p>;
     }
@@ -269,7 +265,6 @@ export default function ProGrammarCorrector() {
     setIsOutdated(false);
     setLoading(false);
     setShowDiff(false);
-    setSavedInfo(false);
   };
 
   // ===== Reglas UX =====
@@ -400,7 +395,6 @@ export default function ProGrammarCorrector() {
 
   useEffect(() => {
     clearRight();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlItems.length]);
 
   // ===== Validación =====
@@ -422,33 +416,31 @@ export default function ProGrammarCorrector() {
         setCopiedFlash(true);
         setTimeout(() => setCopiedFlash(false), 1200);
       }
-    } catch {
-      // ignorar
-    }
+    } catch {}
   };
 
   const handleDownload = () => {
     if (!result) return;
     try {
-      const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
+      const blob = new Blob([result], {
+        type: "text/plain;charset=utf-8",
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "euskalia-correccion.txt";
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
+      a.remove();
       URL.revokeObjectURL(url);
-    } catch {
-      // ignorar
-    }
+    } catch {}
   };
 
-  const handleSaveToLibrary = () => {
+  const handleSave = () => {
     if (!result) return;
-    // Aquí más adelante se podrá conectar con la librería Pro.
-    setSavedInfo(true);
-    setTimeout(() => setSavedInfo(false), 2200);
+    // Aquí en el futuro integraremos la biblioteca real.
+    setSavedFlash(true);
+    setTimeout(() => setSavedFlash(false), 2000);
   };
 
   const handleClearLeft = () => {
@@ -457,11 +449,14 @@ export default function ProGrammarCorrector() {
     clearRight();
   };
 
-  // ===== Tarjeta de límite =====
+  // ===== Tarjeta límite =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
-        {tr("grammar.limit_title", "Has alcanzado el límite del plan Gratis")}
+        {tr(
+          "grammar.limit_title",
+          "Has alcanzado el límite del plan Gratis"
+        )}
       </div>
       <p className="text-xs text-slate-600 mt-1">
         {tr(
@@ -506,7 +501,6 @@ export default function ProGrammarCorrector() {
     setErrorMsg("");
     setErrorKind(null);
     setShowDiff(false);
-    setSavedInfo(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -633,7 +627,7 @@ export default function ProGrammarCorrector() {
       setLastSig(canonicalize(textValue));
       setIsOutdated(false);
       setShowDiff(false);
-      setSavedInfo(false);
+      setSavedFlash(false);
     } catch (err) {
       setErrorMsg(err.message || "Error realizando la corrección.");
     } finally {
@@ -1028,7 +1022,7 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado (atajo arriba) */}
+                {/* Copiar resultado (icono arriba) */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -1107,9 +1101,47 @@ export default function ProGrammarCorrector() {
                     </div>
                   )}
 
+                  {isOutdated && !loading && result && (
+                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      <span className="truncate">
+                        {tr(
+                          "grammar.outdated_notice",
+                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
+                        )}
+                      </span>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={handleGenerate}
+                          className="h-8 px-3 rounded-full text-[13px]"
+                          style={{
+                            backgroundColor: "#2563eb",
+                            color: "#fff",
+                          }}
+                        >
+                          {tr("grammar.outdated_update", "Volver a corregir")}
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => setIsOutdated(false)}
+                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                          title={tr(
+                            "grammar.outdated_close",
+                            "Ocultar aviso"
+                          )}
+                          aria-label={tr(
+                            "grammar.outdated_close",
+                            "Ocultar aviso"
+                          )}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {result && (
                     <>
-                      {/* Caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1123,7 +1155,6 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
-                        // Caso normal: sí hay cambios → renderResult (con o sin resaltado)
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1142,47 +1173,42 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar (solo cuando hay resultado) */}
+            {/* ===== BOTONES INFERIORES DERECHA ===== */}
             {result && (
-              <div className="absolute right-6 bottom-6 flex items-center gap-4">
-                {savedInfo && (
-                  <span className="text-xs font-medium text-emerald-700">
-                    {labelSavedToLibrary}
-                  </span>
-                )}
+              <div className="absolute right-6 bottom-6 flex items-center gap-3">
+                {/* Copiar */}
+                <button
+                  type="button"
+                  onClick={() => handleCopy(true)}
+                  className="h-10 w-10 rounded-full border border-slate-300 flex items-center justify-center bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 shadow-sm"
+                  title={tr("grammar.copy_result", "Copiar resultado")}
+                  aria-label={tr("grammar.copy_result", "Copiar resultado")}
+                >
+                  <Copy className="w-[18px] h-[18px]" />
+                </button>
 
-                <div className="flex items-center gap-2">
-                  {/* Copiar (círculo blanco, un poco más pequeño) */}
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(true)}
-                    className="h-9 w-9 rounded-full border border-slate-300 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:border-slate-400"
-                    title={tr("grammar.copy_result", "Kopiatu testua")}
-                    aria-label={tr("grammar.copy_result", "Kopiatu testua")}
-                  >
-                    <Copy className="w-4 h-4" />
-                  </button>
+                {/* Descargar */}
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  className="h-10 w-10 rounded-full border border-slate-300 flex items-center justify-center bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 shadow-sm"
+                  title={tr("grammar.download_result", "Descargar como .txt")}
+                  aria-label={tr(
+                    "grammar.download_result",
+                    "Descargar como .txt"
+                  )}
+                >
+                  <FileDown className="w-[18px] h-[18px]" />
+                </button>
 
-                  {/* Descargar */}
-                  <button
-                    type="button"
-                    onClick={handleDownload}
-                    className="h-9 w-9 rounded-full border border-slate-300 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:border-slate-400"
-                    title={tr("grammar.download_result", "Deskargatu testua")}
-                    aria-label={tr("grammar.download_result", "Deskargatu testua")}
-                  >
-                    <FileDown className="w-4 h-4" />
-                  </button>
-
-                  {/* Guardar en biblioteca */}
-                  <button
-                    type="button"
-                    onClick={handleSaveToLibrary}
-                    className="h-9 px-5 rounded-full bg-emerald-500 text-white text-sm font-medium shadow-sm hover:bg-emerald-600"
-                  >
-                    {labelSaveButton}
-                  </button>
-                </div>
+                {/* Guardar en biblioteca */}
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  className="inline-flex items-center justify-center h-10 px-6 rounded-full bg-[#10b981] text-white text-sm font-medium shadow-sm hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {savedFlash ? labelSavedToLibrary : labelSaveButton}
+                </button>
               </div>
             )}
           </section>
