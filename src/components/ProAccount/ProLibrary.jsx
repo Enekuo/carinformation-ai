@@ -11,7 +11,7 @@ export default function ProLibrary() {
 
   const navigate = useNavigate();
 
-  // ===== STORE BIBLIOTECA (traducciones / resúmenes / corrector) =====
+  // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
   const { docs, renameDoc, deleteDoc } = useLibraryDocs();
 
   // ===== STORE CARPETAS =====
@@ -72,13 +72,11 @@ export default function ProLibrary() {
     setEditTitle(doc.title || "");
     setEditModalOpen(true);
   };
-
   const closeEditModal = () => {
     setEditModalOpen(false);
     setEditingDocId(null);
     setEditTitle("");
   };
-
   const saveEditTitle = () => {
     const title = editTitle.trim();
     if (!title || !editingDocId) return;
@@ -102,12 +100,10 @@ export default function ProLibrary() {
     setSelectedDocIds([]);
     setFolderModalOpen(true);
   };
-
   const closeFolderModal = () => {
     setFolderModalOpen(false);
     setSelectedDocIds([]);
   };
-
   const saveFolder = () => {
     const name = folderName.trim();
     if (!name) return;
@@ -118,7 +114,7 @@ export default function ProLibrary() {
 
   // ========= Helpers visuales =========
   const getDocVisual = (doc) => {
-    // tipos soportados: translation | summary | corrector
+    // translation | summary | corrector (dejamos preparado)
     let kind = "translation";
     if (doc.kind === "translation") kind = "translation";
     else if (doc.kind === "summary") kind = "summary";
@@ -142,7 +138,7 @@ export default function ProLibrary() {
       };
     }
 
-    // 🟣 Corrector
+    // Corrector (para cuando empecemos a guardar correcciones)
     return {
       bg: "#F4E9FF",
       border: "#E1D0FF",
@@ -299,12 +295,6 @@ export default function ProLibrary() {
                       <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
                         {tr("library_prefix_corrector", "Zuzenketa:")}
                       </h3>
-                      <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
-                        {tr(
-                          "library_corrector_template_desc",
-                          "Gorde hemen zure testu zuzenketak modu antolatuan."
-                        )}
-                      </p>
                     </div>
                   </div>
                 )}
@@ -534,7 +524,7 @@ export default function ProLibrary() {
                         key={f.id}
                         type="button"
                         onClick={() => setViewFolderId(f.id)}
-                        className="w-full flex items-center justify_between rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm hover:shadow-md hover:border-sky-200 transition text-left"
+                        className="w-full flex items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm hover:shadow-md hover:border-sky-200 transition text-left"
                       >
                         <div className="flex items-center gap-2 text-slate-700">
                           <Folder className="w-5 h-5 text-sky-500" />
@@ -696,7 +686,7 @@ export default function ProLibrary() {
             className="absolute inset-0 bg-black/45"
             onClick={closeEditModal}
           />
-          <div className="relative w_full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
+          <div className="relative w-full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
                 {tr("library_doc_edit_title", "Editar título")}
