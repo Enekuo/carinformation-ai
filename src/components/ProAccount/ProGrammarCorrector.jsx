@@ -441,7 +441,7 @@ export default function ProGrammarCorrector() {
         </a>
         <button
           onClick={() => setErrorKind(null)}
-          className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
+          className="h-9 px-4 rounded-full border border-slate-300 bg-white text-sm hover:bg-white"
         >
           {tr("grammar.limit_dismiss", "Seguir con plan Gratis")}
         </button>
@@ -626,7 +626,7 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[480px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -893,7 +893,7 @@ export default function ProGrammarCorrector() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[480px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
