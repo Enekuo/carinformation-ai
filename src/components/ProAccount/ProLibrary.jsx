@@ -131,7 +131,7 @@ export default function ProLibrary() {
 
     if (kind === "summary") {
       return {
-        bg: "#EAF3FF",
+        bg: "#EAF3FF", // azul claro
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
@@ -286,24 +286,14 @@ export default function ProLibrary() {
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
                       <img
-                        src="/Library3.png"
+                        src="/LibraryCorrector.png"
                         alt=""
-                        width={80}
-                        height={80}
-                        className="block select-none"
+                        width={60}      // tamaño más grande
+                        height={60}
+                        className="block select-none -mt-2 -ml-1" // SUBIR y MOVER a la izquierda
                       />
-                      <h3
-                        className="mt-6 text-[18px] leading-[24px] pr-4"
-                        style={{
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
-                        <span className="font-semibold text-slate-900">
-                          {tr("library_prefix_corrector", "Zuzenketa:")}
-                        </span>
+                      <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
+                        {tr("library_prefix_corrector", "Zuzenketa:")}
                       </h3>
                     </div>
                   </div>
