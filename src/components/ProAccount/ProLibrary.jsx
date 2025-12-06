@@ -122,8 +122,8 @@ export default function ProLibrary() {
 
     if (kind === "translation") {
       return {
-        bg: "#FFF7E0",          // amarillo muy claro
-        border: "#FFE2A8",      // borde amarillo suave
+        bg: "#FFF7E0", // ✅ amarillo muy claro
+        border: "#FFE2A8", // ✅ borde amarillo suave
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
       };
@@ -131,18 +131,18 @@ export default function ProLibrary() {
 
     if (kind === "summary") {
       return {
-        bg: "#EAF3FF",
+        bg: "#EAF3FF", // ahora en azul como pediste
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
       };
     }
 
-    // Corrector
+    // Corrector (cuando empecemos a guardar correcciones)
     return {
-      bg: "#E6F9EE",           // verde muy claro
-      border: "#C6EED9",       // borde verde suave
-      iconSrc: "/Library3.png", // ← icono nuevo
+      bg: "#E6F9EE", // verde muy claro
+      border: "#C6EED9", // borde verde suave
+      iconSrc: "/LibraryCorrector.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
   };
@@ -285,12 +285,11 @@ export default function ProLibrary() {
                     }}
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                      {/* ← FOTO NUEVA */}
                       <img
                         src="/Library3.png"
-                        alt="Zuzenketa gramatikala"
-                        width={100}
-                        height={100}
+                        alt=""
+                        width={40}
+                        height={40}
                         className="block select-none"
                       />
                       <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
