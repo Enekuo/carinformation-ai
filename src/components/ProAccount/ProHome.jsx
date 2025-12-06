@@ -74,7 +74,7 @@ export default function ProHome() {
             active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
         >
-          <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+          <div className="w-12 h-12 rounded-xl bg-[#FFF7E6] flex items-center justify-center mb-4">
             <FileText className="h-6 w-6 text-green-600" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
@@ -112,7 +112,7 @@ export default function ProHome() {
             )}
           </p>
         </div>
-      </section> 
+      </section>
     </>
   );
 }
