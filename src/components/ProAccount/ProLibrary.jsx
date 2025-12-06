@@ -122,8 +122,8 @@ export default function ProLibrary() {
 
     if (kind === "translation") {
       return {
-        bg: "#EAF3FF",
-        border: "#D9E7FF",
+        bg: "#FFF7E0",          // ✅ amarillo muy claro
+        border: "#FFE2A8",      // ✅ borde amarillo suave
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
       };
