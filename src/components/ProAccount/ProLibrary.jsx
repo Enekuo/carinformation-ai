@@ -131,8 +131,8 @@ export default function ProLibrary() {
 
     if (kind === "summary") {
       return {
-        bg: "#F9F6E9",
-        border: "#EFE5C7",
+        bg: "#EAF3FF", // ahora en azul como pediste
+        border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
       };
@@ -140,8 +140,8 @@ export default function ProLibrary() {
 
     // Corrector (cuando empecemos a guardar correcciones)
     return {
-      bg: "#E6F9EE",          // verde muy claro
-      border: "#C6EED9",      // borde verde suave
+      bg: "#E6F9EE", // verde muy claro
+      border: "#C6EED9", // borde verde suave
       iconSrc: "/LibraryCorrector.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
@@ -280,8 +280,8 @@ export default function ProLibrary() {
                       width: 280,
                       height: 196,
                       borderRadius: 16,
-                      backgroundColor: "#E6F9EE",     // verde claro
-                      border: "1px solid #C6EED9",   // borde verde
+                      backgroundColor: "#E6F9EE", // verde claro
+                      border: "1px solid #C6EED9", // borde verde
                     }}
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
