@@ -58,14 +58,18 @@ export default function LayoutPro({ children }) {
       <aside
         className={`
           fixed top-0 left-0 h-screen
-          bg-white flex flex-col pt-4 pb-2
+          bg-white flex flex-col pt-3 pb-2
           transition-all duration-200
           border-r border-slate-200
-          ${collapsed ? "w-16" : "w-48"}
+          ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca (siempre igual, esté contraído o no) */}
-        <div className="mb-6 flex items-center">
+        {/* Marca – misma posición siempre */}
+        <div
+          className={`mb-6 flex items-center ${
+            collapsed ? "pl-2" : ""
+          }`}
+        >
           <span className="font-bold tracking-tight text-2xl ml-4">
             Euskalia
           </span>
