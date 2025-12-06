@@ -1523,6 +1523,59 @@ cookies_last_update: {
                                     //        PRO ACCOUNT 
                                     // ========================= 
                                     // =========================
+  // =========================
+  //        Pro Home
+  // ========================= 
+  proSidebar_tools: {
+  ES: "Herramientas",
+  EUS: "Tresnak",
+ },
+
+ proSidebar_translator: {
+  ES: "Traductor",
+  EUS: "Itzultzailea",
+ },
+
+ proSidebar_summary: {
+  ES: "Resumen",
+  EUS: "Laburpena",
+ },
+
+ proSidebar_corrector: {
+  ES: "Corrector",
+  EUS: "Zuzentzailea",
+ },
+
+ proSidebar_library: {
+  ES: "Biblioteca",
+  EUS: "Liburutegia",
+ },
+
+ proSidebar_chat: {
+  ES: "Chat con IA",
+  EUS: "IArekin txata",
+ },
+
+ proSidebar_suggestions: {
+  ES: "Sugerencias",
+  EUS: "Iradokizunak",
+ },
+
+ proSidebar_help: {
+  ES: "Ayuda",
+  EUS: "Laguntza",
+ },
+
+ proSidebar_settings: {
+  ES: "Ajustes",
+  EUS: "Ezarpenak",
+ },
+
+ proSidebar_collapse: {
+  ES: "Contraer",
+  EUS: "Tolestu",
+ },
+
 
   // =========================
   //        Pro Home

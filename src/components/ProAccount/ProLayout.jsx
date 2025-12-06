@@ -25,7 +25,9 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function LayoutPro({ children }) {
-  const { language, setLanguage } = useTranslation();
+  const { t, language, setLanguage } = useTranslation();
+  const tr = (key, fallback) => t(key) || fallback;
+
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
@@ -113,7 +115,9 @@ export default function LayoutPro({ children }) {
               >
                 <div className="flex items-center gap-2">
                   <Wrench size={18} />
-                  {showText && <span>Herramientas</span>}
+                  {showText && (
+                    <span>{tr("proSidebar.tools", "Herramientas")}</span>
+                  )}
                 </div>
 
                 {showText && (
@@ -142,7 +146,7 @@ export default function LayoutPro({ children }) {
                     `}
                   >
                     <span className="mr-2 text-slate-200">│</span>
-                    <span>Traductor</span>
+                    <span>{tr("proSidebar.translator", "Traductor")}</span>
                   </button>
 
                   <button
@@ -159,7 +163,7 @@ export default function LayoutPro({ children }) {
                     `}
                   >
                     <span className="mr-2 text-slate-200">│</span>
-                    <span>Resumen</span>
+                    <span>{tr("proSidebar.summary", "Resumen")}</span>
                   </button>
 
                   <button
@@ -176,7 +180,7 @@ export default function LayoutPro({ children }) {
                     `}
                   >
                     <span className="mr-2 text-slate-200">└</span>
-                    <span>Corrector gramatical</span>
+                    <span>{tr("proSidebar.corrector", "Corrector")}</span>
                   </button>
                 </div>
               )}
@@ -196,7 +200,9 @@ export default function LayoutPro({ children }) {
               `}
             >
               <Folder size={18} />
-              {showText && <span>Biblioteca</span>}
+              {showText && (
+                <span>{tr("proSidebar.library", "Biblioteca")}</span>
+              )}
             </button>
 
             {/* Chat IA */}
@@ -213,7 +219,9 @@ export default function LayoutPro({ children }) {
               `}
             >
               <MessageSquare size={18} />
-              {showText && <span>Chat con IA</span>}
+              {showText && (
+                <span>{tr("proSidebar.chat", "Chat con IA")}</span>
+              )}
             </button>
           </nav>
 
@@ -235,7 +243,9 @@ export default function LayoutPro({ children }) {
               `}
             >
               <Lightbulb size={18} />
-              {showText && <span>Sugerencias</span>}
+              {showText && (
+                <span>{tr("proSidebar.suggestions", "Sugerencias")}</span>
+              )}
             </button>
 
             <button
@@ -251,7 +261,7 @@ export default function LayoutPro({ children }) {
               `}
             >
               <LifeBuoy size={18} />
-              {showText && <span>Ayuda</span>}
+              {showText && <span>{tr("proSidebar.help", "Ayuda")}</span>}
             </button>
 
             <button
@@ -267,7 +277,9 @@ export default function LayoutPro({ children }) {
               `}
             >
               <Settings size={18} />
-              {showText && <span>Ajustes</span>}
+              {showText && (
+                <span>{tr("proSidebar.settings", "Ajustes")}</span>
+              )}
             </button>
           </div>
 
@@ -285,7 +297,7 @@ export default function LayoutPro({ children }) {
             ) : (
               <>
                 <ChevronsLeft size={18} />
-                <span>Contraer</span>
+                <span>{tr("proSidebar.collapse", "Contraer")}</span>
               </>
             )}
           </button>
