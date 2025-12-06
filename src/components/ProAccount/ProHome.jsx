@@ -26,7 +26,11 @@ export default function ProHome() {
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
         {/* Traductor */}
         <div
-          className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer"
+          className="
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            hover:shadow-md transition cursor-pointer
+            active:bg-[#E6F8EB] active:border-[#3BAA5A] active:shadow-md
+          "
           onClick={() => navigate("/cuenta-pro/traductor")}
         >
           <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
@@ -62,7 +66,11 @@ export default function ProHome() {
 
         {/* Resumidor */}
         <div
-          className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer"
+          className="
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            hover:shadow-md transition cursor-pointer
+            active:bg-[#E6F8EB] active:border-[#3BAA5A] active:shadow-md
+          "
           onClick={() => navigate("/cuenta-pro/resumen")}
         >
           <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
@@ -81,7 +89,11 @@ export default function ProHome() {
 
         {/* Corrector gramatical */}
         <div
-          className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer"
+          className="
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            hover:shadow-md transition cursor-pointer
+            active:bg-[#E6F8EB] active:border-[#3BAA5A] active:shadow-md
+          "
           onClick={() => navigate("/cuenta-pro/corrector")}
         >
           <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
