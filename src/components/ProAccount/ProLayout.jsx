@@ -58,7 +58,7 @@ export default function LayoutPro({ children }) {
       <aside
         className={`
           fixed top-0 left-0 h-screen
-          bg-white flex flex-col pt-6 pb-2
+          bg-white flex flex-col pt-3 pb-2
           transition-all duration-200
           border-r border-slate-200
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
