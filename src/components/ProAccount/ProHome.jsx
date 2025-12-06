@@ -75,7 +75,7 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FFF7E6] flex items-center justify-center mb-4">
-            <FileText className="h-6 w-6 text-[#F6A723]" />
+            <FileText className="h-6 w-6 text-[#FACC15]" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
             {tr("proHome.cardSummary_title", "Resumidor")}
