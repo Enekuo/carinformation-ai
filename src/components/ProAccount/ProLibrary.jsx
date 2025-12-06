@@ -289,8 +289,8 @@ export default function ProLibrary() {
                       <img
                         src="/Library3.png"
                         alt="Zuzenketa gramatikala"
-                        width={40}
-                        height={40}
+                        width={60}
+                        height={60}
                         className="block select-none"
                       />
                       <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
