@@ -286,7 +286,7 @@ export default function ProLibrary() {
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
                       <img
-                        src="/LibraryCorrector.png"
+                        src="/Library3.png"
                         alt=""
                         width={60}      // tamaño más grande
                         height={60}
