@@ -114,7 +114,7 @@ export default function ProLibrary() {
 
   // ========= Helpers visuales =========
   const getDocVisual = (doc) => {
-    // translation | summary | corrector (dejamos preparado)
+    // translation | summary | corrector
     let kind = "translation";
     if (doc.kind === "translation") kind = "translation";
     else if (doc.kind === "summary") kind = "summary";
@@ -138,10 +138,10 @@ export default function ProLibrary() {
       };
     }
 
-    // Corrector (para cuando empecemos a guardar correcciones)
+    // Corrector (cuando empecemos a guardar correcciones)
     return {
-      bg: "#F4E9FF",
-      border: "#E1D0FF",
+      bg: "#E6F9EE",          // verde muy claro
+      border: "#C6EED9",      // borde verde suave
       iconSrc: "/LibraryCorrector.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
@@ -280,8 +280,8 @@ export default function ProLibrary() {
                       width: 280,
                       height: 196,
                       borderRadius: 16,
-                      backgroundColor: "#F4E9FF",
-                      border: "1px solid #E1D0FF",
+                      backgroundColor: "#E6F9EE",     // verde claro
+                      border: "1px solid #C6EED9",   // borde verde
                     }}
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
