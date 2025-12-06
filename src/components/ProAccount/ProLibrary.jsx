@@ -288,8 +288,8 @@ export default function ProLibrary() {
                       <img
                         src="/Library3.png"
                         alt=""
-                        width={60}      // tamaño más grande
-                        height={60}
+                        width={80}      // tamaño más grande
+                        height={80}
                         className="block select-none -mt-2 -ml-1" // SUBIR y MOVER a la izquierda
                       />
                       <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
