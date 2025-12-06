@@ -122,8 +122,8 @@ export default function ProLibrary() {
 
     if (kind === "translation") {
       return {
-        bg: "#FFF7E0", // ✅ amarillo muy claro
-        border: "#FFE2A8", // ✅ borde amarillo suave
+        bg: "#FFF7E0", // amarillo muy claro
+        border: "#FFE2A8",
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
       };
@@ -131,18 +131,18 @@ export default function ProLibrary() {
 
     if (kind === "summary") {
       return {
-        bg: "#EAF3FF", // ahora en azul como pediste
+        bg: "#EAF3FF", // azul claro
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
       };
     }
 
-    // Corrector (cuando empecemos a guardar correcciones)
+    // Corrector
     return {
       bg: "#E6F9EE", // verde muy claro
-      border: "#C6EED9", // borde verde suave
-      iconSrc: "/LibraryCorrector.png",
+      border: "#C6EED9",
+      iconSrc: "/Library3.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
   };
@@ -288,12 +288,24 @@ export default function ProLibrary() {
                       <img
                         src="/Library3.png"
                         alt=""
-                        width={100}
-                        height={100}
+                        width={40}
+                        height={40}
                         className="block select-none"
                       />
-                      <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
-                        {tr("library_prefix_corrector", "Zuzenketa:")}
+                      {/* h3 copiado con el mismo estilo que el de las otras tarjetas */}
+                      <h3
+                        className="mt-6 text-[18px] leading-[24px] pr-4"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <span className="font-semibold text-slate-900">
+                          {tr("library_prefix_corrector", "Zuzenketa:")}
+                        </span>{" "}
+                        <span className="font-normal text-slate-700"></span>
                       </h3>
                     </div>
                   </div>
