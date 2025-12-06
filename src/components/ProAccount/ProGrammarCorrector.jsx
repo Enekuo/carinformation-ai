@@ -9,7 +9,6 @@ import {
   Copy,
   Trash,
   Check,
-  FileDown,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
@@ -62,8 +61,8 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Estado de guardado en biblioteca
-  const [hasSaved, setHasSaved] = useState(false);
+  // Guardado en biblioteca (solo mensaje)
+  const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -123,13 +122,6 @@ export default function ProGrammarCorrector() {
 
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
-
-  // NUEVAS etiquetas sin "grammar."
-  const labelSaveButton = tr("save_button", "Gorde");
-  const labelSavedToLibrary = tr(
-    "saved_to_library",
-    "Guardado en biblioteca"
-  );
 
   // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
@@ -267,7 +259,7 @@ export default function ProGrammarCorrector() {
     setIsOutdated(false);
     setLoading(false);
     setShowDiff(false);
-    setHasSaved(false);
+    setSavedToLibrary(false);
   };
 
   // ===== Reglas UX =====
@@ -283,11 +275,6 @@ export default function ProGrammarCorrector() {
       setIsOutdated(false);
     }
   }, [textValue, lastSig]);
-
-  // Reset mensaje de “guardado en biblioteca” cuando cambia el resultado
-  useEffect(() => {
-    setHasSaved(false);
-  }, [result]);
 
   // Atajos de teclado
   useEffect(() => {
@@ -428,6 +415,12 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
+  const handleClearLeft = () => {
+    if (!(sourceMode === "text" && textValue)) return;
+    setTextValue("");
+    clearRight();
+  };
+
   const handleDownload = () => {
     if (!result) return;
     try {
@@ -438,23 +431,28 @@ export default function ProGrammarCorrector() {
       const a = document.createElement("a");
       a.href = url;
       a.download = "euskalia-correccion.txt";
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch {}
   };
 
   const handleSaveToLibrary = () => {
     if (!result) return;
-    // Aquí en el futuro se podrá conectar con la librería real.
-    setHasSaved(true);
-    setTimeout(() => setHasSaved(false), 2200);
+    // Aquí iría la lógica real de guardado en la biblioteca.
+    setSavedToLibrary(true);
+    setTimeout(() => setSavedToLibrary(false), 2000);
   };
 
-  const handleClearLeft = () => {
-    if (!(sourceMode === "text" && textValue)) return;
-    setTextValue("");
-    clearRight();
-  };
+  useEffect(() => {
+    // Cada vez que cambia el resultado, reseteamos el estado de “guardado”
+    setSavedToLibrary(false);
+  }, [result]);
+
+  const saveLabel = savedToLibrary
+    ? tr("saved_to_library", "Guardado en biblioteca")
+    : tr("save_button", "Guardar");
 
   // ===== Tarjetas =====
   const LimitCard = () => (
@@ -508,7 +506,7 @@ export default function ProGrammarCorrector() {
     setErrorMsg("");
     setErrorKind(null);
     setShowDiff(false);
-    setHasSaved(false);
+    setSavedToLibrary(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -635,7 +633,6 @@ export default function ProGrammarCorrector() {
       setLastSig(canonicalize(textValue));
       setIsOutdated(false);
       setShowDiff(false);
-      setHasSaved(false);
     } catch (err) {
       setErrorMsg(err.message || "Error realizando la corrección.");
     } finally {
@@ -656,6 +653,7 @@ export default function ProGrammarCorrector() {
     ? "bg-amber-500"
     : "bg-sky-500";
 
+  // ===== Render =====
   return (
     <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
       <div className="max-w-7xl mx-auto w-full px-6">
@@ -668,7 +666,7 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[560px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[500px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -731,10 +729,9 @@ export default function ProGrammarCorrector() {
                     onChange={(e) => {
                       setTextValue(e.target.value);
                       setShowDiff(false);
-                      setHasSaved(false);
                     }}
                     placeholder={labelEnterText}
-                    className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full flex-1 min-h-[260px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -936,7 +933,7 @@ export default function ProGrammarCorrector() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[560px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[500px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
@@ -1036,7 +1033,7 @@ export default function ProGrammarCorrector() {
                   type="button"
                   onClick={() => handleCopy(true)}
                   title="Copiar texto corregido"
-                  className={`h-9 w-9 flex items-center justify-center ${
+                  className={`h-8 w-8 flex items-center justify-center ${
                     result
                       ? "text-slate-600 hover:text-slate-800"
                       : "text-slate-300 cursor-not-allowed"
@@ -1056,7 +1053,7 @@ export default function ProGrammarCorrector() {
                   type="button"
                   onClick={handleClearLeft}
                   title="Eliminar texto de entrada y resultado"
-                  className={`h-9 w-9 flex items-center justify-center ${
+                  className={`h-8 w-8 flex items-center justify-center ${
                     sourceMode === "text" && textValue
                       ? "text-slate-600 hover:text-slate-800"
                       : "text-slate-300 cursor-not-allowed"
@@ -1154,6 +1151,7 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <>
+                      {/* Caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1167,6 +1165,7 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
+                        // Caso normal
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1185,43 +1184,35 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior derecha: copiar / descargar / guardar */}
+            {/* Barra inferior: copiar, descargar, guardar */}
             {result && (
-              <div className="absolute bottom-6 right-6 flex items-center gap-4">
-                {/* Copiar (otra vez, pero en versión redonda) */}
+              <div className="absolute right-6 bottom-5 flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
-                  className="h-9 w-9 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:border-slate-400"
+                  className="h-9 w-9 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm"
                   title={tr("copy_result", "Copiar resultado")}
                   aria-label={tr("copy_result", "Copiar resultado")}
                 >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
+                  <Copy className="w-4 h-4" />
                 </button>
-
-                {/* Descargar */}
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="h-9 w-9 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:border-slate-400"
-                  title={tr("download_result", "Descargar resultado")}
-                  aria-label={tr("download_result", "Descargar resultado")}
+                  className="h-9 w-9 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm"
+                  title={tr("download_result", "Descargar")}
+                  aria-label={tr("download_result", "Descargar")}
                 >
-                  <FileDown className="w-4 h-4" />
+                  <FileText className="w-4 h-4" />
                 </button>
-
-                {/* Guardar en biblioteca */}
-                <button
+                <Button
                   type="button"
                   onClick={handleSaveToLibrary}
-                  className="inline-flex items-center justify-center h-9 px-6 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium shadow-sm transition"
+                  className="h-9 px-6 rounded-full text-sm font-semibold shadow-sm"
+                  style={{ backgroundColor: "#16a34a", color: "#ffffff" }}
                 >
-                  {hasSaved ? labelSavedToLibrary : labelSaveButton}
-                </button>
+                  {saveLabel}
+                </Button>
               </div>
             )}
           </section>
