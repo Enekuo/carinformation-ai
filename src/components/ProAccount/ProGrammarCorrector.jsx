@@ -9,6 +9,7 @@ import {
   Copy,
   Trash,
   Check,
+  FileDown,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
@@ -119,6 +120,7 @@ export default function ProGrammarCorrector() {
 
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
+  const labelSaveButton = tr("grammar.save_button", "Gorde");
 
   // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
@@ -410,6 +412,23 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
+  const handleDownload = () => {
+    if (!result) return;
+    try {
+      const blob = new Blob([result], {
+        type: "text/plain;charset=utf-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "euskalia-correccion.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {}
+  };
+
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
@@ -691,8 +710,7 @@ export default function ProGrammarCorrector() {
                       setShowDiff(false);
                     }}
                     placeholder={labelEnterText}
-                    // ⬇️ CAMBIO: sin altura fija, ocupa el alto disponible
-                    className="w-full flex-1 min-h-0 resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -989,26 +1007,6 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
-                <button
-                  type="button"
-                  onClick={() => handleCopy(true)}
-                  title="Copiar texto corregido"
-                  className={`h-9 w-9 flex items-center justify-center ${
-                    result
-                      ? "text-slate-600 hover:text-slate-800"
-                      : "text-slate-300 cursor-not-allowed"
-                  }`}
-                  aria-label="Copiar resultado"
-                  disabled={!result}
-                >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" style={{ color: BLUE }} />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
-
                 {/* Eliminar texto de la izquierda */}
                 <button
                   type="button"
@@ -1068,48 +1066,8 @@ export default function ProGrammarCorrector() {
                     </div>
                   )}
 
-                  {isOutdated && !loading && result && (
-                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                      <span className="truncate">
-                        {tr(
-                          "grammar.outdated_notice",
-                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
-                        )}
-                      </span>
-                      <div className="shrink-0 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={handleGenerate}
-                          className="h-8 px-3 rounded-full text-[13px]"
-                          style={{
-                            backgroundColor: "#2563eb",
-                            color: "#fff",
-                          }}
-                        >
-                          {tr("grammar.outdated_update", "Volver a corregir")}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => setIsOutdated(false)}
-                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                          title={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                          aria-label={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
                   {result && (
                     <>
-                      {/* NUEVO: caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1123,7 +1081,6 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
-                        // Caso normal: sí hay cambios → renderResult (con o sin resaltado)
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1141,6 +1098,57 @@ export default function ProGrammarCorrector() {
                 </div>
               )}
             </div>
+
+            {/* ===== Barra de acciones abajo a la derecha (copiar / descargar / guardar) ===== */}
+            {result && (
+              <div className="absolute right-6 bottom-5 flex items-center gap-4">
+                {/* Copiar */}
+                <button
+                  type="button"
+                  onClick={() => handleCopy(true)}
+                  title={tr(
+                    "grammar.copy_corrected",
+                    "Kopiatu testu zuzendua"
+                  )}
+                  className="h-9 w-9 flex items-center justify-center text-slate-500 hover:text-slate-800"
+                  aria-label={tr(
+                    "grammar.copy_corrected",
+                    "Kopiatu testu zuzendua"
+                  )}
+                >
+                  {copiedFlash ? (
+                    <Check className="w-4 h-4" style={{ color: BLUE }} />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </button>
+
+                {/* Descargar */}
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  title={tr(
+                    "grammar.download_corrected",
+                    "Deskargatu testu zuzendua"
+                  )}
+                  className="h-9 w-9 flex items-center justify-center text-slate-500 hover:text-slate-800"
+                  aria-label={tr(
+                    "grammar.download_corrected",
+                    "Deskargatu testu zuzendua"
+                  )}
+                >
+                  <FileDown className="w-4 h-4" />
+                </button>
+
+                {/* Guardar en biblioteca (solo UI, lógica la añadiremos luego) */}
+                <Button
+                  type="button"
+                  className="h-9 px-5 rounded-full text-sm font-medium bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm"
+                >
+                  {labelSaveButton}
+                </Button>
+              </div>
+            )}
           </section>
         </motion.section>
       </div>
