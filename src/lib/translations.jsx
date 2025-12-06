@@ -1768,6 +1768,10 @@ library_prefix_translation: {
   ES: "Traducción:",
   EUS: "Itzulpena:",
 },
+library_prefix_corrector: {
+  ES: "Corrección:",
+  EUS: "Zuzenketa:",
+},
 library_create_summary: {
   ES: "Crear resumen",
   EUS: "Sortu laburpena",

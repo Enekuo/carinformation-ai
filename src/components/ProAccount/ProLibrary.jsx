@@ -72,11 +72,13 @@ export default function ProLibrary() {
     setEditTitle(doc.title || "");
     setEditModalOpen(true);
   };
+
   const closeEditModal = () => {
     setEditModalOpen(false);
     setEditingDocId(null);
     setEditTitle("");
   };
+
   const saveEditTitle = () => {
     const title = editTitle.trim();
     if (!title || !editingDocId) return;
@@ -100,10 +102,12 @@ export default function ProLibrary() {
     setSelectedDocIds([]);
     setFolderModalOpen(true);
   };
+
   const closeFolderModal = () => {
     setFolderModalOpen(false);
     setSelectedDocIds([]);
   };
+
   const saveFolder = () => {
     const name = folderName.trim();
     if (!name) return;
@@ -114,7 +118,7 @@ export default function ProLibrary() {
 
   // ========= Helpers visuales =========
   const getDocVisual = (doc) => {
-    // Soportamos 3 tipos: translation | summary | corrector
+    // tipos soportados: translation | summary | corrector
     let kind = "translation";
     if (doc.kind === "translation") kind = "translation";
     else if (doc.kind === "summary") kind = "summary";
@@ -138,11 +142,11 @@ export default function ProLibrary() {
       };
     }
 
-    // 🟣 Nueva plantilla para documentos del corrector
+    // 🟣 Corrector
     return {
       bg: "#F4E9FF",
       border: "#E1D0FF",
-      iconSrc: "/LibraryCorrector.png", // icono morado del corrector
+      iconSrc: "/LibraryCorrector.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
   };
@@ -272,7 +276,7 @@ export default function ProLibrary() {
                   </div>
                 </Link>
 
-                {/* 🟣 Tarjeta estática del corrector (solo cuando filtro = Denak / all) */}
+                {/* Tarjeta estática del corrector (solo en Denak/all) */}
                 {type === "all" && (
                   <div
                     className="relative shadow-sm hover:shadow-md transition"
