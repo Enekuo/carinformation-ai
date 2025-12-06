@@ -26,12 +26,14 @@ export default function ProHome() {
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
         {/* Traductor */}
         <div
+          onClick={() => navigate("/cuenta-pro/traductor")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
-            hover:shadow-md transition cursor-pointer
-            active:bg-[#E6F8EB] active:border-[#3BAA5A] active:shadow-md
+            cursor-pointer transform transition
+            hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+            active:bg-[#D7FBE8] active:border-2 active:border-[#16A34A]
+            active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
-          onClick={() => navigate("/cuenta-pro/traductor")}
         >
           <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
             {/* Icono personalizado tipo "T +" más grande */}
@@ -44,11 +46,8 @@ export default function ProHome() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              {/* Barra horizontal superior */}
               <line x1="7" y1="7" x2="15" y2="7" />
-              {/* Palo vertical */}
               <line x1="11" y1="7" x2="11" y2="17" />
-              {/* Cruz tipo “+” a la derecha */}
               <line x1="15.5" y1="11" x2="19" y2="11" />
               <line x1="17.25" y1="9.25" x2="17.25" y2="12.75" />
             </svg>
@@ -66,12 +65,14 @@ export default function ProHome() {
 
         {/* Resumidor */}
         <div
+          onClick={() => navigate("/cuenta-pro/resumen")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
-            hover:shadow-md transition cursor-pointer
-            active:bg-[#E6F8EB] active:border-[#3BAA5A] active:shadow-md
+            cursor-pointer transform transition
+            hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+            active:bg-[#D7FBE8] active:border-2 active:border-[#16A34A]
+            active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
-          onClick={() => navigate("/cuenta-pro/resumen")}
         >
           <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
             <FileText className="h-6 w-6 text-green-600" />
@@ -89,12 +90,14 @@ export default function ProHome() {
 
         {/* Corrector gramatical */}
         <div
+          onClick={() => navigate("/cuenta-pro/corrector")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
-            hover:shadow-md transition cursor-pointer
-            active:bg-[#E6F8EB] active:border-[#3BAA5A] active:shadow-md
+            cursor-pointer transform transition
+            hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+            active:bg-[#D7FBE8] active:border-2 active:border-[#16A34A]
+            active:shadow-lg active:scale-[1.02] active:-translate-y-0
           "
-          onClick={() => navigate("/cuenta-pro/corrector")}
         >
           <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
             <CheckCircle2 className="h-6 w-6 text-purple-600" />
