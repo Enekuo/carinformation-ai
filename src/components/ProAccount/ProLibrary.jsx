@@ -142,7 +142,7 @@ export default function ProLibrary() {
     return {
       bg: "#E6F9EE", // verde muy claro
       border: "#C6EED9", // borde verde suave
-      iconSrc: "/LibraryCorrector.png",
+      iconSrc: "/Library3.png",   // ← ✅ ahora usa Library3
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
   };
@@ -286,7 +286,7 @@ export default function ProLibrary() {
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
                       <img
-                        src="/LibraryCorrector.png"
+                        src="/Library3.png"   // ← ✅ ahora usa Library3
                         alt=""
                         width={40}
                         height={40}
