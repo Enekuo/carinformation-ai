@@ -142,7 +142,7 @@ export default function ProLibrary() {
     return {
       bg: "#F4E9FF",
       border: "#E1D0FF",
-      iconSrc: "/LibraryCorrector.png", // pon aquí el nombre real del icono morado
+      iconSrc: "/LibraryCorrector.png", // icono morado del corrector
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
     };
   };
@@ -271,6 +271,42 @@ export default function ProLibrary() {
                     </span>
                   </div>
                 </Link>
+
+                {/* 🟣 Tarjeta estática del corrector (solo cuando filtro = Denak / all) */}
+                {type === "all" && (
+                  <div
+                    className="relative shadow-sm hover:shadow-md transition"
+                    style={{
+                      width: 280,
+                      height: 196,
+                      borderRadius: 16,
+                      backgroundColor: "#F4E9FF",
+                      border: "1px solid #E1D0FF",
+                    }}
+                  >
+                    <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                      <img
+                        src="/LibraryCorrector.png"
+                        alt=""
+                        width={40}
+                        height={40}
+                        className="block select-none"
+                      />
+                      <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
+                        {tr(
+                          "library_template_corrector_title",
+                          "Zuzenketa gramatikala"
+                        )}
+                      </h3>
+                      <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
+                        {tr(
+                          "library_template_corrector_desc",
+                          "Gorde hemen zure testu zuzenketak modu antolatuan."
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Tarjetas documento (traducciones / resúmenes / corrector) */}
                 {docs
