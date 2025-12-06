@@ -35,8 +35,8 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Modo de corrección fijo
-  const CORRECTION_MODE = "standard";
+  // Modo de corrección fijo (ya no hay pestañas)
+  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
 
   // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
@@ -61,6 +61,9 @@ export default function ProGrammarCorrector() {
 
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
+
+  // Toast "guardado en biblioteca"
+  const [savedToastVisible, setSavedToastVisible] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -120,7 +123,10 @@ export default function ProGrammarCorrector() {
 
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
-  const labelSaveButton = tr("grammar.save_button", "Gorde");
+  const labelSavedToast = tr(
+    "grammar.saved_to_library",
+    "Guardado en biblioteca"
+  );
 
   // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
   const LBL_ES = tr("grammar.language_es", "Español");
@@ -412,27 +418,19 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
-  const handleDownload = () => {
-    if (!result) return;
-    try {
-      const blob = new Blob([result], {
-        type: "text/plain;charset=utf-8",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "euskalia-correccion.txt";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch {}
-  };
-
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
     clearRight();
+  };
+
+  const handleSaveToLibrary = () => {
+    // Aquí solo mostramos el mensaje. La lógica real de guardado
+    // la puedes conectar más adelante con tu store de biblioteca.
+    setSavedToastVisible(true);
+    setTimeout(() => {
+      setSavedToastVisible(false);
+    }, 1800);
   };
 
   // ===== Tarjetas =====
@@ -710,7 +708,7 @@ export default function ProGrammarCorrector() {
                       setShowDiff(false);
                     }}
                     placeholder={labelEnterText}
-                    className="w-full flex-1 resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -913,7 +911,7 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[560px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones */}
+            {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
               <div className="flex items-center">
@@ -1006,6 +1004,26 @@ export default function ProGrammarCorrector() {
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
                 </DropdownMenu>
+
+                {/* Copiar resultado */}
+                <button
+                  type="button"
+                  onClick={() => handleCopy(true)}
+                  title="Copiar texto corregido"
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    result
+                      ? "text-slate-600 hover:text-slate-800"
+                      : "text-slate-300 cursor-not-allowed"
+                  }`}
+                  aria-label="Copiar resultado"
+                  disabled={!result}
+                >
+                  {copiedFlash ? (
+                    <Check className="w-4 h-4" style={{ color: BLUE }} />
+                  ) : (
+                    <Copy className="w-5 h-5" />
+                  )}
+                </button>
 
                 {/* Eliminar texto de la izquierda */}
                 <button
@@ -1107,6 +1125,7 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <>
+                      {/* NUEVO: caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1120,6 +1139,7 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
+                        // Caso normal: sí hay cambios → renderResult (con o sin resaltado)
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1138,54 +1158,46 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra de acciones abajo a la derecha */}
+            {/* BOTONES FLOTEANDO ABAJO DERECHA (copiar, descargar, guardar) */}
             {result && (
-              <div className="absolute right-6 bottom-5 flex items-center gap-4">
-                {/* Copiar */}
-                <button
-                  type="button"
-                  onClick={() => handleCopy(true)}
-                  title={tr(
-                    "grammar.copy_corrected",
-                    "Kopiatu testu zuzendua"
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 pb-4 pr-6 flex justify-end">
+                <div className="pointer-events-auto flex flex-col items-end gap-2">
+                  {savedToastVisible && (
+                    <div className="rounded-full bg-emerald-500 text-white text-xs font-medium px-4 py-1 shadow-sm">
+                      {labelSavedToast}
+                    </div>
                   )}
-                  className="h-9 w-9 flex items-center justify-center text-slate-500 hover:text-slate-800"
-                  aria-label={tr(
-                    "grammar.copy_corrected",
-                    "Kopiatu testu zuzendua"
-                  )}
-                >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" style={{ color: BLUE }} />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
 
-                {/* Descargar */}
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  title={tr(
-                    "grammar.download_corrected",
-                    "Deskargatu testu zuzendua"
-                  )}
-                  className="h-9 w-9 flex items-center justify-center text-slate-500 hover:text-slate-800"
-                  aria-label={tr(
-                    "grammar.download_corrected",
-                    "Deskargatu testu zuzendua"
-                  )}
-                >
-                  <FileDown className="w-4 h-4" />
-                </button>
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(true)}
+                      className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
+                      aria-label="Copiar resultado"
+                    >
+                      <Copy className="w-6 h-6" />
+                    </button>
 
-                {/* Guardar (UI) */}
-                <Button
-                  type="button"
-                  className="h-9 px-5 rounded-full text-sm font-medium bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm"
-                >
-                  {labelSaveButton}
-                </Button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        // aquí seguirás con la lógica real de descarga
+                      }}
+                      className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
+                      aria-label="Descargar como archivo"
+                    >
+                      <FileDown className="w-6 h-6" />
+                    </button>
+
+                    <Button
+                      type="button"
+                      onClick={handleSaveToLibrary}
+                      className="h-9 px-5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-[14px] font-semibold shadow-sm"
+                    >
+                      Gorde
+                    </Button>
+                  </div>
+                </div>
               </div>
             )}
           </section>

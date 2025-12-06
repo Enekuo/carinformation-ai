@@ -1834,7 +1834,10 @@ folder_empty: {
   ES: "Carpeta vacía",
   EUS: "Karpeta hutsa",
 },
- 
+save_button: {
+  ES: "Guardar",
+  EUS: "Gorde",
+},
 
 // =========================
   //        Pro Suggestions
