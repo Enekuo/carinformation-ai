@@ -1,12 +1,14 @@
 import React from "react";
 import { FileText, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
+import { useNavigate } from "react-router-dom";
 
 export default function ProHome() {
   const userName = "(usuario)";
 
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
+  const navigate = useNavigate();
 
   return (
     <>
@@ -23,7 +25,10 @@ export default function ProHome() {
       {/* Tarjetas principales: Traductor / Resumidor / Corrector */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
         {/* Traductor */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
+        <div
+          className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer"
+          onClick={() => navigate("/cuenta-pro/traductor")}
+        >
           <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
             {/* Icono personalizado tipo "T +" más grande */}
             <svg
@@ -56,7 +61,10 @@ export default function ProHome() {
         </div>
 
         {/* Resumidor */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
+        <div
+          className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer"
+          onClick={() => navigate("/cuenta-pro/resumen")}
+        >
           <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
             <FileText className="h-6 w-6 text-green-600" />
           </div>
@@ -72,7 +80,10 @@ export default function ProHome() {
         </div>
 
         {/* Corrector gramatical */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
+        <div
+          className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer"
+          onClick={() => navigate("/cuenta-pro/corrector")}
+        >
           <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
             <CheckCircle2 className="h-6 w-6 text-purple-600" />
           </div>
