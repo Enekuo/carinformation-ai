@@ -14,14 +14,14 @@ export default function ProHome() {
       {/* Saludo + título */}
       <div className="mt-6 ml-10 mb-6">
         <p className="text-base text-slate-400">
-          {tr("proHome_greeting", "Hola")} {userName}
+          {tr("proHome.greeting_prefix", "Hola")} {userName}
         </p>
         <h1 className="text-3xl font-semibold text-slate-900">
-          {tr("proHome_title", "Bienvenido a Euskalia Pro")}
+          {tr("proHome.title", "Bienvenido a Euskalia Pro")}
         </h1>
       </div>
 
-      {/* Tarjetas principales: Traductor / Resumidor / Corregidor */}
+      {/* Tarjetas principales: Traductor / Resumidor / Corrector */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
         {/* Traductor */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition cursor-pointer">
@@ -46,11 +46,11 @@ export default function ProHome() {
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
-            {tr("proHome_cardTranslator_title", "Traductor")}
+            {tr("proHome.cardTranslator_title", "Traductor")}
           </h3>
           <p className="text-sm text-slate-500">
             {tr(
-              "proHome_cardTranslator_desc",
+              "proHome.cardTranslator_desc",
               "Traduce entre euskera, español, inglés y francés con calidad profesional."
             )}
           </p>
@@ -62,11 +62,11 @@ export default function ProHome() {
             <FileText className="h-6 w-6 text-green-600" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
-            {tr("proHome_cardSummary_title", "Resumidor")}
+            {tr("proHome.cardSummary_title", "Resumidor")}
           </h3>
           <p className="text-sm text-slate-500">
             {tr(
-              "proHome_cardSummary_desc",
+              "proHome.cardSummary_desc",
               "Sintetiza textos largos en segundos manteniendo claridad y fidelidad."
             )}
           </p>
@@ -78,11 +78,11 @@ export default function ProHome() {
             <CheckCircle2 className="h-6 w-6 text-purple-600" />
           </div>
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
-            {tr("proHome_cardCorrector_title", "Corrector gramatical")}
+            {tr("proHome.cardCorrector_title", "Corrector gramatical")}
           </h3>
           <p className="text-sm text-slate-500">
             {tr(
-              "proHome_cardCorrector_desc",
+              "proHome.cardCorrector_desc",
               "Mejora tu texto corrigiendo gramática, claridad y fluidez."
             )}
           </p>
