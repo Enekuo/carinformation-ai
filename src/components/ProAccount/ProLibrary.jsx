@@ -286,10 +286,10 @@ export default function ProLibrary() {
                   >
                     <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
                       <img
-                        src="/LibraryCorrector.png"
+                        src="/Library3.png"
                         alt=""
-                        width={40}
-                        height={40}
+                        width={60}
+                        height={60}
                         className="block select-none"
                       />
                       <h3
