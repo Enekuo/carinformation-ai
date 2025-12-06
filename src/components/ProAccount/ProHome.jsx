@@ -112,7 +112,7 @@ export default function ProHome() {
             )}
           </p>
         </div>
-      </section>
+      </section> 
     </>
   );
 }
