@@ -3,8 +3,7 @@ import { FileText, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
 export default function ProHome() {
-  // Más adelante este nombre vendrá del usuario logueado
-  const userName = "Eneko";
+  const userName = "(usuario)";
 
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
