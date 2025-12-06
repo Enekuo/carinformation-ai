@@ -64,17 +64,9 @@ export default function LayoutPro({ children }) {
           ${collapsed ? "w-16 px-2" : "w-48 px-4"}
         `}
       >
-        {/* Marca */}
-        <div
-          className={`mb-6 flex items-center ${
-            collapsed ? "justify-center" : ""
-          }`}
-        >
-          <span
-            className={`font-bold tracking-tight ${
-              collapsed ? "text-base" : "text-2xl"
-            } ml-4`}
-          >
+        {/* Marca (siempre igual, esté contraído o no) */}
+        <div className="mb-6 flex items-center">
+          <span className="font-bold tracking-tight text-2xl ml-4">
             Euskalia
           </span>
         </div>
