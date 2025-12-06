@@ -1838,6 +1838,10 @@ save_button: {
   ES: "Guardar",
   EUS: "Gorde",
 },
+saved_to_library: {
+  ES: "Guardado en biblioteca",
+  EUS: "Gordeta liburutegian",
+},
 
 // =========================
   //        Pro Suggestions

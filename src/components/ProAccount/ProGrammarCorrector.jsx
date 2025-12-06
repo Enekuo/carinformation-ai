@@ -425,8 +425,6 @@ export default function ProGrammarCorrector() {
   };
 
   const handleSaveToLibrary = () => {
-    // Aquí solo mostramos el mensaje. La lógica real de guardado
-    // la puedes conectar más adelante con tu store de biblioteca.
     setSavedToastVisible(true);
     setTimeout(() => {
       setSavedToastVisible(false);
@@ -708,7 +706,7 @@ export default function ProGrammarCorrector() {
                       setShowDiff(false);
                     }}
                     placeholder={labelEnterText}
-                    className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full h-[360px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -1125,7 +1123,6 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <>
-                      {/* NUEVO: caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1139,7 +1136,6 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
-                        // Caso normal: sí hay cambios → renderResult (con o sin resaltado)
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1181,7 +1177,7 @@ export default function ProGrammarCorrector() {
                     <button
                       type="button"
                       onClick={() => {
-                        // aquí seguirás con la lógica real de descarga
+                        // lógica real de descarga más adelante
                       }}
                       className="h-9 w-9 flex items-center justify-center text-slate-600 hover:text-slate-800"
                       aria-label="Descargar como archivo"
