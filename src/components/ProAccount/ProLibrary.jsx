@@ -11,13 +11,13 @@ export default function ProLibrary() {
 
   const navigate = useNavigate();
 
-  // ===== STORE BIBLIOTECA (traducciones / resúmenes) =====
+  // ===== STORE BIBLIOTECA (traducciones / resúmenes / correcciones) =====
   const { docs, renameDoc, deleteDoc } = useLibraryDocs();
 
   // ===== STORE CARPETAS =====
   const { folders } = useLibraryFolders();
 
-  // ===== Filtros (all | text | summary | folders) =====
+  // ===== Filtros (all | text | summary | corrections | folders) =====
   const [type, setType] = useState("all");
 
   const createAction = useMemo(() => {
@@ -31,6 +31,11 @@ export default function ProLibrary() {
         return {
           label: tr("library_create_summary", "Crear resumen"),
           href: "/cuenta-pro/resumen",
+        };
+      case "corrections":
+        return {
+          label: tr("library_create_correction", "Crear corrección"),
+          href: "/cuenta-pro/corrector",
         };
       case "folders":
         return {
@@ -154,7 +159,7 @@ export default function ProLibrary() {
       };
     }
 
-    // Corrector (cuando empecemos a guardar correcciones)
+    // Corrector
     return {
       bg: "#E6F9EE",
       border: "#C6EED9",
@@ -209,6 +214,10 @@ export default function ProLibrary() {
                     label: tr("library_filter_summaries", "Resúmenes"),
                   },
                   {
+                    id: "corrections",
+                    label: tr("library_filter_corrections", "Zuzenketak"),
+                  },
+                  {
                     id: "folders",
                     label: tr("library_filter_folders", "Mis carpetas"),
                   },
@@ -256,8 +265,11 @@ export default function ProLibrary() {
               )}
             </div>
 
-            {/* ===== TARJETAS NORMALES (ALL / TEXT / SUMMARY) ===== */}
-            {(type === "all" || type === "text" || type === "summary") && (
+            {/* ===== TARJETAS NORMALES (ALL / TEXT / SUMMARY / CORRECTIONS) ===== */}
+            {(type === "all" ||
+              type === "text" ||
+              type === "summary" ||
+              type === "corrections") && (
               <div className="flex flex-wrap gap-[38px]">
                 {/* Crear nuevo */}
                 <Link
@@ -282,8 +294,8 @@ export default function ProLibrary() {
                   </div>
                 </Link>
 
-                {/* Tarjeta estática del corrector (solo en Denak/all) */}
-                {type === "all" && (
+                {/* Tarjeta estática del corrector (Denak + Zuzenketak) */}
+                {(type === "all" || type === "corrections") && (
                   <div
                     className="relative shadow-sm hover:shadow-md transition"
                     style={{
@@ -332,7 +344,7 @@ export default function ProLibrary() {
                         <button
                           className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
                           onClick={() => {
-                            // No hay nada que eliminar en la tarjeta estática.
+                            // Tarjeta estática: no hay nada que eliminar.
                             setCorrectorMenuOpen(false);
                           }}
                         >
@@ -364,6 +376,7 @@ export default function ProLibrary() {
                   .filter((doc) => {
                     if (type === "text") return doc.kind === "translation";
                     if (type === "summary") return doc.kind === "summary";
+                    if (type === "corrections") return doc.kind === "corrector";
                     return true;
                   })
                   .map((doc) => {
