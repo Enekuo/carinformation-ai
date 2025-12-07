@@ -570,7 +570,7 @@ export default function ProGrammarCorrector() {
       "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
       "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.";
 
-    const messages = [
+  const messages = [
       { role: "system", content: systemBase },
       { role: "user", content: userContent },
     ];
@@ -666,7 +666,7 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[500px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -933,7 +933,7 @@ export default function ProGrammarCorrector() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[500px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
@@ -1086,7 +1086,7 @@ export default function ProGrammarCorrector() {
 
                 <div
                   className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-                  style={{ top: "40%" }}
+                  style={{ top: "43%" }}
                 >
                   <p className="text-sm leading-6 text-slate-600 max-w-xl">
                     {labelHelpRight}
