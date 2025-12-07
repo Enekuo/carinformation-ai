@@ -20,6 +20,8 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
+// ✅ Ahora conectamos con la biblioteca
+import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProGrammarCorrector() {
   const { t } = useTranslation();
@@ -403,7 +405,7 @@ export default function ProGrammarCorrector() {
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
-       const trimmed = (textValue || "").trim();
+    const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     return trimmed.length >= 10 && words.length >= 3;
   }, [textValue]);
@@ -446,9 +448,25 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
+  // ✅ Guardar corrección en la biblioteca (como kind: "corrector")
   const handleSaveToLibrary = () => {
     if (!result) return;
-    // Aquí iría la lógica real de guardado en la biblioteca.
+
+    const text = result.trim();
+    if (!text) return;
+
+    const maxLen = 90;
+    const firstLine = text.split("\n")[0].trim();
+    const clean = firstLine.replace(/\s+/g, " ").trim();
+    let title = clean.slice(0, maxLen);
+    if (clean.length > maxLen) title += "...";
+
+    addLibraryDoc({
+      kind: "corrector",
+      title,
+      content: text,
+    });
+
     setSavedToLibrary(true);
     setTimeout(() => setSavedToLibrary(false), 2000);
   };
@@ -670,7 +688,7 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[540px] rounded-2xl bg_white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -1111,7 +1129,47 @@ export default function ProGrammarCorrector() {
                     </div>
                   )}
 
-                  {/* 🔴 AVISO DE TEXTO DESACTUALIZADO ELIMINADO AQUÍ */}
+                  {isOutdated && !loading && result && (
+                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      <span className="truncate">
+                        {tr(
+                          "grammar.outdated_notice",
+                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
+                        )}
+                      </span>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={handleGenerate}
+                          className="h-8 px-3 rounded-full text-[13px]"
+                          style={{
+                            backgroundColor: "#2563eb",
+                            color: "#fff",
+                          }}
+                        >
+                          {tr(
+                            "grammar.outdated_update",
+                            "Volver a corregir"
+                          )}
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => setIsOutdated(false)}
+                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                          title={tr(
+                            "grammar.outdated_close",
+                            "Ocultar aviso"
+                          )}
+                          aria-label={tr(
+                            "grammar.outdated_close",
+                            "Ocultar aviso"
+                          )}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {result && (
                     <>
@@ -1177,7 +1235,7 @@ export default function ProGrammarCorrector() {
                     </span>
                   </button>
 
-                  {/* Descargar (icono PDF como en translator) */}
+                  {/* Descargar (icono TXT/PDF) */}
                   <button
                     type="button"
                     onClick={handleDownload}
