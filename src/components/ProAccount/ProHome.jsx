@@ -25,18 +25,17 @@ export default function ProHome() {
       {/* Tarjetas principales */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
 
-        {/* ⭐ TRADUCTOR (icono nuevo amarillo con flechas) */}
+        {/* ⭐ TRADUCTOR (amarillo) */}
         <div
           onClick={() => navigate("/cuenta-pro/traductor")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            hover:bg-[#FFFBEB] hover:border-2 hover:border-[#FDE68A]
+            hover:bg-[#FEF9C3] hover:border-2 hover:border-[#FACC15]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FEF3C7] flex items-center justify-center mb-4">
-            {/* Icono flechas amarillo */}
             <svg
               viewBox="0 0 24 24"
               className="w-7 h-7 text-yellow-500"
@@ -62,14 +61,14 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ RESUMIDOR (icono azul nuevo) */}
+        {/* ⭐ RESUMIDOR (azul) */}
         <div
           onClick={() => navigate("/cuenta-pro/resumen")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            hover:bg-[#EFF6FF] hover:border-2 hover:border-[#BFDBFE]
+            hover:bg-[#DBEAFE] hover:border-2 hover:border-[#3B82F6]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#E0EAFF] flex items-center justify-center mb-4">
@@ -87,14 +86,14 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ CORRECTOR GRAMATICAL (EN VERDE) */}
+        {/* ⭐ CORRECTOR GRAMATICAL (verde) */}
         <div
           onClick={() => navigate("/cuenta-pro/corrector")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            hover:bg-[#F0FDF4] hover:border-2 hover:border-[#86EFAC]
+            hover:bg-[#DCFCE7] hover:border-2 hover:border-[#22C55E]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#ECFDF3] flex items-center justify-center mb-4">
