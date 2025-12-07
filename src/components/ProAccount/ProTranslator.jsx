@@ -1,339 +1,644 @@
-import React, { useRef, useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "@/lib/translations";
 import {
-  FileText,
+  Volume2,
+  Copy as CopyIcon,
   FileDown,
+  Mic,
+  Trash2,
+  Check,
+  FileText,
   File as FileIcon,
   Link2 as UrlIcon,
   Plus,
   X,
-  Copy,
-  Trash,
-  Check,
 } from "lucide-react";
-import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuArrow,
-} from "@/components/ui/dropdown-menu";
+import { addLibraryDoc } from "@/proLibraryStore";
 
-export default function ProGrammarCorrector() {
-  const { t } = useTranslation();
-  const tr = (key, fallback) => t(key) || fallback;
+const OPTIONS = [
+  { value: "eus", label: "euskera" },
+  { value: "es", label: "castellano" },
+];
 
-  // ===== Estado =====
-  const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
-  const [textValue, setTextValue] = useState("");
+const MAX_CHARS = 5000;
 
-  // Resultado / carga / error
-  const [result, setResult] = useState("");
+const directionText = (src, dst) => {
+  if (src === "eus" && dst === "es") {
+    return `
+Eres Euskalia, un traductor profesional.
+Traduce SIEMPRE de Euskera a Español.
+Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
+No cambies de idioma en la traducción.
+`.trim();
+  }
+  if (src === "es" && dst === "eus") {
+    return `
+Eres Euskalia, itzulpen profesionaleko tresna bat.
+Itzuli BETI gaztelaniatik euskarara.
+Erantzun BETI euskaraz itzulpena ematean.
+Ez aldatu hizkuntza itzulpenean.
+`.trim();
+  }
+  return `
+Eres Euskalia, un traductor profesional.
+Traduce siempre del idioma de origen al idioma de destino indicado.
+Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
+`.trim();
+};
+
+export default function ProTranslator() {
+  const { t, language } = useTranslation();
+  const tr = (k, f) => t(k) || f;
+
+  const [src, setSrc] = useState("eus");
+  const [dst, setDst] = useState("es");
+  const [openLeft, setOpenLeft] = useState(false);
+  const [openRight, setOpenRight] = useState(false);
+
+  const [leftText, setLeftText] = useState("");
+  const [rightText, setRightText] = useState("");
+
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [errorKind, setErrorKind] = useState(null); // null | "limit"
+  const [err, setErr] = useState("");
+  const [listening, setListening] = useState(false);
 
-  // Modo de corrección fijo (ya no hay pestañas)
-  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
+  const [sourceMode, setSourceMode] = useState("text");
 
-  // Idioma de referencia para la corrección (ES/EUS/EN)
-  const [outputLang, setOutputLang] = useState("es");
-
-  // Track “texto desactualizado”
-  const [lastSig, setLastSig] = useState(null);
-  const [isOutdated, setIsOutdated] = useState(false);
-
-  // Mostrar / ocultar resaltado de cambios
-  const [showDiff, setShowDiff] = useState(false);
-
-  // Documentos
-  const [documents, setDocuments] = useState([]); // [{id,file}]
-  const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]
+  const [documents, setDocuments] = useState([]);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
-  // URLs
   const [urlInputOpen, setUrlInputOpen] = useState(false);
   const [urlsTextarea, setUrlsTextarea] = useState("");
-  const [urlItems, setUrlItems] = useState([]); // [{id,url,host}]
+  const [urlItems, setUrlItems] = useState([]);
 
-  // Copia: flash de tic azul
-  const [copiedFlash, setCopiedFlash] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const audioElRef = useRef(null);
+  const ttsAbortRef = useRef(null);
 
-  // Guardado en biblioteca (estado, aunque ahora no haya botón)
+  const [copied, setCopied] = useState(false);
+  const copyTimerRef = useRef(null);
+
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const leftTA = useRef(null);
+  const rightTA = useRef(null);
+
+  const mediaRecorderRef = useRef(null);
+  const mediaStreamRef = useRef(null);
+  const micChunksRef = useRef([]);
+
+  // 🔹 estado para el mensaje "Guardado en biblioteca"
   const [savedToLibrary, setSavedToLibrary] = useState(false);
+  const savedTimerRef = useRef(null);
 
-  // ===== Estilos / constantes =====
-  const BLUE = "#2563eb";
-  const GRAY_TEXT = "#64748b";
-  const GRAY_ICON = "#94a3b8";
-  const DIVIDER = "#e5e7eb";
-  const MAX_CHARS = 12000;
+  useEffect(
+    () => () => {
+      if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+      if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+    },
+    []
+  );
 
-  const pageVariants = {
-    initial: { opacity: 0, y: 12 },
-    in: { opacity: 1, y: 0 },
-    out: { opacity: 0, y: -12 },
+  const swap = () => {
+    setSrc(dst);
+    setDst(src);
   };
 
-  // ===== i18n =====
-  const labelSources = tr("grammar.sources_title", "Fuentes");
-  const labelTabText = tr("grammar.sources_tab_text", "Texto");
-  const labelTabDocument = tr("grammar.sources_tab_document", "Documento");
-  const labelTabUrl = tr("grammar.sources_tab_url", "URL");
-  const labelEnterText = tr(
-    "grammar.enter_text_here_full",
-    "Escribe o pega aquí el texto que quieres corregir…"
+  useEffect(() => {
+    const onDown = (e) => {
+      if (leftRef.current && !leftRef.current.contains(e.target))
+        setOpenLeft(false);
+      if (rightRef.current && !rightRef.current.contains(e.target))
+        setOpenRight(false);
+    };
+    window.addEventListener("mousedown", onDown);
+    return () => window.removeEventListener("mousedown", onDown);
+  }, []);
+
+  const autoResize = (el) => {
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  };
+  useEffect(() => {
+    autoResize(leftTA.current);
+  }, [leftText]);
+  useEffect(() => {
+    autoResize(rightTA.current);
+  }, [rightText]);
+
+  // === Traducción MODO TEXTO
+  useEffect(() => {
+    if (sourceMode !== "text") return;
+
+    if (leftText.length < MAX_CHARS) setErr("");
+
+    if (!leftText.trim()) {
+      setRightText("");
+      return;
+    }
+
+    if (leftText.length >= MAX_CHARS) {
+      setErr(`Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres.`);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        setLoading(true);
+
+        const system = `${directionText(
+          src,
+          dst
+        )}\n\nResponde SOLO con la traducción final. Mantén el formato.`;
+
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            temperature: 0.2,
+            mode: "translate_text",
+            src,
+            dst,
+            text: leftText,
+            messages: [
+              { role: "system", content: system },
+              { role: "user", content: leftText },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          const raw = await res.text().catch(() => "");
+          console.error("API /api/chat error:", res.status, raw);
+          throw new Error(`API /api/chat ${res.status}`);
+        }
+
+        const data = await res.json();
+        setRightText(data?.content ?? data?.translation ?? "");
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          console.error("translate error:", e);
+          setErr("No se pudo traducir ahora mismo.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }, 450);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [leftText, src, dst, sourceMode]);
+
+  // === Traducción MODO URL
+  useEffect(() => {
+    if (sourceMode !== "url") return;
+
+    if (!urlItems.length) {
+      setRightText("");
+      setErr("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const run = async () => {
+      try {
+        setLoading(true);
+        setErr("");
+
+        const urls = urlItems.map((u) => u.url);
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            mode: "translate_urls",
+            src,
+            dst,
+            urls,
+            model: "gpt-4o-mini",
+            temperature: 0.2,
+          }),
+        });
+
+        if (!res.ok) {
+          const raw = await res.text().catch(() => "");
+          console.error("API /api/chat (urls) error:", res.status, raw);
+          setErr("No se pudieron procesar las URLs ahora mismo.");
+          return;
+        }
+
+        const data = await res.json();
+        setRightText(data?.content ?? data?.translation ?? "");
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          console.error("translate urls error:", e);
+          setErr("No se pudieron procesar las URLs ahora mismo.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+
+    return () => {
+      controller.abort();
+    };
+  }, [sourceMode, src, dst, urlItems]);
+
+  const readFileAsText = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result || "");
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+
+  // === Traducción MODO DOCUMENTO
+  useEffect(() => {
+    if (sourceMode !== "document") return;
+
+    if (!documents.length) {
+      setRightText("");
+      setErr("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const run = async () => {
+      try {
+        setLoading(true);
+        setErr("");
+
+        const contents = await Promise.all(
+          documents.map(({ file }) => readFileAsText(file))
+        );
+        const combined = contents.join("\n\n---\n\n").slice(0, MAX_CHARS);
+
+        if (!combined.trim()) {
+          setErr("No se ha podido leer el documento.");
+          setRightText("");
+          return;
+        }
+
+        const system = `${directionText(
+          src,
+          dst
+        )}\n\nResponde SOLO con la traducción final.`;
+
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            temperature: 0.2,
+            mode: "translate_text",
+            src,
+            dst,
+            text: combined,
+            messages: [
+              { role: "system", content: system },
+              { role: "user", content: combined },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          const raw = await res.text().catch(() => "");
+          console.error("API /api/chat (documents) error:", res.status, raw);
+          setErr("No se han podido procesar los documentos ahora mismo.");
+          return;
+        }
+
+        const data = await res.json();
+        setRightText(data?.content ?? data?.translation ?? "");
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          console.error("translate documents error:", e);
+          setErr("No se han podido procesar los documentos ahora mismo.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+
+    return () => {
+      controller.abort();
+    };
+  }, [sourceMode, src, dst, documents]);
+
+  const Item = ({ active, label, onClick }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-full px-3 py-2.5 text_left text-[14px] rounded-md transition ${
+        active ? "bg-slate-100" : "hover:bg-slate-100"
+      } text-slate-800`}
+    >
+      {label}
+    </button>
   );
+
+  const Dropdown = ({ open, selected, onSelect, align = "left" }) => {
+    if (!open) return null;
+    return (
+      <div
+        className={`absolute top-full mt-2 z-50 ${
+          align === "right" ? "right-0" : "left-0"
+        }`}
+      >
+        <div className="relative">
+          <svg width="20" height="10" viewBox="0 0 20 10" className="mx-auto block">
+            <path d="M0,10 L10,0 L20,10" className="fill-white" />
+            <path d="M0,10 L10,0 L20,10" className="fill-none stroke-slate-200" />
+          </svg>
+          <div className="w-48 bg-white rounded-xl shadow-lg border border-slate-200 p-2">
+            {OPTIONS.map((opt) => (
+              <Item
+                key={opt.value}
+                label={opt.label}
+                active={selected === opt.value}
+                onClick={() => onSelect(opt.value)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const labelTabText = tr("summary.sources_tab_text", "Testua");
+  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
+  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
+
   const labelChooseFileTitle = tr(
-    "grammar.choose_file_title",
+    "summary.choose_file_title",
     "Elige tu archivo o carpeta"
   );
   const labelAcceptedFormats = tr(
-    "grammar.accepted_formats",
-    "Puedes añadir archivos de texto (.txt, .md) o documentos para corregir su contenido."
+    "summary.accepted_formats",
+    "Formatos admitidos"
   );
   const labelFolderHint = tr(
-    "grammar.folder_hint",
-    "Aquí aparecerán tus textos o documentos subidos."
+    "summary.folder_hint",
+    "Puedes arrastrar varios archivos."
   );
-  const labelPasteUrls = tr("grammar.paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("grammar.add_url", "Añadir URLs");
-  const labelSaveUrls = tr("grammar.save_urls", "Guardar");
-  const labelCancel = tr("grammar.cancel", "Cancelar");
+
+  const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("summary.add_url", "Añadir URLs");
+  const labelSaveUrls = tr("summary.save_urls", "Guardar");
+  const labelCancel = tr("summary.cancel", "Cancelar");
   const labelUrlsNoteVisible = tr(
-    "grammar.urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
+    "summary.urls_note_visible",
+    "Solo se importará el texto visible."
   );
   const labelUrlsNotePaywalled = tr(
-    "grammar.urls_note_paywalled",
+    "summary.urls_note_paywalled",
     "No se admiten artículos de pago."
   );
-  const labelRemove = tr("grammar.remove", "Quitar");
-  const labelGenerateFromSources = tr(
-    "grammar.correct_button",
-    "Corregir texto"
-  );
-  const labelHelpRight = tr(
-    "grammar.create_help_right",
-    "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
-  );
+  const labelRemove = tr("summary.remove", "Quitar");
 
-  const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
-  const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
+  // 🔹 etiqueta para el botón Guardar (traductor)
+  const labelSaveTranslation = tr("save_button_label", "Guardar");
 
-  // Idiomas (para selector)
-  const LBL_ES = tr("grammar.language_es", "Español");
-  const LBL_EUS = tr("grammar.language_eus", "Euskera");
-  const LBL_EN = tr("grammar.language_en", "Inglés");
-
-  // Ayuda izquierda
-  const leftRaw = tr(
-    "grammar.create_help_left",
-    "Aquí aparecerán los textos o documentos que quieras corregir. Puedes pegar texto, subir archivos de texto o añadir URLs."
-  );
-  const [leftTitle, leftBody] = useMemo(() => {
-    const parts = (leftRaw || "").split(".");
-    const first = (parts.shift() || leftRaw || "").trim();
-    const rest = parts.join(".").trim();
-    return [first.endsWith(".") ? first : `${first}.`, rest];
-  }, [leftRaw]);
-
-  // ===== Tabs =====
-  const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
-    <div className="relative flex-1 min-w-0 flex items-stretch">
-      <button
-        type="button"
-        onClick={onClick}
-        className="relative inline-flex w-full items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
-        style={{ color: active ? BLUE : GRAY_TEXT }}
-        aria-pressed={active}
-        aria-label={label}
-      >
-        <Icon
-          className="w-[18px] h-[18px] shrink-0"
-          style={{ color: active ? BLUE : GRAY_ICON }}
-        />
-        <span className="truncate">{label}</span>
-        {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
-        )}
-      </button>
-      {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
-      )}
-    </div>
+  // 🔹 mensaje cuando ya se ha guardado
+  const librarySavedMessage = tr(
+    "library_saved_toast",
+    "Guardado en biblioteca"
   );
 
-  // ===== Utils =====
-  const parseUrlsFromText = (text) => {
-    const raw = text
-      .split(/[\s\n]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const valid = [];
-    for (const u of raw) {
+  const stopPlayback = () => {
+    if (speaking && ttsAbortRef.current) {
       try {
-        const url = new URL(u);
-        valid.push({ href: url.href, host: url.host });
+        ttsAbortRef.current.abort();
       } catch {}
     }
-    const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
-  };
-
-  const canonicalize = (s) =>
-    (s || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/\s+/g, " ")
-      .trim();
-
-  // Diff palabra a palabra (simple) para resaltar cambios
-  const diffWords = (original, corrected) => {
-    const o = (original || "").split(/\s+/).filter(Boolean);
-    const c = (corrected || "").split(/\s+/).filter(Boolean);
-    const len = Math.max(o.length, c.length);
-    const segments = [];
-
-    for (let i = 0; i < len; i++) {
-      const word = c[i];
-      if (!word) continue;
-      const changed = o[i] !== word;
-      segments.push({ text: word, changed });
+    const el = audioElRef.current;
+    if (el) {
+      try {
+        el.pause();
+        el.currentTime = 0;
+      } catch {}
     }
-
-    return segments;
-  };
-
-  const hasDiff = useMemo(() => {
-    if (!textValue || !result) return false;
-    return canonicalize(textValue) !== canonicalize(result);
-  }, [textValue, result]);
-
-  const renderResult = () => {
-    if (!result) return null;
-
-    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal
-    if (!showDiff || !textValue || !hasDiff) {
-      return <p className="whitespace-pre-wrap">{result}</p>;
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null);
     }
-
-    const segments = diffWords(textValue, result);
-
-    return (
-      <p className="whitespace-pre-wrap">
-        {segments.map((seg, index) => (
-          <span
-            key={index}
-            className={
-              seg.changed
-                ? "bg-emerald-100 text-emerald-900 rounded px-[2px]"
-                : undefined
-            }
-          >
-            {seg.text}
-            {index < segments.length - 1 ? " " : ""}
-          </span>
-        ))}
-      </p>
-    );
+    setSpeaking(false);
   };
 
-  // ===== Limpieza del panel derecho =====
-  const clearRight = () => {
-    setResult("");
-    setErrorMsg("");
-    setErrorKind(null);
-    setIsOutdated(false);
-    setLoading(false);
-    setShowDiff(false);
-    setSavedToLibrary(false);
-  };
-
-  // ===== Reglas UX =====
-  useEffect(() => {
-    const sig = canonicalize(textValue);
-    if (sig.length === 0) {
-      setIsOutdated(false);
+  const handleSpeakToggle = async () => {
+    if (speaking) {
+      stopPlayback();
       return;
     }
-    if (lastSig && sig !== lastSig) {
-      setIsOutdated(true);
-    } else {
-      setIsOutdated(false);
+
+    const text = rightText?.trim();
+    if (!text) return;
+
+    setSpeaking(true);
+
+    if (!audioElRef.current) {
+      audioElRef.current = new Audio();
+      audioElRef.current.preload = "auto";
+      audioElRef.current.onended = () => setSpeaking(false);
     }
-  }, [textValue, lastSig]);
 
-  // Atajos de teclado
-  useEffect(() => {
-    const onKey = (e) => {
-      const meta = e.metaKey || e.ctrlKey;
-      if (meta && e.key.toLowerCase() === "enter") {
-        e.preventDefault();
-        if (!loading) handleGenerate();
-      } else if (meta && e.key.toLowerCase() === "c") {
-        if (result) {
-          e.preventDefault();
-          handleCopy(true);
-        }
-      } else if (e.key === "Escape") {
-        if (urlInputOpen) setUrlInputOpen(false);
+    const ctrl = new AbortController();
+    ttsAbortRef.current = ctrl;
+
+    try {
+      const resp = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: ctrl.signal,
+        body: JSON.stringify({
+          text,
+          voice: "alloy",
+          format: "wav",
+        }),
+      });
+
+      if (!resp.ok) {
+        setSpeaking(false);
+        return;
       }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen, textValue, urlItems, documents, outputLang]);
 
-  // ===== Documentos =====
-  const readTextFromFiles = async (items) => {
-    const results = await Promise.all(
-      items.map(
-        ({ id, file }) =>
-          new Promise((resolve) => {
-            const name = file?.name || "";
-            const lower = name.toLowerCase();
-            const isTxt = lower.endsWith(".txt");
-            const isMd = lower.endsWith(".md");
-            if (!isTxt && !isMd) return resolve(null);
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
 
-            const fr = new FileReader();
-            fr.onload = () =>
-              resolve({ id, name, text: String(fr.result || "") });
-            fr.onerror = () => resolve(null);
-            fr.readAsText(file, "utf-8");
-          })
-      )
-    );
-    return results.filter(Boolean);
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+      setAudioUrl(url);
+
+      const el = audioElRef.current;
+      el.src = url;
+
+      const start = () => {
+        el.play().catch(() => {});
+      };
+
+      if (el.readyState >= 3) start();
+      else el.addEventListener("canplay", start, { once: true });
+
+      el.onended = () => setSpeaking(false);
+    } catch (e) {
+      if (e.name !== "AbortError") console.error("tts error:", e);
+      setSpeaking(false);
+    }
   };
 
-  const triggerPick = () => fileInputRef.current?.click();
+  const stopRecording = () => {
+    try {
+      if (mediaRecorderRef.current?.state !== "inactive") {
+        mediaRecorderRef.current.stop();
+      }
+      mediaStreamRef.current?.getTracks().forEach((t) => t.stop());
+      mediaStreamRef.current = null;
+    } catch {}
+  };
+
+  const handleToggleMic = async () => {
+    if (listening) {
+      setListening(false);
+      stopRecording();
+      return;
+    }
+
+    try {
+      if (!navigator.mediaDevices?.getUserMedia) return;
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      micChunksRef.current = [];
+
+      const rec = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      mediaRecorderRef.current = rec;
+
+      rec.ondataavailable = (e) => {
+        if (e.data?.size > 0) micChunksRef.current.push(e.data);
+      };
+
+      rec.onstop = async () => {
+        try {
+          const blob = new Blob(micChunksRef.current, { type: "audio/webm" });
+          micChunksRef.current = [];
+
+          const form = new FormData();
+          form.append("file", blob, "audio.webm");
+          form.append("model", "whisper-1");
+
+          const r = await fetch("/api/transcribe", { method: "POST", body: form });
+          const data = await r.json().catch(() => null);
+          if (data?.ok && typeof data.text === "string") {
+            const txt = data.text.trim();
+            if (txt) {
+              setLeftText((prev) =>
+                (prev ? prev + "\n" + txt : txt).slice(0, MAX_CHARS)
+              );
+            }
+          }
+        } catch (e) {
+          console.error("transcribe error:", e);
+        } finally {
+          mediaStreamRef.current?.getTracks().forEach((t) => t.stop());
+          mediaStreamRef.current = null;
+        }
+      };
+
+      rec.start();
+      setListening(true);
+    } catch (e) {
+      console.error("mic error:", e);
+      setListening(false);
+      stopRecording();
+    }
+  };
+
+  const handleClearLeft = () => {
+    setLeftText("");
+    setRightText("");
+    setDocuments([]);
+    setUrlItems([]);
+    setUrlsTextarea("");
+    setErr("");
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(rightText || "");
+      setCopied(true);
+      if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+      copyTimerRef.current = setTimeout(() => setCopied(false), 1200);
+    } catch (_) {}
+  };
+
+  const handleDownloadPdf = () => {
+    const text = (rightText || "").replace(/\n/g, "<br/>");
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(`
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <title>Traducción - Euskalia</title>
+          <style>
+            body{ font-family: Inter, sans-serif; padding: 32px; line-height: 1.6; color:#0f172a;}
+          </style>
+        </head>
+        <body>${text}</body>
+      </html>
+    `);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
+  // 🔹 guardar traducción en la biblioteca + mostrar mensaje
+  const handleSaveTranslation = () => {
+    const text = rightText?.trim();
+    if (!text) return;
+
+    const maxLen = 90;
+    const firstLine = text.split("\n")[0].trim();
+    const clean = firstLine.replace(/\s+/g, " ").trim();
+    let title = clean.slice(0, maxLen);
+    if (clean.length > maxLen) title += "...";
+
+    addLibraryDoc({
+      kind: "translation",
+      title,
+      content: text,
+    });
+
+    setSavedToLibrary(true);
+    if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+    savedTimerRef.current = setTimeout(() => {
+      setSavedToLibrary(false);
+    }, 2000);
+  };
 
   const addFiles = async (list) => {
     if (!list?.length) return;
-
     const arr = Array.from(list);
-    const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
-
+    const withIds = arr.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+    }));
     setDocuments((prev) => [...prev, ...withIds]);
-
-    const texts = await readTextFromFiles(withIds);
-    if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
-
-    clearRight();
   };
 
   const onFiles = async (e) => {
@@ -366,11 +671,28 @@ export default function ProGrammarCorrector() {
 
   const removeDocument = (id) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
-    setDocumentsText((prev) => prev.filter((d) => d.id !== id));
-    clearRight();
   };
 
-  // ===== URLs =====
+  const parseUrlsFromText = (text) => {
+    const raw = text
+      .split(/[\s\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    const valid = [];
+    for (const u of raw) {
+      try {
+        const url = new URL(u);
+        valid.push({ href: url.href, host: url.host });
+      } catch {}
+    }
+
+    const seen = new Set();
+    return valid.filter((v) =>
+      seen.has(v.href) ? false : (seen.add(v.href), true)
+    );
+  };
+
   const addUrlsFromTextarea = () => {
     const parsed = parseUrlsFromText(urlsTextarea);
     if (!parsed.length) return;
@@ -382,804 +704,494 @@ export default function ProGrammarCorrector() {
     setUrlItems((prev) => [...prev, ...newItems]);
     setUrlsTextarea("");
     setUrlInputOpen(false);
-    clearRight();
   };
-  const removeUrl = (id) => {
+
+  const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
-    clearRight();
-  };
 
-  useEffect(() => {
-    clearRight();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urlItems.length]);
+  // 🔹 solo mostramos "Guardar" cuando haya resultado y no esté cargando
+  const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
 
-  // ===== Validación =====
-  const textIsValid = useMemo(() => {
-    const trimmed = (textValue || "").trim();
-    const words = trimmed.split(/\s+/).filter(Boolean);
-    return trimmed.length >= 10 && words.length >= 3;
-  }, [textValue]);
-
-  const hasValidInput =
-    textIsValid || urlItems.length > 0 || documents.length > 0;
-
-  // ===== Acciones barra derecha (superior) =====
-  const handleCopy = async (flash = false) => {
-    if (!result) return;
-    try {
-      await navigator.clipboard.writeText(result);
-      if (flash) {
-        setCopiedFlash(true);
-        setTimeout(() => setCopiedFlash(false), 1200);
-      }
-    } catch {}
-  };
-
-  const handleClearLeft = () => {
-    if (!(sourceMode === "text" && textValue)) return;
-    setTextValue("");
-    clearRight();
-  };
-
-  const handleDownload = () => {
-    if (!result) return;
-    try {
-      const blob = new Blob([result], {
-        type: "text/plain;charset=utf-8",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "euskalia-correccion.txt";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch {}
-  };
-
-  const handleSaveToLibrary = () => {
-    if (!result) return;
-    setSavedToLibrary(true);
-    setTimeout(() => setSavedToLibrary(false), 2000);
-  };
-
-  useEffect(() => {
-    setSavedToLibrary(false);
-  }, [result]);
-
-  const LimitCard = () => (
-    <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold">
-        {tr(
-          "grammar.limit_title",
-          "Has alcanzado el límite del plan Gratis"
-        )}
-      </div>
-      <p className="text-xs text-slate-600 mt-1">
-        {tr(
-          "grammar.limit_note",
-          "Límite actual: 12.000 caracteres por petición."
-        )}
-      </p>
-      <div className="mt-4 flex items-center justify-center gap-3">
-        <a
-          href="/pricing"
-          className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
-          style={{ backgroundColor: "#2563eb" }}
-        >
-          {tr("grammar.limit_cta", "Probar plan Premium")}
-        </a>
-        <button
-          onClick={() => setErrorKind(null)}
-          className="h-9 px-4 rounded-full border border-slate-300 bg-white text-sm hover:bg-white"
-        >
-          {tr("grammar.limit_dismiss", "Seguir con plan Gratis")}
-        </button>
-      </div>
-    </div>
-  );
-
-  // ===== Helper: cache key (sha-256) =====
-  const sha256Hex = async (input) => {
-    try {
-      const enc = new TextEncoder().encode(input);
-      const digest = await crypto.subtle.digest("SHA-256", enc);
-      return Array.from(new Uint8Array(digest))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-    } catch {
-      return null;
-    }
-  };
-
-  // ===== Generar (corrección gramatical) =====
-  const handleGenerate = async () => {
-    setLoading(true);
-    setErrorMsg("");
-    setErrorKind(null);
-    setShowDiff(false);
-    setSavedToLibrary(false);
-
-    const trimmed = (textValue || "").trim();
-    const words = trimmed.split(/\s+/).filter(Boolean);
-    const textOk = trimmed.length >= 10 && words.length >= 3;
-    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
-
-    if ((textValue || "").length > MAX_CHARS) {
-      setErrorKind("limit");
-      setLoading(false);
-      return;
-    }
-    if (!validNow) {
-      setErrorMsg(
-        "Añade algo de texto, documentos o URLs antes de pedir la corrección."
-      );
-      setLoading(false);
-      return;
-    }
-
-    const urlsList = urlItems.map((u) => u.url).join("\n");
-    const docNames = documents
-      .map((d) => d.file?.name)
-      .filter(Boolean)
-      .join(", ");
-
-    const modeInstruction =
-      "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
-
-    const langInstruction =
-      outputLang === "es"
-        ? "Usa ortografía y gramática del español estándar (España). NO traduzcas el texto a otro idioma. Devuelve siempre el texto completo corregido."
-        : outputLang === "en"
-        ? "Use standard English grammar and spelling. Do NOT translate the text into another language. Always return the full corrected text."
-        : "Erabili euskara batuaren ortografia eta gramatika. EZ itzuli testua beste hizkuntza batera. Itzuli beti testu osoa zuzenduta.";
-
-    const docsInline = documentsText?.length
-      ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
-        documentsText
-          .map(
-            (d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`
-          )
-          .join("\n\n")
-      : "";
-
-    const userContent = [
-      "Quiero que actúes como un corrector gramatical y de estilo.",
-      "\nTarea principal: devuelve el mismo texto, pero corregido y mejorado.",
-      "\nNo resumas, no acortes y no añadas información nueva.",
-      modeInstruction,
-      "\nTEXTO PRINCIPAL PARA CORREGIR:",
-      textValue ? `\n${textValue}` : "",
-      urlsList
-        ? `\nURLs (extrae solo lo visible y corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
-        : "",
-      docsInline,
-      `\n${langInstruction}`,
-    ].join("");
-
-    const systemBase =
-      "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
-      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
-      "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.";
-
-    const messages = [
-      { role: "system", content: systemBase },
-      { role: "user", content: userContent },
-    ];
-
-    const cacheBase = JSON.stringify({
-      textValue,
-      urls: urlItems.map((u) => u.url),
-      docNames,
-      mode: CORRECTION_MODE,
-      outputLang,
-    });
-    const cacheKey = await sha256Hex(cacheBase);
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages,
-          mode: CORRECTION_MODE,
-          cacheKey,
-          documentsText,
-        }),
-      });
-
-      if (!res.ok) {
-        if (res.status === 413) {
-          setErrorKind("limit");
-          setLoading(false);
-          return;
-        }
-        if (res.status === 429) {
-          throw new Error(
-            "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
-          );
-        }
-        const txt = await res.text();
-        throw new Error(`HTTP ${res.status}: ${txt}`);
-      }
-
-      const data = await res.json();
-
-      const rawText =
-        data?.text ??
-        data?.content ??
-        data?.choices?.[0]?.message?.content ??
-        data?.message?.content ??
-        "";
-
-      if (!rawText) throw new Error("No se recibió texto de la API.");
-
-      const cleaned = rawText
-        .replace(/^\s*[-–—•]\s+/gm, "")
-        .replace(/^\s*\d+\.\s+/gm, "")
-        .replace(/\r/g, "")
-        .replace(/\n{3,}/g, "\n\n")
-        .trim();
-
-      setResult(cleaned);
-      setLastSig(canonicalize(textValue));
-      setIsOutdated(false);
-      setShowDiff(false);
-    } catch (err) {
-      setErrorMsg(err.message || "Error realizando la corrección.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ===== Contador / barra =====
-  const charCount = (textValue || "").length;
-  const pct = Math.min(100, Math.round((charCount / MAX_CHARS) * 100));
-  const nearLimit =
-    charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
-  const overLimit = charCount > MAX_CHARS;
-
-  const barClass = overLimit
-    ? "bg-red-500"
-    : nearLimit
-    ? "bg-amber-500"
-    : "bg-sky-500";
-
-  // ===== Render =====
   return (
-    <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
-      <div className="max-w-7xl mx-auto w-full px-6">
-        <motion.section
-          className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6"
-          initial="initial"
-          animate="in"
-          exit="out"
-          variants={pageVariants}
-          transition={{ duration: 0.3 }}
-        >
-          {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
-            {/* Título */}
-            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              <div className="text-sm font-medium text-slate-700">
-                {labelSources}
-              </div>
-            </div>
-
-            {/* Tabs */}
-            <div
-              className="flex items-center px-2 border-b"
-              style={{ borderColor: DIVIDER }}
-            >
-              <TabBtn
-                active={sourceMode === "text"}
-                icon={FileText}
-                label={labelTabText}
-                onClick={() => setSourceMode("text")}
-                showDivider
-              />
-              <TabBtn
-                active={sourceMode === "document"}
-                icon={FileIcon}
-                label={labelTabDocument}
-                onClick={() => setSourceMode("document")}
-                showDivider
-              />
-              <TabBtn
-                active={sourceMode === "url"}
-                icon={UrlIcon}
-                label={labelTabUrl}
-                onClick={() => setSourceMode("url")}
-                showDivider={false}
-              />
-            </div>
-
-            {/* Contenido */}
-            <div className="flex-1 overflow-hidden p-3">
-              {!sourceMode && (
-                <div className="h-full w-full flex items-center justify-center">
-                  <div className="text-center px-2">
-                    <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
-                      <FileText className="w-6 h-6 text-slate-500" />
-                    </div>
-                    <p className="text-[15px] font-semibold text-slate-600">
-                      {leftTitle}
-                    </p>
-                    {leftBody && (
-                      <p className="mt-1 text-[13px] leading-6 text-slate-500">
-                        {leftBody}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {sourceMode === "text" && (
-                <div className="flex flex-col h-full">
-                  <textarea
-                    value={textValue}
-                    onChange={(e) => {
-                      setTextValue(e.target.value);
-                      setShowDiff(false);
-                    }}
-                    placeholder={labelEnterText}
-                    className="w-full flex-1 min-h-[280px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
-                    aria-label={labelTabText}
-                    spellCheck={false}
-                  />
-                  <div className="mt-2">
-                    <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-1 ${barClass}`}
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                    <div className="mt-1 text-right text-xs">
-                      <span
-                        className={
-                          overLimit
-                            ? "text-red-600"
-                            : nearLimit
-                            ? "text-amber-600"
-                            : "text-slate-500"
-                        }
-                      >
-                        {charCount.toLocaleString()} /{" "}
-                        {MAX_CHARS.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {sourceMode === "document" && (
-                <div
-                  className={`h-full w-full flex flex-col relative ${
-                    dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
-                  }`}
-                  onDragEnter={onDragEnter}
-                  onDragOver={onDragOver}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    className="hidden"
-                    multiple
-                    accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
-                    onChange={onFiles}
-                  />
+    <>
+      <section className="w-full bg-[#F4F8FF] pt-2 pb-20 md:pb-32">
+        <div className="max-w-7xl mx_auto px-6">
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden w-full">
+            {/* barra superior */}
+            <div className="relative h-12 border-b border-slate-200">
+              <div className="flex items-center h-full px-6">
+                <div className="flex items-center text-sm font-medium text-slate-600">
                   <button
                     type="button"
-                    onClick={triggerPick}
-                    className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                    aria-label={labelChooseFileTitle}
-                    title={labelChooseFileTitle}
+                    onClick={() => setSourceMode("text")}
+                    className={`inline-flex items-center gap-2 ${
+                      sourceMode === "text"
+                        ? "text-blue-600"
+                        : "text-slate-700 hover:text-slate-900"
+                    }`}
                   >
-                    <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
-                      <Plus className="w-10 h-10 text-sky-600" />
-                    </div>
-                    <div className="text-xl font-semibold text-slate-800">
-                      {labelChooseFileTitle}
-                    </div>
-                    <div className="mt-4 text-sm text-slate-500">
-                      {labelAcceptedFormats}
-                    </div>
-                    <div className="mt-1 text-xs text-slate-400">
-                      {labelFolderHint}
-                    </div>
+                    <FileText
+                      className={`w-4 h-4 ${
+                        sourceMode === "text"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabText}</span>
                   </button>
 
-                  {documents.length > 0 && (
-                    <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
-                      {documents.map(({ id, file }) => (
-                        <li
-                          key={id}
-                          className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                        >
-                          <div className="min-w-0 flex items-center gap-3 flex-1">
-                            <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                              <FileIcon className="w-4 h-4" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-sm font-medium block truncate">
-                                {file.name}
-                              </span>
-                              <span className="text-xs text-slate-500">
-                                {(file.size / 1024 / 1024).toFixed(2)} MB
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => removeDocument(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
+                  <span className="mx-4 h-5 w-px bg-slate-200" />
 
-              {sourceMode === "url" && (
-                <div className="h-full w-full flex flex-col">
-                  <div className="mb-3 flex items-center justify-between">
-                    <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
-                      <UrlIcon className="w-4 h-4" />
-                      {labelPasteUrls}
+                  <button
+                    type="button"
+                    onClick={() => setSourceMode("document")}
+                    className={`inline-flex items-center gap-2 ${
+                      sourceMode === "document"
+                        ? "text-blue-600"
+                        : "text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    <FileIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "document"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabDocument}</span>
+                  </button>
+
+                  <span className="mx-4 h-5 w-px bg-slate-200" />
+
+                  <button
+                    type="button"
+                    onClick={() => setSourceMode("url")}
+                    className={`inline-flex items-center gap-2 ${
+                      sourceMode === "url"
+                        ? "text-blue-600"
+                        : "text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    <UrlIcon
+                      className={`w-4 h-4 ${
+                        sourceMode === "url"
+                          ? "text-blue-600"
+                          : "text-slate-500"
+                      }`}
+                    />
+                    <span>{labelTabUrl}</span>
+                  </button>
+
+                  <span className="ml-4 h-5 w-px bg-slate-200" />
+                </div>
+
+                {/* selector de idioma centrado */}
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <div className="relative pointer-events-auto flex items-center">
+                    <div className="relative mr-16" ref={leftRef}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpenLeft((v) => !v);
+                          setOpenRight(false);
+                        }}
+                        className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                      >
+                        <span>{OPTIONS.find((o) => o.value === src)?.label}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M6 9l6 6 6-6"
+                            stroke="#334155"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <Dropdown
+                        open={openLeft}
+                        selected={src}
+                        onSelect={(val) => {
+                          setSrc(val);
+                          setOpenLeft(false);
+                        }}
+                        align="left"
+                      />
                     </div>
+
                     <button
                       type="button"
-                      onClick={() => setUrlInputOpen(true)}
-                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 shadow-sm transition-colors"
-                      aria-label={labelAddUrl}
-                      title={labelAddUrl}
+                      onClick={swap}
+                      aria-label="Intercambiar idiomas"
+                      className="absolute left-1/2 -translate-x-1/2 inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
                     >
-                      <Plus className="w-4 h-4 text-sky-500" />
-                      {labelAddUrl}
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M7 7h11M7 7l3-3M7 7l3 3"
+                          stroke="#475569"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M17 17H6M17 17l-3-3M17 17l-3 3"
+                          stroke="#475569"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </button>
-                  </div>
 
-                  {urlInputOpen && (
-                    <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white">
-                      <textarea
-                        value={urlsTextarea}
-                        onChange={(e) => setUrlsTextarea(e.target.value)}
-                        placeholder={tr(
-                          "grammar.paste_urls_placeholder",
-                          "Introduce aquí una o más URLs (separadas por línea)"
-                        )}
-                        className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
-                        aria-label={labelPasteUrls}
-                        spellCheck={false}
+                    <div className="relative ml-16" ref={rightRef}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpenRight((v) => !v);
+                          setOpenLeft(false);
+                        }}
+                        className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
+                      >
+                        <span>{OPTIONS.find((o) => o.value === dst)?.label}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M6 9l6 6 6-6"
+                            stroke="#334155"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <Dropdown
+                        open={openRight}
+                        selected={dst}
+                        onSelect={(val) => {
+                          setDst(val);
+                          setOpenRight(false);
+                        }}
+                        align="right"
                       />
-                      <div className="mt-2 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={addUrlsFromTextarea}
-                          className="h-9"
-                        >
-                          {labelSaveUrls}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setUrlsTextarea("");
-                            setUrlInputOpen(false);
-                          }}
-                          className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
-                        >
-                          {labelCancel}
-                        </button>
-                      </div>
-                      <div className="mt-6 text-xs text-slate-500">
-                        • {labelUrlsNoteVisible}
-                        <br />• {labelUrlsNotePaywalled}
-                      </div>
                     </div>
-                  )}
-
-                  {urlItems.length > 0 && (
-                    <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
-                      {urlItems.map(({ id, url, host }) => (
-                        <li
-                          key={id}
-                          className="flex items-center justify-between gap-3 px-3 py-2"
-                        >
-                          <div className="min-w-0 flex items-center gap-3 flex-1">
-                            <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                              <UrlIcon className="w-4 h-4" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <a
-                                href={url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-sm font-medium block truncate text-sky-600 hover:underline"
-                                title={url}
-                              >
-                                {host} — {url}
-                              </a>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => removeUrl(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  </div>
                 </div>
-              )}
-            </div>
-          </aside>
+              </div>
 
-          {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones (sin modos) */}
-            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* Botón lupa a la izquierda */}
-              <div className="flex items-center">
-                {hasDiff && (
-                  <button
-                    type="button"
-                    onClick={() => setShowDiff((v) => !v)}
-                    className={`inline-flex items-center gap-1 px-3 h-8 rounded-full text-xs font-medium border shadow-sm transition
-                      ${
-                        showDiff
-                          ? "border-emerald-300 bg-emerald-50 text-emerald-800"
-                          : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-800"
-                      }`}
-                    title={showDiff ? labelHideChanges : labelViewChanges}
+              <button
+                type="button"
+                onClick={handleClearLeft}
+                aria-label={t("translator.clear_left")}
+                className="group absolute top-1/2 -translate-y-1/2 right-4 p-2 rounded-md hover:bg-slate-100"
+              >
+                <Trash2 className="w-5 h-5 text-slate-500" />
+                <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                  {t("translator.clear_left")}
+                </span>
+              </button>
+            </div>
+
+            {/* paneles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full">
+              {/* IZQUIERDA */}
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
+                {sourceMode === "text" && (
+                  <>
+                    <textarea
+                      ref={leftTA}
+                      value={leftText}
+                      onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
+                      onInput={(e) => autoResize(e.currentTarget)}
+                      placeholder={t("translator.left_placeholder")}
+                      className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                    />
+                    <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
+                      {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                    </div>
+                    <div className="absolute bottom-4 left-6">
+                      <button
+                        type="button"
+                        onClick={handleToggleMic}
+                        aria-label={t("translator.dictate")}
+                        className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                          listening ? "ring-2 ring-blue-400" : ""
+                        }`}
+                      >
+                        <Mic
+                          className={`w-5 h-5 ${
+                            listening ? "text-blue-600" : "text-slate-600"
+                          }`}
+                        />
+                        <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                          {listening ? t("translator.listening") : t("translator.dictate")}
+                        </span>
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {sourceMode === "document" && (
+                  <div
+                    className={`h-full w-full flex flex-col relative ${
+                      dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
+                    }`}
+                    onDragEnter={onDragEnter}
+                    onDragOver={onDragOver}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
                   >
-                    <span className="text-sm leading-none">🔍</span>
-                    <span className="truncate">
-                      {showDiff ? labelHideChanges : labelViewChanges}
-                    </span>
-                  </button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      className="hidden"
+                      multiple
+                      accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
+                      onChange={onFiles}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      aria-label={labelChooseFileTitle}
+                      title={labelChooseFileTitle}
+                    >
+                      <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
+                        <Plus className="w-10 h-10 text-sky-600" />
+                      </div>
+                      <div className="text-xl font-semibold text-slate-800">
+                        {labelChooseFileTitle}
+                      </div>
+                      <div className="mt-4 text-sm text-slate-500">
+                        {labelAcceptedFormats}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-400">
+                        {labelFolderHint}
+                      </div>
+                    </button>
+
+                    {documents.length > 0 && (
+                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
+                        {documents.map(({ id, file }) => (
+                          <li
+                            key={id}
+                            className="flex items-center justify_between gap-3 px-3 py-2 bg-white"
+                          >
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <FileIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-sm font-medium block truncate">
+                                  {file.name}
+                                </span>
+                                <span className="text-xs text-slate-500">
+                                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                                </span>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => removeDocument(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+
+                {sourceMode === "url" && (
+                  <div className="h-full w-full flex flex-col">
+                    <div className="mb-3 flex items-center justify-between">
+                      <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
+                        <UrlIcon className="w-4 h-4" />
+                        {labelPasteUrls}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setUrlInputOpen(true)}
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:border-sky-400 transition-colors"
+                        aria-label={labelAddUrl}
+                        title={labelAddUrl}
+                      >
+                        <Plus className="w-4 h-4 text-sky-500" />
+                        {labelAddUrl}
+                      </button>
+                    </div>
+
+                    {urlInputOpen && (
+                      <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white">
+                        <textarea
+                          value={urlsTextarea}
+                          onChange={(e) => setUrlsTextarea(e.target.value)}
+                          placeholder={tr(
+                            "summary.paste_urls_placeholder",
+                            "Introduce URLs separadas por línea"
+                          )}
+                          className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
+                          aria-label={labelPasteUrls}
+                        />
+                        <div className="mt-2 flex items-center gap-2">
+                          <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
+                            {labelSaveUrls}
+                          </Button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setUrlsTextarea("");
+                              setUrlInputOpen(false);
+                            }}
+                            className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
+                          >
+                            {labelCancel}
+                          </button>
+                        </div>
+                        <div className="mt-6 text-xs text-slate-500">
+                          • {labelUrlsNoteVisible}
+                          <br />• {labelUrlsNotePaywalled}
+                        </div>
+                      </div>
+                    )}
+
+                    {urlItems.length > 0 && (
+                      <ul className="flex-1 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200">
+                        {urlItems.map(({ id, url, host }) => (
+                          <li
+                            key={id}
+                            className="flex items-center justify-between gap-3 px-3 py-2"
+                          >
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <UrlIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-sm font-medium block truncate text-sky-600 hover:underline"
+                                  title={url}
+                                >
+                                  {host} — {url}
+                                </a>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => removeUrl(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 )}
               </div>
 
-              <div className="flex items-center gap-1">
-                {/* Selector de idioma de referencia */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+              {/* DERECHA */}
+              <div className="p-8 md:p-10 relative">
+                <textarea
+                  ref={rightTA}
+                  value={
+                    loading && document.activeElement !== rightTA.current
+                      ? t("translator.loading")
+                      : rightText
+                  }
+                  onChange={(e) => setRightText(e.target.value)}
+                  onInput={(e) => autoResize(e.currentTarget)}
+                  placeholder={t("translator.right_placeholder")}
+                  className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                    loading ? "italic text-slate-500" : ""
+                  }`}
+                />
+
+                {err && (
+                  <div className="absolute bottom-4 left-8 text-sm text-red-500">
+                    {err}
+                  </div>
+                )}
+
+                {/* ICONOS + BOTÓN GUARDAR + MENSAJE */}
+                <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
+                  {savedToLibrary && (
+                    <p className="text-xs text-emerald-600 mb-1">
+                      {librarySavedMessage}
+                    </p>
+                  )}
+
+                  <div className="flex items-center gap-4">
                     <button
                       type="button"
-                      className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
-                                 flex items-center justify-between hover:border-slate-400
-                                 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label="Idioma principal del texto"
+                      onClick={handleSpeakToggle}
+                      aria-label={
+                        speaking ? t("translator.stop") : t("translator.listen")
+                      }
+                      className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                        speaking ? "text-slate-900" : ""
+                      }`}
                     >
-                      <span className="truncate">
-                        {outputLang === "es"
-                          ? LBL_ES
-                          : outputLang === "en"
-                          ? LBL_EN
-                          : LBL_EUS}
+                      {speaking ? (
+                        <span className="inline-block w-[10px] h-[10px] rounded-[2px] bg-slate-600" />
+                      ) : (
+                        <Volume2 className="w-5 h-5" />
+                      )}
+                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {speaking ? t("translator.stop") : t("translator.listen")}
                       </span>
-                      <svg
-                        className="w-4 h-4 text-slate-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                      </svg>
                     </button>
-                  </DropdownMenuTrigger>
 
-                  <DropdownMenuContent
-                    align="end"
-                    className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
-                  >
-                    <DropdownMenuItem
-                      onClick={() => {
-                        if (outputLang !== "es") {
-                          setOutputLang("es");
-                          clearRight();
-                        }
-                      }}
-                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    <button
+                      type="button"
+                      onClick={handleCopy}
+                      aria-label={t("translator.copy")}
+                      className="group relative p-2 rounded-md hover:bg-slate-100"
                     >
-                      {LBL_ES}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        if (outputLang !== "eus") {
-                          setOutputLang("eus");
-                          clearRight();
-                        }
-                      }}
-                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                    >
-                      {LBL_EUS}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        if (outputLang !== "en") {
-                          setOutputLang("en");
-                          clearRight();
-                        }
-                      }}
-                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                    >
-                      {LBL_EN}
-                    </DropdownMenuItem>
-                    <DropdownMenuArrow className="fill-white" />
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      {copied ? (
+                        <Check className="w-5 h-5" />
+                      ) : (
+                        <CopyIcon className="w-5 h-5" />
+                      )}
+                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {copied ? t("translator.copied") : t("translator.copy")}
+                      </span>
+                    </button>
 
-                {/* Copiar resultado (solo icono arriba) */}
-                <button
-                  type="button"
-                  onClick={() => handleCopy(true)}
-                  title="Copiar texto corregido"
-                  className={`h-8 w-8 flex items-center justify-center ${
-                    result
-                      ? "text-slate-600 hover:text-slate-800"
-                      : "text-slate-300 cursor-not-allowed"
-                  }`}
-                  aria-label="Copiar resultado"
-                  disabled={!result}
-                >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" style={{ color: BLUE }} />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
+                    <button
+                      type="button"
+                      onClick={handleDownloadPdf}
+                      aria-label={t("translator.pdf")}
+                      className="group relative p-2 rounded-md hover:bg-slate-100"
+                    >
+                      <FileDown className="w-5 h-5" />
+                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                        {t("translator.pdf")}
+                      </span>
+                    </button>
 
-                {/* Eliminar texto de la izquierda */}
-                <button
-                  type="button"
-                  onClick={handleClearLeft}
-                  title="Eliminar texto de entrada y resultado"
-                  className={`h-8 w-8 flex items-center justify-center ${
-                    sourceMode === "text" && textValue
-                      ? "text-slate-600 hover:text-slate-800"
-                      : "text-slate-300 cursor-not-allowed"
-                  }`}
-                  aria-label="Eliminar texto de entrada y resultado"
-                  disabled={!(sourceMode === "text" && textValue)}
-                >
-                  <Trash className="w-4 h-4" />
-                </button>
+                    {hasResult && (
+                      <button
+                        type="button"
+                        onClick={handleSaveTranslation}
+                        className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                        style={{ backgroundColor: "#22c55e" }}
+                      >
+                        {labelSaveTranslation}
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-
-            {/* Estado inicial */}
-            {!loading && !result && !errorKind && (
-              <>
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 z-10"
-                  style={{ top: "30%" }}
-                >
-                  <Button
-                    type="button"
-                    onClick={handleGenerate}
-                    disabled={loading || !hasValidInput}
-                    className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
-                    style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-                  >
-                    {labelGenerateFromSources}
-                  </Button>
-                </div>
-
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-                  style={{ top: "43%" }}
-                >
-                  <p className="text-sm leading-6 text-slate-600 max-w-xl">
-                    {labelHelpRight}
-                  </p>
-                </div>
-              </>
-            )}
-
-            {/* Resultado / errores / loader / límite */}
-            <div className="w-full">
-              {(result || errorMsg || loading || errorKind) && (
-                <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
-                  {errorKind === "limit" && <LimitCard />}
-
-                  {errorMsg && !errorKind && (
-                    <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
-                      {errorMsg}
-                    </div>
-                  )}
-
-                  {isOutdated && !loading && result && (
-                    <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                      <span className="truncate">
-                        {tr(
-                          "grammar.outdated_notice",
-                          "El texto de entrada ha cambiado. Vuelve a corregir para actualizar el resultado."
-                        )}
-                      </span>
-                      <div className="shrink-0 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={handleGenerate}
-                          className="h-8 px-3 rounded-full text-[13px]"
-                          style={{
-                            backgroundColor: "#2563eb",
-                            color: "#fff",
-                          }}
-                        >
-                          {tr(
-                            "grammar.outdated_update",
-                            "Volver a corregir"
-                          )}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => setIsOutdated(false)}
-                          className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                          title={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                          aria-label={tr(
-                            "grammar.outdated_close",
-                            "Ocultar aviso"
-                          )}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {result && (
-                    <>
-                      {!hasDiff ? (
-                        <div className="mt-6 flex flex-col items-center text-center gap-2">
-                          <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                            <span className="text-lg">✅</span>
-                          </div>
-                          <p className="text-sm font-medium text-emerald-800">
-                            {tr(
-                              "grammar.no_errors_message",
-                              "¡Muy bien! No hemos detectado errores."
-                            )}
-                          </p>
-                        </div>
-                      ) : (
-                        <article className="prose prose-slate max-w-none">
-                          {renderResult()}
-                        </article>
-                      )}
-                    </>
-                  )}
-
-                  {loading && !result && (
-                    <div className="space-y-3 animate-pulse">
-                      <div className="h-4 bg-slate-200 rounded" />
-                      <div className="h-4 bg-slate-200 rounded w-11/12" />
-                      <div className="h-4 bg-slate-200 rounded w-10/12" />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* >>> AQUÍ YA NO HAY NINGÚN BLOQUE DE BOTONES INFERIORES <<< */}
-          </section>
-        </motion.section>
-      </div>
-    </section>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
