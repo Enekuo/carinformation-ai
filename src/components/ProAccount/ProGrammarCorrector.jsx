@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-import { addLibraryDoc } from "@/proLibraryStore"; // Guardar en biblioteca
+import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProGrammarCorrector() {
   const { t } = useTranslation();
@@ -36,8 +36,8 @@ export default function ProGrammarCorrector() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Modo de corrección fijo
-  const CORRECTION_MODE = "standard";
+  // Modo de corrección fijo (ya no hay pestañas)
+  const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
 
   // Idioma de referencia para la corrección (ES/EUS/EN)
   const [outputLang, setOutputLang] = useState("es");
@@ -63,7 +63,7 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Guardado en biblioteca (solo mensaje)
+  // Guardado en biblioteca
   const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
@@ -447,35 +447,25 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
-  // 🔹 GUARDAR EN BIBLIOTECA (CORRECTOR)
   const handleSaveToLibrary = () => {
     if (!result) return;
 
-    const text = result.trim();
-    if (!text) return;
+    // Título por defecto a partir del texto de entrada (primera línea con contenido)
+    const base =
+      (textValue || result || "")
+        .split("\n")
+        .find((line) => line.trim().length > 0) || "";
 
-    const maxLen = 90;
-    const firstLine = text.split("\n")[0].trim();
-    const clean = firstLine.replace(/\s+/g, " ").trim();
-    let title = clean.slice(0, maxLen);
-    if (clean.length > maxLen) title += "...";
+    const trimmed = base.trim();
+    const title =
+      trimmed.length > 80 ? `${trimmed.slice(0, 77).trimEnd()}…` : trimmed;
 
-    const now = new Date();
-    const createdAt = now.toISOString();
-    const createdAtLabel = now
-      .toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-      .replace(".", "");
-
+    // Guardar como documento de tipo "corrector"
     addLibraryDoc({
       kind: "corrector",
       title,
-      content: text,
-      createdAt,
-      createdAtLabel,
+      source: textValue,
+      content: result,
     });
 
     setSavedToLibrary(true);
@@ -483,6 +473,7 @@ export default function ProGrammarCorrector() {
   };
 
   useEffect(() => {
+    // Cada vez que cambia el resultado, reseteamos el estado de “guardado”
     setSavedToLibrary(false);
   }, [result]);
 
@@ -865,7 +856,7 @@ export default function ProGrammarCorrector() {
 
               {sourceMode === "url" && (
                 <div className="h-full w-full flex flex-col">
-                  <div className="mb-3 flex items_center justify-between">
+                  <div className="mb-3 flex items-center justify-between">
                     <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
                       <UrlIcon className="w-4 h-4" />
                       {labelPasteUrls}
@@ -926,7 +917,7 @@ export default function ProGrammarCorrector() {
                       {urlItems.map(({ id, url, host }) => (
                         <li
                           key={id}
-                          className="flex items-center justify_between gap-3 px-3 py-2"
+                          className="flex items-center justify-between gap-3 px-3 py-2"
                         >
                           <div className="min-w-0 flex items-center gap-3 flex-1">
                             <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
@@ -963,7 +954,7 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones */}
+            {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
               <div className="flex items-center">
@@ -1138,6 +1129,7 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <>
+                      {/* Caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1151,6 +1143,7 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
+                        // Caso normal
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1169,7 +1162,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar */}
+            {/* Barra inferior: copiar, descargar, guardar (IGUAL QUE TRANSLATOR) */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && (
@@ -1198,7 +1191,7 @@ export default function ProGrammarCorrector() {
                     </span>
                   </button>
 
-                  {/* Descargar */}
+                  {/* Descargar (icono PDF como en translator) */}
                   <button
                     type="button"
                     onClick={handleDownload}
