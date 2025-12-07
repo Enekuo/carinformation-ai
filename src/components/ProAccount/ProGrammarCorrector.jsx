@@ -2,6 +2,7 @@ import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FileText,
+  FileDown,
   File as FileIcon,
   Link2 as UrlIcon,
   Plus,
@@ -123,10 +124,17 @@ export default function ProGrammarCorrector() {
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
 
-  // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
+  // Idiomas (para selector)
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
   const LBL_EN = tr("grammar.language_en", "Inglés");
+
+  // Guardar (mismo sistema que Translator)
+  const labelSaveTranslation = tr("save_button_label", "Guardar");
+  const librarySavedMessage = tr(
+    "library_saved_toast",
+    "Guardado en biblioteca"
+  );
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -395,7 +403,7 @@ export default function ProGrammarCorrector() {
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
-    const trimmed = (textValue || "").trim();
+       const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     return trimmed.length >= 10 && words.length >= 3;
   }, [textValue]);
@@ -449,10 +457,6 @@ export default function ProGrammarCorrector() {
     // Cada vez que cambia el resultado, reseteamos el estado de “guardado”
     setSavedToLibrary(false);
   }, [result]);
-
-  const saveLabel = savedToLibrary
-    ? tr("saved_to_library", "Guardado en biblioteca")
-    : tr("save_button", "Guardar");
 
   // ===== Tarjetas =====
   const LimitCard = () => (
@@ -666,7 +670,7 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[500px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -731,7 +735,7 @@ export default function ProGrammarCorrector() {
                       setShowDiff(false);
                     }}
                     placeholder={labelEnterText}
-                    className="w-full flex-1 min-h-[260px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    className="w-full flex-1 min-h-[280px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                     aria-label={labelTabText}
                     spellCheck={false}
                   />
@@ -933,7 +937,7 @@ export default function ProGrammarCorrector() {
           </aside>
 
           {/* ===== Panel Derecho ===== */}
-          <section className="relative min-h-[500px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+          <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con selector idioma + acciones (sin modos) */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
@@ -1028,7 +1032,7 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
+                {/* Copiar resultado rápido en la barra superior */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -1086,7 +1090,7 @@ export default function ProGrammarCorrector() {
 
                 <div
                   className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-                  style={{ top: "40%" }}
+                  style={{ top: "43%" }}
                 >
                   <p className="text-sm leading-6 text-slate-600 max-w-xl">
                     {labelHelpRight}
@@ -1106,6 +1110,8 @@ export default function ProGrammarCorrector() {
                       {errorMsg}
                     </div>
                   )}
+
+                  {/* 🔴 AVISO DE TEXTO DESACTUALIZADO ELIMINADO AQUÍ */}
 
                   {result && (
                     <>
@@ -1142,35 +1148,58 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar */}
+            {/* Barra inferior: copiar, descargar, guardar (IGUAL QUE TRANSLATOR) */}
             {result && (
-              <div className="absolute right-6 bottom-5 flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleCopy(true)}
-                  className="h-9 w-9 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm"
-                  title={tr("copy_result", "Copiar resultado")}
-                  aria-label={tr("copy_result", "Copiar resultado")}
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  className="h-9 w-9 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm"
-                  title={tr("download_result", "Descargar")}
-                  aria-label={tr("download_result", "Descargar")}
-                >
-                  <FileText className="w-4 h-4" />
-                </button>
-                <Button
-                  type="button"
-                  onClick={handleSaveToLibrary}
-                  className="h-9 px-6 rounded-full text-sm font-semibold shadow-sm"
-                  style={{ backgroundColor: "#16a34a", color: "#ffffff" }}
-                >
-                  {saveLabel}
-                </Button>
+              <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
+                {savedToLibrary && (
+                  <p className="text-xs text-emerald-600 mb-1">
+                    {librarySavedMessage}
+                  </p>
+                )}
+
+                <div className="flex items-center gap-4">
+                  {/* Copiar */}
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(true)}
+                    aria-label={t("translator.copy")}
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
+                  >
+                    {copiedFlash ? (
+                      <Check className="w-5 h-5" />
+                    ) : (
+                      <Copy className="w-5 h-5" />
+                    )}
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {copiedFlash
+                        ? t("translator.copied")
+                        : t("translator.copy")}
+                    </span>
+                  </button>
+
+                  {/* Descargar (icono PDF como en translator) */}
+                  <button
+                    type="button"
+                    onClick={handleDownload}
+                    aria-label={t("translator.pdf")}
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
+                  >
+                    <FileDown className="w-5 h-5" />
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {t("translator.pdf")}
+                    </span>
+                  </button>
+
+                  {/* Botón verde Guardar */}
+                  <button
+                    type="button"
+                    onClick={handleSaveToLibrary}
+                    className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                    style={{ backgroundColor: "#22c55e" }}
+                  >
+                    {labelSaveTranslation}
+                  </button>
+                </div>
               </div>
             )}
           </section>
