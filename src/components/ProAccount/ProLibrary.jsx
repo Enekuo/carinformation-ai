@@ -131,6 +131,7 @@ export default function ProLibrary() {
         border: "#FFE2A8",
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
+        iconSize: 40,
       };
     }
 
@@ -140,6 +141,7 @@ export default function ProLibrary() {
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
+        iconSize: 40,
       };
     }
 
@@ -149,6 +151,7 @@ export default function ProLibrary() {
       border: "#C6EED9",
       iconSrc: "/Library3.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
+      iconSize: 80,
     };
   };
 
@@ -287,8 +290,13 @@ export default function ProLibrary() {
                     return true;
                   })
                   .map((doc) => {
-                    const { bg, border, iconSrc, labelPrefix } =
-                      getDocVisual(doc);
+                    const {
+                      bg,
+                      border,
+                      iconSrc,
+                      labelPrefix,
+                      iconSize,
+                    } = getDocVisual(doc);
                     const dateLabel = formatDateLabel(doc);
 
                     return (
@@ -362,8 +370,8 @@ export default function ProLibrary() {
                           <img
                             src={iconSrc}
                             alt=""
-                            width={80}
-                            height={80}
+                            width={iconSize || 40}
+                            height={iconSize || 40}
                             className="block select-none"
                           />
                           <h3
