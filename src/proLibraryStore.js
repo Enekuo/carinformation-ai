@@ -69,11 +69,17 @@ export function addLibraryDoc({ kind, title, content }) {
   const createdAt = new Date().toISOString();
   const createdAtLabel = formatDateLabel(createdAt);
 
-  const safeKind = kind === "translation" ? "translation" : "summary";
+  // ⬇️ AQUÍ EL CAMBIO IMPORTANTE: ahora aceptamos también "corrector"
+  const safeKind =
+    kind === "translation"
+      ? "translation"
+      : kind === "corrector"
+      ? "corrector"
+      : "summary";
 
   const doc = {
     id,
-    kind: safeKind, // "translation" | "summary"
+    kind: safeKind, // "translation" | "summary" | "corrector"
     title: clipTitle(title, 35),
     content: String(content || ""),
     createdAt,
