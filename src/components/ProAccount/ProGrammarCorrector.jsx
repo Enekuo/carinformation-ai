@@ -20,8 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-// ✅ Ahora conectamos con la biblioteca
-import { addLibraryDoc } from "@/proLibraryStore";
+import { addLibraryDoc } from "@/proLibraryStore"; // ⬅️ IMPORT PARA GUARDAR EN BIBLIOTECA
 
 export default function ProGrammarCorrector() {
   const { t } = useTranslation();
@@ -448,23 +447,36 @@ export default function ProGrammarCorrector() {
     } catch {}
   };
 
-  // ✅ Guardar corrección en la biblioteca (como kind: "corrector")
+  // 🔹 GUARDAR EN BIBLIOTECA (CORRECTOR)
   const handleSaveToLibrary = () => {
     if (!result) return;
 
     const text = result.trim();
     if (!text) return;
 
+    // título como en el traductor: primera línea recortada
     const maxLen = 90;
     const firstLine = text.split("\n")[0].trim();
     const clean = firstLine.replace(/\s+/g, " ").trim();
     let title = clean.slice(0, maxLen);
     if (clean.length > maxLen) title += "...";
 
+    const now = new Date();
+    const createdAt = now.toISOString();
+    const createdAtLabel = now
+      .toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(".", "");
+
     addLibraryDoc({
       kind: "corrector",
       title,
       content: text,
+      createdAt,
+      createdAtLabel,
     });
 
     setSavedToLibrary(true);
@@ -480,10 +492,7 @@ export default function ProGrammarCorrector() {
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
-        {tr(
-          "grammar.limit_title",
-          "Has alcanzado el límite del plan Gratis"
-        )}
+        {tr("grammar.limit_title", "Has alcanzado el límite del plan Gratis")}
       </div>
       <p className="text-xs text-slate-600 mt-1">
         {tr(
@@ -688,7 +697,7 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[540px] rounded-2xl bg_white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               <div className="text-sm font-medium text-slate-700">
@@ -1235,7 +1244,7 @@ export default function ProGrammarCorrector() {
                     </span>
                   </button>
 
-                  {/* Descargar (icono TXT/PDF) */}
+                  {/* Descargar (icono PDF como en translator) */}
                   <button
                     type="button"
                     onClick={handleDownload}
