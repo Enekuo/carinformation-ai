@@ -63,7 +63,7 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Guardado en biblioteca
+  // Guardado en biblioteca (solo mensaje)
   const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
@@ -185,7 +185,7 @@ export default function ProGrammarCorrector() {
   // ===== Utils =====
   const parseUrlsFromText = (text) => {
     const raw = text
-      .split(/[\s\n]+/)
+      .split(/[\s\n]+/g)
       .map((s) => s.trim())
       .filter(Boolean);
     const valid = [];
@@ -450,22 +450,24 @@ export default function ProGrammarCorrector() {
   const handleSaveToLibrary = () => {
     if (!result) return;
 
-    // Título por defecto a partir del texto de entrada (primera línea con contenido)
-    const base =
-      (textValue || result || "")
-        .split("\n")
-        .find((line) => line.trim().length > 0) || "";
+    const now = new Date();
+    const createdAt = now.toISOString();
+    const createdAtLabel = now
+      .toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(".", "");
 
-    const trimmed = base.trim();
-    const title =
-      trimmed.length > 80 ? `${trimmed.slice(0, 77).trimEnd()}…` : trimmed;
+    const titleFromText = (textValue || "").trim().slice(0, 80);
 
-    // Guardar como documento de tipo "corrector"
     addLibraryDoc({
       kind: "corrector",
-      title,
-      source: textValue,
+      title: titleFromText || "Zuzenketa",
       content: result,
+      createdAt,
+      createdAtLabel,
     });
 
     setSavedToLibrary(true);
