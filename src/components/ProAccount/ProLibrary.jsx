@@ -362,8 +362,8 @@ export default function ProLibrary() {
                           <img
                             src={iconSrc}
                             alt=""
-                            width={40}
-                            height={40}
+                            width={80}
+                            height={80}
                             className="block select-none"
                           />
                           <h3
