@@ -32,8 +32,7 @@ export default function ProHome() {
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-[#FEF9C3] active:border-2 active:border-[#FACC15]
-            active:shadow-lg active:scale-[1.02] active:-translate-y-0
+            hover:bg-[#FEF9C3] hover:border-2 hover:border-[#FACC15]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FEF3C7] flex items-center justify-center mb-4">
@@ -70,8 +69,7 @@ export default function ProHome() {
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-[#DBEAFE] active:border-2 active:border-[#3B82F6]
-            active:shadow-lg active:scale-[1.02] active:-translate-y-0
+            hover:bg-[#DBEAFE] hover:border-2 hover:border-[#3B82F6]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#E0EAFF] flex items-center justify-center mb-4">
@@ -96,8 +94,7 @@ export default function ProHome() {
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            active:bg-[#DCFCE7] active:border-2 active:border-[#22C55E]
-            active:shadow-lg active:scale-[1.02] active:-translate-y-0
+            hover:bg-[#DCFCE7] hover:border-2 hover:border-[#22C55E]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#ECFDF3] flex items-center justify-center mb-4">
