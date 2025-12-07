@@ -62,7 +62,7 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Guardado en biblioteca (solo mensaje)
+  // Guardado en biblioteca (estado, aunque ahora no haya botón)
   const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
@@ -128,13 +128,6 @@ export default function ProGrammarCorrector() {
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
   const LBL_EN = tr("grammar.language_en", "Inglés");
-
-  // Guardar (mismo sistema que Translator)
-  const labelSaveTranslation = tr("save_button_label", "Guardar");
-  const librarySavedMessage = tr(
-    "library_saved_toast",
-    "Guardado en biblioteca"
-  );
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -411,7 +404,7 @@ export default function ProGrammarCorrector() {
   const hasValidInput =
     textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Acciones barra derecha =====
+  // ===== Acciones barra derecha (superior) =====
   const handleCopy = async (flash = false) => {
     if (!result) return;
     try {
@@ -448,17 +441,14 @@ export default function ProGrammarCorrector() {
 
   const handleSaveToLibrary = () => {
     if (!result) return;
-    // Aquí iría la lógica real de guardado en la biblioteca.
     setSavedToLibrary(true);
     setTimeout(() => setSavedToLibrary(false), 2000);
   };
 
   useEffect(() => {
-    // Cada vez que cambia el resultado, reseteamos el estado de “guardado”
     setSavedToLibrary(false);
   }, [result]);
 
-  // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
@@ -1032,7 +1022,7 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado rápido en la barra superior */}
+                {/* Copiar resultado (solo icono arriba) */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -1155,7 +1145,6 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <>
-                      {/* Caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1169,7 +1158,6 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
-                        // Caso normal
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1188,60 +1176,7 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar (IGUAL QUE TRANSLATOR) */}
-            {result && (
-              <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
-                {savedToLibrary && (
-                  <p className="text-xs text-emerald-600 mb-1">
-                    {librarySavedMessage}
-                  </p>
-                )}
-
-                <div className="flex items-center gap-4">
-                  {/* Copiar */}
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(true)}
-                    aria-label={t("translator.copy")}
-                    className="group relative p-2 rounded-md hover:bg-slate-100"
-                  >
-                    {copiedFlash ? (
-                      <Check className="w-5 h-5" />
-                    ) : (
-                      <Copy className="w-5 h-5" />
-                    )}
-                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copiedFlash
-                        ? t("translator.copied")
-                        : t("translator.copy")}
-                    </span>
-                  </button>
-
-                  {/* Descargar (icono PDF como en translator) */}
-                  <button
-                    type="button"
-                    onClick={handleDownload}
-                    aria-label={t("translator.pdf")}
-                    className="group relative p-2 rounded-md hover:bg-slate-100"
-                  >
-                    <FileDown className="w-5 h-5" />
-                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {t("translator.pdf")}
-                    </span>
-                  </button>
-
-                  {/* Botón verde Guardar */}
-                  <button
-                    type="button"
-                    onClick={handleSaveToLibrary}
-                    className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                    style={{ backgroundColor: "#22c55e" }}
-                  >
-                    {labelSaveTranslation}
-                  </button>
-                </div>
-              </div>
-            )}
+            {/* >>> AQUÍ YA NO HAY NINGÚN BLOQUE DE BOTONES INFERIORES <<< */}
           </section>
         </motion.section>
       </div>
