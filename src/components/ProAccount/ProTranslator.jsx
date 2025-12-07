@@ -62,7 +62,7 @@ export default function ProGrammarCorrector() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
-  // Guardado en biblioteca (mensaje)
+  // Guardado en biblioteca (solo mensaje visual)
   const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
@@ -124,12 +124,12 @@ export default function ProGrammarCorrector() {
   const labelViewChanges = tr("grammar.view_changes", "Ver cambios");
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
 
-  // Etiquetas de idioma (solo para que el modelo sepa qué norma seguir)
+  // Idiomas (selector)
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
   const LBL_EN = tr("grammar.language_en", "Inglés");
 
-  // Etiquetas de guardar (mismas que en el traductor)
+  // Etiquetas de guardar (igual que en el traductor)
   const labelSaveTranslation = tr("save_button_label", "Guardar");
   const librarySavedMessage = tr(
     "library_saved_toast",
@@ -208,7 +208,7 @@ export default function ProGrammarCorrector() {
       .replace(/\s+/g, " ")
       .trim();
 
-  // Diff palabra a palabra (simple) para resaltar cambios
+  // Diff palabra a palabra simple
   const diffWords = (original, corrected) => {
     const o = (original || "").split(/\s+/).filter(Boolean);
     const c = (corrected || "").split(/\s+/).filter(Boolean);
@@ -233,7 +233,6 @@ export default function ProGrammarCorrector() {
   const renderResult = () => {
     if (!result) return null;
 
-    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal
     if (!showDiff || !textValue || !hasDiff) {
       return <p className="whitespace-pre-wrap">{result}</p>;
     }
@@ -391,6 +390,7 @@ export default function ProGrammarCorrector() {
     setUrlInputOpen(false);
     clearRight();
   };
+
   const removeUrl = (id) => {
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
     clearRight();
@@ -448,17 +448,16 @@ export default function ProGrammarCorrector() {
 
   const handleSaveToLibrary = () => {
     if (!result) return;
-    // Aquí iría la lógica real de guardado en la biblioteca.
+    // Aquí pones luego la lógica real de guardado
     setSavedToLibrary(true);
     setTimeout(() => setSavedToLibrary(false), 2000);
   };
 
   useEffect(() => {
-    // Cada vez que cambia el resultado, reseteamos el estado de “guardado”
     setSavedToLibrary(false);
   }, [result]);
 
-  // ===== Tarjetas =====
+  // ===== Tarjeta límite =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
@@ -938,7 +937,7 @@ export default function ProGrammarCorrector() {
 
           {/* ===== Panel Derecho ===== */}
           <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con selector idioma + acciones (sin modos) */}
+            {/* Barra superior con selector idioma + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* Botón lupa a la izquierda */}
               <div className="flex items-center">
@@ -1032,7 +1031,7 @@ export default function ProGrammarCorrector() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado (barra superior) */}
+                {/* Copiar en barra superior */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -1155,7 +1154,6 @@ export default function ProGrammarCorrector() {
 
                   {result && (
                     <>
-                      {/* Caso sin diferencias → solo tic + frase */}
                       {!hasDiff ? (
                         <div className="mt-6 flex flex-col items-center text-center gap-2">
                           <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1169,7 +1167,6 @@ export default function ProGrammarCorrector() {
                           </p>
                         </div>
                       ) : (
-                        // Caso normal
                         <article className="prose prose-slate max-w-none">
                           {renderResult()}
                         </article>
@@ -1188,9 +1185,9 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar (COPIADA DEL TRADUCTOR) */}
+            {/* Barra inferior: copiar, descargar, guardar (igual que en el traductor, sin audio) */}
             {result && (
-              <div className="absolute bottom-5 right-6 flex flex-col items-end gap-1 text-slate-500">
+              <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && (
                   <p className="text-xs text-emerald-600 mb-1">
                     {librarySavedMessage}
@@ -1198,6 +1195,7 @@ export default function ProGrammarCorrector() {
                 )}
 
                 <div className="flex items-center gap-4">
+                  {/* COPIAR */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
@@ -1216,6 +1214,7 @@ export default function ProGrammarCorrector() {
                     </span>
                   </button>
 
+                  {/* DESCARGAR PDF */}
                   <button
                     type="button"
                     onClick={handleDownload}
@@ -1228,6 +1227,7 @@ export default function ProGrammarCorrector() {
                     </span>
                   </button>
 
+                  {/* BOTÓN VERDE GUARDAR */}
                   <button
                     type="button"
                     onClick={handleSaveToLibrary}
