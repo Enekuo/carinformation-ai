@@ -32,7 +32,7 @@ export default function ProHome() {
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
-            hover:bg-[#FEF9C3] hover:border-2 hover:border-[#FDE68A]
+            hover:bg-[#FFFBEB] hover:border-2 hover:border-[#FEF3C7]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FEF3C7] flex items-center justify-center mb-4">
