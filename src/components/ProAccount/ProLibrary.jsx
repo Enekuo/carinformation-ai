@@ -372,7 +372,9 @@ export default function ProLibrary() {
                             alt=""
                             width={iconSize || 40}
                             height={iconSize || 40}
-                            className="block select-none"
+                            className={`block select-none ${
+                              doc.kind === "corrector" ? "-mt-3 -ml-1" : ""
+                            }`}
                           />
                           <h3
                             className="mt-6 text-[18px] leading-[24px] pr-4"
