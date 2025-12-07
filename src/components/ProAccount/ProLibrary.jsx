@@ -67,22 +67,6 @@ export default function ProLibrary() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [menuOpenFor]);
 
-  // ===== Menú contextual tarjeta estática de corrector =====
-  const [correctorMenuOpen, setCorrectorMenuOpen] = useState(false);
-  const correctorMenuRef = useRef(null);
-  const correctorMenuBtnRef = useRef(null);
-
-  useEffect(() => {
-    const onClickOutside = (e) => {
-      if (!correctorMenuOpen) return;
-      if (correctorMenuRef.current?.contains(e.target)) return;
-      if (correctorMenuBtnRef.current?.contains(e.target)) return;
-      setCorrectorMenuOpen(false);
-    };
-    document.addEventListener("mousedown", onClickOutside);
-    return () => document.removeEventListener("mousedown", onClickOutside);
-  }, [correctorMenuOpen]);
-
   // ===== Modal editar título =====
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState("");
@@ -293,83 +277,6 @@ export default function ProLibrary() {
                     </span>
                   </div>
                 </Link>
-
-                {/* Tarjeta estática del corrector (Denak + Zuzenketak) */}
-                {(type === "all" || type === "corrections") && (
-                  <div
-                    className="relative shadow-sm hover:shadow-md transition"
-                    style={{
-                      width: 280,
-                      height: 196,
-                      borderRadius: 16,
-                      backgroundColor: "#E6F9EE",
-                      border: "1px solid #C6EED9",
-                    }}
-                  >
-                    {/* BOTÓN 3 PUNTOS + MENÚ (idéntico al de documentos) */}
-                    <button
-                      ref={correctorMenuBtnRef}
-                      aria-label="Opciones"
-                      className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCorrectorMenuOpen((prev) => !prev);
-                      }}
-                      type="button"
-                    >
-                      <MoreVertical className="w-5 h-5 text-slate-600" />
-                    </button>
-
-                    {correctorMenuOpen && (
-                      <div
-                        ref={correctorMenuRef}
-                        className="absolute z-10 top-1/2 -translate-y-1/2 left-[calc(100%-100px)] w-[220px] rounded-xl border border-slate-200 bg-white shadow-lg py-2"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <button
-                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                          onClick={() => {
-                            navigate("/cuenta-pro/corrector");
-                            setCorrectorMenuOpen(false);
-                          }}
-                        >
-                          <Pencil className="w-5 h-5 text-slate-600" />
-                          <span>
-                            {tr(
-                              "library_doc_edit_title",
-                              "Editar documento"
-                            )}
-                          </span>
-                        </button>
-                        <button
-                          className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
-                          onClick={() => {
-                            // Tarjeta estática: no hay nada que eliminar.
-                            setCorrectorMenuOpen(false);
-                          }}
-                        >
-                          <Trash2 className="w-5 h-5 text-slate-600" />
-                          <span>
-                            {tr("library_doc_delete", "Eliminar")}
-                          </span>
-                        </button>
-                      </div>
-                    )}
-
-                    <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                      <img
-                        src="/Library3.png"
-                        alt=""
-                        width={80}
-                        height={80}
-                        className="block select-none -mt-2 -ml-1"
-                      />
-                      <h3 className="mt-6 text-[18px] leading-[24px] pr-4 font-semibold text-slate-900">
-                        {tr("library_prefix_corrector", "Zuzenketa:")}
-                      </h3>
-                    </div>
-                  </div>
-                )}
 
                 {/* Tarjetas documento (traducciones / resúmenes / corrector) */}
                 {docs
@@ -649,7 +556,7 @@ export default function ProLibrary() {
               </button>
             </div>
             <div className="px-6 pb-5">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font_medium text-slate-700 mb-1">
                 {tr("folder_modal_label", "Nombre de la carpeta")}
               </label>
               <input
