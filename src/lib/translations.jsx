@@ -1842,6 +1842,14 @@ saved_to_library: {
   ES: "Guardado en biblioteca",
   EUS: "Gordeta liburutegian",
 },
+library_filter_corrections: {
+  ES: "Correcciones",
+  EUS: "Zuzenketak",
+},
+library_create_correction: {
+  ES: "Crear corrección",
+  EUS: "Sortu zuzenketa",
+},
 
 // =========================
   //        Pro Suggestions
