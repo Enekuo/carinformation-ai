@@ -49,10 +49,16 @@ export default function ProSuggestions() {
             <span>{tr("proSuggestions.zone_badge", "")}</span>
           </div>
 
-          <div>
+          <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl md:text-[30px] font-extrabold tracking-tight text-slate-900">
               {tr("proSuggestions.title", "")}
             </h1>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+              {tr(
+                "proSuggestions.form_description",
+                "Euskalia: nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido."
+              )}
+            </p>
           </div>
 
           <div className="h-1 w-20 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-sky-400" />
@@ -66,20 +72,6 @@ export default function ProSuggestions() {
           {/* halos suaves */}
           <div className="pointer-events-none absolute -top-32 -right-32 h-56 w-56 rounded-full bg-blue-200/40 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-32 h-56 w-56 rounded-full bg-sky-200/40 blur-3xl" />
-
-          {/* CABECERA DE LA TARJETA + FRASE A LA DERECHA */}
-          <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <h2 className="text-sm sm:text-base font-semibold text-slate-900">
-              {tr("proSuggestions.form_title", "")}
-            </h2>
-
-            <div className="w-full sm:max-w-md text-[11px] sm:text-xs leading-relaxed text-slate-600 bg-white/90 border border-slate-200/80 rounded-2xl px-4 py-3 shadow-sm">
-              {tr(
-                "proSuggestions.form_description",
-                "Euskalia: nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido."
-              )}
-            </div>
-          </div>
 
           <div className="relative grid gap-5">
             {/* SUGERENCIA */}
