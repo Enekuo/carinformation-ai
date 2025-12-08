@@ -67,10 +67,18 @@ export default function ProSuggestions() {
           <div className="pointer-events-none absolute -top-32 -right-32 h-56 w-56 rounded-full bg-blue-200/40 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-32 h-56 w-56 rounded-full bg-sky-200/40 blur-3xl" />
 
-          <div className="relative">
+          {/* CABECERA DE LA TARJETA + FRASE A LA DERECHA */}
+          <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <h2 className="text-sm sm:text-base font-semibold text-slate-900">
               {tr("proSuggestions.form_title", "")}
             </h2>
+
+            <div className="w-full sm:max-w-md text-[11px] sm:text-xs leading-relaxed text-slate-600 bg-white/90 border border-slate-200/80 rounded-2xl px-4 py-3 shadow-sm">
+              {tr(
+                "proSuggestions.form_description",
+                "Euskalia: nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido."
+              )}
+            </div>
           </div>
 
           <div className="relative grid gap-5">
