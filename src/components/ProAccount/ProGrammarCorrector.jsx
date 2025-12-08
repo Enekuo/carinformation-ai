@@ -406,7 +406,7 @@ export default function ProGrammarCorrector() {
   const textIsValid = useMemo(() => {
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
-    return trimmed.length >= 10 && words.length >= 3;
+    return trimmed.length >= 1 && words.length >= 1;
   }, [textValue]);
 
   const hasValidInput =
@@ -532,7 +532,7 @@ export default function ProGrammarCorrector() {
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
-    const textOk = trimmed.length >= 10 && words.length >= 3;
+    const textOk = trimmed.length >= 1 && words.length >= 1;
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
