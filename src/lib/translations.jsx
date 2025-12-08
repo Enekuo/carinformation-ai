@@ -1941,7 +1941,7 @@ library_create_correction: {
   },
   form_description: {
     ES: " qué te gustaría que añadamos o mejoremos en Euskalia: nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido.",
-    EUS: "Bidali iradokizuna",
+    EUS: "Zer gustatuko litzaizuke Euskalian gehitu edo hobetzea: tresna berriak, diseinu aldaketak, muga berriak, ikasteko ideiak hobeak... edozein iradokizun ongi etorria da.",
   },
 },
 
