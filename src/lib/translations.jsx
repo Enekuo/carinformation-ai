@@ -1937,6 +1937,10 @@ library_create_correction: {
 
   button_label: {
     ES: "Enviar sugerencia",
+    EUS: "Biali iradokizuna",
+  },
+  form_description: {
+    ES: " qué te gustaría que añadamos o mejoremos en Euskalia: nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido.",
     EUS: "Bidali iradokizuna",
   },
 },
