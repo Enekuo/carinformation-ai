@@ -184,6 +184,16 @@ export default function ProLibrary() {
       ? docs.filter((d) => currentFolder.docIds.includes(d.id))
       : [];
 
+  // Prefijos ya definidos en translations (los “que estaban bien”)
+  const translationPrefixLabel = tr(
+    "library_prefix_translation",
+    "Itzulpena:"
+  ).replace(/:$/, "");
+  const summaryPrefixLabel = tr(
+    "library_prefix_summary",
+    "Laburpena:"
+  ).replace(/:$/, "");
+
   // ===== Render =====
   return (
     <>
@@ -281,67 +291,64 @@ export default function ProLibrary() {
                   </div>
                 </Link>
 
-                {/* ===== PLANTILLA TRADUCTOR (solo en Denak/all) ===== */}
-                {type === "all" && (
-                  <>
-                    <Link
-                      to="/cuenta-pro/traductor"
-                      className="rounded-2xl border border-slate-200 bg-[#FFF7E0] shadow-sm hover:shadow-md transition"
-                      style={{ width: 280, height: 196, borderRadius: 16 }}
-                    >
-                      <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                        <img
-                          src="/Library1.png"
-                          alt=""
-                          width={40}
-                          height={40}
-                          className="block select-none"
-                        />
-                        <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
-                          {tr(
-                            "library_template_translation_title",
-                            "Txantiloia · Itzulpena"
-                          )}
-                        </h3>
-                        <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
-                          {tr(
-                            "library_template_translation_desc",
-                            "Ireki itzultzailea zirriborro berria sortzeko."
-                          )}
-                        </p>
-                      </div>
-                    </Link>
+                {/* PLANTILLA · TRADUCTOR */}
+                <Link
+                  to="/cuenta-pro/traductor"
+                  className="shadow-sm hover:shadow-md transition cursor-pointer"
+                  style={{
+                    width: 280,
+                    height: 196,
+                    borderRadius: 16,
+                    backgroundColor: "#FFF7E0",
+                    border: "1px solid #FFE2A8",
+                  }}
+                >
+                  <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                    <img
+                      src="/Library1.png"
+                      alt=""
+                      width={40}
+                      height={40}
+                      className="block select-none"
+                    />
+                    <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
+                      {/* Txantiloia + prefijo existente */}
+                      Txantiloia · {translationPrefixLabel}
+                    </h3>
+                    <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
+                      Ireki itzultzailea zirriborro berria sortzeko.
+                    </p>
+                  </div>
+                </Link>
 
-                    {/* ===== PLANTILLA RESUMIDOR ===== */}
-                    <Link
-                      to="/cuenta-pro/resumen"
-                      className="rounded-2xl border border-slate-200 bg-[#EAF3FF] shadow-sm hover:shadow-md transition"
-                      style={{ width: 280, height: 196, borderRadius: 16 }}
-                    >
-                      <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                        <img
-                          src="/Library2.jpg"
-                          alt=""
-                          width={40}
-                          height={40}
-                          className="block select-none"
-                        />
-                        <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
-                          {tr(
-                            "library_template_summary_title",
-                            "Txantiloia · Laburpena"
-                          )}
-                        </h3>
-                        <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
-                          {tr(
-                            "library_template_summary_desc",
-                            "Ireki laburtzailea testu berria laburtzeko."
-                          )}
-                        </p>
-                      </div>
-                    </Link>
-                  </>
-                )}
+                {/* PLANTILLA · RESUMIDOR */}
+                <Link
+                  to="/cuenta-pro/resumen"
+                  className="shadow-sm hover:shadow-md transition cursor-pointer"
+                  style={{
+                    width: 280,
+                    height: 196,
+                    borderRadius: 16,
+                    backgroundColor: "#EAF3FF",
+                    border: "1px solid #D9E7FF",
+                  }}
+                >
+                  <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                    <img
+                      src="/Library2.jpg"
+                      alt=""
+                      width={40}
+                      height={40}
+                      className="block select-none"
+                    />
+                    <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
+                      Txantiloia · {summaryPrefixLabel}
+                    </h3>
+                    <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
+                      Ireki laburtzailea testu berria laburtzeko.
+                    </p>
+                  </div>
+                </Link>
 
                 {/* Tarjetas documento (traducciones / resúmenes / corrector) */}
                 {docs
@@ -780,7 +787,7 @@ export default function ProLibrary() {
             <div className="px-6 pb-6 flex items-center justify-end gap-3">
               <button
                 onClick={closeEditModal}
-                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow-sm"
+                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow_sm"
               >
                 {tr("cancel", "Cancelar")}
               </button>
