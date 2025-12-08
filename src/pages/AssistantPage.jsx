@@ -31,9 +31,9 @@ export default function AssistantPage() {
       inputRef.current?.focus();
     }, 0);
 
-    // Llamada al backend de Euskalia
+    // Llamada al backend de Euskalia (chat oficial con guía)
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/euskalia-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -81,7 +81,7 @@ export default function AssistantPage() {
   return (
     <div className="bg-slate-50 min-h-[calc(100vh-4rem)] flex flex-col">
       {/* Botón "Txat berria" arriba a la derecha */}
-      <div className="flex justify-end px-6 pt-6">
+      <div className="flex justify-end px-6 pt-4">
         <button
           onClick={handleNewChat}
           className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white
@@ -97,7 +97,7 @@ export default function AssistantPage() {
       <div className="flex-1 flex flex-col items-center px-4 pb-8">
         {/* Mascota + título solo si no hay mensajes */}
         {isEmpty && (
-          <div className="mt-12 mb-10 flex flex-col items-center text-center">
+          <div className="mt-2 mb-8 flex flex-col items-center text-center">
             <div className="mb-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
@@ -113,9 +113,9 @@ export default function AssistantPage() {
           </div>
         )}
 
-        {/* ZONA DE MENSAJES (aparece debajo cuando ya hay mensajes) */}
+        {/* ZONA DE MENSAJES */}
         {!isEmpty && (
-          <div className="w-full max-w-3xl flex-1 overflow-y-auto mt-6 mb-6 pr-1">
+          <div className="w-full max-w-3xl flex-1 overflow-y-auto mt-4 mb-6 pr-1">
             {messages.map((m, idx) => (
               <div
                 key={idx}
@@ -137,14 +137,8 @@ export default function AssistantPage() {
           </div>
         )}
 
-        {/* BARRA DE ESCRITURA */}
-        <div
-          className={
-            isEmpty
-              ? "w-full flex justify-center"
-              : "w-full flex justify-center mt-auto mb-4"
-          }
-        >
+        {/* BARRA DE ESCRITURA — CENTRADA */}
+        <div className="w-full flex justify-center mt-2 mb-6">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -160,7 +154,7 @@ export default function AssistantPage() {
                 hover:shadow-md transition
               "
             >
-              {/* Botón + (reservado para adjuntar en el futuro) */}
+              {/* Botón + (reservado para futuro) */}
               <button
                 type="button"
                 className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600"
