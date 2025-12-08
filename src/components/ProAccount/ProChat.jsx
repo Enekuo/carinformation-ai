@@ -97,7 +97,7 @@ export default function AssistantPage() {
       <div className="flex-1 flex flex-col items-center px-4 pb-8">
         {/* Mascota + título solo si no hay mensajes */}
         {isEmpty && (
-          <div className="mt-8 mb-10 flex flex-col items-center text-center">
+          <div className="mt-2 mb-8 flex flex-col items-center text-center">
             <div className="mb-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
@@ -138,7 +138,7 @@ export default function AssistantPage() {
         )}
 
         {/* BARRA DE ESCRITURA — CENTRADA PERFECTAMENTE */}
-        <div className="w-full flex justify-center mt-4 mb-6">
+        <div className="w-full flex justify-center mt-2 mb-6">
           <form
             onSubmit={(e) => {
               e.preventDefault();
