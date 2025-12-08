@@ -43,17 +43,17 @@ export default function ProSuggestions() {
     <section className="w-full h-full bg-gradient-to-b from-[#F4F8FF] via-white to-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10 space-y-6">
         {/* CABECERA */}
-        <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-1 text-[11px] font-medium text-blue-700 shadow-sm">
+        <div className="space-y-4 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-1 text-[11px] font-medium text-blue-700 shadow-sm mx-auto">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{tr("proSuggestions.zone_badge", "")}</span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <h1 className="text-2xl sm:text-3xl md:text-[30px] font-extrabold tracking-tight text-slate-900">
               {tr("proSuggestions.title", "")}
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-3xl mx-auto">
               {tr(
                 "proSuggestions.form_description",
                 "Euskalia: nuevas herramientas, cambios en el diseño, límites, ideas para estudiar mejor, cosas que te molestan… cualquier comentario es bienvenido."
@@ -61,7 +61,7 @@ export default function ProSuggestions() {
             </p>
           </div>
 
-          <div className="h-1 w-20 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-sky-400" />
+          <div className="h-1 w-20 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-sky-400 mx-auto" />
         </div>
 
         {/* TARJETA PRINCIPAL */}
@@ -84,9 +84,9 @@ export default function ProSuggestions() {
                 onChange={(e) =>
                   setMessage(e.target.value.slice(0, MAX_CHARS))
                 }
-                rows={6}
+                rows={8} // más alto
                 placeholder={tr("proSuggestions.textarea_placeholder", "")}
-                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 resize-none transition"
+                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/60 px-3.5 py-3 text-sm text-slate-900 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 resize-none transition"
               />
               <div className="flex justify-end">
                 <span className="text-[11px] text-slate-500">
