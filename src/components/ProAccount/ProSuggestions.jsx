@@ -49,17 +49,10 @@ export default function ProSuggestions() {
             <span>{tr("proSuggestions.zone_badge", "")}</span>
           </div>
 
-          <div className="space-y-3">
+          <div>
             <h1 className="text-2xl sm:text-3xl md:text-[30px] font-extrabold tracking-tight text-slate-900">
               {tr("proSuggestions.title", "")}
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-              {tr("proSuggestions.description_part1", "")}
-              <span className="font-semibold text-slate-900">
-                {tr("proSuggestions.description_highlight", "")}
-              </span>
-              {tr("proSuggestions.description_part2", "")}
-            </p>
           </div>
 
           <div className="h-1 w-20 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-sky-400" />
@@ -74,20 +67,10 @@ export default function ProSuggestions() {
           <div className="pointer-events-none absolute -top-32 -right-32 h-56 w-56 rounded-full bg-blue-200/40 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-32 h-56 w-56 rounded-full bg-sky-200/40 blur-3xl" />
 
-          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div>
-              <h2 className="text-sm sm:text-base font-semibold text-slate-900">
-                {tr("proSuggestions.form_title", "")}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500">
-                {tr("proSuggestions.form_subtitle", "")}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2 text-[11px] sm:text-xs text-blue-700 bg-blue-50/90 border border-blue-100 rounded-full px-3 py-1">
-              <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              <span>{tr("proSuggestions.form_badge", "")}</span>
-            </div>
+          <div className="relative">
+            <h2 className="text-sm sm:text-base font-semibold text-slate-900">
+              {tr("proSuggestions.form_title", "")}
+            </h2>
           </div>
 
           <div className="relative grid gap-5">
