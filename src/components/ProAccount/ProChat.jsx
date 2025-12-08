@@ -80,9 +80,8 @@ export default function AssistantPage() {
 
   return (
     <div className="bg-slate-50 min-h-[calc(100vh-4rem)] flex flex-col">
-      
       {/* Botón "Txat berria" arriba a la derecha */}
-      <div className="flex justify-end px-6 pt-6">
+      <div className="flex justify-end px-6 pt-4">
         <button
           onClick={handleNewChat}
           className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white
@@ -96,10 +95,9 @@ export default function AssistantPage() {
 
       {/* CONTENIDO CENTRAL */}
       <div className="flex-1 flex flex-col items-center px-4 pb-8">
-
         {/* Mascota + título solo si no hay mensajes */}
         {isEmpty && (
-          <div className="mt-12 mb-10 flex flex-col items-center text-center">
+          <div className="mt-8 mb-10 flex flex-col items-center text-center">
             <div className="mb-5 flex items-center justify-center">
               <img
                 src="/olondo.mascota.png"
@@ -117,7 +115,7 @@ export default function AssistantPage() {
 
         {/* ZONA DE MENSAJES */}
         {!isEmpty && (
-          <div className="w-full max-w-3xl flex-1 overflow-y-auto mt-6 mb-6 pr-1">
+          <div className="w-full max-w-3xl flex-1 overflow-y-auto mt-4 mb-6 pr-1">
             {messages.map((m, idx) => (
               <div
                 key={idx}
@@ -140,7 +138,7 @@ export default function AssistantPage() {
         )}
 
         {/* BARRA DE ESCRITURA — CENTRADA PERFECTAMENTE */}
-        <div className="w-full flex justify-center mt-8 mb-6">
+        <div className="w-full flex justify-center mt-4 mb-6">
           <form
             onSubmit={(e) => {
               e.preventDefault();
