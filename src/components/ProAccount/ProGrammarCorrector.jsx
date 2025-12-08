@@ -40,7 +40,7 @@ export default function ProGrammarCorrector() {
   const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
 
   // Idioma de referencia para la corrección (ES/EUS/EN)
-  const [outputLang, setOutputLang] = useState("es");
+  const [outputLang, setOutputLang] = useState("eus");
 
   // Track “texto desactualizado”
   const [lastSig, setLastSig] = useState(null);
@@ -584,13 +584,13 @@ export default function ProGrammarCorrector() {
         ? `\nURLs (extrae solo lo visible y corrige ese contenido; si no puedes extraerlo, ignóralo):\n${urlsList}`
         : "",
       docsInline,
-      `\n${langInstruction}`,
     ].join("");
 
     const systemBase =
       "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
       "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
-      "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.";
+      "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.\n\n" +
+      langInstruction;
 
     const messages = [
       { role: "system", content: systemBase },
