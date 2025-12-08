@@ -31,13 +31,13 @@ export default function AssistantPage() {
       inputRef.current?.focus();
     }, 0);
 
-    // Llamada al backend de Euskalia
+    // 🔵 Llamada al backend de Euskalia (CHAT OFICIAL)
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/euskalia-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          mode: "assistant",
+          mode: "assistant",      // muy importante: activa el manual interno
           messages: newMessages,
         }),
       });
