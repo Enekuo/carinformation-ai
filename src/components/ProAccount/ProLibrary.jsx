@@ -311,7 +311,8 @@ export default function ProLibrary() {
                       height={56}
                       className="block select-none -mt-2 -mb-4"
                     />
-                    <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
+                    {/* ↓ SOLO CAMBIA ESTA LÍNEA: mt-6 → mt-8 */}
+                    <h3 className="mt-8 text-[18px] leading-[24px] text-slate-900 font-semibold">
                       {/* Txantiloia + prefijo existente */}
                       Txantiloia · {translationPrefixLabel}
                     </h3>
