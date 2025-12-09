@@ -338,11 +338,11 @@ export default function ProLibrary() {
                     <img
                       src="/Library2.jpg"
                       alt=""
-                      width={40}
-                      height={40}
-                      className="block select-none"
+                      width={56}
+                      height={56}
+                      className="block select-none -mt-2 -mb-4"
                     />
-                    <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
+                    <h3 className="mt-8 text-[18px] leading-[24px] text-slate-900 font-semibold">
                       Txantiloia · {summaryPrefixLabel}
                     </h3>
                     <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
