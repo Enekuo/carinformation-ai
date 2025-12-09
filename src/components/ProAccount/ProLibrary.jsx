@@ -307,9 +307,9 @@ export default function ProLibrary() {
                     <img
                       src="/Library1.png"
                       alt=""
-                      width={56}   // <-- más grande
+                      width={56}        // <- MÁS GRANDE
                       height={56}
-                      className="block select-none"
+                      className="block select-none -mb-4" // <- COMPENSA PARA QUE EL TÍTULO NO BAJE
                     />
                     <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
                       {/* Txantiloia + prefijo existente */}
