@@ -198,10 +198,10 @@ export default function ProLibrary() {
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
-        {/* AQUÍ está el cambio: quitado max-w-7xl para ganar ancho */}
+        {/* Contenedor más ancho */}
         <div className="mx-auto w-full px-6">
-          {/* CUADRO DE LAS TARJETAS EN BLANCO */}
-          <div className="rounded-2xl bg_white ring-1 ring-slate-200 shadow-sm p-8">
+          {/* CUADRO DE LAS TARJETAS EN BLANCO – FONDO BLANCO */}
+          <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-8">
             {/* Filtros arriba */}
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
@@ -447,7 +447,9 @@ export default function ProLibrary() {
                             }`}
                           />
                           <h3
-                            className="mt-6 text-[18px] leading-[24px] pr-4"
+                            className={`${
+                              doc.kind === "corrector" ? "mt-4" : "mt-6"
+                            } text-[18px] leading-[24px] pr-4`}
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 2,
@@ -481,7 +483,7 @@ export default function ProLibrary() {
                 {/* Vista carpeta abierta */}
                 {currentFolder && (
                   <>
-                    <div className="mb-4 flex items-center gap-3">
+                    <div className="mb-4 flex items_center gap-3">
                       <button
                         type="button"
                         onClick={() => setViewFolderId(null)}
@@ -734,7 +736,7 @@ export default function ProLibrary() {
       {/* MODAL Editar título del documento */}
       {editModalOpen && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center"
+          className="fixed inset-0 z_[70] flex items-center justify-center"
           role="dialog"
           aria-modal="true"
         >
