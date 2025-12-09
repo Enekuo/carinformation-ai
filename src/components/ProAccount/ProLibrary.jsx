@@ -199,7 +199,7 @@ export default function ProLibrary() {
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
         <div className="max-w-7xl mx-auto w-full px-6">
-          <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-8">
+          <div className="rounded-2xl bg_white ring-1 ring-slate-200 shadow-sm p-8">
             {/* Filtros arriba */}
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
@@ -311,7 +311,6 @@ export default function ProLibrary() {
                       height={56}
                       className="block select-none -mt-2 -mb-4"
                     />
-                    {/* ↓ SOLO CAMBIA ESTA LÍNEA: mt-6 → mt-8 */}
                     <h3 className="mt-8 text-[18px] leading-[24px] text-slate-900 font-semibold">
                       {/* Txantiloia + prefijo existente */}
                       Txantiloia · {translationPrefixLabel}
@@ -443,7 +442,7 @@ export default function ProLibrary() {
                             width={iconSize || 40}
                             height={iconSize || 40}
                             className={`block select-none ${
-                              doc.kind === "corrector" ? "-mt-3 -ml-1" : ""
+                              doc.kind === "corrector" ? "mt-2 -ml-3" : ""
                             }`}
                           />
                           <h3
