@@ -145,9 +145,9 @@ export default function ProLibrary() {
       };
     }
 
-    // Corrector
+    // Corrector → fondo blanco como antes
     return {
-      bg: "#E6F9EE",
+      bg: "#FFFFFF",
       border: "#C6EED9",
       iconSrc: "/Library3.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
@@ -442,7 +442,7 @@ export default function ProLibrary() {
                             width={iconSize || 40}
                             height={iconSize || 40}
                             className={`block select-none ${
-                              doc.kind === "corrector" ? "mt-2 -ml-3" : ""
+                              doc.kind === "corrector" ? "-mt-1 -ml-3" : ""
                             }`}
                           />
                           <h3
