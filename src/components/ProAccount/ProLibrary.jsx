@@ -145,13 +145,13 @@ export default function ProLibrary() {
       };
     }
 
-    // Corrector (MISMA MEDIDA QUE LOS DEMÁS)
+    // Corrector
     return {
       bg: "#E6F9EE",
       border: "#C6EED9",
       iconSrc: "/Library3.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
-      iconSize: 40, // <-- antes 80
+      iconSize: 80,
     };
   };
 
@@ -307,8 +307,8 @@ export default function ProLibrary() {
                     <img
                       src="/Library1.png"
                       alt=""
-                      width={40}
-                      height={40}
+                      width={56}   // <-- más grande
+                      height={56}
                       className="block select-none"
                     />
                     <h3 className="mt-6 text-[18px] leading-[24px] text-slate-900 font-semibold">
@@ -333,7 +333,7 @@ export default function ProLibrary() {
                     border: "1px solid #D9E7FF",
                   }}
                 >
-                  <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                  <div className="h-full w_full px-5 pt-8 pb-6 flex flex-col">
                     <img
                       src="/Library2.jpg"
                       alt=""
