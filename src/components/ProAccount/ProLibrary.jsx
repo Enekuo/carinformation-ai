@@ -145,9 +145,9 @@ export default function ProLibrary() {
       };
     }
 
-    // Corrector → fondo blanco como antes
+    // Corrector → verde como antes
     return {
-      bg: "#FFFFFF",
+      bg: "#E6F9EE",
       border: "#C6EED9",
       iconSrc: "/Library3.png",
       labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
