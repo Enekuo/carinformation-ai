@@ -271,7 +271,7 @@ export default function ProLibrary() {
                 {/* Crear nuevo */}
                 <Link
                   to={createAction.href}
-                  className="rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition"
+                  className="rounded-2xl border border-slate-200 bg_white shadow-sm hover:shadow-md transition"
                   style={{ width: 280, height: 196, borderRadius: 16 }}
                   role="button"
                 >
@@ -333,7 +333,7 @@ export default function ProLibrary() {
                     border: "1px solid #D9E7FF",
                   }}
                 >
-                  <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                  <div className="h-full w_full px-5 pt-8 pb-6 flex flex-col">
                     <img
                       src="/Library2.jpg"
                       alt=""
@@ -635,7 +635,7 @@ export default function ProLibrary() {
               </button>
             </div>
             <div className="px-6 pb-5">
-              <label className="block text-sm font_medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 {tr("folder_modal_label", "Nombre de la carpeta")}
               </label>
               <input
@@ -674,7 +674,7 @@ export default function ProLibrary() {
                       return (
                         <label
                           key={doc.id}
-                          className="flex items-center justify_between gap-3 rounded-lg bg-white px-3 py-2 text-[13px] leading-[18px] text-slate-800 shadow-sm hover:bg-slate-50 cursor-pointer"
+                          className="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2 text-[13px] leading-[18px] text-slate-800 shadow-sm hover:bg-slate-50 cursor-pointer"
                         >
                           <div className="flex flex-col">
                             <span className="truncate">
@@ -741,7 +741,7 @@ export default function ProLibrary() {
             className="absolute inset-0 bg-black/45"
             onClick={closeEditModal}
           />
-          <div className="relative w_full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
+          <div className="relative w-full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
                 {tr("library_doc_edit_title", "Editar título")}
@@ -787,14 +787,14 @@ export default function ProLibrary() {
             <div className="px-6 pb-6 flex items-center justify-end gap-3">
               <button
                 onClick={closeEditModal}
-                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow_sm"
+                className="px-4 py-2 text-[14px] font-medium rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 shadow-sm"
               >
                 {tr("cancel", "Cancelar")}
               </button>
               <button
                 onClick={saveEditTitle}
                 disabled={!editTitle.trim()}
-                className="px-4 py-2 text-[14px] font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed shadow_sm"
+                className="px-4 py-2 text-[14px] font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 {tr("save", "Guardar")}
               </button>
