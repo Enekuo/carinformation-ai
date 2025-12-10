@@ -131,7 +131,7 @@ export default function ProLibrary() {
         border: "#FFE2A8",
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
-        iconSize: 40,
+        iconSize: 56, // ANTES 40 → ahora como la plantilla nueva
       };
     }
 
@@ -141,7 +141,7 @@ export default function ProLibrary() {
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
-        iconSize: 40,
+        iconSize: 56, // ANTES 40 → ahora como la plantilla nueva
       };
     }
 
@@ -384,12 +384,14 @@ export default function ProLibrary() {
                             width={iconSize || 40}
                             height={iconSize || 40}
                             className={`block select-none ${
-                              doc.kind === "corrector" ? "-mt-1 -ml-3" : ""
+                              doc.kind === "corrector"
+                                ? "-mt-1 -ml-3"
+                                : "-mt-2 -mb-4"
                             }`}
                           />
                           <h3
                             className={`${
-                              doc.kind === "corrector" ? "mt-4" : "mt-6"
+                              doc.kind === "corrector" ? "mt-4" : "mt-8"
                             } text-[18px] leading-[24px] pr-4`}
                             style={{
                               display: "-webkit-box",
