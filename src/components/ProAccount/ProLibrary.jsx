@@ -198,9 +198,8 @@ export default function ProLibrary() {
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
-        {/* Contenedor más ancho */}
         <div className="mx-auto w-full px-6">
-          {/* CUADRO DE LAS TARJETAS EN BLANCO – FONDO BLANCO */}
+          {/* CUADRO DE LAS TARJETAS EN BLANCO */}
           <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-8">
             {/* Filtros arriba */}
             <div className="flex items-center justify-between mb-5">
@@ -290,64 +289,6 @@ export default function ProLibrary() {
                     <span className="mt-4 text-[20px] leading-6 text-slate-900">
                       {createAction.label}
                     </span>
-                  </div>
-                </Link>
-
-                {/* PLANTILLA · TRADUCTOR */}
-                <Link
-                  to="/cuenta-pro/traductor"
-                  className="shadow-sm hover:shadow-md transition cursor-pointer"
-                  style={{
-                    width: 280,
-                    height: 196,
-                    borderRadius: 16,
-                    backgroundColor: "#FFF7E0",
-                    border: "1px solid #FFE2A8",
-                  }}
-                >
-                  <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                    <img
-                      src="/Library1.png"
-                      alt=""
-                      width={56}
-                      height={56}
-                      className="block select-none -mt-2 -mb-4"
-                    />
-                    <h3 className="mt-8 text-[18px] leading-[24px] text-slate-900 font-semibold">
-                      Txantiloia · {translationPrefixLabel}
-                    </h3>
-                    <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
-                      Ireki itzultzailea zirriborro berria sortzeko.
-                    </p>
-                  </div>
-                </Link>
-
-                {/* PLANTILLA · RESUMIDOR */}
-                <Link
-                  to="/cuenta-pro/resumen"
-                  className="shadow-sm hover:shadow-md transition cursor-pointer"
-                  style={{
-                    width: 280,
-                    height: 196,
-                    borderRadius: 16,
-                    backgroundColor: "#EAF3FF",
-                    border: "1px solid #D9E7FF",
-                  }}
-                >
-                  <div className="h-full w_full px-5 pt-8 pb-6 flex flex-col">
-                    <img
-                      src="/Library2.jpg"
-                      alt=""
-                      width={56}
-                      height={56}
-                      className="block select-none -mt-2 -mb-4"
-                    />
-                    <h3 className="mt-8 text-[18px] leading-[24px] text-slate-900 font-semibold">
-                      Txantiloia · {summaryPrefixLabel}
-                    </h3>
-                    <p className="mt-2 text-[14px] leading-[20px] text-slate-700">
-                      Ireki laburtzailea testu berria laburtzeko.
-                    </p>
                   </div>
                 </Link>
 
@@ -483,7 +424,7 @@ export default function ProLibrary() {
                 {/* Vista carpeta abierta */}
                 {currentFolder && (
                   <>
-                    <div className="mb-4 flex items_center gap-3">
+                    <div className="mb-4 flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => setViewFolderId(null)}
@@ -736,7 +677,7 @@ export default function ProLibrary() {
       {/* MODAL Editar título del documento */}
       {editModalOpen && (
         <div
-          className="fixed inset-0 z_[70] flex items-center justify-center"
+          className="fixed inset-0 z-[70] flex items-center justify-center"
           role="dialog"
           aria-modal="true"
         >
