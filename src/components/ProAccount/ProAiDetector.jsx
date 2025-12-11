@@ -1,14 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Clipboard, UploadCloud } from "lucide-react";
 
 export default function ProAiDetector() {
   const fileInputRef = useRef(null);
+  const [textLength, setTextLength] = useState(0);
 
   const handlePasteFromClipboard = async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.readText) {
         const clip = await navigator.clipboard.readText();
-        console.log("Texto pegado desde el portapapeles:", clip);
+        if (clip) {
+          setTextLength(clip.length);
+          console.log("Texto pegado desde el portapapeles:", clip);
+        }
       }
     } catch (e) {
       console.error("Error al leer del portapapeles", e);
@@ -22,7 +26,10 @@ export default function ProAiDetector() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target?.result;
-      console.log("Contenido del archivo subido:", content);
+      if (typeof content === "string") {
+        setTextLength(content.length);
+        console.log("Contenido del archivo subido:", content);
+      }
     };
     reader.readAsText(file);
   };
@@ -42,13 +49,12 @@ export default function ProAiDetector() {
 
       {/* CUADRO GRANDE BLANCO */}
       <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[420px] flex flex-col">
-        {/* Frase a la izquierda */}
-        <p className="text-sm font-medium text-slate-700">
-          Ingresa texto aquí o sube un archivo para revisar si hay contenido de
-          IA.
+        {/* Frase más clara y visible, alineada a la izquierda */}
+        <p className="text-base font-medium text-slate-900 mb-4">
+          Ingresa texto aquí o sube un archivo para revisar si hay contenido de IA.
         </p>
 
-        {/* Zona que ocupa el resto y centra los botones verticalmente */}
+        {/* Zona que centra los botones verticalmente */}
         <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-wrap gap-6 justify-center items-center">
             <button
@@ -77,6 +83,13 @@ export default function ProAiDetector() {
               onChange={handleFileChange}
             />
           </div>
+        </div>
+
+        {/* Contador abajo a la derecha */}
+        <div className="flex justify-end mt-4 pr-2">
+          <span className="text-sm text-slate-500">
+            {textLength} / 5000
+          </span>
         </div>
       </div>
     </div>
