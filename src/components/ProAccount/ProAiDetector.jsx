@@ -48,17 +48,17 @@ export default function ProAiDetector() {
       </div>
 
       {/* CUADRO GRANDE BLANCO */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px]">
+      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[420px]">
         {/* Área de texto ARRIBA, fija, con scroll interno */}
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, 5000))}
-          className="w-full h-[200px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto"
+          className="w-full h-[160px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto"
           placeholder="Escribe o pega aquí el texto que quieres analizar..."
         />
 
-        {/* Botones debajo, que ya no se mueven al escribir */}
-        <div className="flex justify-center gap-8 mt-6 mb-6">
+        {/* Botones debajo, más arriba (como antes) */}
+        <div className="flex justify-center gap-8 mt-5 mb-4">
           <button
             type="button"
             onClick={handlePasteFromClipboard}
