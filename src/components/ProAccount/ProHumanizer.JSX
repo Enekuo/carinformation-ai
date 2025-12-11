@@ -3,7 +3,7 @@ import React from "react";
 export default function ProHumanizer() {
   return (
     <div>
-      <h1>Humanizador</h1>
+      <h1>humanizador</h1>
     </div>
   );
 }
