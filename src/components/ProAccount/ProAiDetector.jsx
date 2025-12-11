@@ -47,47 +47,51 @@ export default function ProAiDetector() {
         </p>
       </div>
 
-      {/* CUADRO GRANDE BLANCO CON GRID (texto arriba, botones fijos debajo) */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[420px] grid grid-rows-[180px_auto_auto] gap-4">
-        {/* FILA 1: área de texto ARRIBA (escribe aquí) */}
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value.slice(0, 5000))}
-          className="w-full h-full resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto"
-          placeholder="Escribe o pega aquí el texto que quieres analizar..."
-        />
-
-        {/* FILA 2: botones, siempre en el mismo sitio */}
-        <div className="flex justify-center gap-8 items-center">
-          <button
-            type="button"
-            onClick={handlePasteFromClipboard}
-            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
-          >
-            <Clipboard size={22} className="mb-2 text-slate-500" />
-            <span>Pegar texto</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
-          >
-            <UploadCloud size={22} className="mb-2 text-slate-500" />
-            <span>Subir archivo</span>
-          </button>
-
-          <input
-            type="file"
-            accept=".txt"
-            ref={fileInputRef}
-            className="hidden"
-            onChange={handleFileChange}
+      {/* CUADRO GRANDE BLANCO */}
+      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
+        {/* Área de texto ARRIBA, altura fija, con scroll interno */}
+        <div className="h-[180px]">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value.slice(0, 5000))}
+            className="w-full h-full resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto"
+            placeholder="Escribe o pega aquí el texto que quieres analizar..."
           />
         </div>
 
-        {/* FILA 3: contador abajo a la derecha */}
-        <div className="flex justify-end items-end pr-1">
+        {/* BOTONES CENTRADOS VERTICALMENTE (en el espacio restante) */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex gap-8">
+            <button
+              type="button"
+              onClick={handlePasteFromClipboard}
+              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+            >
+              <Clipboard size={22} className="mb-2 text-slate-500" />
+              <span>Pegar texto</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+            >
+              <UploadCloud size={22} className="mb-2 text-slate-500" />
+              <span>Subir archivo</span>
+            </button>
+
+            <input
+              type="file"
+              accept=".txt"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
+        </div>
+
+        {/* Contador abajo a la derecha */}
+        <div className="mt-2 flex justify-end pr-1">
           <span className="text-xs text-slate-400">
             {text.length} / 5000
           </span>
