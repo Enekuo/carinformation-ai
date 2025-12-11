@@ -49,12 +49,15 @@ export default function ProAiDetector() {
 
       {/* CUADRO GRANDE BLANCO */}
       <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
-        {/* Solo la frase 2, en la posición de la 1 */}
-        <p className="text-base font-medium text-slate-500 mb-5">
-          Escribe o pega aquí el texto que quieres analizar...
-        </p>
+        {/* ÁREA DE TEXTO ARRIBA, CON LA FRASE COMO PLACEHOLDER */}
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value.slice(0, 5000))}
+          className="w-full min-h-[140px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 mb-6"
+          placeholder="Escribe o pega aquí el texto que quieres analizar..."
+        />
 
-        {/* Botones */}
+        {/* Botones debajo del área de texto */}
         <div className="flex justify-center gap-8 mb-6">
           <button
             type="button"
@@ -83,16 +86,8 @@ export default function ProAiDetector() {
           />
         </div>
 
-        {/* Área de texto integrada en el cuadro blanco */}
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value.slice(0, 5000))}
-          className="w-full flex-1 min-h-[160px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-400 focus:ring-0"
-          placeholder=""
-        />
-
         {/* Contador pequeño abajo a la derecha */}
-        <div className="flex justify-end mt-2 pr-1">
+        <div className="flex justify-end mt-auto pr-1">
           <span className="text-xs text-slate-400">
             {text.length} / 5000
           </span>
