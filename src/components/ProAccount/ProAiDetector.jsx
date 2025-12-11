@@ -41,7 +41,7 @@ export default function ProAiDetector() {
       </div>
 
       {/* CUADRO GRANDE BLANCO */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[260px]">
+      <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[420px]">
         <p className="text-sm font-medium text-slate-700">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de
           IA.
