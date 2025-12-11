@@ -42,28 +42,29 @@ export default function ProAiDetector() {
 
       {/* CUADRO GRANDE BLANCO */}
       <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[420px]">
-        <p className="text-sm font-medium text-slate-700">
+        <p className="text-sm font-medium text-slate-700 text-center">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de
           IA.
         </p>
 
-        <div className="mt-8 flex flex-wrap gap-3 justify-center">
+        {/* BOTONES CUADRADOS, CENTRADOS */}
+        <div className="mt-8 flex flex-wrap gap-6 justify-center items-center">
           <button
             type="button"
             onClick={handlePasteFromClipboard}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
           >
-            <Clipboard size={16} />
-            Pegar texto
+            <Clipboard size={20} className="mb-1 text-slate-500" />
+            <span>Pegar texto</span>
           </button>
 
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
           >
-            <UploadCloud size={16} />
-            Subir archivo
+            <UploadCloud size={20} className="mb-1 text-slate-500" />
+            <span>Subir archivo</span>
           </button>
 
           <input
