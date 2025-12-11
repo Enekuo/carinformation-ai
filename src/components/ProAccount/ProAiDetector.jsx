@@ -48,17 +48,17 @@ export default function ProAiDetector() {
       </div>
 
       {/* CUADRO GRANDE BLANCO */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
-        {/* ÁREA DE TEXTO ARRIBA, CON LA FRASE COMO PLACEHOLDER */}
+      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px]">
+        {/* Área de texto ARRIBA, fija, con scroll interno */}
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, 5000))}
-          className="w-full min-h-[140px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 mb-6"
+          className="w-full h-[200px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto"
           placeholder="Escribe o pega aquí el texto que quieres analizar..."
         />
 
-        {/* Botones debajo del área de texto */}
-        <div className="flex justify-center gap-8 mb-6">
+        {/* Botones debajo, que ya no se mueven al escribir */}
+        <div className="flex justify-center gap-8 mt-6 mb-6">
           <button
             type="button"
             onClick={handlePasteFromClipboard}
@@ -87,7 +87,7 @@ export default function ProAiDetector() {
         </div>
 
         {/* Contador pequeño abajo a la derecha */}
-        <div className="flex justify-end mt-auto pr-1">
+        <div className="flex justify-end pr-1">
           <span className="text-xs text-slate-400">
             {text.length} / 5000
           </span>
