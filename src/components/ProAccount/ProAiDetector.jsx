@@ -49,7 +49,7 @@ export default function ProAiDetector() {
 
       {/* CUADRO GRANDE BLANCO */}
       <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
-        {/* Frase más clara (gris claro) */}
+        {/* Frase en gris claro */}
         <p className="text-base font-medium text-slate-500 mb-5">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de IA.
         </p>
@@ -83,11 +83,11 @@ export default function ProAiDetector() {
           />
         </div>
 
-        {/* Área de texto dentro del cuadro */}
+        {/* Área de texto SIN cuadro extra, integrada en el fondo blanco */}
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, 5000))}
-          className="w-full flex-1 min-h-[180px] resize-none border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+          className="w-full flex-1 min-h-[160px] resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-400 focus:ring-0"
           placeholder="Escribe o pega aquí el texto que quieres analizar..."
         />
 
