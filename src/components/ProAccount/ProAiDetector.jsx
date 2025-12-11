@@ -47,10 +47,10 @@ export default function ProAiDetector() {
         </p>
       </div>
 
-      {/* CUADRO GRANDE BLANCO */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
-        {/* Área de texto ARRIBA, altura fija, con scroll interno */}
-        <div className="h-[180px]">
+      {/* CUADRO BLANCO – ALTURA FIJA Y GRID */}
+      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 h-[460px] grid grid-rows-[190px_1fr_auto] gap-4">
+        {/* FILA 1: área de texto ARRIBA (se escribe aquí) */}
+        <div className="w-full h-full">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value.slice(0, 5000))}
@@ -59,8 +59,8 @@ export default function ProAiDetector() {
           />
         </div>
 
-        {/* BOTONES CENTRADOS VERTICALMENTE (en el espacio restante) */}
-        <div className="flex-1 flex items-center justify-center">
+        {/* FILA 2: BOTONES CENTRADOS VERTICAL Y HORIZONTALMENTE */}
+        <div className="flex items-center justify-center">
           <div className="flex gap-8">
             <button
               type="button"
@@ -90,8 +90,8 @@ export default function ProAiDetector() {
           </div>
         </div>
 
-        {/* Contador abajo a la derecha */}
-        <div className="mt-2 flex justify-end pr-1">
+        {/* FILA 3: contador abajo a la derecha */}
+        <div className="flex items-end justify-end pr-1">
           <span className="text-xs text-slate-400">
             {text.length} / 5000
           </span>
