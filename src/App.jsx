@@ -28,6 +28,9 @@ import ProSuggestions from "@/components/ProAccount/ProSuggestions";
 import ProHelp from "@/components/ProAccount/ProHelp";
 import ProSettings from "@/components/ProAccount/ProSettings";
 import ProLibraryDetail from "@/components/ProAccount/ProLibraryDetail";
+import ProParaphraser from "@/components/ProAccount/ProParaphraser";
+import ProHumanizer from "@/components/ProAccount/ProHumanizer";
+import AiDetector from "@/components/ProAccount/AiDetector";
 
 function App() {
   const location = useLocation();
@@ -84,6 +87,10 @@ function App() {
             <Route path="/cuenta-pro/ayuda" element={<ProLayout><ProHelp /></ProLayout>} />
             <Route path="/cuenta-pro/ajustes" element={<ProLayout><ProSettings /></ProLayout>} />
             <Route path="/cuenta-pro/biblioteca/:id" element={<ProLibraryDetail />} />
+            <Route path="/cuenta-pro/parafraseador" element={<ProLayout><ProParaphraser /></ProLayout>} />
+            <Route path="/cuenta-pro/humanizador" element={<ProLayout><ProHumanizer /></ProLayout>} />
+            <Route path="/cuenta-pro/detector-ia" element={<ProLayout><AiDetector /></ProLayout>} />
+
             
           </Routes>
         </main>
