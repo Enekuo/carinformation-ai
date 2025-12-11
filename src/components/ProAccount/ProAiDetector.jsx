@@ -41,39 +41,42 @@ export default function ProAiDetector() {
       </div>
 
       {/* CUADRO GRANDE BLANCO */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[420px]">
-        <p className="text-sm font-medium text-slate-700 text-center">
+      <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[420px] flex flex-col">
+        {/* Frase a la izquierda */}
+        <p className="text-sm font-medium text-slate-700">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de
           IA.
         </p>
 
-        {/* BOTONES CUADRADOS, CENTRADOS */}
-        <div className="mt-8 flex flex-wrap gap-6 justify-center items-center">
-          <button
-            type="button"
-            onClick={handlePasteFromClipboard}
-            className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
-          >
-            <Clipboard size={20} className="mb-1 text-slate-500" />
-            <span>Pegar texto</span>
-          </button>
+        {/* Zona que ocupa el resto y centra los botones verticalmente */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-wrap gap-6 justify-center items-center">
+            <button
+              type="button"
+              onClick={handlePasteFromClipboard}
+              className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
+            >
+              <Clipboard size={20} className="mb-1 text-slate-500" />
+              <span>Pegar texto</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
-          >
-            <UploadCloud size={20} className="mb-1 text-slate-500" />
-            <span>Subir archivo</span>
-          </button>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
+            >
+              <UploadCloud size={20} className="mb-1 text-slate-500" />
+              <span>Subir archivo</span>
+            </button>
 
-          <input
-            type="file"
-            accept=".txt"
-            ref={fileInputRef}
-            className="hidden"
-            onChange={handleFileChange}
-          />
+            <input
+              type="file"
+              accept=".txt"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
         </div>
       </div>
     </div>
