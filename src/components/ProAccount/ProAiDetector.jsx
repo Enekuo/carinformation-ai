@@ -8,7 +8,6 @@ export default function ProAiDetector() {
     try {
       if (navigator.clipboard && navigator.clipboard.readText) {
         const clip = await navigator.clipboard.readText();
-        // De momento solo mostramos en consola; más adelante lo usaremos.
         console.log("Texto pegado desde el portapapeles:", clip);
       }
     } catch (e) {
@@ -41,14 +40,14 @@ export default function ProAiDetector() {
         </p>
       </div>
 
-      {/* Cuadro principal con los dos botones */}
-      <div className="bg-slate-50 rounded-2xl border border-slate-200 px-6 py-8">
-        <p className="text-sm font-medium text-slate-700 mb-6">
+      {/* CUADRO GRANDE BLANCO */}
+      <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[260px]">
+        <p className="text-sm font-medium text-slate-700">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de
           IA.
         </p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="mt-8 flex flex-wrap gap-3 justify-center">
           <button
             type="button"
             onClick={handlePasteFromClipboard}
