@@ -30,7 +30,7 @@ import ProSettings from "@/components/ProAccount/ProSettings";
 import ProLibraryDetail from "@/components/ProAccount/ProLibraryDetail";
 import ProParaphraser from "@/components/ProAccount/ProParaphraser";
 import ProHumanizer from "@/components/ProAccount/ProHumanizer";
-import AiDetector from "@/components/ProAccount/AiDetector";
+import ProAiDetector from "@/components/ProAccount/ProAiDetector";
 
 function App() {
   const location = useLocation();
@@ -89,7 +89,7 @@ function App() {
             <Route path="/cuenta-pro/biblioteca/:id" element={<ProLibraryDetail />} />
             <Route path="/cuenta-pro/parafraseador" element={<ProLayout><ProParaphraser /></ProLayout>} />
             <Route path="/cuenta-pro/humanizador" element={<ProLayout><ProHumanizer /></ProLayout>} />
-            <Route path="/cuenta-pro/detector-ia" element={<ProLayout><AiDetector /></ProLayout>} />
+            <Route path="/cuenta-pro/detector-ia" element={<ProLayout><ProAiDetector /></ProLayout>} />
 
             
           </Routes>
