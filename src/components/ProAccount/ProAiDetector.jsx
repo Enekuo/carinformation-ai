@@ -38,7 +38,7 @@ export default function ProAiDetector() {
     <div className="max-w-4xl mx-auto">
       {/* Título y subtítulo */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-900 mb-1">
+        <h1 className="text-3xl font-semibold text-slate-900 mb-1">
           Detector de IA
         </h1>
         <p className="text-sm text-slate-600">
@@ -48,30 +48,30 @@ export default function ProAiDetector() {
       </div>
 
       {/* CUADRO GRANDE BLANCO */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-6 py-6 min-h-[420px] flex flex-col">
-        {/* Frase más clara y visible, alineada a la izquierda */}
-        <p className="text-base font-medium text-slate-900 mb-4">
+      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
+        {/* Frase más clara (un poco más grande y gris suave) */}
+        <p className="text-lg font-medium text-slate-800 mb-5">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de IA.
         </p>
 
         {/* Zona que centra los botones verticalmente */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="flex flex-wrap gap-6 justify-center items-center">
+          <div className="flex flex-wrap gap-8 justify-center items-center">
             <button
               type="button"
               onClick={handlePasteFromClipboard}
-              className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
+              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
             >
-              <Clipboard size={20} className="mb-1 text-slate-500" />
+              <Clipboard size={22} className="mb-2 text-slate-500" />
               <span>Pegar texto</span>
             </button>
 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex flex-col items-center justify-center w-40 h-24 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
+              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
             >
-              <UploadCloud size={20} className="mb-1 text-slate-500" />
+              <UploadCloud size={22} className="mb-2 text-slate-500" />
               <span>Subir archivo</span>
             </button>
 
