@@ -1732,6 +1732,23 @@ cookies_last_update: {
   },
 },
   // =========================
+  //        Pro Paraphraser
+  // =========================    
+ 
+proSidebar_paraphraser: {
+  ES: "Parafraseador",
+  EUS: "Parafraseatzailea",
+},
+
+ // =========================
+  //        Pro Ai Detector
+  // =========================    
+ proSidebar_aiDetector: {
+  ES: "Detector de IA",
+  EUS: "IA detektorea",
+},
+
+  // =========================
   //        Pro library
   // =========================    
 
