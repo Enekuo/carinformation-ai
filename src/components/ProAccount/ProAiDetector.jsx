@@ -11,7 +11,6 @@ export default function ProAiDetector() {
         const clip = await navigator.clipboard.readText();
         if (clip) {
           setText(clip.slice(0, 5000));
-          console.log("Texto pegado desde el portapapeles:", clip);
         }
       }
     } catch (e) {
@@ -28,7 +27,6 @@ export default function ProAiDetector() {
       const content = e.target?.result;
       if (typeof content === "string") {
         setText(content.slice(0, 5000));
-        console.log("Contenido del archivo subido:", content);
       }
     };
     reader.readAsText(file);
@@ -47,51 +45,47 @@ export default function ProAiDetector() {
         </p>
       </div>
 
-      {/* CUADRO BLANCO – ALTURA FIJA Y GRID */}
-      <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 h-[460px] grid grid-rows-[190px_1fr_auto] gap-4">
-        {/* FILA 1: área de texto ARRIBA (se escribe aquí) */}
-        <div className="w-full h-full">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value.slice(0, 5000))}
-            className="w-full h-full resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto"
-            placeholder="Escribe o pega aquí el texto que quieres analizar..."
+      {/* CUADRO BLANCO */}
+      <div className="relative bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px]">
+        {/* Área de texto arriba */}
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value.slice(0, 5000))}
+          className="w-full h-40 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-24"
+          placeholder="Escribe o pega aquí el texto que quieres analizar..."
+        />
+
+        {/* BOTONES CENTRADOS VERTICALMENTE (posición absoluta) */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center gap-8">
+          <button
+            type="button"
+            onClick={handlePasteFromClipboard}
+            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+          >
+            <Clipboard size={22} className="mb-2 text-slate-500" />
+            <span>Pegar texto</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+          >
+            <UploadCloud size={22} className="mb-2 text-slate-500" />
+            <span>Subir archivo</span>
+          </button>
+
+          <input
+            type="file"
+            accept=".txt"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleFileChange}
           />
         </div>
 
-        {/* FILA 2: BOTONES CENTRADOS VERTICAL Y HORIZONTALMENTE */}
-        <div className="flex items-center justify-center">
-          <div className="flex gap-8">
-            <button
-              type="button"
-              onClick={handlePasteFromClipboard}
-              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
-            >
-              <Clipboard size={22} className="mb-2 text-slate-500" />
-              <span>Pegar texto</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
-            >
-              <UploadCloud size={22} className="mb-2 text-slate-500" />
-              <span>Subir archivo</span>
-            </button>
-
-            <input
-              type="file"
-              accept=".txt"
-              ref={fileInputRef}
-              className="hidden"
-              onChange={handleFileChange}
-            />
-          </div>
-        </div>
-
-        {/* FILA 3: contador abajo a la derecha */}
-        <div className="flex items-end justify-end pr-1">
+        {/* Contador abajo a la derecha */}
+        <div className="absolute right-6 bottom-5">
           <span className="text-xs text-slate-400">
             {text.length} / 5000
           </span>
