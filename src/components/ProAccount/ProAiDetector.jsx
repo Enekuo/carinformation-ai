@@ -55,34 +55,37 @@ export default function ProAiDetector() {
           placeholder="Escribe o pega aquí el texto que quieres analizar..."
         />
 
-        {/* BOTONES CENTRADOS VERTICALMENTE (posición absoluta) */}
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center gap-8">
-          <button
-            type="button"
-            onClick={handlePasteFromClipboard}
-            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
-          >
-            <Clipboard size={22} className="mb-2 text-slate-500" />
-            <span>Pegar texto</span>
-          </button>
+        {/* BOTONES CENTRADOS VERTICALMENTE
+            Solo se muestran cuando NO hay texto */}
+        {text.length === 0 && (
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center gap-8">
+            <button
+              type="button"
+              onClick={handlePasteFromClipboard}
+              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+            >
+              <Clipboard size={22} className="mb-2 text-slate-500" />
+              <span>Pegar texto</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
-          >
-            <UploadCloud size={22} className="mb-2 text-slate-500" />
-            <span>Subir archivo</span>
-          </button>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+            >
+              <UploadCloud size={22} className="mb-2 text-slate-500" />
+              <span>Subir archivo</span>
+            </button>
 
-          <input
-            type="file"
-            accept=".txt"
-            ref={fileInputRef}
-            className="hidden"
-            onChange={handleFileChange}
-          />
-        </div>
+            <input
+              type="file"
+              accept=".txt"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
+        )}
 
         {/* Contador abajo a la derecha */}
         <div className="absolute right-6 bottom-5">
