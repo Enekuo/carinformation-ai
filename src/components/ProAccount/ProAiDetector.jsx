@@ -3,14 +3,14 @@ import { Clipboard, UploadCloud } from "lucide-react";
 
 export default function ProAiDetector() {
   const fileInputRef = useRef(null);
-  const [textLength, setTextLength] = useState(0);
+  const [text, setText] = useState("");
 
   const handlePasteFromClipboard = async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.readText) {
         const clip = await navigator.clipboard.readText();
         if (clip) {
-          setTextLength(clip.length);
+          setText(clip.slice(0, 5000));
           console.log("Texto pegado desde el portapapeles:", clip);
         }
       }
@@ -27,7 +27,7 @@ export default function ProAiDetector() {
     reader.onload = (e) => {
       const content = e.target?.result;
       if (typeof content === "string") {
-        setTextLength(content.length);
+        setText(content.slice(0, 5000));
         console.log("Contenido del archivo subido:", content);
       }
     };
@@ -49,46 +49,52 @@ export default function ProAiDetector() {
 
       {/* CUADRO GRANDE BLANCO */}
       <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
-        {/* Frase más clara (un poco más grande y gris suave) */}
-        <p className="text-lg font-medium text-slate-800 mb-5">
+        {/* Frase más clara (gris claro) */}
+        <p className="text-base font-medium text-slate-500 mb-5">
           Ingresa texto aquí o sube un archivo para revisar si hay contenido de IA.
         </p>
 
-        {/* Zona que centra los botones verticalmente */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="flex flex-wrap gap-8 justify-center items-center">
-            <button
-              type="button"
-              onClick={handlePasteFromClipboard}
-              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
-            >
-              <Clipboard size={22} className="mb-2 text-slate-500" />
-              <span>Pegar texto</span>
-            </button>
+        {/* Botones */}
+        <div className="flex justify-center gap-8 mb-6">
+          <button
+            type="button"
+            onClick={handlePasteFromClipboard}
+            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+          >
+            <Clipboard size={22} className="mb-2 text-slate-500" />
+            <span>Pegar texto</span>
+          </button>
 
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 shadow-sm"
-            >
-              <UploadCloud size={22} className="mb-2 text-slate-500" />
-              <span>Subir archivo</span>
-            </button>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
+          >
+            <UploadCloud size={22} className="mb-2 text-slate-500" />
+            <span>Subir archivo</span>
+          </button>
 
-            <input
-              type="file"
-              accept=".txt"
-              ref={fileInputRef}
-              className="hidden"
-              onChange={handleFileChange}
-            />
-          </div>
+          <input
+            type="file"
+            accept=".txt"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleFileChange}
+          />
         </div>
 
-        {/* Contador abajo a la derecha */}
-        <div className="flex justify-end mt-4 pr-2">
-          <span className="text-sm text-slate-500">
-            {textLength} / 5000
+        {/* Área de texto dentro del cuadro */}
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value.slice(0, 5000))}
+          className="w-full flex-1 min-h-[180px] resize-none border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+          placeholder="Escribe o pega aquí el texto que quieres analizar..."
+        />
+
+        {/* Contador pequeño abajo a la derecha */}
+        <div className="flex justify-end mt-2 pr-1">
+          <span className="text-xs text-slate-400">
+            {text.length} / 5000
           </span>
         </div>
       </div>
