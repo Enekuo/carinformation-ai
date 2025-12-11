@@ -30,7 +30,7 @@ import ProSettings from "@/components/ProAccount/ProSettings";
 import ProLibraryDetail from "@/components/ProAccount/ProLibraryDetail";
 import ProParaphraser from "@/components/ProAccount/ProParaphraser";
 import ProHumanizer from "@/components/ProAccount/ProHumanizer";
-import ProAiDetector from "@/components/ProAccount/ProAiDetector";
+import ProAiDetector from "@/components/ProAccount/ProAiDetector"; 
 
 function App() {
   const location = useLocation();
