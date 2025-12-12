@@ -139,7 +139,7 @@ export default function ProAiDetector() {
             </div>
           )}
 
-          <div className="absolute left-6 bottom-5 flex items-center gap-3">
+          <div className="absolute left-6 bottom-5 flex items-center gap-8">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
             </span>
