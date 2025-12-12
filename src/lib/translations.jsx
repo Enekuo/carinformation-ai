@@ -1747,6 +1747,10 @@ proSidebar_paraphraser: {
   ES: "Detector de IA",
   EUS: "IA detektorea",
 },
+aiDetector_title: {
+  ES: "Detector de IA",
+  EUS: "IA detektorea",
+},
 aiDetector_subtitle: {
   ES: "Mantén la autenticidad de tus textos comprobando si podrían contener contenido generado por IA.",
   EUS: "Zure testuen benetakotasuna mantendu, IA bidez sortutako edukia izan dezaketela egiaztatuz.",
