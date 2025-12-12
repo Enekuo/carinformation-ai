@@ -58,7 +58,9 @@ export default function ProAiDetector() {
       const data = await r.json().catch(() => ({}));
 
       if (!r.ok) {
-        setErrorMsg(data?.message || data?.error || "No se pudo analizar el texto.");
+        setErrorMsg(
+          data?.message || data?.error || "No se pudo analizar el texto."
+        );
         setLoading(false);
         return;
       }
@@ -100,7 +102,8 @@ export default function ProAiDetector() {
               setResult(null);
               setErrorMsg("");
             }}
-            className="w-full h-40 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-24"
+            disabled={loading}
+            className="w-full h-40 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-24 disabled:opacity-60"
             placeholder="Escribe o pega aquí el texto que quieres analizar..."
           />
 
@@ -151,7 +154,11 @@ export default function ProAiDetector() {
                          disabled:opacity-50 disabled:cursor-not-allowed
                          disabled:hover:from-blue-600 disabled:hover:to-cyan-500"
             >
-              {loading ? "Analizando..." : "Revisar si hay contenido de IA"}
+              {loading
+                ? "Analizando..."
+                : result
+                ? "Volver a analizar"
+                : "Revisar si hay contenido de IA"}
             </button>
           </div>
         </div>
@@ -166,15 +173,17 @@ export default function ProAiDetector() {
             </div>
 
             {!!result?.note && (
-              <div className="mt-3 text-xs text-slate-500">
-                {result.note}
+              <div className="mt-3 text-xs text-slate-500">{result.note}</div>
+            )}
+
+            {!!result && (
+              <div className="mt-2 text-[11px] leading-4 text-slate-400">
+                Estimación orientativa. Puede no ser 100% precisa.
               </div>
             )}
 
             {!!errorMsg && (
-              <div className="mt-3 text-xs text-red-600">
-                {errorMsg}
-              </div>
+              <div className="mt-3 text-xs text-red-600">{errorMsg}</div>
             )}
           </div>
 
