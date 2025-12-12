@@ -139,7 +139,7 @@ export default function ProAiDetector() {
             </div>
           )}
 
-          {/* Contador + botón borrar (zona marcada) */}
+          {/* Contador + icono borrar */}
           <div className="absolute left-6 bottom-5 flex items-center gap-3">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
@@ -154,15 +154,16 @@ export default function ProAiDetector() {
                 setErrorMsg("");
                 if (fileInputRef.current) fileInputRef.current.value = "";
               }}
+              title="Borrar"
+              aria-label="Borrar"
               className={
-                "h-8 px-3 rounded-full border text-xs font-medium flex items-center gap-2 transition " +
+                "h-9 w-9 rounded-xl border flex items-center justify-center transition " +
                 (canClear
-                  ? "border-slate-300 bg-slate-200 text-slate-700 hover:bg-slate-300"
-                  : "border-slate-200 bg-slate-100 text-slate-400 cursor-not-allowed")
+                  ? "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                  : "border-slate-200 bg-slate-100 text-slate-300 cursor-not-allowed")
               }
             >
-              <Trash2 size={14} />
-              Borrar
+              <Trash2 size={16} />
             </button>
           </div>
 
