@@ -5,8 +5,9 @@ export default function ProAiDetector() {
   const fileInputRef = useRef(null);
   const [text, setText] = useState("");
 
-  // Resultado (por ahora null = estado vacío, como en tu captura con --%)
-  const [result, setResult] = useState(null); // { ai: number, human: number }
+  const [result, setResult] = useState(null); // { ai: number, human: number, note?: string }
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handlePasteFromClipboard = async () => {
     try {
@@ -14,6 +15,8 @@ export default function ProAiDetector() {
         const clip = await navigator.clipboard.readText();
         if (clip) {
           setText(clip.slice(0, 5000));
+          setResult(null);
+          setErrorMsg("");
         }
       }
     } catch (e) {
@@ -30,9 +33,47 @@ export default function ProAiDetector() {
       const content = e.target?.result;
       if (typeof content === "string") {
         setText(content.slice(0, 5000));
+        setResult(null);
+        setErrorMsg("");
       }
     };
     reader.readAsText(file);
+  };
+
+  const runDetection = async () => {
+    const payload = text.trim();
+    if (!payload) return;
+
+    setLoading(true);
+    setErrorMsg("");
+    setResult(null);
+
+    try {
+      const r = await fetch("/api/ai-detector", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: payload }),
+      });
+
+      const data = await r.json().catch(() => ({}));
+
+      if (!r.ok) {
+        setErrorMsg(data?.message || data?.error || "No se pudo analizar el texto.");
+        setLoading(false);
+        return;
+      }
+
+      setResult({
+        ai: data.ai,
+        human: data.human,
+        note: data.note,
+      });
+    } catch (e) {
+      console.error(e);
+      setErrorMsg("Error de red. Intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const aiValue = result?.ai;
@@ -40,7 +81,6 @@ export default function ProAiDetector() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      {/* Título y subtítulo */}
       <div className="mb-6">
         <h1 className="text-3xl font-semibold text-slate-900 mb-1">
           Detector de IA
@@ -52,18 +92,18 @@ export default function ProAiDetector() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
-        {/* CUADRO BLANCO (izquierda) */}
         <div className="relative bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px]">
-          {/* Área de texto arriba */}
           <textarea
             value={text}
-            onChange={(e) => setText(e.target.value.slice(0, 5000))}
+            onChange={(e) => {
+              setText(e.target.value.slice(0, 5000));
+              setResult(null);
+              setErrorMsg("");
+            }}
             className="w-full h-40 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-24"
             placeholder="Escribe o pega aquí el texto que quieres analizar..."
           />
 
-          {/* BOTONES CENTRADOS VERTICALMENTE
-              Solo se muestran cuando NO hay texto */}
           {text.length === 0 && (
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center gap-8">
               <button
@@ -94,35 +134,29 @@ export default function ProAiDetector() {
             </div>
           )}
 
-          {/* Contador abajo a la IZQUIERDA */}
           <div className="absolute left-6 bottom-5">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
             </span>
           </div>
 
-          {/* BOTÓN AZUL ABAJO A LA DERECHA (zona marcada) */}
           <div className="absolute right-6 bottom-4">
             <button
               type="button"
+              onClick={runDetection}
+              disabled={loading || text.trim().length === 0}
               className="h-11 px-7 rounded-full text-white font-semibold text-sm shadow-md
                          bg-gradient-to-r from-blue-600 to-cyan-500
                          hover:from-blue-700 hover:to-cyan-600 transition
-                         disabled:opacity-50 disabled:hover:from-blue-600 disabled:hover:to-cyan-500"
-              disabled={text.trim().length === 0}
-              onClick={() => {
-                // Aquí luego conectaremos la detección real
-                // setResult({ ai: 0, human: 100 });
-              }}
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         disabled:hover:from-blue-600 disabled:hover:to-cyan-500"
             >
-              Revisar si hay contenido de IA
+              {loading ? "Analizando..." : "Revisar si hay contenido de IA"}
             </button>
           </div>
         </div>
 
-        {/* PANEL DERECHO (resultados) */}
         <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
-          {/* Porcentaje grande */}
           <div className="mt-2 text-center">
             <div className="text-6xl font-semibold tracking-tight text-slate-900">
               {result ? `${aiValue}%` : "--%"}
@@ -130,9 +164,20 @@ export default function ProAiDetector() {
             <div className="mt-2 text-sm text-slate-500">
               del texto podría estar generado por IA
             </div>
+
+            {!!result?.note && (
+              <div className="mt-3 text-xs text-slate-500">
+                {result.note}
+              </div>
+            )}
+
+            {!!errorMsg && (
+              <div className="mt-3 text-xs text-red-600">
+                {errorMsg}
+              </div>
+            )}
           </div>
 
-          {/* Barra */}
           <div className="mt-6">
             <div className="h-3 w-full rounded-full bg-slate-200 overflow-hidden">
               <div
@@ -142,7 +187,6 @@ export default function ProAiDetector() {
             </div>
           </div>
 
-          {/* Breakdown */}
           <div className="mt-7 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -169,7 +213,6 @@ export default function ProAiDetector() {
             <div className="h-px bg-slate-200" />
           </div>
 
-          {/* Botón inferior */}
           <div className="mt-auto pt-6">
             <button
               type="button"
