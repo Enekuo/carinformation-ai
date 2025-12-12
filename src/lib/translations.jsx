@@ -1747,7 +1747,90 @@ proSidebar_paraphraser: {
   ES: "Detector de IA",
   EUS: "IA detektorea",
 },
+proAiDetector_subtitle: {
+  ES: "Mantén la autenticidad de tus textos comprobando si podrían contener contenido generado por IA.",
+  EUS: "Zure testuen benetakotasuna mantendu, IA bidez sortutako edukia izan dezaketela egiaztatuz.",
+},
 
+proAiDetector_placeholder: {
+  ES: "Escribe o pega aquí el texto que quieres analizar...",
+  EUS: "Idatzi edo itsatsi hemen aztertu nahi duzun testua...",
+},
+
+proAiDetector_pasteButton: {
+  ES: "Pegar texto",
+  EUS: "Testua itsatsi",
+},
+
+proAiDetector_uploadButton: {
+  ES: "Subir archivo",
+  EUS: "Fitxategia igo",
+},
+
+proAiDetector_clear: {
+  ES: "Borrar",
+  EUS: "Ezabatu",
+},
+
+proAiDetector_analyze: {
+  ES: "Revisar si hay contenido de IA",
+  EUS: "IA edukia dagoen aztertu",
+},
+
+proAiDetector_reanalyze: {
+  ES: "Volver a analizar",
+  EUS: "Berriro aztertu",
+},
+
+proAiDetector_analyzing: {
+  ES: "Analizando...",
+  EUS: "Aztertzen...",
+},
+
+proAiDetector_loadingTitle: {
+  ES: "Analizando el texto…",
+  EUS: "Testua aztertzen…",
+},
+
+proAiDetector_loadingSubtitle: {
+  ES: "Esto puede tardar unos segundos",
+  EUS: "Segundo batzuk har ditzake",
+},
+
+proAiDetector_percentSubtitle: {
+  ES: "del texto podría estar generado por IA",
+  EUS: "testuaren zati bat IA bidez sortua izan liteke",
+},
+
+proAiDetector_labelAi: {
+  ES: "Generado por IA",
+  EUS: "IAk sortua",
+},
+
+proAiDetector_labelHuman: {
+  ES: "Escrito por humano",
+  EUS: "Gizakiak idatzia",
+},
+
+proAiDetector_disclaimer: {
+  ES: "Estimación orientativa. Puede no ser 100% precisa.",
+  EUS: "Gutxi gorabeherako estimazioa. Baliteke %100 zehatza ez izatea.",
+},
+
+proAiDetector_humanize: {
+  ES: "Humanizar texto IA",
+  EUS: "IA testua humanizatu",
+},
+
+proAiDetector_errorGeneric: {
+  ES: "No se pudo analizar el texto.",
+  EUS: "Ezin izan da testua aztertu.",
+},
+
+proAiDetector_errorNetwork: {
+  ES: "Error de red. Intenta de nuevo.",
+  EUS: "Sareko errorea. Saiatu berriro.",
+},
   // =========================
   //        Pro library
   // =========================    

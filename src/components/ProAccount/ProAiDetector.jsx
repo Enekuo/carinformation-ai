@@ -1,7 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Clipboard, UploadCloud, Trash2 } from "lucide-react";
+import { useTranslation } from "@/lib/translations";
 
 export default function ProAiDetector() {
+  const { t } = useTranslation();
+  const tr = (key, fallback) => t(key) || fallback;
+
   const fileInputRef = useRef(null);
   const [text, setText] = useState("");
 
@@ -59,7 +63,7 @@ export default function ProAiDetector() {
 
       if (!r.ok) {
         setErrorMsg(
-          data?.message || data?.error || "No se pudo analizar el texto."
+          data?.message || data?.error || tr("aiDetector_error_generic", "No se pudo analizar el texto.")
         );
         setLoading(false);
         return;
@@ -72,7 +76,7 @@ export default function ProAiDetector() {
       });
     } catch (e) {
       console.error(e);
-      setErrorMsg("Error de red. Intenta de nuevo.");
+      setErrorMsg(tr("aiDetector_error_network", "Error de red. Intenta de nuevo."));
     } finally {
       setLoading(false);
     }
@@ -87,11 +91,13 @@ export default function ProAiDetector() {
     <div className="max-w-6xl mx-auto">
       <div className="mb-6">
         <h1 className="text-3xl font-semibold text-slate-900 mb-1">
-          Detector de IA
+          {tr("aiDetector_title", "Detector de IA")}
         </h1>
         <p className="text-sm text-slate-600">
-          Mantén la autenticidad de tus textos comprobando si podrían contener
-          contenido generado por IA.
+          {tr(
+            "aiDetector_subtitle",
+            "Mantén la autenticidad de tus textos comprobando si podrían contener contenido generado por IA."
+          )}
         </p>
       </div>
 
@@ -106,7 +112,10 @@ export default function ProAiDetector() {
             }}
             disabled={loading}
             className="w-full h-40 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-24 disabled:opacity-60"
-            placeholder="Escribe o pega aquí el texto que quieres analizar..."
+            placeholder={tr(
+              "aiDetector_placeholder",
+              "Escribe o pega aquí el texto que quieres analizar..."
+            )}
           />
 
           {text.length === 0 && (
@@ -117,7 +126,7 @@ export default function ProAiDetector() {
                 className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
               >
                 <Clipboard size={22} className="mb-2 text-slate-500" />
-                <span>Pegar texto</span>
+                <span>{tr("aiDetector_paste_button", "Pegar texto")}</span>
               </button>
 
               <button
@@ -126,7 +135,7 @@ export default function ProAiDetector() {
                 className="flex flex-col items-center justify-center w-44 h-28 rounded-2xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 shadow-sm"
               >
                 <UploadCloud size={22} className="mb-2 text-slate-500" />
-                <span>Subir archivo</span>
+                <span>{tr("aiDetector_upload_button", "Subir archivo")}</span>
               </button>
 
               <input
@@ -141,7 +150,7 @@ export default function ProAiDetector() {
 
           <div className="absolute left-6 bottom-5 flex items-center gap-8">
             <span className="text-xs text-slate-400">
-              {text.length} / 5000
+              {text.length} / {tr("aiDetector_max_chars", "5000")}
             </span>
 
             <button
@@ -153,8 +162,8 @@ export default function ProAiDetector() {
                 setErrorMsg("");
                 if (fileInputRef.current) fileInputRef.current.value = "";
               }}
-              title="Borrar"
-              aria-label="Borrar"
+              title={tr("aiDetector_clear_title", "Borrar")}
+              aria-label={tr("aiDetector_clear_title", "Borrar")}
               className={
                 "h-9 w-9 rounded-xl border flex items-center justify-center transition " +
                 (canClear
@@ -178,10 +187,10 @@ export default function ProAiDetector() {
                          disabled:hover:from-blue-600 disabled:hover:to-cyan-500"
             >
               {loading
-                ? "Analizando..."
+                ? tr("aiDetector_button_analyzing", "Analizando...")
                 : result
-                ? "Volver a analizar"
-                : "Revisar si hay contenido de IA"}
+                ? tr("aiDetector_button_reanalyze", "Volver a analizar")
+                : tr("aiDetector_button_analyze", "Revisar si hay contenido de IA")}
             </button>
           </div>
         </div>
@@ -191,10 +200,10 @@ export default function ProAiDetector() {
             {loading ? (
               <>
                 <div className="text-2xl font-medium text-slate-500">
-                  Analizando el texto…
+                  {tr("aiDetector_right_loading_title", "Analizando el texto…")}
                 </div>
                 <div className="mt-2 text-xs text-slate-400">
-                  Esto puede tardar unos segundos
+                  {tr("aiDetector_right_loading_subtitle", "Esto puede tardar unos segundos")}
                 </div>
               </>
             ) : (
@@ -203,13 +212,11 @@ export default function ProAiDetector() {
                   {result ? `${aiValue}%` : "--%"}
                 </div>
                 <div className="mt-2 text-sm text-slate-500">
-                  del texto podría estar generado por IA
+                  {tr("aiDetector_right_percent_subtitle", "del texto podría estar generado por IA")}
                 </div>
 
                 {!!result?.note && (
-                  <div className="mt-3 text-xs text-slate-500">
-                    {result.note}
-                  </div>
+                  <div className="mt-3 text-xs text-slate-500">{result.note}</div>
                 )}
 
                 {!!errorMsg && (
@@ -232,7 +239,9 @@ export default function ProAiDetector() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="w-3 h-3 rounded-full bg-orange-500" />
-                <span className="text-sm text-slate-700">AI-generated</span>
+                <span className="text-sm text-slate-700">
+                  {tr("aiDetector_label_ai", "AI-generated")}
+                </span>
               </div>
               <span className="text-sm text-slate-700">
                 {result ? `${aiValue}%` : "--%"}
@@ -244,7 +253,9 @@ export default function ProAiDetector() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="w-3 h-3 rounded-full bg-slate-300" />
-                <span className="text-sm text-slate-700">Human-written</span>
+                <span className="text-sm text-slate-700">
+                  {tr("aiDetector_label_human", "Human-written")}
+                </span>
               </div>
               <span className="text-sm text-slate-700">
                 {result ? `${humanValue}%` : "--%"}
@@ -257,7 +268,7 @@ export default function ProAiDetector() {
           <div className="mt-auto pt-6">
             {!!result && (
               <div className="mb-3 text-[11px] leading-4 text-slate-400 text-center">
-                Estimación orientativa. Puede no ser 100% precisa.
+                {tr("aiDetector_disclaimer", "Estimación orientativa. Puede no ser 100% precisa.")}
               </div>
             )}
 
@@ -266,7 +277,7 @@ export default function ProAiDetector() {
               className="w-full h-12 rounded-full border border-emerald-500 text-emerald-600 font-semibold text-sm hover:bg-emerald-50 transition disabled:opacity-50 disabled:hover:bg-transparent"
               disabled={!result}
             >
-              ✨ Humanizar texto IA
+              ✨ {tr("aiDetector_humanize_button", "Humanizar texto IA")}
             </button>
           </div>
         </div>
