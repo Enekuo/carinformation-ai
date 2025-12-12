@@ -1747,90 +1747,96 @@ proSidebar_paraphraser: {
   ES: "Detector de IA",
   EUS: "IA detektorea",
 },
-proAiDetector_subtitle: {
+aiDetector_subtitle: {
   ES: "Mantén la autenticidad de tus textos comprobando si podrían contener contenido generado por IA.",
   EUS: "Zure testuen benetakotasuna mantendu, IA bidez sortutako edukia izan dezaketela egiaztatuz.",
 },
 
-proAiDetector_placeholder: {
+aiDetector_placeholder: {
   ES: "Escribe o pega aquí el texto que quieres analizar...",
   EUS: "Idatzi edo itsatsi hemen aztertu nahi duzun testua...",
 },
 
-proAiDetector_pasteButton: {
+aiDetector_paste_button: {
   ES: "Pegar texto",
   EUS: "Testua itsatsi",
 },
 
-proAiDetector_uploadButton: {
+aiDetector_upload_button: {
   ES: "Subir archivo",
   EUS: "Fitxategia igo",
 },
 
-proAiDetector_clear: {
+aiDetector_clear_title: {
   ES: "Borrar",
   EUS: "Ezabatu",
 },
 
-proAiDetector_analyze: {
+aiDetector_max_chars: {
+  ES: "5000",
+  EUS: "5000",
+},
+
+aiDetector_button_analyze: {
   ES: "Revisar si hay contenido de IA",
   EUS: "IA edukia dagoen aztertu",
 },
 
-proAiDetector_reanalyze: {
+aiDetector_button_reanalyze: {
   ES: "Volver a analizar",
   EUS: "Berriro aztertu",
 },
 
-proAiDetector_analyzing: {
+aiDetector_button_analyzing: {
   ES: "Analizando...",
   EUS: "Aztertzen...",
 },
 
-proAiDetector_loadingTitle: {
+aiDetector_right_loading_title: {
   ES: "Analizando el texto…",
   EUS: "Testua aztertzen…",
 },
 
-proAiDetector_loadingSubtitle: {
+aiDetector_right_loading_subtitle: {
   ES: "Esto puede tardar unos segundos",
   EUS: "Segundo batzuk har ditzake",
 },
 
-proAiDetector_percentSubtitle: {
+aiDetector_right_percent_subtitle: {
   ES: "del texto podría estar generado por IA",
   EUS: "testuaren zati bat IA bidez sortua izan liteke",
 },
 
-proAiDetector_labelAi: {
+aiDetector_label_ai: {
   ES: "Generado por IA",
   EUS: "IAk sortua",
 },
 
-proAiDetector_labelHuman: {
+aiDetector_label_human: {
   ES: "Escrito por humano",
   EUS: "Gizakiak idatzia",
 },
 
-proAiDetector_disclaimer: {
+aiDetector_disclaimer: {
   ES: "Estimación orientativa. Puede no ser 100% precisa.",
   EUS: "Gutxi gorabeherako estimazioa. Baliteke %100 zehatza ez izatea.",
 },
 
-proAiDetector_humanize: {
+aiDetector_humanize_button: {
   ES: "Humanizar texto IA",
   EUS: "IA testua humanizatu",
 },
 
-proAiDetector_errorGeneric: {
+aiDetector_error_generic: {
   ES: "No se pudo analizar el texto.",
   EUS: "Ezin izan da testua aztertu.",
 },
 
-proAiDetector_errorNetwork: {
+aiDetector_error_network: {
   ES: "Error de red. Intenta de nuevo.",
   EUS: "Sareko errorea. Saiatu berriro.",
 },
+
   // =========================
   //        Pro library
   // =========================    
