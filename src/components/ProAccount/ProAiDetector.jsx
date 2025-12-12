@@ -139,8 +139,7 @@ export default function ProAiDetector() {
             </div>
           )}
 
-          {/* Contador + icono borrar */}
-          <div className="absolute left-6 bottom-5 flex items-center gap-8">
+          <div className="absolute left-6 bottom-5 flex items-center gap-3">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
             </span>
@@ -189,19 +188,34 @@ export default function ProAiDetector() {
 
         <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[460px] flex flex-col">
           <div className="mt-2 text-center">
-            <div className="text-6xl font-semibold tracking-tight text-slate-900">
-              {result ? `${aiValue}%` : "--%"}
-            </div>
-            <div className="mt-2 text-sm text-slate-500">
-              del texto podría estar generado por IA
-            </div>
+            {loading ? (
+              <>
+                <div className="text-2xl font-medium text-slate-500">
+                  Analizando el texto…
+                </div>
+                <div className="mt-2 text-xs text-slate-400">
+                  Esto puede tardar unos segundos
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-6xl font-semibold tracking-tight text-slate-900">
+                  {result ? `${aiValue}%` : "--%"}
+                </div>
+                <div className="mt-2 text-sm text-slate-500">
+                  del texto podría estar generado por IA
+                </div>
 
-            {!!result?.note && (
-              <div className="mt-3 text-xs text-slate-500">{result.note}</div>
-            )}
+                {!!result?.note && (
+                  <div className="mt-3 text-xs text-slate-500">
+                    {result.note}
+                  </div>
+                )}
 
-            {!!errorMsg && (
-              <div className="mt-3 text-xs text-red-600">{errorMsg}</div>
+                {!!errorMsg && (
+                  <div className="mt-3 text-xs text-red-600">{errorMsg}</div>
+                )}
+              </>
             )}
           </div>
 
