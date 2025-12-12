@@ -94,8 +94,8 @@ export default function ProAiDetector() {
             </div>
           )}
 
-          {/* Contador abajo a la derecha */}
-          <div className="absolute right-6 bottom-5">
+          {/* Contador abajo a la IZQUIERDA */}
+          <div className="absolute left-6 bottom-5">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
             </span>
@@ -151,8 +151,22 @@ export default function ProAiDetector() {
             <div className="h-px bg-slate-200" />
           </div>
 
-          {/* Botón inferior */}
-          <div className="mt-auto pt-6">
+          {/* Botones inferiores */}
+          <div className="mt-auto pt-6 space-y-3">
+            {/* BOTÓN AZUL */}
+            <button
+              type="button"
+              className="w-full h-12 rounded-full bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition disabled:opacity-50"
+              disabled={text.trim().length === 0}
+              onClick={() => {
+                // Aquí luego conectaremos la detección real
+                // setResult({ ai: 0, human: 100 });
+              }}
+            >
+              Revisar si hay contenido de IA
+            </button>
+
+            {/* Botón de humanizar (como antes) */}
             <button
               type="button"
               className="w-full h-12 rounded-full border border-emerald-500 text-emerald-600 font-semibold text-sm hover:bg-emerald-50 transition disabled:opacity-50 disabled:hover:bg-transparent"
