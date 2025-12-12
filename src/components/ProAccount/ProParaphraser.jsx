@@ -27,15 +27,15 @@ export default function ProParaphraser() {
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
-  const [chatInput, setChatInput] = useState("");
 
   // Resultado / carga / error
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [errorKind, setErrorKind] = useState(null); // null | "limit"
 
-  // Intensidad del parafraseo
-  const [paraphraseStrength, setParaphraseStrength] = useState("suave"); // "suave" | "medio" | "fuerte"
+  // Fuerza del parafraseo
+  const [strength, setStrength] = useState("soft"); // soft | medium | strong
 
   // Idioma de salida (ES/EUS/EN) — por defecto Euskera
   const [outputLang, setOutputLang] = useState("eus");
@@ -67,71 +67,75 @@ export default function ProParaphraser() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== i18n (usa claves propias, con fallback por si aún no existen) =====
-  const labelSources = tr("paraphraser.sources_title", "Iturriak");
-  const labelTabText = tr("paraphraser.sources_tab_text", "Testua");
-  const labelTabDocument = tr("paraphraser.sources_tab_document", "Dokumentua");
+  // ===== i18n =====
+  const labelSources = tr("paraphraser.sources_title", "Fuentes");
+  const labelTabText = tr("paraphraser.sources_tab_text", "Texto");
+  const labelTabDocument = tr("paraphraser.sources_tab_document", "Documento");
   const labelTabUrl = tr("paraphraser.sources_tab_url", "URL");
+
   const labelEnterText = tr(
     "paraphraser.enter_text_here_full",
-    "Idatzi edo itsatsi zure testua hemen…"
+    "Escribe o pega tu texto aquí…"
   );
+
   const labelChooseFileTitle = tr(
     "paraphraser.choose_file_title",
-    "Aukeratu zure fitxategia edo karpeta"
+    "Elige tu archivo o carpeta"
   );
   const labelAcceptedFormats = tr(
     "paraphraser.accepted_formats",
-    "PDF fitxategiak, testu kopiatua, web estekak… gehitu ditzakezu"
+    "Puedes añadir archivos PDF, texto copiado, enlaces web…"
   );
   const labelFolderHint = tr(
     "paraphraser.folder_hint",
-    "Hemen agertuko dira igo dituzun testuak edo dokumentuak."
+    "Aquí aparecerán tus textos o documentos subidos."
   );
 
-  const labelPasteUrls = tr("paraphraser.paste_urls_label", "URLak itsatsi*");
-  const labelAddUrl = tr("paraphraser.add_url", "URLak gehitu");
-  const labelSaveUrls = tr("paraphraser.save_urls", "Gorde");
-  const labelCancel = tr("paraphraser.cancel", "Utzi");
+  const labelPasteUrls = tr("paraphraser.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("paraphraser.add_url", "Añadir URLs");
+  const labelSaveUrls = tr("paraphraser.save_urls", "Guardar");
+  const labelCancel = tr("paraphraser.cancel", "Cancelar");
   const labelUrlsNoteVisible = tr(
     "paraphraser.urls_note_visible",
-    "Webguneko testu ikusgarria bakarrik inportatuko da."
+    "Solo se importará el texto visible del sitio web."
   );
   const labelUrlsNotePaywalled = tr(
     "paraphraser.urls_note_paywalled",
-    "Ordaindutako artikuluak ez dira onartzen."
+    "No se admiten artículos de pago."
   );
-  const labelRemove = tr("paraphraser.remove", "Kendu");
+  const labelRemove = tr("paraphraser.remove", "Quitar");
+
+  const labelStrengthSoft = tr("paraphraser.strength_soft", "Suave");
+  const labelStrengthMed = tr("paraphraser.strength_medium", "Medio");
+  const labelStrengthStrong = tr("paraphraser.strength_strong", "Fuerte");
 
   const labelGenerateFromSources = tr(
-    "paraphraser.generate_from_sources",
-    "Parafraseatu"
+    "paraphraser.generate_from_source",
+    "Crear parafraseo"
   );
 
   const labelHelpRight = tr(
     "paraphraser.create_help_right",
-    "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Parafraseatu”."
+    "Selecciona una fuente (texto, documentos o URLs) y pulsa “Crear parafraseo”."
   );
 
-  const labelBottomInputPh = tr(
-    "paraphraser.bottom_input_ph",
-    "Idatzi hemen argibidea (aukerakoa): tonua, estiloa, formaltasuna…"
+  const leftRaw = tr(
+    "paraphraser.create_help_left",
+    "Aquí aparecerán los textos o documentos que subas. Puedes añadir PDFs, texto copiado, enlaces web…"
   );
+  const [leftTitle, leftBody] = useMemo(() => {
+    const parts = (leftRaw || "").split(".");
+    const first = (parts.shift() || leftRaw || "").trim();
+    const rest = parts.join(".").trim();
+    return [first.endsWith(".") ? first : `${first}.`, rest];
+  }, [leftRaw]);
 
-  const labelGenerateWithPrompt = tr(
-    "paraphraser.generate_with_prompt",
-    "Argibideekin sortu"
-  );
-
-  // Intensidad (tabs)
-  const LBL_SOFT = tr("paraphraser.strength_soft", "Suave");
-  const LBL_MED = tr("paraphraser.strength_medium", "Media");
-  const LBL_STRONG = tr("paraphraser.strength_strong", "Fuerte");
-
-  // Idiomas
-  const LBL_ES = tr("paraphraser.output_language_es", "Gaztelania");
+  const LBL_ES = tr("paraphraser.output_language_es", "Español");
   const LBL_EUS = tr("paraphraser.output_language_eus", "Euskara");
-  const LBL_EN = tr("paraphraser.output_language_en", "Ingelesa");
+  const LBL_EN = tr("paraphraser.output_language_en", "English");
+
+  const labelCopyResult = tr("paraphraser.copy_result", "Copiar resultado");
+  const labelClearInput = tr("paraphraser.clear_input", "Eliminar texto de entrada");
 
   // ===== Tabs =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
@@ -211,43 +215,20 @@ export default function ProParaphraser() {
     return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
-  // ===== Limpieza del panel derecho =====
+  const canonicalize = (s) =>
+    (s || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+
   const clearRight = () => {
     setResult("");
     setErrorMsg("");
+    setErrorKind(null);
     setLoading(false);
   };
-
-  const handleStrengthChange = (mode) => {
-    if (mode === paraphraseStrength) return;
-    setParaphraseStrength(mode);
-    clearRight();
-  };
-
-  // ===== Atajos de teclado =====
-  useEffect(() => {
-    const onKey = (e) => {
-      const meta = e.metaKey || e.ctrlKey;
-      if (meta && e.key.toLowerCase() === "enter") {
-        e.preventDefault();
-        if (!loading) handleGenerate(false);
-      } else if (meta && e.key.toLowerCase() === "c") {
-        if (result) {
-          e.preventDefault();
-          handleCopy(true);
-        }
-      } else if (e.key === "Escape") {
-        if (urlInputOpen) setUrlInputOpen(false);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen, textValue, urlItems, documents, paraphraseStrength, outputLang, chatInput]);
-
-  // URLs → reset resultado
-  useEffect(() => {
-    clearRight();
-  }, [urlItems]);
 
   // ===== Documentos =====
   const readTextFromFiles = async (items) => {
@@ -275,7 +256,6 @@ export default function ProParaphraser() {
 
   const addFiles = async (list) => {
     if (!list?.length) return;
-
     const arr = Array.from(list);
     const withIds = arr.map((file) => ({ id: crypto.randomUUID(), file }));
 
@@ -333,8 +313,12 @@ export default function ProParaphraser() {
     setUrlItems((prev) => [...prev, ...newItems]);
     setUrlsTextarea("");
     setUrlInputOpen(false);
+    clearRight();
   };
-  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) => {
+    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+    clearRight();
+  };
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -345,7 +329,7 @@ export default function ProParaphraser() {
 
   const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Acciones barra derecha =====
+  // ===== Acciones derecha =====
   const handleCopy = async (flash = false) => {
     if (!result) return;
     try {
@@ -363,7 +347,7 @@ export default function ProParaphraser() {
     clearRight();
   };
 
-  // ===== Helper: cache key (sha-256) para KV =====
+  // ===== Helper: cache key (sha-256) =====
   const sha256Hex = async (input) => {
     try {
       const enc = new TextEncoder().encode(input);
@@ -376,28 +360,28 @@ export default function ProParaphraser() {
     }
   };
 
-  // ===== Generar =====
-  const handleGenerate = async (usePrompt = false) => {
+  // ===== Generar (API) =====
+  const handleGenerate = async () => {
     setLoading(true);
     setErrorMsg("");
-    setResult("");
-
-    const trimmed = (textValue || "").trim();
-    const words = trimmed.split(/\s+/).filter(Boolean);
-    const textOk = trimmed.length >= 20 && words.length >= 5;
-    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
+    setErrorKind(null);
 
     if ((textValue || "").length > MAX_CHARS) {
-      setErrorMsg(tr("paraphraser.error_limit", "Límite actual: 12.000 caracteres por petición."));
+      setErrorKind("limit");
       setLoading(false);
       return;
     }
 
+    const trimmed = (textValue || "").trim();
+    const words = trimmed.split(/\s+/).filter(Boolean);
+    const textOk = trimmed.length >= 20 && words.length >= 5;
+
+    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
     if (!validNow) {
       setErrorMsg(
         tr(
           "paraphraser.error_need_input",
-          "Añade texto suficiente, URLs o documentos antes de parafrasear."
+          "Añade texto suficiente, URLs o documentos antes de generar el parafraseo."
         )
       );
       setLoading(false);
@@ -419,39 +403,38 @@ export default function ProParaphraser() {
 
     const langInstruction =
       outputLang === "es"
-        ? "Idioma de salida: español (ISO: es)."
+        ? "Idioma de salida: español (ISO: es). Redacta toda la respuesta en español."
         : outputLang === "en"
-        ? "Output language: English (ISO: en)."
-        : "Irteerako hizkuntza: euskara (ISO: eu).";
+        ? "Output language: English (ISO: en). Write the entire response in English."
+        : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi erantzun osoa euskaraz.";
 
     const strengthRule =
-      paraphraseStrength === "suave"
-        ? "Parafraseo SUAVE: cambia lo mínimo manteniendo la estructura."
-        : paraphraseStrength === "medio"
-        ? "Parafraseo MEDIO: reescribe con cambios claros manteniendo el significado."
-        : "Parafraseo FUERTE: reescribe profundamente evitando repetir frases del original, pero manteniendo el sentido.";
+      strength === "soft"
+        ? "Fuerza: SUAVE. Mantén estructura y significado, cambia lo mínimo necesario."
+        : strength === "medium"
+        ? "Fuerza: MEDIA. Reescribe con sinónimos y variaciones claras, manteniendo el significado."
+        : "Fuerza: FUERTE. Reescribe de forma notable (orden y expresiones), manteniendo el significado y sin inventar datos.";
 
-    const formatRules =
-      "Devuelve un único texto limpio. Mantén el mismo idioma indicado. " +
-      "No añadas información nueva. No inventes datos. No incluyas explicaciones sobre lo que has hecho.";
-
-    const userInstruction = usePrompt && (chatInput || "").trim() ? `\nINSTRUCCIÓN DEL USUARIO: ${chatInput.trim()}\n` : "";
+    const formattingRules =
+      "Devuelve SOLO el texto parafraseado. Sin listas, sin viñetas, sin títulos, sin explicaciones. " +
+      "No añadas información nueva. Mantén el mismo sentido.";
 
     const userContent = [
-      "Quiero que parafrasees (reescribas) el contenido manteniendo el significado.",
+      "Quiero que parafrasees el contenido.",
+      textValue ? `\nTEXTO:\n${textValue}` : "",
+      urlsList
+        ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
+        : "",
+      docsInline,
+      `\nREGLAS: ${formattingRules}`,
       `\n${strengthRule}`,
       `\n${langInstruction}`,
-      `\n${formatRules}`,
-      userInstruction,
-      textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}` : "",
-      docsInline,
-      docNames ? `\nNOMBRES DE ARCHIVOS: ${docNames}` : "",
     ].join("");
 
     const systemBase =
-      "Eres un asistente de escritura. Tu tarea es parafrasear un texto manteniendo el significado. " +
-      "No inventes hechos ni añadas contenido nuevo. Respeta el idioma indicado.";
+      "Eres un asistente que parafrasea textos manteniendo el significado. " +
+      "No inventes datos. No cambies hechos, números ni nombres propios. " +
+      "No añadas explicaciones: entrega solo el texto final.";
 
     const messages = [
       { role: "system", content: systemBase },
@@ -462,9 +445,8 @@ export default function ProParaphraser() {
       textValue,
       urls: urlItems.map((u) => u.url),
       docNames,
-      paraphraseStrength,
+      strength,
       outputLang,
-      prompt: usePrompt ? chatInput : "",
     });
     const cacheKey = await sha256Hex(cacheBase);
 
@@ -474,16 +456,22 @@ export default function ProParaphraser() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages,
+          strength,
           cacheKey,
           documentsText,
         }),
       });
 
       if (!res.ok) {
+        if (res.status === 413) {
+          setErrorKind("limit");
+          setLoading(false);
+          return;
+        }
         if (res.status === 429) {
           throw new Error(
             tr(
-              "paraphraser.error_rate",
+              "paraphraser.error_rate_limit",
               "Has alcanzado el límite de peticiones. Inténtalo más tarde."
             )
           );
@@ -493,7 +481,6 @@ export default function ProParaphraser() {
       }
 
       const data = await res.json();
-
       const rawText =
         data?.text ??
         data?.content ??
@@ -501,22 +488,42 @@ export default function ProParaphraser() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error(tr("paraphraser.error_empty", "No se recibió texto de la API."));
+      if (!rawText) throw new Error(tr("paraphraser.error_no_text", "No se recibió texto de la API."));
 
-      const cleaned = rawText
+      const cleaned = String(rawText || "")
         .replace(/\r/g, "")
         .replace(/\n{3,}/g, "\n\n")
         .trim();
 
       setResult(cleaned);
     } catch (err) {
-      setErrorMsg(err.message || tr("paraphraser.error_generic", "Error parafraseando el texto."));
+      setErrorMsg(err?.message || tr("paraphraser.error_generic", "Error generando el parafraseo."));
     } finally {
       setLoading(false);
     }
   };
 
-  // ===== Contador / barra (izquierda) =====
+  // Atajos (Ctrl/Cmd+Enter generar, Ctrl/Cmd+C copiar si hay resultado, Esc cierra URLs)
+  useEffect(() => {
+    const onKey = (e) => {
+      const meta = e.metaKey || e.ctrlKey;
+      if (meta && e.key.toLowerCase() === "enter") {
+        e.preventDefault();
+        if (!loading) handleGenerate();
+      } else if (meta && e.key.toLowerCase() === "c") {
+        if (result) {
+          e.preventDefault();
+          handleCopy(true);
+        }
+      } else if (e.key === "Escape") {
+        if (urlInputOpen) setUrlInputOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [loading, result, urlInputOpen, textValue, urlItems, documents, strength, outputLang]);
+
+  // ===== Contador / barra =====
   const charCount = (textValue || "").length;
   const pct = Math.min(100, Math.round((charCount / MAX_CHARS) * 100));
   const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
@@ -524,24 +531,39 @@ export default function ProParaphraser() {
 
   const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
 
-  // ===== Ayuda izquierda (igual que tu estilo) =====
-  const leftRaw = tr(
-    "paraphraser.create_help_left",
-    "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…"
+  // ===== Tarjeta límite =====
+  const LimitCard = () => (
+    <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
+      <div className="text-sm font-semibold">
+        {tr("paraphraser.limit_title", "Has alcanzado el límite del plan Gratis")}
+      </div>
+      <p className="text-xs text-slate-600 mt-1">
+        {tr("paraphraser.limit_note", "Límite actual: 12.000 caracteres por petición.")}
+      </p>
+      <div className="mt-4 flex items-center justify-center gap-3">
+        <a
+          href="/pricing"
+          className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
+          style={{ backgroundColor: "#2563eb" }}
+        >
+          {tr("paraphraser.limit_cta", "Probar plan Premium")}
+        </a>
+        <button
+          onClick={() => setErrorKind(null)}
+          className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
+        >
+          {tr("paraphraser.limit_dismiss", "Seguir con plan Gratis")}
+        </button>
+      </div>
+    </div>
   );
-  const [leftTitle, leftBody] = useMemo(() => {
-    const parts = (leftRaw || "").split(".");
-    const first = (parts.shift() || leftRaw || "").trim();
-    const rest = parts.join(".").trim();
-    return [first.endsWith(".") ? first : `${first}.`, rest];
-  }, [leftRaw]);
 
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
         <div className="max-w-7xl mx-auto w-full px-6">
           <motion.section
-            className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6"
+            className="grid grid-cols-1 lg:grid-cols-[440px_1fr] gap-6"
             initial="initial"
             animate="in"
             exit="out"
@@ -549,14 +571,19 @@ export default function ProParaphraser() {
             transition={{ duration: 0.3 }}
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
-            <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <aside className="min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
               {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-                <div className="text-sm font-medium text-slate-700">{labelSources}</div>
+                <div className="text-sm font-medium text-slate-700">
+                  {labelSources}
+                </div>
               </div>
 
               {/* Tabs */}
-              <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
+              <div
+                className="flex items-center px-2 border-b"
+                style={{ borderColor: DIVIDER }}
+              >
                 <TabBtn
                   active={sourceMode === "text"}
                   icon={FileText}
@@ -588,9 +615,13 @@ export default function ProParaphraser() {
                       <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
                         <FileText className="w-6 h-6 text-slate-500" />
                       </div>
-                      <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
+                      <p className="text-[15px] font-semibold text-slate-600">
+                        {leftTitle}
+                      </p>
                       {leftBody && (
-                        <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>
+                        <p className="mt-1 text-[13px] leading-6 text-slate-500">
+                          {leftBody}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -600,25 +631,30 @@ export default function ProParaphraser() {
                   <div className="flex flex-col h-full">
                     <textarea
                       value={textValue}
-                      onChange={(e) => {
-                        setTextValue(e.target.value);
-                        clearRight();
-                      }}
+                      onChange={(e) => setTextValue(e.target.value)}
                       placeholder={labelEnterText}
-                      className="w-full h-[360px] md:h-[520px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                      className="w-full h-[330px] md:h-[500px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                       aria-label={labelTabText}
                     />
                     <div className="mt-2">
                       <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
+                        <div
+                          className={`h-1 ${barClass}`}
+                          style={{ width: `${pct}%` }}
+                        />
                       </div>
                       <div className="mt-1 text-right text-xs">
                         <span
                           className={
-                            overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"
+                            overLimit
+                              ? "text-red-600"
+                              : nearLimit
+                              ? "text-amber-600"
+                              : "text-slate-500"
                           }
                         >
-                          {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                          {charCount.toLocaleString()} /{" "}
+                          {MAX_CHARS.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -646,16 +682,22 @@ export default function ProParaphraser() {
                     <button
                       type="button"
                       onClick={triggerPick}
-                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-9 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label={labelChooseFileTitle}
                       title={labelChooseFileTitle}
                     >
-                      <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
-                        <Plus className="w-10 h-10 text-sky-600" />
+                      <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center">
+                        <Plus className="w-8 h-8 text-sky-600" />
                       </div>
-                      <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
-                      <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
-                      <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
+                      <div className="text-lg font-semibold text-slate-800">
+                        {labelChooseFileTitle}
+                      </div>
+                      <div className="mt-3 text-sm text-slate-500">
+                        {labelAcceptedFormats}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-400">
+                        {labelFolderHint}
+                      </div>
                     </button>
 
                     {documents.length > 0 && (
@@ -670,7 +712,9 @@ export default function ProParaphraser() {
                                 <FileIcon className="w-4 h-4" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">{file.name}</span>
+                                <span className="text-sm font-medium block truncate">
+                                  {file.name}
+                                </span>
                                 <span className="text-xs text-slate-500">
                                   {(file.size / 1024 / 1024).toFixed(2)} MB
                                 </span>
@@ -717,7 +761,7 @@ export default function ProParaphraser() {
                           onChange={(e) => setUrlsTextarea(e.target.value)}
                           placeholder={tr(
                             "paraphraser.paste_urls_placeholder",
-                            "Sartu hemen URL bat edo gehiago (lerro bakoitzean bat)"
+                            "Introduce aquí una o más URLs (separadas por línea)"
                           )}
                           className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                           aria-label={labelPasteUrls}
@@ -747,7 +791,10 @@ export default function ProParaphraser() {
                     {urlItems.length > 0 && (
                       <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
                         {urlItems.map(({ id, url, host }) => (
-                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
+                          <li
+                            key={id}
+                            className="flex items-center justify-between gap-3 px-3 py-2"
+                          >
                             <div className="min-w-0 flex items-center gap-3 flex-1">
                               <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                                 <UrlIcon className="w-4 h-4" />
@@ -782,26 +829,41 @@ export default function ProParaphraser() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            <section className="relative min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
               {/* Barra superior con tabs + selector + acciones */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
                   <StrengthTab
-                    active={paraphraseStrength === "suave"}
-                    label={LBL_SOFT}
-                    onClick={() => handleStrengthChange("suave")}
+                    active={strength === "soft"}
+                    label={labelStrengthSoft}
+                    onClick={() => {
+                      if (strength !== "soft") {
+                        setStrength("soft");
+                        clearRight();
+                      }
+                    }}
                     showDivider
                   />
                   <StrengthTab
-                    active={paraphraseStrength === "medio"}
-                    label={LBL_MED}
-                    onClick={() => handleStrengthChange("medio")}
+                    active={strength === "medium"}
+                    label={labelStrengthMed}
+                    onClick={() => {
+                      if (strength !== "medium") {
+                        setStrength("medium");
+                        clearRight();
+                      }
+                    }}
                     showDivider
                   />
                   <StrengthTab
-                    active={paraphraseStrength === "fuerte"}
-                    label={LBL_STRONG}
-                    onClick={() => handleStrengthChange("fuerte")}
+                    active={strength === "strong"}
+                    label={labelStrengthStrong}
+                    onClick={() => {
+                      if (strength !== "strong") {
+                        setStrength("strong");
+                        clearRight();
+                      }
+                    }}
                   />
                 </div>
 
@@ -812,7 +874,7 @@ export default function ProParaphraser() {
                       <button
                         type="button"
                         className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                        aria-label="Idioma de salida"
+                        aria-label={tr("paraphraser.output_language_label", "Idioma de salida")}
                       >
                         <span className="truncate">
                           {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
@@ -873,27 +935,29 @@ export default function ProParaphraser() {
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
-                    title="Copiar resultado"
+                    title={labelCopyResult}
                     className={`h-9 w-9 flex items-center justify-center ${
                       result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label="Copiar resultado"
+                    aria-label={labelCopyResult}
                     disabled={!result}
                   >
-                    {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
+                    {copiedFlash ? (
+                      <Check className="w-4 h-4" style={{ color: BLUE }} />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
                   </button>
 
                   {/* Eliminar texto de la izquierda */}
                   <button
                     type="button"
                     onClick={handleClearLeft}
-                    title="Eliminar texto de entrada y resultado"
+                    title={labelClearInput}
                     className={`h-9 w-9 flex items-center justify-center ${
-                      sourceMode === "text" && textValue
-                        ? "text-slate-600 hover:text-slate-800"
-                        : "text-slate-300 cursor-not-allowed"
+                      sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label="Eliminar texto de entrada y resultado"
+                    aria-label={labelClearInput}
                     disabled={!(sourceMode === "text" && textValue)}
                   >
                     <Trash className="w-4 h-4" />
@@ -902,31 +966,38 @@ export default function ProParaphraser() {
               </div>
 
               {/* Estado inicial */}
-              {!loading && !result && !errorMsg && (
+              {!loading && !result && !errorKind && (
                 <>
                   <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                     <Button
                       type="button"
-                      onClick={() => handleGenerate(false)}
+                      onClick={handleGenerate}
                       disabled={loading || !hasValidInput}
-                      className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="h-10 md:h-11 w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
                       style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
                     >
                       {labelGenerateFromSources}
                     </Button>
                   </div>
 
-                  <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
-                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
+                    style={{ top: "40%" }}
+                  >
+                    <p className="text-sm leading-6 text-slate-600 max-w-xl">
+                      {labelHelpRight}
+                    </p>
                   </div>
                 </>
               )}
 
-              {/* Resultado / errores / loader */}
+              {/* Resultado / errores / loader / límite */}
               <div className="w-full">
-                {(result || errorMsg || loading) && (
-                  <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
-                    {errorMsg && (
+                {(result || errorMsg || loading || errorKind) && (
+                  <div className="px-6 pt-20 pb-10 max-w-3xl mx-auto">
+                    {errorKind === "limit" && <LimitCard />}
+
+                    {errorMsg && !errorKind && (
                       <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
                         {errorMsg}
                       </div>
@@ -949,30 +1020,6 @@ export default function ProParaphraser() {
                     )}
                   </div>
                 )}
-              </div>
-
-              {/* Input inferior (prompt opcional) */}
-              <div className="absolute left-0 right-0 p-4 bottom-[8px] md:bottom-2">
-                <div className="mx-auto max-w-4xl rounded-full border border-slate-300 bg-white shadow-sm focus-within:ring-2 focus-within:ring-sky-400/40">
-                  <div className="flex items-center gap-2 px-4 py-2">
-                    <input
-                      value={chatInput}
-                      onChange={(e) => setChatInput(e.target.value)}
-                      placeholder={labelBottomInputPh}
-                      className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-slate-400"
-                      aria-label={labelBottomInputPh}
-                    />
-                    <Button
-                      type="button"
-                      className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
-                      style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
-                      onClick={() => handleGenerate(true)}
-                      disabled={loading || !hasValidInput}
-                    >
-                      {labelGenerateWithPrompt}
-                    </Button>
-                  </div>
-                </div>
               </div>
             </section>
           </motion.section>
