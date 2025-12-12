@@ -176,12 +176,6 @@ export default function ProAiDetector() {
               <div className="mt-3 text-xs text-slate-500">{result.note}</div>
             )}
 
-            {!!result && (
-              <div className="mt-2 text-[11px] leading-4 text-slate-400">
-                Estimación orientativa. Puede no ser 100% precisa.
-              </div>
-            )}
-
             {!!errorMsg && (
               <div className="mt-3 text-xs text-red-600">{errorMsg}</div>
             )}
@@ -223,6 +217,12 @@ export default function ProAiDetector() {
           </div>
 
           <div className="mt-auto pt-6">
+            {!!result && (
+              <div className="mb-3 text-[11px] leading-4 text-slate-400 text-center">
+                Estimación orientativa. Puede no ser 100% precisa.
+              </div>
+            )}
+
             <button
               type="button"
               className="w-full h-12 rounded-full border border-emerald-500 text-emerald-600 font-semibold text-sm hover:bg-emerald-50 transition disabled:opacity-50 disabled:hover:bg-transparent"
