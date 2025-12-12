@@ -140,7 +140,7 @@ export default function ProAiDetector() {
           )}
 
           {/* Contador + icono borrar */}
-          <div className="absolute left-6 bottom-5 flex items-center gap-6">
+          <div className="absolute left-6 bottom-5 flex items-center gap-8">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
             </span>
