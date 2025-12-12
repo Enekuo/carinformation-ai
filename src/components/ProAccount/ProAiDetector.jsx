@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Clipboard, UploadCloud } from "lucide-react";
+import { Clipboard, UploadCloud, Trash2 } from "lucide-react";
 
 export default function ProAiDetector() {
   const fileInputRef = useRef(null);
@@ -81,6 +81,8 @@ export default function ProAiDetector() {
   const aiValue = result?.ai;
   const humanValue = result?.human;
 
+  const canClear = text.trim().length > 0 && !loading;
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="mb-6">
@@ -137,10 +139,31 @@ export default function ProAiDetector() {
             </div>
           )}
 
-          <div className="absolute left-6 bottom-5">
+          {/* Contador + botón borrar (zona marcada) */}
+          <div className="absolute left-6 bottom-5 flex items-center gap-3">
             <span className="text-xs text-slate-400">
               {text.length} / 5000
             </span>
+
+            <button
+              type="button"
+              disabled={!canClear}
+              onClick={() => {
+                setText("");
+                setResult(null);
+                setErrorMsg("");
+                if (fileInputRef.current) fileInputRef.current.value = "";
+              }}
+              className={
+                "h-8 px-3 rounded-full border text-xs font-medium flex items-center gap-2 transition " +
+                (canClear
+                  ? "border-slate-300 bg-slate-200 text-slate-700 hover:bg-slate-300"
+                  : "border-slate-200 bg-slate-100 text-slate-400 cursor-not-allowed")
+              }
+            >
+              <Trash2 size={14} />
+              Borrar
+            </button>
           </div>
 
           <div className="absolute right-6 bottom-4">
