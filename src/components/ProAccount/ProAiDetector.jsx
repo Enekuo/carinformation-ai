@@ -100,6 +100,24 @@ export default function ProAiDetector() {
               {text.length} / 5000
             </span>
           </div>
+
+          {/* BOTÓN AZUL ABAJO A LA DERECHA (zona marcada) */}
+          <div className="absolute right-6 bottom-4">
+            <button
+              type="button"
+              className="h-11 px-7 rounded-full text-white font-semibold text-sm shadow-md
+                         bg-gradient-to-r from-blue-600 to-cyan-500
+                         hover:from-blue-700 hover:to-cyan-600 transition
+                         disabled:opacity-50 disabled:hover:from-blue-600 disabled:hover:to-cyan-500"
+              disabled={text.trim().length === 0}
+              onClick={() => {
+                // Aquí luego conectaremos la detección real
+                // setResult({ ai: 0, human: 100 });
+              }}
+            >
+              Revisar si hay contenido de IA
+            </button>
+          </div>
         </div>
 
         {/* PANEL DERECHO (resultados) */}
@@ -151,22 +169,8 @@ export default function ProAiDetector() {
             <div className="h-px bg-slate-200" />
           </div>
 
-          {/* Botones inferiores */}
-          <div className="mt-auto pt-6 space-y-3">
-            {/* BOTÓN AZUL */}
-            <button
-              type="button"
-              className="w-full h-12 rounded-full bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition disabled:opacity-50"
-              disabled={text.trim().length === 0}
-              onClick={() => {
-                // Aquí luego conectaremos la detección real
-                // setResult({ ai: 0, human: 100 });
-              }}
-            >
-              Revisar si hay contenido de IA
-            </button>
-
-            {/* Botón de humanizar (como antes) */}
+          {/* Botón inferior */}
+          <div className="mt-auto pt-6">
             <button
               type="button"
               className="w-full h-12 rounded-full border border-emerald-500 text-emerald-600 font-semibold text-sm hover:bg-emerald-50 transition disabled:opacity-50 disabled:hover:bg-transparent"
