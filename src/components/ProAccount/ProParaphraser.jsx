@@ -1,8 +1,7 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FileText,
-  FileDown,
   File as FileIcon,
   Link2 as UrlIcon,
   Plus,
@@ -19,7 +18,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProParaphraser() {
   // ===== Estado =====
@@ -31,7 +29,7 @@ export default function ProParaphraser() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ Modos (7)
+  // Fuerza del parafraseo (ahora son 7 modos)
   const [mode, setMode] = useState("neutral"); // neutral | informal | professional | academic | fluent | simplified | creative
 
   // Idioma de salida
@@ -50,9 +48,6 @@ export default function ProParaphraser() {
 
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
-
-  // Guardado en biblioteca (mensaje)
-  const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -100,13 +95,12 @@ export default function ProParaphraser() {
     </div>
   );
 
-  // ✅ Modos compactos (para que quepan)
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[40px] px-2 text-[13px] font-medium"
+        className="relative inline-flex items-center h-[40px] px-2.5 text-[13px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -119,7 +113,6 @@ export default function ProParaphraser() {
           />
         )}
       </button>
-
       {showDivider && (
         <span
           aria-hidden
@@ -144,9 +137,7 @@ export default function ProParaphraser() {
       } catch {}
     }
     const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
+    return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
   const clearRight = () => {
@@ -154,7 +145,6 @@ export default function ProParaphraser() {
     setErrorMsg("");
     setLoading(false);
     setCopiedFlash(false);
-    setSavedToLibrary(false);
   };
 
   // ===== Atajos teclado =====
@@ -175,12 +165,11 @@ export default function ProParaphraser() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen, textValue, urlItems, documents, mode, outputLang]);
+  }, [loading, result, urlInputOpen]);
 
   // URLs / docs / modo / idioma cambian => limpia derecha
   useEffect(() => {
     clearRight();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlItems, documents, mode, outputLang]);
 
   // ===== Documentos =====
@@ -298,52 +287,6 @@ export default function ProParaphraser() {
     clearRight();
   };
 
-  const handleDownload = () => {
-    if (!result) return;
-    try {
-      const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "euskalia-parafraseo.txt";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch {}
-  };
-
-  const handleSaveToLibrary = () => {
-    if (!result) return;
-
-    const now = new Date();
-    const createdAt = now.toISOString();
-    const createdAtLabel = now
-      .toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-      .replace(".", "");
-
-    const titleFromText = (textValue || "").trim().slice(0, 80);
-
-    addLibraryDoc({
-      kind: "paraphraser",
-      title: titleFromText || "Parafraseo",
-      content: result,
-      createdAt,
-      createdAtLabel,
-    });
-
-    setSavedToLibrary(true);
-    setTimeout(() => setSavedToLibrary(false), 2000);
-  };
-
-  useEffect(() => {
-    setSavedToLibrary(false);
-  }, [result]);
-
   // ===== Helper: cache key (sha-256) =====
   const sha256Hex = async (input) => {
     try {
@@ -396,23 +339,23 @@ export default function ProParaphraser() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
-    const modeInstruction =
+    const modeRule =
       mode === "neutral"
-        ? "Modo NEUTRAL: reescritura clara y natural, manteniendo tono y estructura lo máximo posible."
+        ? "Modo NEUTRAL: reescribe manteniendo tono general y claridad."
         : mode === "informal"
-        ? "Modo INFORMAL: más cercano, sencillo, natural y conversacional (sin perder el significado)."
+        ? "Modo INFORMAL: más cercano y natural, sin perder el significado."
         : mode === "professional"
-        ? "Modo PROFESIONAL: tono serio, claro y directo, adecuado para trabajo, emails o comunicación corporativa."
+        ? "Modo PROFESIONAL: formal, claro y orientado a negocio."
         : mode === "academic"
-        ? "Modo ACADÉMICO: formal, preciso y con vocabulario más técnico cuando encaje, sin inventar datos."
+        ? "Modo ACADÉMICO: tono formal, preciso y estructurado."
         : mode === "fluent"
-        ? "Modo FLUIDO: prioriza legibilidad, ritmo y cohesión, eliminando repeticiones y mejorando transiciones."
+        ? "Modo FLUIDO: mejora fluidez y cohesión, sonando natural."
         : mode === "simplified"
-        ? "Modo SIMPLIFICADO: lenguaje más simple y fácil de entender, frases más cortas, sin perder información."
-        : "Modo CREATIVO: reescritura más original y variada, con estilo más expresivo, sin cambiar el significado.";
+        ? "Modo SIMPLIFICADO: más fácil de entender, frases más simples."
+        : "Modo CREATIVO: más variación y estilo, sin cambiar el significado.";
 
     const formattingRules =
-      "Devuelve el texto parafraseado en formato normal (sin listas obligatorias), claro y natural. " +
+      "Devuelve el texto parafraseado en formato normal, claro y natural. " +
       "No inventes datos. Mantén el mismo idioma que se pide.";
 
     const userContent = [
@@ -420,7 +363,7 @@ export default function ProParaphraser() {
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList ? `\nURLs (si no puedes extraer texto, ignóralas):\n${urlsList}` : "",
       docsInline,
-      `\n${modeInstruction}`,
+      `\n${modeRule}`,
       `\n${formattingRules}`,
       `\n${langInstruction}`,
     ].join("");
@@ -516,25 +459,20 @@ export default function ProParaphraser() {
   const LBL_EN = "English";
 
   const labelGenerateFromSources = "Crear parafraseo";
-  const labelHelpRight =
-    'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".';
-
-  const librarySavedMessage = "Guardado en biblioteca";
-  const labelSaveToLibrary = "Guardar";
+  const labelHelpRight = 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".';
 
   // Ayuda izquierda
   const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
   const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
 
-  const modeLabels = {
-    neutral: "Neutral",
-    informal: "Informal",
-    professional: "Profesional",
-    academic: "Académico",
-    fluent: "Fluido",
-    simplified: "Simplificado",
-    creative: "Creativo",
-  };
+  // Labels modos
+  const M_NEUTRAL = "Neutral";
+  const M_INFORMAL = "Informal";
+  const M_PRO = "Profesional";
+  const M_ACAD = "Académico";
+  const M_FLUENT = "Fluido";
+  const M_SIMPLE = "Simplificado";
+  const M_CREATIVE = "Creativo";
 
   return (
     <>
@@ -549,7 +487,9 @@ export default function ProParaphraser() {
             transition={{ duration: 0.3 }}
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
-            <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <aside
+              className="h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col"
+            >
               {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="text-sm font-medium text-slate-700">{labelSources}</div>
@@ -580,8 +520,8 @@ export default function ProParaphraser() {
                 />
               </div>
 
-              {/* Contenido */}
-              <div className="flex-1 overflow-hidden p-3">
+              {/* Contenido (IMPORTANTE: min-h-0 para que no estire el panel) */}
+              <div className="flex-1 min-h-0 overflow-hidden p-3">
                 {!sourceMode && (
                   <div className="h-full w-full flex items-center justify-center">
                     <div className="text-center px-2">
@@ -597,12 +537,12 @@ export default function ProParaphraser() {
                 )}
 
                 {sourceMode === "text" && (
-                  <div className="flex flex-col h-full">
+                  <div className="flex flex-col h-full min-h-0">
                     <textarea
                       value={textValue}
                       onChange={(e) => setTextValue(e.target.value)}
                       placeholder={labelEnterText}
-                      className="w-full h-[300px] md:h-[450px] resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                      className="w-full flex-1 min-h-0 resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
                       aria-label={labelTabText}
                     />
 
@@ -611,7 +551,6 @@ export default function ProParaphraser() {
                         {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                       </div>
 
-                      {/* Botón borrar */}
                       <button
                         type="button"
                         onClick={handleClearLeft}
@@ -632,7 +571,7 @@ export default function ProParaphraser() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative ${
+                    className={`h-full w-full flex flex-col relative min-h-0 ${
                       dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                     }`}
                     onDragEnter={onDragEnter}
@@ -665,7 +604,7 @@ export default function ProParaphraser() {
                     </button>
 
                     {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
+                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-auto min-h-0">
                         {documents.map(({ id, file }) => (
                           <li
                             key={id}
@@ -698,7 +637,7 @@ export default function ProParaphraser() {
                 )}
 
                 {sourceMode === "url" && (
-                  <div className="h-full w-full flex flex-col">
+                  <div className="h-full w-full flex flex-col min-h-0">
                     <div className="mb-3 flex items-center justify-between">
                       <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
                         <UrlIcon className="w-4 h-4" />
@@ -748,7 +687,7 @@ export default function ProParaphraser() {
                     )}
 
                     {urlItems.length > 0 && (
-                      <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
+                      <ul className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
                         {urlItems.map(({ id, url, host }) => (
                           <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
                             <div className="min-w-0 flex items-center gap-3 flex-1">
@@ -785,18 +724,19 @@ export default function ProParaphraser() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            <section
+              className="relative h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px"
+            >
               {/* Barra superior con modos + selector + acciones */}
-              <div className="h-10 flex items-center justify-between px-3 border-b border-slate-200 bg-slate-50/60">
-                {/* Modos (7) */}
-                <div className="flex items-center gap-1 overflow-hidden">
-                  <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
-                  <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
-                  <ModeTab active={mode === "professional"} label={modeLabels.professional} onClick={() => setMode("professional")} showDivider />
-                  <ModeTab active={mode === "academic"} label={modeLabels.academic} onClick={() => setMode("academic")} showDivider />
-                  <ModeTab active={mode === "fluent"} label={modeLabels.fluent} onClick={() => setMode("fluent")} showDivider />
-                  <ModeTab active={mode === "simplified"} label={modeLabels.simplified} onClick={() => setMode("simplified")} showDivider />
-                  <ModeTab active={mode === "creative"} label={modeLabels.creative} onClick={() => setMode("creative")} showDivider={false} />
+              <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+                <div className="flex items-center gap-1">
+                  <ModeTab active={mode === "neutral"} label={M_NEUTRAL} onClick={() => setMode("neutral")} showDivider />
+                  <ModeTab active={mode === "informal"} label={M_INFORMAL} onClick={() => setMode("informal")} showDivider />
+                  <ModeTab active={mode === "professional"} label={M_PRO} onClick={() => setMode("professional")} showDivider />
+                  <ModeTab active={mode === "academic"} label={M_ACAD} onClick={() => setMode("academic")} showDivider />
+                  <ModeTab active={mode === "fluent"} label={M_FLUENT} onClick={() => setMode("fluent")} showDivider />
+                  <ModeTab active={mode === "simplified"} label={M_SIMPLE} onClick={() => setMode("simplified")} showDivider />
+                  <ModeTab active={mode === "creative"} label={M_CREATIVE} onClick={() => setMode("creative")} />
                 </div>
 
                 <div className="flex items-center gap-1">
@@ -805,18 +745,13 @@ export default function ProParaphraser() {
                     <DropdownMenuTrigger asChild>
                       <button
                         type="button"
-                        className="h-9 min-w-[140px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                         aria-label="Idioma de salida"
                       >
                         <span className="truncate">
                           {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
                         </span>
-                        <svg
-                          className="w-4 h-4 text-slate-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
+                        <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                           <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                         </svg>
                       </button>
@@ -868,7 +803,7 @@ export default function ProParaphraser() {
                     type="button"
                     onClick={() => handleCopy(true)}
                     title="Copiar resultado"
-                    className={`h-8 w-8 flex items-center justify-center ${
+                    className={`h-9 w-9 flex items-center justify-center ${
                       result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
                     aria-label="Copiar resultado"
@@ -882,7 +817,7 @@ export default function ProParaphraser() {
                     type="button"
                     onClick={handleClearLeft}
                     title="Eliminar texto de entrada y resultado"
-                    className={`h-8 w-8 flex items-center justify-center ${
+                    className={`h-9 w-9 flex items-center justify-center ${
                       sourceMode === "text" && textValue
                         ? "text-slate-600 hover:text-slate-800"
                         : "text-slate-300 cursor-not-allowed"
@@ -917,7 +852,7 @@ export default function ProParaphraser() {
               )}
 
               {/* Resultado / errores / loader */}
-              <div className="w-full">
+              <div className="w-full h-full">
                 {(result || errorMsg || loading) && (
                   <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
                     {errorMsg && (
@@ -944,53 +879,6 @@ export default function ProParaphraser() {
                   </div>
                 )}
               </div>
-
-              {/* Barra inferior: copiar, descargar, guardar (IGUAL QUE CORRECTOR) */}
-              {result && (
-                <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
-                  {savedToLibrary && (
-                    <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>
-                  )}
-
-                  <div className="flex items-center gap-4">
-                    {/* Copiar */}
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(true)}
-                      aria-label="Copiar"
-                      className="group relative p-2 rounded-md hover:bg-slate-100"
-                    >
-                      {copiedFlash ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                        {copiedFlash ? "Copiado" : "Copiar"}
-                      </span>
-                    </button>
-
-                    {/* Descargar */}
-                    <button
-                      type="button"
-                      onClick={handleDownload}
-                      aria-label="Descargar"
-                      className="group relative p-2 rounded-md hover:bg-slate-100"
-                    >
-                      <FileDown className="w-5 h-5" />
-                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                        Descargar
-                      </span>
-                    </button>
-
-                    {/* Guardar */}
-                    <button
-                      type="button"
-                      onClick={handleSaveToLibrary}
-                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                      style={{ backgroundColor: "#22c55e" }}
-                    >
-                      {labelSaveToLibrary}
-                    </button>
-                  </div>
-                </div>
-              )}
             </section>
           </motion.section>
         </div>
