@@ -134,13 +134,13 @@ export default function ProParaphraser() {
     </div>
   );
 
-  // ===== Tabs Modos (derecha) — EXACTO COMO ANTES =====
+  // ===== Tabs Modos (derecha) — con medidas pequeñas =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[40px] px-2 text-[13px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -157,7 +157,7 @@ export default function ProParaphraser() {
         <span
           aria-hidden
           className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
+          style={{ width: 1, height: 18, backgroundColor: DIVIDER }}
         />
       )}
     </div>
@@ -967,7 +967,7 @@ export default function ProParaphraser() {
                   </button>
 
                   {/* Botón verde Guardar */}
-                  <button ensuring
+                  <button
                     type="button"
                     onClick={handleSaveToLibrary}
                     className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
