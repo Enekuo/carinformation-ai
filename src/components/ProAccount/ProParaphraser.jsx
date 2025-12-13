@@ -2,7 +2,6 @@ import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FileText,
-  FileDown,
   File as FileIcon,
   Link2 as UrlIcon,
   Plus,
@@ -11,7 +10,6 @@ import {
   Trash,
   Check,
 } from "lucide-react";
-import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,11 +18,8 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
-import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProParaphraser() {
-  const { t } = useTranslation();
-
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
@@ -34,8 +29,8 @@ export default function ProParaphraser() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Fuerza del parafraseo
-  const [strength, setStrength] = useState("soft"); // "soft" | "medium" | "strong"
+  // ✅ Modos (7)
+  const [mode, setMode] = useState("neutral"); // neutral | informal | professional | academic | fluent | simplified | creative
 
   // Idioma de salida
   const [outputLang, setOutputLang] = useState("eus");
@@ -53,9 +48,6 @@ export default function ProParaphraser() {
 
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
-
-  // Guardado en biblioteca (solo mensaje)
-  const [savedToLibrary, setSavedToLibrary] = useState(false);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
@@ -103,12 +95,13 @@ export default function ProParaphraser() {
     </div>
   );
 
-  const StrengthTab = ({ active, label, onClick, showDivider }) => (
+  // ✅ Modos (7) — mismo estilo de pestaña con separadores
+  const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center gap-2 h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -155,7 +148,6 @@ export default function ProParaphraser() {
     setErrorMsg("");
     setLoading(false);
     setCopiedFlash(false);
-    setSavedToLibrary(false);
   };
 
   // ===== Atajos teclado =====
@@ -176,12 +168,12 @@ export default function ProParaphraser() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen, textValue, urlItems, documents, strength, outputLang]);
+  }, [loading, result, urlInputOpen, textValue, urlItems, documents, mode, outputLang]);
 
-  // URLs / docs cambian => limpia derecha
+  // URLs / docs / modo / idioma cambian => limpia derecha
   useEffect(() => {
     clearRight();
-  }, [urlItems, documents, strength, outputLang]);
+  }, [urlItems, documents, mode, outputLang]);
 
   // ===== Documentos =====
   const readTextFromFiles = async (items) => {
@@ -298,54 +290,6 @@ export default function ProParaphraser() {
     clearRight();
   };
 
-  const handleDownload = () => {
-    if (!result) return;
-    try {
-      const blob = new Blob([result], {
-        type: "text/plain;charset=utf-8",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "euskalia-parafraseo.txt";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch {}
-  };
-
-  const handleSaveToLibrary = () => {
-    if (!result) return;
-
-    const now = new Date();
-    const createdAt = now.toISOString();
-    const createdAtLabel = now
-      .toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-      .replace(".", "");
-
-    const titleFromText = (textValue || "").trim().slice(0, 80);
-
-    addLibraryDoc({
-      kind: "paraphraser",
-      title: titleFromText || "Parafraseo",
-      content: result,
-      createdAt,
-      createdAtLabel,
-    });
-
-    setSavedToLibrary(true);
-    setTimeout(() => setSavedToLibrary(false), 2000);
-  };
-
-  useEffect(() => {
-    setSavedToLibrary(false);
-  }, [result]);
-
   // ===== Helper: cache key (sha-256) =====
   const sha256Hex = async (input) => {
     try {
@@ -364,7 +308,6 @@ export default function ProParaphraser() {
     setLoading(true);
     setErrorMsg("");
     setResult("");
-    setSavedToLibrary(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -399,12 +342,20 @@ export default function ProParaphraser() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
-    const strengthRule =
-      strength === "soft"
-        ? "Fuerza SUAVE: cambia lo mínimo manteniendo el estilo y estructura."
-        : strength === "medium"
-        ? "Fuerza MEDIA: reescribe con sinónimos y reestructura algunas frases sin cambiar el sentido."
-        : "Fuerza FUERTE: reescribe con bastante variación y reestructura el texto, sin alterar el significado.";
+    const modeRule =
+      mode === "neutral"
+        ? "Modo NEUTRAL: reescribe con cambios mínimos, manteniendo el estilo."
+        : mode === "informal"
+        ? "Modo INFORMAL: tono cercano, natural y sencillo."
+        : mode === "professional"
+        ? "Modo PROFESIONAL: tono formal, claro y orientado a negocio."
+        : mode === "academic"
+        ? "Modo ACADÉMICO: tono académico, preciso y estructurado."
+        : mode === "fluent"
+        ? "Modo FLUIDO: mejora la fluidez y naturalidad, evitando repeticiones."
+        : mode === "simplified"
+        ? "Modo SIMPLIFICADO: lenguaje más simple y fácil de entender, sin perder significado."
+        : "Modo CREATIVO: reescritura más creativa y variada, manteniendo el significado.";
 
     const formattingRules =
       "Devuelve el texto parafraseado en formato normal (sin listas obligatorias), claro y natural. " +
@@ -415,7 +366,7 @@ export default function ProParaphraser() {
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList ? `\nURLs (si no puedes extraer texto, ignóralas):\n${urlsList}` : "",
       docsInline,
-      `\n${strengthRule}`,
+      `\n${modeRule}`,
       `\n${formattingRules}`,
       `\n${langInstruction}`,
     ].join("");
@@ -433,7 +384,7 @@ export default function ProParaphraser() {
       textValue,
       urls: urlItems.map((u) => u.url),
       docNames: documents.map((d) => d.file?.name).filter(Boolean).join(", "),
-      strength,
+      mode,
       outputLang,
     });
     const cacheKey = await sha256Hex(cacheBase);
@@ -445,7 +396,7 @@ export default function ProParaphraser() {
         body: JSON.stringify({
           messages,
           mode: "paraphrase",
-          strength,
+          paraphraseMode: mode,
           outputLang,
           cacheKey,
           documentsText,
@@ -506,19 +457,13 @@ export default function ProParaphraser() {
   const labelUrlsNotePaywalled = "No se admiten artículos de pago.";
   const labelRemove = "Quitar";
 
-  const LBL_SOFT = "Suave";
-  const LBL_MED = "Medio";
-  const LBL_STRONG = "Fuerte";
-
   const LBL_ES = "Castellano";
   const LBL_EUS = "Euskara";
   const LBL_EN = "English";
 
   const labelGenerateFromSources = "Crear parafraseo";
-  const labelHelpRight = 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".';
-
-  const labelSaveTranslation = t("save_button_label") || "Guardar";
-  const librarySavedMessage = t("library_saved_toast") || "Guardado en biblioteca";
+  const labelHelpRight =
+    'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".';
 
   // Ayuda izquierda
   const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
@@ -654,10 +599,7 @@ export default function ProParaphraser() {
                     {documents.length > 0 && (
                       <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
                         {documents.map(({ id, file }) => (
-                          <li
-                            key={id}
-                            className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                          >
+                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
                             <div className="min-w-0 flex items-center gap-3 flex-1">
                               <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                                 <FileIcon className="w-4 h-4" />
@@ -772,27 +714,28 @@ export default function ProParaphraser() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-              {/* Barra superior con tabs + selector + acciones */}
+            <section className="relative min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+              {/* Barra superior con modos + selector + acciones */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+                {/* ✅ 7 modos */}
                 <div className="flex items-center gap-2">
-                  <StrengthTab
-                    active={strength === "soft"}
-                    label={LBL_SOFT}
-                    onClick={() => setStrength("soft")}
+                  <ModeTab active={mode === "neutral"} label="Neutral" onClick={() => setMode("neutral")} showDivider />
+                  <ModeTab active={mode === "informal"} label="Informal" onClick={() => setMode("informal")} showDivider />
+                  <ModeTab
+                    active={mode === "professional"}
+                    label="Profesional"
+                    onClick={() => setMode("professional")}
                     showDivider
                   />
-                  <StrengthTab
-                    active={strength === "medium"}
-                    label={LBL_MED}
-                    onClick={() => setStrength("medium")}
+                  <ModeTab active={mode === "academic"} label="Académico" onClick={() => setMode("academic")} showDivider />
+                  <ModeTab active={mode === "fluent"} label="Fluido" onClick={() => setMode("fluent")} showDivider />
+                  <ModeTab
+                    active={mode === "simplified"}
+                    label="Simplificado"
+                    onClick={() => setMode("simplified")}
                     showDivider
                   />
-                  <StrengthTab
-                    active={strength === "strong"}
-                    label={LBL_STRONG}
-                    onClick={() => setStrength("strong")}
-                  />
+                  <ModeTab active={mode === "creative"} label="Creativo" onClick={() => setMode("creative")} />
                 </div>
 
                 <div className="flex items-center gap-1">
@@ -807,21 +750,13 @@ export default function ProParaphraser() {
                         <span className="truncate">
                           {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
                         </span>
-                        <svg
-                          className="w-4 h-4 text-slate-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
+                        <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                           <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                         </svg>
                       </button>
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent
-                      align="end"
-                      className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
-                    >
+                    <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
                       <DropdownMenuItem
                         onClick={() => {
                           if (outputLang !== "es") {
@@ -870,11 +805,7 @@ export default function ProParaphraser() {
                     aria-label="Copiar resultado"
                     disabled={!result}
                   >
-                    {copiedFlash ? (
-                      <Check className="w-4 h-4" style={{ color: BLUE }} />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
+                    {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                   </button>
 
                   {/* Eliminar texto de la izquierda */}
@@ -944,59 +875,6 @@ export default function ProParaphraser() {
                   </div>
                 )}
               </div>
-
-              {/* Barra inferior: copiar, descargar, guardar (IGUAL QUE TRANSLATOR) */}
-              {result && (
-                <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
-                  {savedToLibrary && (
-                    <p className="text-xs text-emerald-600 mb-1">
-                      {librarySavedMessage}
-                    </p>
-                  )}
-
-                  <div className="flex items-center gap-4">
-                    {/* Copiar */}
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(true)}
-                      aria-label={t("translator.copy")}
-                      className="group relative p-2 rounded-md hover:bg-slate-100"
-                    >
-                      {copiedFlash ? (
-                        <Check className="w-5 h-5" />
-                      ) : (
-                        <Copy className="w-5 h-5" />
-                      )}
-                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                        {copiedFlash ? t("translator.copied") : t("translator.copy")}
-                      </span>
-                    </button>
-
-                    {/* Descargar (icono PDF como en translator) */}
-                    <button
-                      type="button"
-                      onClick={handleDownload}
-                      aria-label={t("translator.pdf")}
-                      className="group relative p-2 rounded-md hover:bg-slate-100"
-                    >
-                      <FileDown className="w-5 h-5" />
-                      <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                        {t("translator.pdf")}
-                      </span>
-                    </button>
-
-                    {/* Botón verde Guardar */}
-                    <button
-                      type="button"
-                      onClick={handleSaveToLibrary}
-                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
-                      style={{ backgroundColor: "#22c55e" }}
-                    >
-                      {labelSaveTranslation}
-                    </button>
-                  </div>
-                </div>
-              )}
             </section>
           </motion.section>
         </div>
