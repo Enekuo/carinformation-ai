@@ -182,6 +182,7 @@ export default function ProParaphraser() {
   // URLs / docs cambian => limpia derecha
   useEffect(() => {
     clearRight();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlItems, documents, strength, outputLang]);
 
   // ===== Documentos =====
@@ -295,12 +296,6 @@ export default function ProParaphraser() {
     } catch {}
   };
 
-  const handleClearLeft = () => {
-    if (!(sourceMode === "text" && textValue)) return;
-    setTextValue("");
-    clearRight();
-  };
-
   const handleDownload = () => {
     if (!result) return;
     try {
@@ -317,8 +312,14 @@ export default function ProParaphraser() {
   };
 
   const handleSave = () => {
-    // Solo UI por ahora (como tu captura). Si luego quieres guardarlo en Biblioteca, lo conectamos.
-    if (!result) return;
+    // Visual igual que la captura. Aquí enchufas tu lógica real cuando quieras.
+    // Por ahora no hace nada (o puedes abrir un toast).
+  };
+
+  const handleClearLeft = () => {
+    if (!(sourceMode === "text" && textValue)) return;
+    setTextValue("");
+    clearRight();
   };
 
   // ===== Helper: cache key (sha-256) =====
@@ -352,7 +353,9 @@ export default function ProParaphraser() {
     }
 
     if (!validNow) {
-      setErrorMsg("Añade texto suficiente, URLs o documentos antes de crear el parafraseo.");
+      setErrorMsg(
+        "Añade texto suficiente, URLs o documentos antes de crear el parafraseo."
+      );
       setLoading(false);
       return;
     }
@@ -381,13 +384,14 @@ export default function ProParaphraser() {
         : "Fuerza FUERTE: reescribe con bastante variación y reestructura el texto, sin alterar el significado.";
 
     const formattingRules =
-      "Devuelve el texto parafraseado en formato normal, claro y natural. " +
-      "No inventes datos. Mantén el mismo idioma que se pide.";
+      "Devuelve el texto parafraseado en formato normal, claro y natural. No inventes datos. Mantén el mismo idioma.";
 
     const userContent = [
       "Parafrasea el contenido manteniendo el significado original.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList ? `\nURLs (si no puedes extraer texto, ignóralas):\n${urlsList}` : "",
+      urlsList
+        ? `\nURLs (si no puedes extraer texto, ignóralas):\n${urlsList}`
+        : "",
       docsInline,
       `\n${strengthRule}`,
       `\n${formattingRules}`,
@@ -395,8 +399,7 @@ export default function ProParaphraser() {
     ].join("");
 
     const systemBase =
-      "Eres un asistente experto en reescritura/parafraseo. " +
-      "Mantén el significado, no inventes hechos, y produce un texto natural.";
+      "Eres un asistente experto en reescritura/parafraseo. Mantén el significado, no inventes hechos, y produce un texto natural.";
 
     const messages = [
       { role: "system", content: systemBase },
@@ -406,7 +409,10 @@ export default function ProParaphraser() {
     const cacheBase = JSON.stringify({
       textValue,
       urls: urlItems.map((u) => u.url),
-      docNames: documents.map((d) => d.file?.name).filter(Boolean).join(", "),
+      docNames: documents
+        .map((d) => d.file?.name)
+        .filter(Boolean)
+        .join(", "),
       strength,
       outputLang,
     });
@@ -428,7 +434,9 @@ export default function ProParaphraser() {
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error("Has alcanzado el límite de peticiones. Inténtalo más tarde.");
+          throw new Error(
+            "Has alcanzado el límite de peticiones. Inténtalo más tarde."
+          );
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -469,7 +477,8 @@ export default function ProParaphraser() {
   const labelEnterText = "Escribe o pega tu texto aquí…";
 
   const labelChooseFileTitle = "Elige tu archivo o carpeta";
-  const labelAcceptedFormats = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
+  const labelAcceptedFormats =
+    "Puedes añadir archivos PDF, texto copiado, enlaces web…";
   const labelFolderHint = "Aquí aparecerán tus textos o documentos subidos.";
 
   const labelPasteUrls = "Pegar URLs*";
@@ -861,7 +870,7 @@ export default function ProParaphraser() {
                     </DropdownMenuContent>
                   </DropdownMenu>
 
-                  {/* Copiar resultado (icono superior) */}
+                  {/* Copiar (arriba) */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
@@ -881,7 +890,7 @@ export default function ProParaphraser() {
                     )}
                   </button>
 
-                  {/* Eliminar texto de la izquierda (icono superior) */}
+                  {/* Eliminar texto izquierda */}
                   <button
                     type="button"
                     onClick={handleClearLeft}
@@ -931,7 +940,6 @@ export default function ProParaphraser() {
               {/* Resultado / errores / loader */}
               <div className="w-full">
                 {(result || errorMsg || loading) && (
-                  // ✅ padding bottom extra para no pisar el footer de acciones
                   <div className="px-6 pt-20 pb-28 max-w-3xl mx-auto">
                     {errorMsg && (
                       <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
@@ -958,53 +966,47 @@ export default function ProParaphraser() {
                 )}
               </div>
 
-              {/* ✅ FOOTER ACCIONES (como tu captura) */}
-              <div className="absolute right-6 bottom-5 flex items-center gap-4">
-                {/* Copiar */}
+              {/* ✅ Barra inferior derecha EXACTA (iconos + Guardar) */}
+              <div className="absolute bottom-4 right-5 flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
-                  className={`h-9 w-9 flex items-center justify-center transition ${
+                  disabled={!result}
+                  className={`h-9 w-9 rounded-xl border flex items-center justify-center transition ${
                     result
-                      ? "text-slate-500 hover:text-slate-700"
-                      : "text-slate-300 cursor-not-allowed"
+                      ? "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                      : "border-slate-200 bg-white text-slate-300 cursor-not-allowed"
                   }`}
                   aria-label="Copiar"
                   title="Copiar"
-                  disabled={!result}
                 >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" style={{ color: BLUE }} />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
+                  <Copy className="w-[18px] h-[18px]" />
                 </button>
 
-                {/* Descargar */}
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className={`h-9 w-9 flex items-center justify-center transition ${
+                  disabled={!result}
+                  className={`h-9 w-9 rounded-xl border flex items-center justify-center transition ${
                     result
-                      ? "text-slate-500 hover:text-slate-700"
-                      : "text-slate-300 cursor-not-allowed"
+                      ? "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                      : "border-slate-200 bg-white text-slate-300 cursor-not-allowed"
                   }`}
                   aria-label="Descargar"
                   title="Descargar"
-                  disabled={!result}
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-[18px] h-[18px]" />
                 </button>
 
-                {/* Guardar (verde) */}
                 <button
                   type="button"
                   onClick={handleSave}
-                  className={`h-10 px-6 rounded-full font-semibold text-white transition ${
-                    result ? "hover:brightness-95" : "opacity-60 cursor-not-allowed"
-                  }`}
-                  style={{ backgroundColor: "#22c55e" }}
                   disabled={!result}
+                  className={`h-10 px-6 rounded-full font-semibold text-white shadow-sm transition ${
+                    result
+                      ? "bg-emerald-500 hover:brightness-95"
+                      : "bg-emerald-300 cursor-not-allowed"
+                  }`}
                 >
                   Guardar
                 </button>
