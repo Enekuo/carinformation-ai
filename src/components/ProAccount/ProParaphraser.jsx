@@ -2,6 +2,7 @@ import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FileText,
+  FileDown,
   File as FileIcon,
   Link2 as UrlIcon,
   Plus,
@@ -18,6 +19,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
+import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProParaphraser() {
   // ===== Estado =====
@@ -29,7 +31,7 @@ export default function ProParaphraser() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Fuerza del parafraseo (ahora son 7 modos)
+  // Modos (7)
   const [mode, setMode] = useState("neutral"); // neutral | informal | professional | academic | fluent | simplified | creative
 
   // Idioma de salida
@@ -49,6 +51,9 @@ export default function ProParaphraser() {
   // Copia: flash de tic azul
   const [copiedFlash, setCopiedFlash] = useState(false);
 
+  // Guardado en biblioteca (mensaje)
+  const [savedToLibrary, setSavedToLibrary] = useState(false);
+
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
   const GRAY_TEXT = "#64748b";
@@ -62,7 +67,41 @@ export default function ProParaphraser() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Tabs =====
+  // ===== Labels (sin claves) =====
+  const labelSources = "Fuentes";
+  const labelTabText = "Texto";
+  const labelTabDocument = "Documento";
+  const labelTabUrl = "URL";
+  const labelEnterText = "Escribe o pega tu texto aquí…";
+
+  const labelChooseFileTitle = "Elige tu archivo o carpeta";
+  const labelAcceptedFormats = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
+  const labelFolderHint = "Aquí aparecerán tus textos o documentos subidos.";
+
+  const labelPasteUrls = "Pegar URLs*";
+  const labelAddUrl = "Añadir URLs";
+  const labelSaveUrls = "Guardar";
+  const labelCancel = "Cancelar";
+  const labelUrlsNoteVisible = "Solo se importará el texto visible del sitio web.";
+  const labelUrlsNotePaywalled = "No se admiten artículos de pago.";
+  const labelRemove = "Quitar";
+
+  const LBL_ES = "Castellano";
+  const LBL_EUS = "Euskara";
+  const LBL_EN = "English";
+
+  const labelGenerateFromSources = "Crear parafraseo";
+  const labelHelpRight =
+    'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".';
+
+  const labelSaveButton = "Guardar";
+  const librarySavedMessage = "Guardado en biblioteca";
+
+  // Ayuda izquierda
+  const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
+  const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
+
+  // ===== Tabs Fuentes (izquierda) =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
     <div className="relative flex-1 min-w-0 flex items-stretch">
       <button
@@ -95,12 +134,13 @@ export default function ProParaphraser() {
     </div>
   );
 
+  // ===== Tabs Modos (derecha) — EXACTO COMO ANTES =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[40px] px-2.5 text-[13px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -117,7 +157,7 @@ export default function ProParaphraser() {
         <span
           aria-hidden
           className="self-center"
-          style={{ width: 1, height: 18, backgroundColor: DIVIDER }}
+          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
         />
       )}
     </div>
@@ -145,6 +185,7 @@ export default function ProParaphraser() {
     setErrorMsg("");
     setLoading(false);
     setCopiedFlash(false);
+    setSavedToLibrary(false);
   };
 
   // ===== Atajos teclado =====
@@ -170,7 +211,8 @@ export default function ProParaphraser() {
   // URLs / docs / modo / idioma cambian => limpia derecha
   useEffect(() => {
     clearRight();
-  }, [urlItems, documents, mode, outputLang]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlItems.length, documents.length, mode, outputLang]);
 
   // ===== Documentos =====
   const readTextFromFiles = async (items) => {
@@ -256,9 +298,13 @@ export default function ProParaphraser() {
     setUrlItems((prev) => [...prev, ...newItems]);
     setUrlsTextarea("");
     setUrlInputOpen(false);
+    clearRight();
   };
 
-  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) => {
+    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+    clearRight();
+  };
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -287,6 +333,48 @@ export default function ProParaphraser() {
     clearRight();
   };
 
+  const handleDownload = () => {
+    if (!result) return;
+    try {
+      const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "euskalia-parafraseo.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {}
+  };
+
+  const handleSaveToLibrary = () => {
+    if (!result) return;
+
+    const now = new Date();
+    const createdAt = now.toISOString();
+    const createdAtLabel = now
+      .toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" })
+      .replace(".", "");
+
+    const titleFromText = (textValue || "").trim().slice(0, 80);
+
+    addLibraryDoc({
+      kind: "paraphraser",
+      title: titleFromText || "Parafraseo",
+      content: result,
+      createdAt,
+      createdAtLabel,
+    });
+
+    setSavedToLibrary(true);
+    setTimeout(() => setSavedToLibrary(false), 2000);
+  };
+
+  useEffect(() => {
+    setSavedToLibrary(false);
+  }, [result]);
+
   // ===== Helper: cache key (sha-256) =====
   const sha256Hex = async (input) => {
     try {
@@ -305,6 +393,7 @@ export default function ProParaphraser() {
     setLoading(true);
     setErrorMsg("");
     setResult("");
+    setSavedToLibrary(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -341,21 +430,21 @@ export default function ProParaphraser() {
 
     const modeRule =
       mode === "neutral"
-        ? "Modo NEUTRAL: reescribe manteniendo tono general y claridad."
+        ? "Modo NEUTRAL: reescribe de forma natural, sin cambiar el tono."
         : mode === "informal"
-        ? "Modo INFORMAL: más cercano y natural, sin perder el significado."
+        ? "Modo INFORMAL: tono más cercano y sencillo, pero correcto."
         : mode === "professional"
-        ? "Modo PROFESIONAL: formal, claro y orientado a negocio."
+        ? "Modo PROFESIONAL: tono formal, claro y orientado a negocio."
         : mode === "academic"
-        ? "Modo ACADÉMICO: tono formal, preciso y estructurado."
+        ? "Modo ACADÉMICO: tono más técnico/riguroso, vocabulario preciso."
         : mode === "fluent"
-        ? "Modo FLUIDO: mejora fluidez y cohesión, sonando natural."
+        ? "Modo FLUIDO: prioriza fluidez y lectura agradable, sin cambiar significado."
         : mode === "simplified"
-        ? "Modo SIMPLIFICADO: más fácil de entender, frases más simples."
-        : "Modo CREATIVO: más variación y estilo, sin cambiar el significado.";
+        ? "Modo SIMPLIFICADO: frases más cortas y fáciles, lenguaje simple."
+        : "Modo CREATIVO: más variación estilística, manteniendo el significado.";
 
     const formattingRules =
-      "Devuelve el texto parafraseado en formato normal, claro y natural. " +
+      "Devuelve el texto parafraseado en formato normal (sin listas obligatorias), claro y natural. " +
       "No inventes datos. Mantén el mismo idioma que se pide.";
 
     const userContent = [
@@ -435,454 +524,463 @@ export default function ProParaphraser() {
   // ===== Contador =====
   const charCount = (textValue || "").length;
 
-  // ===== Labels (sin claves) =====
-  const labelSources = "Fuentes";
-  const labelTabText = "Texto";
-  const labelTabDocument = "Documento";
-  const labelTabUrl = "URL";
-  const labelEnterText = "Escribe o pega tu texto aquí…";
-
-  const labelChooseFileTitle = "Elige tu archivo o carpeta";
-  const labelAcceptedFormats = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
-  const labelFolderHint = "Aquí aparecerán tus textos o documentos subidos.";
-
-  const labelPasteUrls = "Pegar URLs*";
-  const labelAddUrl = "Añadir URLs";
-  const labelSaveUrls = "Guardar";
-  const labelCancel = "Cancelar";
-  const labelUrlsNoteVisible = "Solo se importará el texto visible del sitio web.";
-  const labelUrlsNotePaywalled = "No se admiten artículos de pago.";
-  const labelRemove = "Quitar";
-
-  const LBL_ES = "Castellano";
-  const LBL_EUS = "Euskara";
-  const LBL_EN = "English";
-
-  const labelGenerateFromSources = "Crear parafraseo";
-  const labelHelpRight = 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".';
-
-  // Ayuda izquierda
-  const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
-  const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
-
-  // Labels modos
-  const M_NEUTRAL = "Neutral";
-  const M_INFORMAL = "Informal";
-  const M_PRO = "Profesional";
-  const M_ACAD = "Académico";
-  const M_FLUENT = "Fluido";
-  const M_SIMPLE = "Simplificado";
-  const M_CREATIVE = "Creativo";
-
   return (
-    <>
-      <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
-        <div className="max-w-7xl mx-auto w-full px-6">
-          <motion.section
-            className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-5"
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={{ duration: 0.3 }}
-          >
-            {/* ===== Panel Fuentes (izquierda) ===== */}
-            <aside
-              className="h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col"
-            >
-              {/* Título */}
-              <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-                <div className="text-sm font-medium text-slate-700">{labelSources}</div>
-              </div>
+    <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
+      <div className="max-w-7xl mx-auto w-full px-6">
+        <motion.section
+          className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-5"
+          initial="initial"
+          animate="in"
+          exit="out"
+          variants={pageVariants}
+          transition={{ duration: 0.3 }}
+        >
+          {/* ===== Panel Fuentes (izquierda) — ALTURA FIJA ===== */}
+          <aside className="h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+            {/* Título */}
+            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+              <div className="text-sm font-medium text-slate-700">{labelSources}</div>
+            </div>
 
-              {/* Tabs */}
-              <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
-                <TabBtn
-                  active={sourceMode === "text"}
-                  icon={FileText}
-                  label={labelTabText}
-                  onClick={() => setSourceMode("text")}
-                  showDivider
-                />
-                <TabBtn
-                  active={sourceMode === "document"}
-                  icon={FileIcon}
-                  label={labelTabDocument}
-                  onClick={() => setSourceMode("document")}
-                  showDivider
-                />
-                <TabBtn
-                  active={sourceMode === "url"}
-                  icon={UrlIcon}
-                  label={labelTabUrl}
-                  onClick={() => setSourceMode("url")}
-                  showDivider={false}
-                />
-              </div>
+            {/* Tabs */}
+            <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
+              <TabBtn
+                active={sourceMode === "text"}
+                icon={FileText}
+                label={labelTabText}
+                onClick={() => setSourceMode("text")}
+                showDivider
+              />
+              <TabBtn
+                active={sourceMode === "document"}
+                icon={FileIcon}
+                label={labelTabDocument}
+                onClick={() => setSourceMode("document")}
+                showDivider
+              />
+              <TabBtn
+                active={sourceMode === "url"}
+                icon={UrlIcon}
+                label={labelTabUrl}
+                onClick={() => setSourceMode("url")}
+                showDivider={false}
+              />
+            </div>
 
-              {/* Contenido (IMPORTANTE: min-h-0 para que no estire el panel) */}
-              <div className="flex-1 min-h-0 overflow-hidden p-3">
-                {!sourceMode && (
-                  <div className="h-full w-full flex items-center justify-center">
-                    <div className="text-center px-2">
-                      <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
-                        <FileText className="w-6 h-6 text-slate-500" />
-                      </div>
-                      <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
-                      {leftBody && (
-                        <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>
-                      )}
+            {/* Contenido (con overflow) */}
+            <div className="flex-1 overflow-hidden p-3">
+              {!sourceMode && (
+                <div className="h-full w-full flex items-center justify-center">
+                  <div className="text-center px-2">
+                    <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
+                      <FileText className="w-6 h-6 text-slate-500" />
                     </div>
+                    <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
+                    {leftBody && <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>}
                   </div>
-                )}
+                </div>
+              )}
 
-                {sourceMode === "text" && (
-                  <div className="flex flex-col h-full min-h-0">
-                    <textarea
-                      value={textValue}
-                      onChange={(e) => setTextValue(e.target.value)}
-                      placeholder={labelEnterText}
-                      className="w-full flex-1 min-h-0 resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
-                      aria-label={labelTabText}
-                    />
+              {sourceMode === "text" && (
+                <div className="flex flex-col h-full">
+                  <textarea
+                    value={textValue}
+                    onChange={(e) => setTextValue(e.target.value)}
+                    placeholder={labelEnterText}
+                    className="w-full flex-1 resize-none outline-none text-[15px] leading-6 bg-transparent placeholder:text-slate-400 text-slate-800"
+                    aria-label={labelTabText}
+                  />
 
-                    <div className="mt-2 flex items-center justify-between">
-                      <div className="text-xs text-slate-500">
-                        {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={handleClearLeft}
-                        className={`h-10 w-10 rounded-xl border flex items-center justify-center transition ${
-                          textValue
-                            ? "border-slate-300 text-slate-700 hover:bg-slate-50"
-                            : "border-slate-200 text-slate-300 cursor-not-allowed"
-                        }`}
-                        aria-label="Borrar texto"
-                        title="Borrar texto"
-                        disabled={!textValue}
-                      >
-                        <Trash className="w-4 h-4" />
-                      </button>
+                  <div className="mt-2 flex items-center justify-between">
+                    <div className="text-xs text-slate-500">
+                      {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                     </div>
-                  </div>
-                )}
-
-                {sourceMode === "document" && (
-                  <div
-                    className={`h-full w-full flex flex-col relative min-h-0 ${
-                      dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
-                    }`}
-                    onDragEnter={onDragEnter}
-                    onDragOver={onDragOver}
-                    onDragLeave={onDragLeave}
-                    onDrop={onDrop}
-                  >
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      className="hidden"
-                      multiple
-                      accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
-                      onChange={onFiles}
-                    />
 
                     <button
                       type="button"
-                      onClick={triggerPick}
-                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label={labelChooseFileTitle}
-                      title={labelChooseFileTitle}
+                      onClick={handleClearLeft}
+                      className={`h-10 w-10 rounded-xl border flex items-center justify-center transition ${
+                        textValue
+                          ? "border-slate-300 text-slate-700 hover:bg-slate-50"
+                          : "border-slate-200 text-slate-300 cursor-not-allowed"
+                      }`}
+                      aria-label="Borrar texto"
+                      title="Borrar texto"
+                      disabled={!textValue}
                     >
-                      <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
-                        <Plus className="w-10 h-10 text-sky-600" />
-                      </div>
-                      <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
-                      <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
-                      <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
+                      <Trash className="w-4 h-4" />
                     </button>
-
-                    {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-auto min-h-0">
-                        {documents.map(({ id, file }) => (
-                          <li
-                            key={id}
-                            className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                          >
-                            <div className="min-w-0 flex items-center gap-3 flex-1">
-                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                                <FileIcon className="w-4 h-4" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">{file.name}</span>
-                                <span className="text-xs text-slate-500">
-                                  {(file.size / 1024 / 1024).toFixed(2)} MB
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => removeDocument(id)}
-                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                              title={labelRemove}
-                              aria-label={labelRemove}
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                   </div>
-                )}
+                </div>
+              )}
 
-                {sourceMode === "url" && (
-                  <div className="h-full w-full flex flex-col min-h-0">
-                    <div className="mb-3 flex items-center justify-between">
-                      <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
-                        <UrlIcon className="w-4 h-4" />
-                        {labelPasteUrls}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setUrlInputOpen(true)}
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 shadow-sm transition-colors"
-                        aria-label={labelAddUrl}
-                        title={labelAddUrl}
-                      >
-                        <Plus className="w-4 h-4 text-sky-500" />
-                        {labelAddUrl}
-                      </button>
+              {sourceMode === "document" && (
+                <div
+                  className={`h-full w-full flex flex-col relative ${
+                    dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
+                  }`}
+                  onDragEnter={onDragEnter}
+                  onDragOver={onDragOver}
+                  onDragLeave={onDragLeave}
+                  onDrop={onDrop}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="hidden"
+                    multiple
+                    accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
+                    onChange={onFiles}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={triggerPick}
+                    className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                    aria-label={labelChooseFileTitle}
+                    title={labelChooseFileTitle}
+                  >
+                    <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
+                      <Plus className="w-10 h-10 text-sky-600" />
                     </div>
+                    <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
+                    <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
+                    <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
+                  </button>
 
-                    {urlInputOpen && (
-                      <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white">
-                        <textarea
-                          value={urlsTextarea}
-                          onChange={(e) => setUrlsTextarea(e.target.value)}
-                          placeholder="Introduce aquí una o más URLs (separadas por línea)"
-                          className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
-                          aria-label={labelPasteUrls}
-                        />
-                        <div className="mt-2 flex items-center gap-2">
-                          <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
-                            {labelSaveUrls}
-                          </Button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setUrlsTextarea("");
-                              setUrlInputOpen(false);
-                            }}
-                            className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
-                          >
-                            {labelCancel}
-                          </button>
-                        </div>
-                        <div className="mt-6 text-xs text-slate-500">
-                          • {labelUrlsNoteVisible}
-                          <br />• {labelUrlsNotePaywalled}
-                        </div>
-                      </div>
-                    )}
-
-                    {urlItems.length > 0 && (
-                      <ul className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
-                        {urlItems.map(({ id, url, host }) => (
-                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
-                            <div className="min-w-0 flex items-center gap-3 flex-1">
-                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                                <UrlIcon className="w-4 h-4" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <a
-                                  href={url}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="text-sm font-medium block truncate text-sky-600 hover:underline"
-                                  title={url}
-                                >
-                                  {host} — {url}
-                                </a>
-                              </div>
+                  {documents.length > 0 && (
+                    <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
+                      {documents.map(({ id, file }) => (
+                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
+                          <div className="min-w-0 flex items-center gap-3 flex-1">
+                            <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                              <FileIcon className="w-4 h-4" />
                             </div>
-                            <button
-                              onClick={() => removeUrl(id)}
-                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                              title={labelRemove}
-                              aria-label={labelRemove}
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </div>
-            </aside>
+                            <div className="min-w-0 flex-1">
+                              <span className="text-sm font-medium block truncate">{file.name}</span>
+                              <span className="text-xs text-slate-500">
+                                {(file.size / 1024 / 1024).toFixed(2)} MB
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => removeDocument(id)}
+                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                            title={labelRemove}
+                            aria-label={labelRemove}
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
 
-            {/* ===== Panel Derecho ===== */}
-            <section
-              className="relative h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px"
-            >
-              {/* Barra superior con modos + selector + acciones */}
-              <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-                <div className="flex items-center gap-1">
-                  <ModeTab active={mode === "neutral"} label={M_NEUTRAL} onClick={() => setMode("neutral")} showDivider />
-                  <ModeTab active={mode === "informal"} label={M_INFORMAL} onClick={() => setMode("informal")} showDivider />
-                  <ModeTab active={mode === "professional"} label={M_PRO} onClick={() => setMode("professional")} showDivider />
-                  <ModeTab active={mode === "academic"} label={M_ACAD} onClick={() => setMode("academic")} showDivider />
-                  <ModeTab active={mode === "fluent"} label={M_FLUENT} onClick={() => setMode("fluent")} showDivider />
-                  <ModeTab active={mode === "simplified"} label={M_SIMPLE} onClick={() => setMode("simplified")} showDivider />
-                  <ModeTab active={mode === "creative"} label={M_CREATIVE} onClick={() => setMode("creative")} />
+              {sourceMode === "url" && (
+                <div className="h-full w-full flex flex-col">
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
+                      <UrlIcon className="w-4 h-4" />
+                      {labelPasteUrls}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setUrlInputOpen(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 shadow-sm transition-colors"
+                      aria-label={labelAddUrl}
+                      title={labelAddUrl}
+                    >
+                      <Plus className="w-4 h-4 text-sky-500" />
+                      {labelAddUrl}
+                    </button>
+                  </div>
+
+                  {urlInputOpen && (
+                    <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white">
+                      <textarea
+                        value={urlsTextarea}
+                        onChange={(e) => setUrlsTextarea(e.target.value)}
+                        placeholder="Introduce aquí una o más URLs (separadas por línea)"
+                        className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
+                        aria-label={labelPasteUrls}
+                      />
+                      <div className="mt-2 flex items-center gap-2">
+                        <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
+                          {labelSaveUrls}
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUrlsTextarea("");
+                            setUrlInputOpen(false);
+                          }}
+                          className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
+                        >
+                          {labelCancel}
+                        </button>
+                      </div>
+                      <div className="mt-6 text-xs text-slate-500">
+                        • {labelUrlsNoteVisible}
+                        <br />• {labelUrlsNotePaywalled}
+                      </div>
+                    </div>
+                  )}
+
+                  {urlItems.length > 0 && (
+                    <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
+                      {urlItems.map(({ id, url, host }) => (
+                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
+                          <div className="min-w-0 flex items-center gap-3 flex-1">
+                            <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                              <UrlIcon className="w-4 h-4" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-sm font-medium block truncate text-sky-600 hover:underline"
+                                title={url}
+                              >
+                                {host} — {url}
+                              </a>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => removeUrl(id)}
+                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                            title={labelRemove}
+                            aria-label={labelRemove}
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          </aside>
+
+          {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
+          <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            {/* Barra superior con MODOS + selector + acciones */}
+            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+              {/* 7 MODOS */}
+              <div className="flex items-center gap-0">
+                <ModeTab active={mode === "neutral"} label="Neutral" onClick={() => setMode("neutral")} showDivider />
+                <ModeTab active={mode === "informal"} label="Informal" onClick={() => setMode("informal")} showDivider />
+                <ModeTab
+                  active={mode === "professional"}
+                  label="Profesional"
+                  onClick={() => setMode("professional")}
+                  showDivider
+                />
+                <ModeTab
+                  active={mode === "academic"}
+                  label="Académico"
+                  onClick={() => setMode("academic")}
+                  showDivider
+                />
+                <ModeTab active={mode === "fluent"} label="Fluido" onClick={() => setMode("fluent")} showDivider />
+                <ModeTab
+                  active={mode === "simplified"}
+                  label="Simplificado"
+                  onClick={() => setMode("simplified")}
+                  showDivider
+                />
+                <ModeTab active={mode === "creative"} label="Creativo" onClick={() => setMode("creative")} />
+              </div>
+
+              <div className="flex items-center gap-1">
+                {/* Selector de idioma */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      aria-label="Idioma de salida"
+                    >
+                      <span className="truncate">
+                        {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                      </span>
+                      <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
+                      </svg>
+                    </button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent
+                    align="end"
+                    className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+                  >
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "es") {
+                          setOutputLang("es");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_ES}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "eus") {
+                          setOutputLang("eus");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_EUS}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "en") {
+                          setOutputLang("en");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_EN}
+                    </DropdownMenuItem>
+                    <DropdownMenuArrow className="fill-white" />
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Copiar resultado */}
+                <button
+                  type="button"
+                  onClick={() => handleCopy(true)}
+                  title="Copiar resultado"
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                  }`}
+                  aria-label="Copiar resultado"
+                  disabled={!result}
+                >
+                  {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
+                </button>
+
+                {/* Eliminar texto izquierda */}
+                <button
+                  type="button"
+                  onClick={handleClearLeft}
+                  title="Eliminar texto de entrada y resultado"
+                  className={`h-9 w-9 flex items-center justify-center ${
+                    sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                  }`}
+                  aria-label="Eliminar texto de entrada y resultado"
+                  disabled={!(sourceMode === "text" && textValue)}
+                >
+                  <Trash className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Estado inicial */}
+            {!loading && !result && !errorMsg && (
+              <>
+                <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
+                  <Button
+                    type="button"
+                    onClick={handleGenerate}
+                    disabled={loading || !hasValidInput}
+                    className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: BLUE, color: "#ffffff" }}
+                  >
+                    {labelGenerateFromSources}
+                  </Button>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  {/* Selector de idioma */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        type="button"
-                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                        aria-label="Idioma de salida"
-                      >
-                        <span className="truncate">
-                          {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
-                        </span>
-                        <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                        </svg>
-                      </button>
-                    </DropdownMenuTrigger>
+                <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+                  <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+                </div>
+              </>
+            )}
 
-                    <DropdownMenuContent
-                      align="end"
-                      className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
-                    >
-                      <DropdownMenuItem
-                        onClick={() => {
-                          if (outputLang !== "es") {
-                            setOutputLang("es");
-                            clearRight();
-                          }
-                        }}
-                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                      >
-                        {LBL_ES}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          if (outputLang !== "eus") {
-                            setOutputLang("eus");
-                            clearRight();
-                          }
-                        }}
-                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                      >
-                        {LBL_EUS}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          if (outputLang !== "en") {
-                            setOutputLang("en");
-                            clearRight();
-                          }
-                        }}
-                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                      >
-                        {LBL_EN}
-                      </DropdownMenuItem>
-                      <DropdownMenuArrow className="fill-white" />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+            {/* Resultado / errores / loader */}
+            <div className="w-full">
+              {(result || errorMsg || loading) && (
+                <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
+                  {errorMsg && (
+                    <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+                      {errorMsg}
+                    </div>
+                  )}
 
-                  {/* Copiar resultado */}
+                  {result && (
+                    <div className="flex flex-col gap-4">
+                      <article className="prose prose-slate max-w-none">
+                        <p className="whitespace-pre-wrap">{result}</p>
+                      </article>
+                    </div>
+                  )}
+
+                  {loading && !result && (
+                    <div className="space-y-3 animate-pulse">
+                      <div className="h-4 bg-slate-200 rounded" />
+                      <div className="h-4 bg-slate-200 rounded w-11/12" />
+                      <div className="h-4 bg-slate-200 rounded w-10/12" />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Barra inferior: copiar, descargar, guardar (IGUAL que el corrector) */}
+            {result && (
+              <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
+                {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
+
+                <div className="flex items-center gap-4">
+                  {/* Copiar */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
-                    title="Copiar resultado"
-                    className={`h-9 w-9 flex items-center justify-center ${
-                      result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
-                    }`}
-                    aria-label="Copiar resultado"
-                    disabled={!result}
+                    aria-label="Copiar"
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
-                    {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
+                    {copiedFlash ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      {copiedFlash ? "Copiado" : "Copiar"}
+                    </span>
                   </button>
 
-                  {/* Eliminar texto de la izquierda */}
+                  {/* Descargar */}
                   <button
                     type="button"
-                    onClick={handleClearLeft}
-                    title="Eliminar texto de entrada y resultado"
-                    className={`h-9 w-9 flex items-center justify-center ${
-                      sourceMode === "text" && textValue
-                        ? "text-slate-600 hover:text-slate-800"
-                        : "text-slate-300 cursor-not-allowed"
-                    }`}
-                    aria-label="Eliminar texto de entrada y resultado"
-                    disabled={!(sourceMode === "text" && textValue)}
+                    onClick={handleDownload}
+                    aria-label="Descargar"
+                    className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
-                    <Trash className="w-4 h-4" />
+                    <FileDown className="w-5 h-5" />
+                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                      Descargar
+                    </span>
+                  </button>
+
+                  {/* Botón verde Guardar */}
+                  <button ensuring
+                    type="button"
+                    onClick={handleSaveToLibrary}
+                    className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
+                    style={{ backgroundColor: "#22c55e" }}
+                  >
+                    {labelSaveButton}
                   </button>
                 </div>
               </div>
-
-              {/* Estado inicial */}
-              {!loading && !result && !errorMsg && (
-                <>
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
-                    <Button
-                      type="button"
-                      onClick={handleGenerate}
-                      disabled={loading || !hasValidInput}
-                      className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
-                      style={{ backgroundColor: BLUE, color: "#ffffff" }}
-                    >
-                      {labelGenerateFromSources}
-                    </Button>
-                  </div>
-
-                  <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
-                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
-                  </div>
-                </>
-              )}
-
-              {/* Resultado / errores / loader */}
-              <div className="w-full h-full">
-                {(result || errorMsg || loading) && (
-                  <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
-                    {errorMsg && (
-                      <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
-                        {errorMsg}
-                      </div>
-                    )}
-
-                    {result && (
-                      <div className="flex flex-col gap-4">
-                        <article className="prose prose-slate max-w-none">
-                          <p className="whitespace-pre-wrap">{result}</p>
-                        </article>
-                      </div>
-                    )}
-
-                    {loading && !result && (
-                      <div className="space-y-3 animate-pulse">
-                        <div className="h-4 bg-slate-200 rounded" />
-                        <div className="h-4 bg-slate-200 rounded w-11/12" />
-                        <div className="h-4 bg-slate-200 rounded w-10/12" />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </section>
-          </motion.section>
-        </div>
-      </section>
-    </>
+            )}
+          </section>
+        </motion.section>
+      </div>
+    </section>
   );
 }
