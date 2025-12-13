@@ -385,7 +385,7 @@ export default function LayoutPro({ children }) {
                 <button
                   className="
                     h-9 px-3 rounded-full border border-slate-200 bg-white
-                    flex items_CENTER gap-1.5 text-sm font-medium text-slate-700
+                    flex items-center gap-1.5 text-sm font-medium text-slate-700
                     hover:bg-slate-50
                   "
                 >
