@@ -1734,11 +1734,188 @@ cookies_last_update: {
   // =========================
   //        Pro Paraphraser
   // =========================    
- 
-proSidebar_paraphraser: {
-  ES: "Parafraseador",
-  EUS: "Parafraseatzailea",
-},
+  proSidebar_paraphraser: {
+    ES: "Parafraseador",
+    EUS: "Parafraseatzailea",
+  },
+  paraphraser_sources_title: {
+    ES: "Fuentes",
+    EUS: "Iturriak",
+  },
+  paraphraser_tab_text: {
+    ES: "Texto",
+    EUS: "Testua",
+  },
+  paraphraser_tab_document: {
+    ES: "Documento",
+    EUS: "Dokumentua",
+  },
+  paraphraser_tab_url: {
+    ES: "URL",
+    EUS: "URL",
+  },
+  paraphraser_placeholder_text: {
+    ES: "Escribe o pega tu texto aquí…",
+    EUS: "Idatzi edo itsatsi testua hemen…",
+  },
+
+  paraphraser_left_empty_title: {
+    ES: "Aquí aparecerán tus textos o documentos subidos.",
+    EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak.",
+  },
+  paraphraser_left_empty_body: {
+    ES: "Puedes añadir archivos PDF, texto copiado, enlaces web…",
+    EUS: "PDF fitxategiak, kopiatutako testua, web estekak… gehitu ditzakezu.",
+  },
+  paraphraser_pick_title: {
+    ES: "Elige tu archivo o carpeta",
+    EUS: "Aukeratu zure fitxategia edo karpeta",
+  },
+  paraphraser_pick_formats: {
+    ES: "Puedes añadir archivos PDF, texto copiado, enlaces web…",
+    EUS: "PDF fitxategiak, kopiatutako testua, web estekak… gehitu ditzakezu.",
+  },
+  paraphraser_pick_hint: {
+    ES: "Aquí aparecerán tus textos o documentos subidos.",
+    EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak.",
+  },
+  paraphraser_remove: {
+    ES: "Quitar",
+    EUS: "Kendu",
+  },
+  paraphraser_urls_title: {
+    ES: "Pegar URLs*",
+    EUS: "URLak itsatsi*",
+  },
+  paraphraser_urls_add: {
+    ES: "Añadir URLs",
+    EUS: "URLak gehitu",
+  },
+  paraphraser_urls_save: {
+    ES: "Guardar",
+    EUS: "Gorde",
+  },
+  paraphraser_urls_cancel: {
+    ES: "Cancelar",
+    EUS: "Utzi",
+  },
+  paraphraser_urls_placeholder: {
+    ES: "Introduce aquí una o más URLs (separadas por línea)",
+    EUS: "Sartu hemen URL bat edo gehiago (lerroz bereizita)",
+  },
+  paraphraser_urls_note_visible: {
+    ES: "Solo se importará el texto visible del sitio web.",
+    EUS: "Webguneko testu ikusgarria bakarrik inportatuko da.",
+  },
+  paraphraser_urls_note_paywall: {
+    ES: "No se admiten artículos de pago.",
+    EUS: "Ordainpeko artikuluak ez dira onartzen.",
+  },
+  paraphraser_mode_neutral: {
+    ES: "Neutral",
+    EUS: "Neutrala",
+  },
+  paraphraser_mode_informal: {
+    ES: "Informal",
+    EUS: "Informala",
+  },
+  paraphraser_mode_professional: {
+    ES: "Profesional",
+    EUS: "Profesionala",
+  },
+  paraphraser_mode_academic: {
+    ES: "Académico",
+    EUS: "Akademikoa",
+  },
+  paraphraser_mode_fluent: {
+    ES: "Fluido",
+    EUS: "Jariakorra",
+  },
+  paraphraser_mode_simplified: {
+    ES: "Simplificado",
+    EUS: "Sinplifikatua",
+  },
+  paraphraser_mode_creative: {
+    ES: "Creativo",
+    EUS: "Sortzailea",
+  },
+  paraphraser_lang_label: {
+    ES: "Idioma de salida",
+    EUS: "Irteerako hizkuntza",
+  },
+  paraphraser_lang_es: {
+    ES: "Castellano",
+    EUS: "Gaztelania",
+  },
+  paraphraser_lang_eus: {
+    ES: "Euskara",
+    EUS: "Euskara",
+  },
+  paraphraser_lang_en: {
+    ES: "English",
+    EUS: "Ingelesa",
+  },
+  paraphraser_generate: {
+    ES: "Crear parafraseo",
+    EUS: "Parafraseoa sortu",
+  },
+  paraphraser_help_right: {
+    ES: 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".',
+    EUS: 'Aukeratu iturri bat (testua, dokumentuak edo URLak) eta sakatu "Parafraseoa sortu".',
+  },
+  paraphraser_error_limit: {
+    ES: "Has superado el límite de caracteres permitido.",
+    EUS: "Onartutako karaktere-muga gainditu duzu.",
+  },
+  paraphraser_error_need_input: {
+    ES: "Añade texto suficiente, URLs o documentos antes de crear el parafraseo.",
+    EUS: "Gehitu testu nahikoa, URLak edo dokumentuak parafraseoa sortu aurretik.",
+  },
+  paraphraser_error_rate_limit: {
+    ES: "Has alcanzado el límite de peticiones. Inténtalo más tarde.",
+    EUS: "Eskaera-mugara iritsi zara. Saiatu geroago.",
+  },
+  paraphraser_error_no_text: {
+    ES: "No se recibió texto de la API.",
+    EUS: "Ez da testurik jaso API-tik.",
+  },
+  paraphraser_error_generic: {
+    ES: "Error creando el parafraseo.",
+    EUS: "Errorea parafraseoa sortzean.",
+  },
+  paraphraser_action_copy: {
+    ES: "Copiar resultado",
+    EUS: "Emaitza kopiatu",
+  },
+  paraphraser_action_delete: {
+    ES: "Eliminar texto de entrada y resultado",
+    EUS: "Sarrerako testua eta emaitza ezabatu",
+  },
+  paraphraser_toast_saved: {
+    ES: "Guardado en biblioteca",
+    EUS: "Liburutegian gorde da",
+  },
+  paraphraser_bottom_copy: {
+    ES: "Copiar",
+    EUS: "Kopiatu",
+  },
+  paraphraser_bottom_copied: {
+    ES: "Copiado",
+    EUS: "Kopiatuta",
+  },
+  paraphraser_bottom_download: {
+    ES: "Descargar",
+    EUS: "Deskargatu",
+  },
+  paraphraser_bottom_save: {
+    ES: "Guardar",
+    EUS: "Gorde",
+  },
+  paraphraser_clear_left: {
+    ES: "Borrar texto",
+    EUS: "Testua ezabatu",
+  },
+
 
  // =========================
   //        Pro Ai Detector
