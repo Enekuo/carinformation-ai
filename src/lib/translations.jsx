@@ -1746,7 +1746,7 @@ cookies_last_update: {
 proParaphraser_tab_text: {
   ES: "Texto",
   EUS: "Testua",
-},
+}, 
 
 proParaphraser_tab_document: {
   ES: "Documento",
