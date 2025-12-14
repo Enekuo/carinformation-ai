@@ -1,10 +1,13 @@
 import React, { useRef, useState } from "react";
 import { Clipboard, UploadCloud, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
+import { useNavigate } from "react-router-dom";
 
 export default function ProAiDetector() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
+
+  const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
   const [text, setText] = useState("");
@@ -86,6 +89,17 @@ export default function ProAiDetector() {
   const humanValue = result?.human;
 
   const canClear = text.trim().length > 0 && !loading;
+
+  const handleGoHumanize = () => {
+    if (!result) return;
+    const payload = (text || "").trim();
+    if (!payload) return;
+
+    // Cambia esta ruta si tu humanizador está en otra
+    navigate("/cuenta-pro/humanizador", {
+      state: { text: payload },
+    });
+  };
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -276,6 +290,7 @@ export default function ProAiDetector() {
               type="button"
               className="w-full h-12 rounded-full border border-emerald-500 text-emerald-600 font-semibold text-sm hover:bg-emerald-50 transition disabled:opacity-50 disabled:hover:bg-transparent"
               disabled={!result}
+              onClick={handleGoHumanize}
             >
               ✨ {tr("aiDetector_humanize_button", "Humanizar texto IA")}
             </button>
