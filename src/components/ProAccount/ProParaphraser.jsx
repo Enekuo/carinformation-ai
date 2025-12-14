@@ -72,37 +72,37 @@ export default function ProParaphraser() {
   };
 
   // ===== Labels (con claves) =====
-  const labelSources = tr("paraphraser.sources_title", "Fuentes");
-  const labelTabText = tr("paraphraser.tab_text", "Texto");
-  const labelTabDocument = tr("paraphraser.tab_document", "Documento");
-  const labelTabUrl = tr("paraphraser.tab_url", "URL");
-  const labelEnterText = tr("paraphraser.enter_text_placeholder", "Escribe o pega tu texto aquí…");
+  const labelSources = tr("proParaphraser.sources_title", "Fuentes");
+  const labelTabText = tr("proParaphraser.tab_text", "Texto");
+  const labelTabDocument = tr("proParaphraser.tab_document", "Documento");
+  const labelTabUrl = tr("proParaphraser.tab_url", "URL");
+  const labelEnterText = tr("proParaphraser.enter_text_placeholder", "Escribe o pega tu texto aquí…");
 
-  const labelChooseFileTitle = tr("paraphraser.pick_file_title", "Elige tu archivo o carpeta");
+  const labelChooseFileTitle = tr("proParaphraser.pick_file_title", "Elige tu archivo o carpeta");
   const labelAcceptedFormats = tr(
-    "paraphraser.accepted_formats",
+    "proParaphraser.accepted_formats",
     "Puedes añadir archivos PDF, texto copiado, enlaces web…"
   );
-  const labelFolderHint = tr("paraphraser.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
+  const labelFolderHint = tr("proParaphraser.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
 
-  const labelPasteUrls = tr("paraphraser.paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("paraphraser.add_urls_button", "Añadir URLs");
+  const labelPasteUrls = tr("proParaphraser.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("proParaphraser.add_urls_button", "Añadir URLs");
   const labelSaveUrls = tr("common.save", "Guardar");
   const labelCancel = tr("common.cancel", "Cancelar");
   const labelUrlsNoteVisible = tr(
-    "paraphraser.urls_note_visible",
+    "proParaphraser.urls_note_visible",
     "Solo se importará el texto visible del sitio web."
   );
-  const labelUrlsNotePaywalled = tr("paraphraser.urls_note_paywalled", "No se admiten artículos de pago.");
+  const labelUrlsNotePaywalled = tr("proParaphraser.urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("common.remove", "Quitar");
 
   const LBL_ES = tr("languages.es", "Castellano");
   const LBL_EUS = tr("languages.eus", "Euskara");
   const LBL_EN = tr("languages.en", "English");
 
-  const labelGenerateFromSources = tr("paraphraser.generate_button", "Crear parafraseo");
+  const labelGenerateFromSources = tr("proParaphraser.generate_button", "Crear parafraseo");
   const labelHelpRight = tr(
-    "paraphraser.help_right",
+    "proParaphraser.help_right",
     'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".'
   );
 
@@ -117,7 +117,7 @@ export default function ProParaphraser() {
   const ariaClearLeft = tr("common.clear_text_aria", "Borrar texto");
 
   const labelUrlTextareaPlaceholder = tr(
-    "paraphraser.urls_textarea_placeholder",
+    "proParaphraser.urls_textarea_placeholder",
     "Introduce aquí una o más URLs (separadas por línea)"
   );
 
@@ -126,8 +126,8 @@ export default function ProParaphraser() {
   const labelCopied = tr("common.copied", "Copiado");
 
   // Ayuda izquierda
-  const leftTitle = tr("paraphraser.left_title", "Aquí aparecerán tus textos o documentos subidos.");
-  const leftBody = tr("paraphraser.left_body", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const leftTitle = tr("proParaphraser.left_title", "Aquí aparecerán tus textos o documentos subidos.");
+  const leftBody = tr("proParaphraser.left_body", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
 
   // ===== Tabs Fuentes (izquierda) =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
@@ -149,8 +149,6 @@ export default function ProParaphraser() {
           />
         )}
       </button>
-
-      {/* ✅ Separador como estaba antes */}
       {showDivider && (
         <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
       )}
@@ -176,8 +174,6 @@ export default function ProParaphraser() {
           />
         )}
       </button>
-
-      {/* ✅ Separador como estaba antes */}
       {showDivider && (
         <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
       )}
@@ -185,13 +181,13 @@ export default function ProParaphraser() {
   );
 
   const modeLabels = {
-    neutral: tr("paraphraser.mode_neutral", "Neutral"),
-    informal: tr("paraphraser.mode_informal", "Informal"),
-    professional: tr("paraphraser.mode_professional", "Profesional"),
-    academic: tr("paraphraser.mode_academic", "Académico"),
-    fluent: tr("paraphraser.mode_fluent", "Fluido"),
-    simplified: tr("paraphraser.mode_simplified", "Simplificado"),
-    creative: tr("paraphraser.mode_creative", "Creativo"),
+    neutral: tr("proParaphraser.mode_neutral", "Neutral"),
+    informal: tr("proParaphraser.mode_informal", "Informal"),
+    professional: tr("proParaphraser.mode_professional", "Profesional"),
+    academic: tr("proParaphraser.mode_academic", "Académico"),
+    fluent: tr("proParaphraser.mode_fluent", "Fluido"),
+    simplified: tr("proParaphraser.mode_simplified", "Simplificado"),
+    creative: tr("proParaphraser.mode_creative", "Creativo"),
   };
 
   // ===== Utils =====
@@ -392,7 +388,7 @@ export default function ProParaphraser() {
 
     addLibraryDoc({
       kind: "paraphraser",
-      title: titleFromText || tr("paraphraser.default_title", "Parafraseo"),
+      title: titleFromText || tr("proParaphraser.default_title", "Parafraseo"),
       content: result,
       createdAt,
       createdAtLabel,
@@ -432,7 +428,7 @@ export default function ProParaphraser() {
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
-      setErrorMsg(tr("paraphraser.error_max_chars", "Has superado el límite de caracteres permitido."));
+      setErrorMsg(tr("proParaphraser.error_max_chars", "Has superado el límite de caracteres permitido."));
       setLoading(false);
       return;
     }
@@ -440,7 +436,7 @@ export default function ProParaphraser() {
     if (!validNow) {
       setErrorMsg(
         tr(
-          "paraphraser.error_need_input",
+          "proParaphraser.error_need_input",
           "Añade texto suficiente, URLs o documentos antes de crear el parafraseo."
         )
       );
@@ -834,7 +830,7 @@ export default function ProParaphraser() {
                     <button
                       type="button"
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label={tr("paraphraser.output_language_aria", "Idioma de salida")}
+                      aria-label={tr("proParaphraser.output_language_aria", "Idioma de salida")}
                     >
                       <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -961,7 +957,7 @@ export default function ProParaphraser() {
               )}
             </div>
 
-            {/* Barra inferior */}
+            {/* Barra inferior: copiar, descargar, guardar */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
@@ -993,7 +989,7 @@ export default function ProParaphraser() {
                     </span>
                   </button>
 
-                  {/* Guardar */}
+                  {/* Botón verde Guardar */}
                   <button
                     type="button"
                     onClick={handleSaveToLibrary}
