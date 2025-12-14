@@ -24,6 +24,8 @@ import { useTranslation } from "@/lib/translations";
 
 export default function ProParaphraser() {
   const { t } = useTranslation();
+
+  // IMPORTANTE: aquí NO invento nada, si la clave no existe se verá el fallback
   const tr = (key, fallback) => t(key) || fallback;
 
   // ===== Estado =====
@@ -71,7 +73,7 @@ export default function ProParaphraser() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Labels (TUS CLAVES EXACTAS) =====
+  // ===== Labels (CLAVES EXACTAS COMO TÚ LAS HAS PEGADO) =====
   const labelSources = tr("proParaphraser_sources_title", "Fuentes");
   const labelTabText = tr("proParaphraser_tab_text", "Texto");
   const labelTabDocument = tr("proParaphraser_tab_document", "Documento");
@@ -110,26 +112,26 @@ export default function ProParaphraser() {
   const titleClearLeft = tr("proParaphraser_clear_text_title", "Borrar texto");
   const ariaClearLeft = tr("proParaphraser_clear_text_aria", "Borrar texto");
 
-  const labelUrlTextareaPlaceholder = tr(
-    "proParaphraser_urls_textarea_placeholder",
-    "Introduce aquí una o más URLs (separadas por línea)"
-  );
+  // No me has pasado esta clave: dejo fallback SIN inventar clave nueva
+  const labelUrlTextareaPlaceholder =
+    "Introduce aquí una o más URLs (separadas por línea)";
 
   const labelDownload = tr("proParaphraser_download", "Descargar");
   const labelCopy = tr("proParaphraser_copy", "Copiar");
   const labelCopied = tr("proParaphraser_copied", "Copiado");
 
-  // Ayuda izquierda (NO invento claves: uso las tuyas existentes)
-  const leftTitle = tr("proParaphraser_folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
-  const leftBody = tr("proParaphraser_accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  // No me has pasado estas dos claves: dejo fallback SIN inventar clave nueva
+  const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
+  const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
 
   // ===== Tabs Fuentes (izquierda) =====
+  // ARREGLADO: SIN flex-1 (para que los separadores no se vayan al medio)
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
-    <div className="relative flex-1 min-w-0 flex items-stretch">
+    <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex w-full items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
+        className="relative inline-flex items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -137,7 +139,10 @@ export default function ProParaphraser() {
         <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
-          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
+          <span
+            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
+            style={{ backgroundColor: BLUE }}
+          />
         )}
       </button>
       {showDivider && (
@@ -159,7 +164,10 @@ export default function ProParaphraser() {
       >
         <span className="truncate">{label}</span>
         {active && (
-          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
+          <span
+            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
+            style={{ backgroundColor: BLUE }}
+          />
         )}
       </button>
       {showDivider && (
@@ -550,7 +558,7 @@ export default function ProParaphraser() {
           variants={pageVariants}
           transition={{ duration: 0.3 }}
         >
-          {/* ===== Panel Fuentes (izquierda) ===== */}
+          {/* ===== Panel Fuentes (izquierda) — ALTURA FIJA ===== */}
           <aside className="h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
@@ -582,7 +590,7 @@ export default function ProParaphraser() {
               />
             </div>
 
-            {/* Contenido */}
+            {/* Contenido (con overflow) */}
             <div className="flex-1 overflow-hidden p-3">
               {!sourceMode && (
                 <div className="h-full w-full flex items-center justify-center">
@@ -776,20 +784,38 @@ export default function ProParaphraser() {
             </div>
           </aside>
 
-          {/* ===== Panel Derecho ===== */}
+          {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            {/* Barra superior con MODOS + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+              {/* 7 MODOS */}
               <div className="flex items-center gap-0">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
                 <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
-                <ModeTab active={mode === "professional"} label={modeLabels.professional} onClick={() => setMode("professional")} showDivider />
-                <ModeTab active={mode === "academic"} label={modeLabels.academic} onClick={() => setMode("academic")} showDivider />
+                <ModeTab
+                  active={mode === "professional"}
+                  label={modeLabels.professional}
+                  onClick={() => setMode("professional")}
+                  showDivider
+                />
+                <ModeTab
+                  active={mode === "academic"}
+                  label={modeLabels.academic}
+                  onClick={() => setMode("academic")}
+                  showDivider
+                />
                 <ModeTab active={mode === "fluent"} label={modeLabels.fluent} onClick={() => setMode("fluent")} showDivider />
-                <ModeTab active={mode === "simplified"} label={modeLabels.simplified} onClick={() => setMode("simplified")} showDivider />
+                <ModeTab
+                  active={mode === "simplified"}
+                  label={modeLabels.simplified}
+                  onClick={() => setMode("simplified")}
+                  showDivider
+                />
                 <ModeTab active={mode === "creative"} label={modeLabels.creative} onClick={() => setMode("creative")} />
               </div>
 
               <div className="flex items-center gap-1">
+                {/* Selector de idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -816,7 +842,6 @@ export default function ProParaphraser() {
                     >
                       {LBL_ES}
                     </DropdownMenuItem>
-
                     <DropdownMenuItem
                       onClick={() => {
                         if (outputLang !== "eus") {
@@ -828,7 +853,6 @@ export default function ProParaphraser() {
                     >
                       {LBL_EUS}
                     </DropdownMenuItem>
-
                     <DropdownMenuItem
                       onClick={() => {
                         if (outputLang !== "en") {
@@ -840,11 +864,11 @@ export default function ProParaphraser() {
                     >
                       {LBL_EN}
                     </DropdownMenuItem>
-
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
                 </DropdownMenu>
 
+                {/* Copiar resultado */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -858,6 +882,7 @@ export default function ProParaphraser() {
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
+                {/* Eliminar texto izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -873,6 +898,7 @@ export default function ProParaphraser() {
               </div>
             </div>
 
+            {/* Estado inicial */}
             {!loading && !result && !errorMsg && (
               <>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
@@ -893,6 +919,7 @@ export default function ProParaphraser() {
               </>
             )}
 
+            {/* Resultado / errores / loader */}
             <div className="w-full">
               {(result || errorMsg || loading) && (
                 <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
@@ -921,11 +948,13 @@ export default function ProParaphraser() {
               )}
             </div>
 
+            {/* Barra inferior: copiar, descargar, guardar */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
 
                 <div className="flex items-center gap-4">
+                  {/* Copiar */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
@@ -938,6 +967,7 @@ export default function ProParaphraser() {
                     </span>
                   </button>
 
+                  {/* Descargar */}
                   <button
                     type="button"
                     onClick={handleDownload}
@@ -950,6 +980,7 @@ export default function ProParaphraser() {
                     </span>
                   </button>
 
+                  {/* Botón verde Guardar */}
                   <button
                     type="button"
                     onClick={handleSaveToLibrary}
