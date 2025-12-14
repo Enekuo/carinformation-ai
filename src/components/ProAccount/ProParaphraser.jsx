@@ -430,7 +430,7 @@ export default function ProParaphraser() {
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
-    const validNow = textOk || urlItems.length > 0 || documents.length > 0;
+    const validNow = textOk || urlItems.length > 0 || documentsText.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
       setErrorMsg(tr("proParaphraser_error_max_chars", "Has superado el límite de caracteres permitido."));
