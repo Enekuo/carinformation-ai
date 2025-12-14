@@ -466,19 +466,68 @@ export default function ProParaphraser() {
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
     const modeRule =
-      mode === "neutral"
-        ? "Modo NEUTRAL: reescribe de forma natural, sin cambiar el tono."
-        : mode === "informal"
-        ? "Modo INFORMAL: tono más cercano y sencillo, pero correcto."
-        : mode === "professional"
-        ? "Modo PROFESIONAL: tono formal, claro y orientado a negocio."
-        : mode === "academic"
-        ? "Modo ACADÉMICO: tono más técnico/riguroso, vocabulario preciso."
-        : mode === "fluent"
-        ? "Modo FLUIDO: prioriza fluidez y lectura agradable, sin cambiar significado."
-        : mode === "simplified"
-        ? "Modo SIMPLIFICADO: frases más cortas y fáciles, lenguaje simple."
-        : "Modo CREATIVO: más variación estilística, manteniendo el significado.";
+  mode === "neutral"
+    ? `
+MODO NEUTRAL (base):
+- Reescribe de forma natural y correcta.
+- Mantén el tono y el nivel del original.
+- Cambia palabras y orden lo justo.
+- NO simplifiques, NO embellezcas, NO hagas más formal ni más informal.
+`.trim()
+    : mode === "informal"
+    ? `
+MODO INFORMAL (se tiene que notar):
+- Tono cercano y conversacional, como hablado entre personas.
+- Frases MÁS cortas.
+- Vocabulario cotidiano (sin sonar infantil).
+- Evita estructuras formales o académicas.
+- Puedes usar expresiones naturales tipo: "la verdad", "a veces", "me pasa que…", sin exagerar.
+- PROHIBIDO: "me resulta difícil", "de manera continua", "preservando", "por esta razón".
+`.trim()
+    : mode === "professional"
+    ? `
+MODO PROFESIONAL:
+- Tono formal y profesional, claro y práctico.
+- Directo, sin adornos emocionales.
+- Léxico neutro de trabajo (email, informe, negocio).
+- Estructura ordenada y precisa.
+- PROHIBIDO: coloquialismos, muletillas, humor, exageraciones.
+`.trim()
+    : mode === "academic"
+    ? `
+MODO ACADÉMICO:
+- Tono riguroso y formal, con vocabulario más técnico.
+- Frases más largas y elaboradas (sin perder claridad).
+- Usa conectores formales: "por consiguiente", "en este contexto", "asimismo".
+- Apto para contexto educativo / académico.
+`.trim()
+    : mode === "fluent"
+    ? `
+MODO FLUIDO (ritmo, no "más formal"):
+- Prioriza que el texto se lea de forma continua y agradable.
+- Une frases cuando tenga sentido.
+- Reordena para mejorar el flujo (sin cambiar el significado).
+- Elimina repeticiones y comienzos repetidos ("A veces...", "A veces...").
+- Añade transiciones suaves: "además", "por otro lado", "en resumen" (sin pasarte).
+`.trim()
+    : mode === "simplified"
+    ? `
+MODO SIMPLIFICADO (tiene que parecer otro texto):
+- Frases CORTAS y muy claras (idealmente 10–16 palabras).
+- Vocabulario sencillo (sin tecnicismos).
+- Evita subordinadas, metáforas y frases largas.
+- Divide ideas: una idea principal por frase.
+- Piensa en fatiga lectora / TDAH: que se entienda a la primera.
+- PROHIBIDO: frases largas, conectores densos, palabras tipo "preservando", "contexto", "consecuentemente".
+`.trim()
+    : `
+MODO CREATIVO:
+- Mayor libertad estilística manteniendo el significado.
+- Varía la estructura: cambia el orden de ideas y el ritmo.
+- Haz el texto más expresivo y con más personalidad (sin inventar hechos).
+- Puedes usar algún giro ligero o una metáfora suave si encaja.
+- NO lo conviertas en académico ni en profesional.
+`.trim();
 
     const formattingRules =
       "Devuelve el texto parafraseado en formato normal (sin listas obligatorias), claro y natural. " +
