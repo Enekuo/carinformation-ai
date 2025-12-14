@@ -150,7 +150,7 @@ export default function ProHumanizer() {
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-6 text-[15px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-6 text-[13px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
