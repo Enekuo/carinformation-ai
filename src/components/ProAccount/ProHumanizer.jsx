@@ -31,8 +31,8 @@ export default function ProHumanizer() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Modos (7) — misma barra
-  const [mode, setMode] = useState("neutral"); // neutral | informal | professional | academic | fluent | simplified | creative
+  // Niveles (3)
+  const [mode, setMode] = useState("standard"); // basic | standard | advanced
 
   // Idioma de salida
   const [outputLang, setOutputLang] = useState("eus");
@@ -144,13 +144,13 @@ export default function ProHumanizer() {
     </div>
   );
 
-  // ===== Tabs Modos (derecha) =====
-  const ModeTab = ({ active, label, onClick, showDivider }) => (
+  // ===== Tabs Niveles (derecha) — GRANDES =====
+  const LevelTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[36px] px-2 text-[13px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-5 text-[15px] font-semibold"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -163,20 +163,17 @@ export default function ProHumanizer() {
           />
         )}
       </button>
+
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 18, backgroundColor: DIVIDER }} />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
 
-  const modeLabels = {
-    neutral: "Neutrala",
-    informal: "Informala",
-    professional: "Profesionala",
-    academic: "Akademikoa",
-    fluent: "Jariozkoa",
-    simplified: "Sinplifikatua",
-    creative: "Sortzailea",
+  const levelLabels = {
+    basic: "Básico",
+    standard: "Estándar",
+    advanced: "Avanzado",
   };
 
   // ===== Utils =====
@@ -224,7 +221,7 @@ export default function ProHumanizer() {
     return () => window.removeEventListener("keydown", onKey);
   }, [loading, result, urlInputOpen]);
 
-  // URLs / docs / modo / idioma cambian => limpia derecha
+  // URLs / docs / nivel / idioma cambian => limpia derecha
   useEffect(() => {
     clearRight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -444,61 +441,31 @@ export default function ProHumanizer() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
-    const modeRule =
-      mode === "neutral"
+    const levelRule =
+      mode === "basic"
         ? `
-MODO NEUTRAL (humanización base):
-- Haz que el texto suene humano, natural y creíble.
-- Mantén el significado y el tono del original.
-- Elimina rigidez típica de IA (frases demasiado perfectas).
-- Cambia lo justo: ritmo, conectores, orden leve y vocabulario natural.
-- PROHIBIDO: inventar datos, añadir ideas nuevas, cambiar el tema.
+NIVEL BÁSICO:
+- Cambios mínimos.
+- Quita rigidez típica de IA.
+- Ajusta conectores y algunas palabras para sonar natural.
+- Mantén casi la misma estructura.
+- NO inventes datos.
 `.trim()
-        : mode === "informal"
+        : mode === "advanced"
         ? `
-MODO INFORMAL (se tiene que notar):
-- Tono cercano y conversacional, como hablado.
-- Frases MÁS cortas y naturales.
-- Vocabulario cotidiano (sin sonar infantil).
-- Evita estructuras rígidas o académicas.
-- PROHIBIDO: frases "robot", tecnicismos innecesarios, formalidad excesiva.
-`.trim()
-        : mode === "professional"
-        ? `
-MODO PROFESIONAL:
-- Suena humano, pero profesional: claro, directo y útil.
-- Sin muletillas, sin humor, sin exageraciones.
-- Evita frases típicas de IA ("en conclusión", "es importante destacar") salvo que encajen.
-- Mantén precisión y coherencia.
-`.trim()
-        : mode === "academic"
-        ? `
-MODO ACADÉMICO:
-- Mantén rigor y formalidad, pero evita sonar "IA".
-- Conectores formales con moderación.
-- Frases bien construidas, sin repetición artificial.
-`.trim()
-        : mode === "fluent"
-        ? `
-MODO FLUIDO:
-- Prioriza ritmo y lectura continua.
-- Une y reordena para que fluya mejor.
-- Elimina repeticiones y cortes bruscos.
-- Transiciones suaves sin pasarte.
-`.trim()
-        : mode === "simplified"
-        ? `
-MODO SIMPLIFICADO:
-- Hazlo humano y MUY fácil de leer.
-- Frases cortas y claras.
-- Vocabulario sencillo, sin tecnicismos.
-- Ideal para fatiga lectora / TDAH.
+NIVEL AVANZADO:
+- Humanización fuerte (se tiene que notar).
+- Reestructura frases y mejora el ritmo.
+- Cambia vocabulario y orden cuando ayude a sonar humano.
+- Mantén significado, NO inventes datos.
+- Evita frases típicas de IA.
 `.trim()
         : `
-MODO CREATIVO:
-- Más personalidad y variación, manteniendo significado.
-- Cambia ritmo y expresiones para que parezca escrito por una persona.
-- PROHIBIDO inventar hechos.
+NIVEL ESTÁNDAR:
+- Humanización equilibrada.
+- Mejora fluidez y naturalidad sin pasarte.
+- Cambia lo justo para que parezca escrito por una persona.
+- Mantén significado, NO inventes datos.
 `.trim();
 
     const formattingRules =
@@ -510,7 +477,7 @@ MODO CREATIVO:
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList ? `\nURLs (si no puedes extraer texto, ignóralas):\n${urlsList}` : "",
       docsInline,
-      `\n${modeRule}`,
+      `\n${levelRule}`,
       `\n${formattingRules}`,
       `\n${langInstruction}`,
     ].join("");
@@ -528,7 +495,7 @@ MODO CREATIVO:
       textValue,
       urls: urlItems.map((u) => u.url),
       docNames: documents.map((d) => d.file?.name).filter(Boolean).join(", "),
-      mode,
+      level: mode,
       outputLang,
     });
     const cacheKey = await sha256Hex(cacheBase);
@@ -540,7 +507,7 @@ MODO CREATIVO:
         body: JSON.stringify({
           messages,
           mode: "humanize",
-          humanizeMode: mode,
+          humanizeLevel: mode,
           outputLang,
           cacheKey,
           documentsText,
@@ -823,17 +790,18 @@ MODO CREATIVO:
 
           {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con MODOS + selector + acciones */}
+            {/* Barra superior con NIVELES + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* 7 MODOS */}
+              {/* 3 NIVELES */}
               <div className="flex items-center gap-0 -ml-2">
-                <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
-                <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
-                <ModeTab active={mode === "professional"} label={modeLabels.professional} onClick={() => setMode("professional")} showDivider />
-                <ModeTab active={mode === "academic"} label={modeLabels.academic} onClick={() => setMode("academic")} showDivider />
-                <ModeTab active={mode === "fluent"} label={modeLabels.fluent} onClick={() => setMode("fluent")} showDivider />
-                <ModeTab active={mode === "simplified"} label={modeLabels.simplified} onClick={() => setMode("simplified")} showDivider />
-                <ModeTab active={mode === "creative"} label={modeLabels.creative} onClick={() => setMode("creative")} />
+                <LevelTab active={mode === "basic"} label={levelLabels.basic} onClick={() => setMode("basic")} showDivider />
+                <LevelTab
+                  active={mode === "standard"}
+                  label={levelLabels.standard}
+                  onClick={() => setMode("standard")}
+                  showDivider
+                />
+                <LevelTab active={mode === "advanced"} label={levelLabels.advanced} onClick={() => setMode("advanced")} />
               </div>
 
               <div className="flex items-center gap-1">
