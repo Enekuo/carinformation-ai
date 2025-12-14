@@ -166,7 +166,7 @@ export default function ProParaphraser() {
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[36px] px-2 text-[13px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -180,7 +180,7 @@ export default function ProParaphraser() {
         )}
       </button>
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 18, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
@@ -465,21 +465,20 @@ export default function ProParaphraser() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
-    // ✅ CAMBIO ÚNICO: modeRule (prompts por modo)
     const modeRule =
       mode === "neutral"
-        ? "Modo NEUTRAL: Reescribe el texto de forma natural, clara y correcta, sin cambiar el tono ni el nivel. Mantén una estructura similar al original. Cambia palabras y orden solo lo necesario. No simplifiques ni adornes."
+        ? "Modo NEUTRAL: reescribe de forma natural, sin cambiar el tono."
         : mode === "informal"
-        ? "Modo INFORMAL: Usa un tono cercano y conversacional. Prefiere frases cortas. Usa vocabulario cotidiano. Evita estructuras formales o académicas. El texto debe sonar como si lo explicara una persona a otra."
+        ? "Modo INFORMAL: tono más cercano y sencillo, pero correcto."
         : mode === "professional"
-        ? "Modo PROFESIONAL: Usa un tono formal y profesional. Sé claro, directo y preciso. Evita expresiones coloquiales. No uses un tono emocional. Debe servir para trabajo, correos o informes (práctico, no denso)."
+        ? "Modo PROFESIONAL: tono formal, claro y orientado a negocio."
         : mode === "academic"
-        ? "Modo ACADÉMICO: Usa un tono formal y riguroso. Emplea vocabulario preciso y estructurado. Frases más largas y elaboradas. Apto para contextos educativos o académicos."
+        ? "Modo ACADÉMICO: tono más técnico/riguroso, vocabulario preciso."
         : mode === "fluent"
-        ? "Modo FLUIDO: Prioriza la fluidez y la naturalidad del texto. Une frases cuando sea posible. Reordena ideas para mejorar el ritmo. Evita repeticiones innecesarias. Debe leerse de forma continua y agradable."
+        ? "Modo FLUIDO: prioriza fluidez y lectura agradable, sin cambiar significado."
         : mode === "simplified"
-        ? "Modo SIMPLIFICADO: Usa frases cortas y claras. Emplea vocabulario sencillo. Evita estructuras complejas y subordinadas. Facilita la comprensión. Piensa en alguien con fatiga lectora o dificultades de atención."
-        : "Modo CREATIVO: Permite mayor libertad estilística. Varía la estructura y el orden de las frases. Usa un estilo más expresivo. Mantén el significado original, pero con más creatividad.";
+        ? "Modo SIMPLIFICADO: frases más cortas y fáciles, lenguaje simple."
+        : "Modo CREATIVO: más variación estilística, manteniendo el significado.";
 
     const formattingRules =
       "Devuelve el texto parafraseado en formato normal (sin listas obligatorias), claro y natural. " +
@@ -529,9 +528,7 @@ export default function ProParaphraser() {
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error(
-            tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde.")
-          );
+          throw new Error(tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde."));
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -806,7 +803,7 @@ export default function ProParaphraser() {
             {/* Barra superior con MODOS + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* 7 MODOS */}
-              <div className="flex items-center gap-0">
+              <div className="flex items-center gap-0 -ml-2">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
                 <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
                 <ModeTab
