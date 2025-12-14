@@ -144,18 +144,18 @@ export default function ProHumanizer() {
     </div>
   );
 
-  // ===== Tabs Niveles (derecha) — MISMA LETRA QUE "Fuentes" =====
+  // ===== Tabs Niveles (derecha) — MISMA LETRA SIEMPRE =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium justify-start"
+        className="relative inline-flex items-center h-[44px] px-6 text-[14px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
       >
-        <span className="truncate">{label}</span>
+        <span>{label}</span>
 
         {active && (
           <span
@@ -170,6 +170,12 @@ export default function ProHumanizer() {
       )}
     </div>
   );
+
+  const modeLabels = {
+    basic: "Básico",
+    standard: "Estándar",
+    advanced: "Avanzado",
+  };
 
   // ===== Utils =====
   const parseUrlsFromText = (text) => {
@@ -436,7 +442,6 @@ export default function ProHumanizer() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
-    // ===== PROMPT REAL POR NIVEL (EL TUYO) =====
     const levelRule =
       mode === "basic"
         ? `
@@ -478,7 +483,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
 `.trim();
 
     const formattingRules =
-      "Devuelve el texto humanizado en formato normal, claro y natural. " +
+      "Devuelve SOLO el texto final humanizado (sin introducciones tipo 'Aquí tienes...'). " +
       "No inventes datos. Mantén el idioma solicitado.";
 
     const userContent = [
@@ -720,7 +725,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                     <button
                       type="button"
                       onClick={() => setUrlInputOpen(true)}
-                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 shadow-sm transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-sky-300 bg-sky-50 text-sky-700 hover:bg-slate-100 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 shadow-sm transition-colors"
                       aria-label={labelAddUrl}
                       title={labelAddUrl}
                     >
@@ -801,15 +806,18 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* 3 NIVELES */}
               <div className="flex items-center gap-0 -ml-2">
-                <ModeTab active={mode === "basic"} label="Básico" onClick={() => setMode("basic")} showDivider />
-                <ModeTab active={mode === "standard"} label="Estándar" onClick={() => setMode("standard")} showDivider />
-                <ModeTab active={mode === "advanced"} label="Avanzado" onClick={() => setMode("advanced")} />
+                <ModeTab active={mode === "basic"} label={modeLabels.basic} onClick={() => setMode("basic")} showDivider />
+                <ModeTab
+                  active={mode === "standard"}
+                  label={modeLabels.standard}
+                  onClick={() => setMode("standard")}
+                  showDivider
+                />
+                <ModeTab active={mode === "advanced"} label={modeLabels.advanced} onClick={() => setMode("advanced")} />
               </div>
 
               <div className="flex items-center gap-1">
-                {/* Selector de idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -864,7 +872,6 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -878,7 +885,6 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
-                {/* Borrar izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -894,31 +900,30 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
               </div>
             </div>
 
-            {/* Estado inicial */}
-            {!loading && !result && !errorMsg && (
-              <>
-                <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
-                  <Button
-                    type="button"
-                    onClick={handleGenerate}
-                    disabled={loading || !hasValidInput}
-                    className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
-                    style={{ backgroundColor: BLUE, color: "#ffffff" }}
-                  >
-                    {labelGenerateFromSources}
-                  </Button>
-                </div>
+            {/* ===== CONTENIDO SCROLLEABLE (cuando sea necesario) ===== */}
+            <div className="absolute inset-x-0 top-11 bottom-0 overflow-y-auto">
+              {!loading && !result && !errorMsg && (
+                <>
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
+                    <Button
+                      type="button"
+                      onClick={handleGenerate}
+                      disabled={loading || !hasValidInput}
+                      className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                      style={{ backgroundColor: BLUE, color: "#ffffff" }}
+                    >
+                      {labelGenerateFromSources}
+                    </Button>
+                  </div>
 
-                <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
-                  <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
-                </div>
-              </>
-            )}
+                  <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+                  </div>
+                </>
+              )}
 
-            {/* Resultado / errores / loader */}
-            <div className="w-full">
               {(result || errorMsg || loading) && (
-                <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
+                <div className="px-6 pt-20 pb-28 max-w-3xl mx-auto">
                   {errorMsg && (
                     <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
                       {errorMsg}
@@ -944,7 +949,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
               )}
             </div>
 
-            {/* Barra inferior */}
+            {/* Barra inferior: copiar, descargar, guardar */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
