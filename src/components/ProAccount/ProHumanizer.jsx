@@ -144,18 +144,19 @@ export default function ProHumanizer() {
     </div>
   );
 
-  // ===== Tabs Niveles (derecha) — GRANDES =====
-  const LevelTab = ({ active, label, onClick, showDivider }) => (
+  // ===== Tabs Niveles (derecha) — MISMA LETRA SIEMPRE =====
+  const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-5 text-[15px] font-semibold"
+        className="relative inline-flex items-center h-[44px] px-6 text-[15px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
       >
-        <span className="truncate">{label}</span>
+        <span>{label}</span>
+
         {active && (
           <span
             className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
@@ -170,7 +171,7 @@ export default function ProHumanizer() {
     </div>
   );
 
-  const levelLabels = {
+  const modeLabels = {
     basic: "Básico",
     standard: "Estándar",
     advanced: "Avanzado",
@@ -444,7 +445,7 @@ export default function ProHumanizer() {
     const levelRule =
       mode === "basic"
         ? `
-NIVEL BÁSICO:
+NIVEL BÁSICO (retoque mínimo):
 - Cambios mínimos.
 - Quita rigidez típica de IA.
 - Ajusta conectores y algunas palabras para sonar natural.
@@ -453,7 +454,7 @@ NIVEL BÁSICO:
 `.trim()
         : mode === "advanced"
         ? `
-NIVEL AVANZADO:
+NIVEL AVANZADO (humanización fuerte, se nota):
 - Humanización fuerte (se tiene que notar).
 - Reestructura frases y mejora el ritmo.
 - Cambia vocabulario y orden cuando ayude a sonar humano.
@@ -461,7 +462,7 @@ NIVEL AVANZADO:
 - Evita frases típicas de IA.
 `.trim()
         : `
-NIVEL ESTÁNDAR:
+NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
 - Humanización equilibrada.
 - Mejora fluidez y naturalidad sin pasarte.
 - Cambia lo justo para que parezca escrito por una persona.
@@ -590,6 +591,13 @@ NIVEL ESTÁNDAR:
                 onClick={() => setSourceMode("url")}
                 showDivider={false}
               />
+            </div>
+
+            {/* ✅ NUEVO: Importante */}
+            <div className="px-3 py-2 text-[13px] leading-5 text-slate-500 border-b border-slate-200">
+              <strong className="font-medium text-slate-600">Importante:</strong>{" "}
+              el nivel seleccionado (Básico, Estándar o Avanzado) cambia de forma real cómo se humaniza el texto en el
+              prompt.
             </div>
 
             {/* Contenido (con overflow) */}
@@ -790,22 +798,19 @@ NIVEL ESTÁNDAR:
 
           {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-            {/* Barra superior con NIVELES + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* 3 NIVELES */}
               <div className="flex items-center gap-0 -ml-2">
-                <LevelTab active={mode === "basic"} label={levelLabels.basic} onClick={() => setMode("basic")} showDivider />
-                <LevelTab
+                <ModeTab active={mode === "basic"} label={modeLabels.basic} onClick={() => setMode("basic")} showDivider />
+                <ModeTab
                   active={mode === "standard"}
-                  label={levelLabels.standard}
+                  label={modeLabels.standard}
                   onClick={() => setMode("standard")}
                   showDivider
                 />
-                <LevelTab active={mode === "advanced"} label={levelLabels.advanced} onClick={() => setMode("advanced")} />
+                <ModeTab active={mode === "advanced"} label={modeLabels.advanced} onClick={() => setMode("advanced")} />
               </div>
 
               <div className="flex items-center gap-1">
-                {/* Selector de idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -858,7 +863,6 @@ NIVEL ESTÁNDAR:
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Copiar resultado */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -872,7 +876,6 @@ NIVEL ESTÁNDAR:
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
-                {/* Eliminar texto izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -888,7 +891,6 @@ NIVEL ESTÁNDAR:
               </div>
             </div>
 
-            {/* Estado inicial */}
             {!loading && !result && !errorMsg && (
               <>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
@@ -909,7 +911,6 @@ NIVEL ESTÁNDAR:
               </>
             )}
 
-            {/* Resultado / errores / loader */}
             <div className="w-full">
               {(result || errorMsg || loading) && (
                 <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
@@ -938,13 +939,11 @@ NIVEL ESTÁNDAR:
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
 
                 <div className="flex items-center gap-4">
-                  {/* Copiar */}
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
@@ -957,7 +956,6 @@ NIVEL ESTÁNDAR:
                     </span>
                   </button>
 
-                  {/* Descargar */}
                   <button
                     type="button"
                     onClick={handleDownload}
@@ -970,7 +968,6 @@ NIVEL ESTÁNDAR:
                     </span>
                   </button>
 
-                  {/* Botón verde Guardar */}
                   <button
                     type="button"
                     onClick={handleSaveToLibrary}
