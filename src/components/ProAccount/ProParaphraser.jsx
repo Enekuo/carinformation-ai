@@ -166,7 +166,7 @@ export default function ProParaphraser() {
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[36px] px-2 text-[13px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -180,7 +180,7 @@ export default function ProParaphraser() {
         )}
       </button>
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 18, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
@@ -528,7 +528,9 @@ export default function ProParaphraser() {
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error(tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde."));
+          throw new Error(
+            tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde.")
+          );
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -803,7 +805,7 @@ export default function ProParaphraser() {
             {/* Barra superior con MODOS + selector + acciones */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
               {/* 7 MODOS */}
-              <div className="flex items-center gap-0">
+              <div className="flex items-center gap-0 -ml-2">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
                 <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
                 <ModeTab
