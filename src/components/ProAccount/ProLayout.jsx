@@ -202,23 +202,6 @@ export default function LayoutPro({ children }) {
                   </button>
 
                   <button
-                    onClick={() => navigate("/cuenta-pro/humanizador")}
-                    className={`
-                      w-full flex items-center
-                      pl-6 pr-3 h-9
-                      text-sm
-                      ${
-                        isActive("/cuenta-pro/humanizador")
-                          ? "text-slate-900 font-semibold"
-                          : "text-slate-700 hover:text-slate-900"
-                      }
-                    `}
-                  >
-                    <span className="mr-2 text-slate-200">│</span>
-                    <span>{tr("proSidebar_humanizer", "Humanizador")}</span>
-                  </button>
-
-                  <button
                     onClick={() => navigate("/cuenta-pro/detector-ia")}
                     className={`
                       w-full flex items-center
@@ -231,8 +214,25 @@ export default function LayoutPro({ children }) {
                       }
                     `}
                   >
-                    <span className="mr-2 text-slate-200">└</span>
+                    <span className="mr-2 text-slate-200">│</span>
                     <span>{tr("proSidebar_aiDetector", "Detector de IA")}</span>
+                  </button>
+
+                  <button
+                    onClick={() => navigate("/cuenta-pro/humanizador")}
+                    className={`
+                      w-full flex items-center
+                      pl-6 pr-3 h-9
+                      text-sm
+                      ${
+                        isActive("/cuenta-pro/humanizador")
+                          ? "text-slate-900 font-semibold"
+                          : "text-slate-700 hover:text-slate-900"
+                      }
+                    `}
+                  >
+                    <span className="mr-2 text-slate-200">└</span>
+                    <span>{tr("proSidebar_humanizer", "Humanizador")}</span>
                   </button>
                 </div>
               )}

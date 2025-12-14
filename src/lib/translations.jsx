@@ -2072,6 +2072,15 @@ aiDetector_error_network: {
 },
 
   // =========================
+  //        Pro Humanizer
+  // =========================    
+ 
+  proSidebar_humanizer: {
+  ES: "Humanizador",
+  EUS: "Gizatiartzailea",
+},
+
+  // =========================
   //        Pro library
   // =========================    
 
