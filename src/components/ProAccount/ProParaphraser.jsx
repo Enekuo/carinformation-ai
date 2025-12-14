@@ -149,8 +149,13 @@ export default function ProParaphraser() {
           />
         )}
       </button>
+
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span
+          aria-hidden
+          className="self-center mx-2"
+          style={{ width: 1, height: 32, backgroundColor: DIVIDER }}
+        />
       )}
     </div>
   );
@@ -174,8 +179,13 @@ export default function ProParaphraser() {
           />
         )}
       </button>
+
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span
+          aria-hidden
+          className="self-center mx-2"
+          style={{ width: 1, height: 32, backgroundColor: DIVIDER }}
+        />
       )}
     </div>
   );
