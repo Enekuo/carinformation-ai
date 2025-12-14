@@ -144,18 +144,18 @@ export default function ProHumanizer() {
     </div>
   );
 
-  // ===== Tabs Niveles (derecha) — MISMA LETRA SIEMPRE =====
+  // ===== Tabs Niveles (derecha) — MISMA LETRA QUE "Fuentes" =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-6 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium justify-start"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
       >
-        <span>{label}</span>
+        <span className="truncate">{label}</span>
 
         {active && (
           <span
@@ -170,12 +170,6 @@ export default function ProHumanizer() {
       )}
     </div>
   );
-
-  const modeLabels = {
-    basic: "Básico",
-    standard: "Estándar",
-    advanced: "Avanzado",
-  };
 
   // ===== Utils =====
   const parseUrlsFromText = (text) => {
@@ -442,31 +436,45 @@ export default function ProHumanizer() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
+    // ===== PROMPT REAL POR NIVEL (EL TUYO) =====
     const levelRule =
       mode === "basic"
         ? `
 NIVEL BÁSICO (retoque mínimo):
-- Cambios mínimos.
-- Quita rigidez típica de IA.
-- Ajusta conectores y algunas palabras para sonar natural.
-- Mantén casi la misma estructura.
-- NO inventes datos.
+- Objetivo: quitar el "sonido IA" SIN reescribir mucho.
+- Mantén casi la misma estructura y longitud (±10%).
+- Cambia solo lo necesario: conectores, algún sinónimo, orden leve de 1-2 frases.
+- No añadas ejemplos, no metas explicaciones, no amplíes.
+- PROHIBIDO:
+  - Frases típicas de IA: "en conclusión", "es importante destacar", "cabe señalar", "por ende".
+  - Sonar demasiado perfecto o demasiado formal.
+- Resultado: debe parecer escrito por una persona, pero casi igual al original.
 `.trim()
         : mode === "advanced"
         ? `
 NIVEL AVANZADO (humanización fuerte, se nota):
-- Humanización fuerte (se tiene que notar).
-- Reestructura frases y mejora el ritmo.
-- Cambia vocabulario y orden cuando ayude a sonar humano.
-- Mantén significado, NO inventes datos.
-- Evita frases típicas de IA.
+- Objetivo: que parezca 100% humano y nada robótico.
+- Puedes reestructurar párrafos, unir/dividir frases y cambiar el orden de ideas SIEMPRE manteniendo significado.
+- Cambia vocabulario y ritmo con libertad (sin inventar datos).
+- Reduce patrones repetitivos (mismos inicios de frase, mismos conectores).
+- Añade naturalidad (pausas, ritmo, transiciones suaves) sin exagerar.
+- PROHIBIDO:
+  - Inventar hechos, cifras o información nueva.
+  - Cambiar intención, tono o mensaje.
+  - Meter listas si el original no las tenía (a no ser que sea imprescindible).
+- Resultado: debe sonar claramente distinto y humano, manteniendo lo mismo que dice.
 `.trim()
         : `
 NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
-- Humanización equilibrada.
-- Mejora fluidez y naturalidad sin pasarte.
-- Cambia lo justo para que parezca escrito por una persona.
-- Mantén significado, NO inventes datos.
+- Objetivo: humanizar de forma clara sin pasarse.
+- Reescribe lo suficiente para que se note, pero sin cambiar demasiado el contenido.
+- Ajusta ritmo, conectores y orden de frases para que fluya mejor.
+- Mantén longitud parecida (±20%).
+- Evita expresiones robóticas y frases demasiado "perfectas".
+- PROHIBIDO:
+  - Inventar datos o añadir ideas nuevas.
+  - Volverte académico o demasiado formal.
+- Resultado: natural, humano y creíble.
 `.trim();
 
     const formattingRules =
@@ -791,19 +799,17 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
 
           {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            {/* Barra superior */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+              {/* 3 NIVELES */}
               <div className="flex items-center gap-0 -ml-2">
-                <ModeTab active={mode === "basic"} label={modeLabels.basic} onClick={() => setMode("basic")} showDivider />
-                <ModeTab
-                  active={mode === "standard"}
-                  label={modeLabels.standard}
-                  onClick={() => setMode("standard")}
-                  showDivider
-                />
-                <ModeTab active={mode === "advanced"} label={modeLabels.advanced} onClick={() => setMode("advanced")} />
+                <ModeTab active={mode === "basic"} label="Básico" onClick={() => setMode("basic")} showDivider />
+                <ModeTab active={mode === "standard"} label="Estándar" onClick={() => setMode("standard")} showDivider />
+                <ModeTab active={mode === "advanced"} label="Avanzado" onClick={() => setMode("advanced")} />
               </div>
 
               <div className="flex items-center gap-1">
+                {/* Selector de idioma */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -811,7 +817,9 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label="Idioma de salida"
                     >
-                      <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                      <span className="truncate">
+                        {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                      </span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
@@ -856,6 +864,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                   </DropdownMenuContent>
                 </DropdownMenu>
 
+                {/* Copiar */}
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
@@ -869,6 +878,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
+                {/* Borrar izquierda */}
                 <button
                   type="button"
                   onClick={handleClearLeft}
@@ -884,6 +894,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
               </div>
             </div>
 
+            {/* Estado inicial */}
             {!loading && !result && !errorMsg && (
               <>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
@@ -904,6 +915,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
               </>
             )}
 
+            {/* Resultado / errores / loader */}
             <div className="w-full">
               {(result || errorMsg || loading) && (
                 <div className="px-6 pt-20 pb-20 max-w-3xl mx-auto">
@@ -932,6 +944,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
               )}
             </div>
 
+            {/* Barra inferior */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
