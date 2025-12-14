@@ -24,8 +24,6 @@ import { useTranslation } from "@/lib/translations";
 
 export default function ProParaphraser() {
   const { t } = useTranslation();
-
-  // IMPORTANTE: aquí NO invento nada, si la clave no existe se verá el fallback
   const tr = (key, fallback) => t(key) || fallback;
 
   // ===== Estado =====
@@ -73,65 +71,71 @@ export default function ProParaphraser() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Labels (CLAVES EXACTAS COMO TÚ LAS HAS PEGADO) =====
-  const labelSources = tr("proParaphraser_sources_title", "Fuentes");
-  const labelTabText = tr("proParaphraser_tab_text", "Texto");
-  const labelTabDocument = tr("proParaphraser_tab_document", "Documento");
-  const labelTabUrl = tr("proParaphraser_tab_url", "URL");
-  const labelEnterText = tr("proParaphraser_enter_text_placeholder", "Escribe o pega tu texto aquí…");
+  // ===== Labels (con claves) =====
+  const labelSources = tr("proParaphraser.sources_title", "Fuentes");
+  const labelTabText = tr("proParaphraser.tab_text", "Texto");
+  const labelTabDocument = tr("proParaphraser.tab_document", "Documento");
+  const labelTabUrl = tr("proParaphraser.tab_url", "URL");
+  const labelEnterText = tr("proParaphraser.enter_text_placeholder", "Escribe o pega tu texto aquí…");
 
-  const labelChooseFileTitle = tr("proParaphraser_pick_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr("proParaphraser_accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
-  const labelFolderHint = tr("proParaphraser_folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
+  const labelChooseFileTitle = tr("proParaphraser.pick_file_title", "Elige tu archivo o carpeta");
+  const labelAcceptedFormats = tr(
+    "proParaphraser.accepted_formats",
+    "Puedes añadir archivos PDF, texto copiado, enlaces web…"
+  );
+  const labelFolderHint = tr("proParaphraser.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
 
-  const labelPasteUrls = tr("proParaphraser_paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("proParaphraser_add_urls_button", "Añadir URLs");
-  const labelSaveUrls = tr("proParaphraser_save_urls_button", "Guardar");
-  const labelCancel = tr("proParaphraser_cancel_button", "Cancelar");
-  const labelUrlsNoteVisible = tr("proParaphraser_urls_note_visible", "Solo se importará el texto visible del sitio web.");
-  const labelUrlsNotePaywalled = tr("proParaphraser_urls_note_paywalled", "No se admiten artículos de pago.");
-  const labelRemove = tr("proParaphraser_remove_button", "Quitar");
+  const labelPasteUrls = tr("proParaphraser.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("proParaphraser.add_urls_button", "Añadir URLs");
+  const labelSaveUrls = tr("common.save", "Guardar");
+  const labelCancel = tr("common.cancel", "Cancelar");
+  const labelUrlsNoteVisible = tr(
+    "proParaphraser.urls_note_visible",
+    "Solo se importará el texto visible del sitio web."
+  );
+  const labelUrlsNotePaywalled = tr("proParaphraser.urls_note_paywalled", "No se admiten artículos de pago.");
+  const labelRemove = tr("common.remove", "Quitar");
 
-  const LBL_ES = tr("proParaphraser_language_es", "Castellano");
-  const LBL_EUS = tr("proParaphraser_language_eus", "Euskera");
-  const LBL_EN = tr("proParaphraser_language_en", "Inglés");
+  const LBL_ES = tr("languages.es", "Castellano");
+  const LBL_EUS = tr("languages.eus", "Euskara");
+  const LBL_EN = tr("languages.en", "English");
 
-  const labelGenerateFromSources = tr("proParaphraser_generate_button", "Crear parafraseo");
+  const labelGenerateFromSources = tr("proParaphraser.generate_button", "Crear parafraseo");
   const labelHelpRight = tr(
-    "proParaphraser_help_right",
+    "proParaphraser.help_right",
     'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".'
   );
 
-  const labelSaveButton = tr("proParaphraser_save_to_library_button", "Guardar");
-  const librarySavedMessage = tr("proParaphraser_saved_to_library", "Guardado en biblioteca");
+  const labelSaveButton = tr("common.save", "Guardar");
+  const librarySavedMessage = tr("common.saved_to_library", "Guardado en biblioteca");
 
-  const ariaCopyResult = tr("proParaphraser_copy_result_aria", "Copiar resultado");
-  const ariaDeleteInput = tr("proParaphraser_delete_input_aria", "Eliminar texto de entrada y resultado");
-  const titleCopyResult = tr("proParaphraser_copy_result_title", "Copiar resultado");
-  const titleDeleteInput = tr("proParaphraser_delete_input_title", "Eliminar texto de entrada y resultado");
-  const titleClearLeft = tr("proParaphraser_clear_text_title", "Borrar texto");
-  const ariaClearLeft = tr("proParaphraser_clear_text_aria", "Borrar texto");
+  const ariaCopyResult = tr("common.copy_result_aria", "Copiar resultado");
+  const ariaDeleteInput = tr("common.delete_input_aria", "Eliminar texto de entrada y resultado");
+  const titleCopyResult = tr("common.copy_result_title", "Copiar resultado");
+  const titleDeleteInput = tr("common.delete_input_title", "Eliminar texto de entrada y resultado");
+  const titleClearLeft = tr("common.clear_text_title", "Borrar texto");
+  const ariaClearLeft = tr("common.clear_text_aria", "Borrar texto");
 
-  // No me has pasado esta clave: dejo fallback SIN inventar clave nueva
-  const labelUrlTextareaPlaceholder =
-    "Introduce aquí una o más URLs (separadas por línea)";
+  const labelUrlTextareaPlaceholder = tr(
+    "proParaphraser.urls_textarea_placeholder",
+    "Introduce aquí una o más URLs (separadas por línea)"
+  );
 
-  const labelDownload = tr("proParaphraser_download", "Descargar");
-  const labelCopy = tr("proParaphraser_copy", "Copiar");
-  const labelCopied = tr("proParaphraser_copied", "Copiado");
+  const labelDownload = tr("common.download", "Descargar");
+  const labelCopy = tr("common.copy", "Copiar");
+  const labelCopied = tr("common.copied", "Copiado");
 
-  // No me has pasado estas dos claves: dejo fallback SIN inventar clave nueva
-  const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
-  const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
+  // Ayuda izquierda
+  const leftTitle = tr("proParaphraser.left_title", "Aquí aparecerán tus textos o documentos subidos.");
+  const leftBody = tr("proParaphraser.left_body", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
 
   // ===== Tabs Fuentes (izquierda) =====
-  // ARREGLADO: SIN flex-1 (para que los separadores no se vayan al medio)
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
-    <div className="relative flex items-stretch">
+    <div className="relative flex-1 min-w-0 flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
+        className="relative inline-flex w-full items-center gap-2 h-[44px] px-3 text-[14px] font-medium justify-start"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -151,13 +155,13 @@ export default function ProParaphraser() {
     </div>
   );
 
-  // ===== Tabs Modos (derecha) =====
+  // ===== Tabs Modos (derecha) — EXACTO COMO ANTES =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[38px] px-2 text-[12px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -171,19 +175,19 @@ export default function ProParaphraser() {
         )}
       </button>
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 18, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
 
   const modeLabels = {
-    neutral: tr("proParaphraser_mode_neutral", "Neutral"),
-    informal: tr("proParaphraser_mode_informal", "Informal"),
-    professional: tr("proParaphraser_mode_professional", "Profesional"),
-    academic: tr("proParaphraser_mode_academic", "Académico"),
-    fluent: tr("proParaphraser_mode_fluent", "Fluido"),
-    simplified: tr("proParaphraser_mode_simplified", "Simplificado"),
-    creative: tr("proParaphraser_mode_creative", "Creativo"),
+    neutral: tr("proParaphraser.mode_neutral", "Neutral"),
+    informal: tr("proParaphraser.mode_informal", "Informal"),
+    professional: tr("proParaphraser.mode_professional", "Profesional"),
+    academic: tr("proParaphraser.mode_academic", "Académico"),
+    fluent: tr("proParaphraser.mode_fluent", "Fluido"),
+    simplified: tr("proParaphraser.mode_simplified", "Simplificado"),
+    creative: tr("proParaphraser.mode_creative", "Creativo"),
   };
 
   // ===== Utils =====
@@ -384,7 +388,7 @@ export default function ProParaphraser() {
 
     addLibraryDoc({
       kind: "paraphraser",
-      title: titleFromText || tr("proParaphraser_default_title", "Parafraseo"),
+      title: titleFromText || tr("proParaphraser.default_title", "Parafraseo"),
       content: result,
       createdAt,
       createdAtLabel,
@@ -424,13 +428,18 @@ export default function ProParaphraser() {
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
-      setErrorMsg(tr("proParaphraser_error_max_chars", "Has superado el límite de caracteres permitido."));
+      setErrorMsg(tr("proParaphraser.error_max_chars", "Has superado el límite de caracteres permitido."));
       setLoading(false);
       return;
     }
 
     if (!validNow) {
-      setErrorMsg(tr("proParaphraser_error_need_input", "Añade texto suficiente, URLs o documentos antes de crear el parafraseo."));
+      setErrorMsg(
+        tr(
+          "proParaphraser.error_need_input",
+          "Añade texto suficiente, URLs o documentos antes de crear el parafraseo."
+        )
+      );
       setLoading(false);
       return;
     }
@@ -514,7 +523,7 @@ export default function ProParaphraser() {
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error(tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde."));
+          throw new Error(tr("common.error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde."));
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -529,7 +538,7 @@ export default function ProParaphraser() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error(tr("proParaphraser_error_no_text", "No se recibió texto de la API."));
+      if (!rawText) throw new Error(tr("common.error_no_text", "No se recibió texto de la API."));
 
       const cleaned = String(rawText || "")
         .replace(/\r/g, "")
@@ -538,7 +547,7 @@ export default function ProParaphraser() {
 
       setResult(cleaned);
     } catch (err) {
-      setErrorMsg(err.message || tr("proParaphraser_error_generic", "Error creando el parafraseo."));
+      setErrorMsg(err.message || tr("common.error_generic", "Error creando el parafraseo."));
     } finally {
       setLoading(false);
     }
@@ -787,7 +796,7 @@ export default function ProParaphraser() {
           {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con MODOS + selector + acciones */}
-            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+            <div className="h-11 flex items-center justify-between px-2 border-b border-slate-200 bg-slate-50/60">
               {/* 7 MODOS */}
               <div className="flex items-center gap-0">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
@@ -820,8 +829,8 @@ export default function ProParaphraser() {
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label={tr("proParaphraser_output_language_aria", "Idioma de salida")}
+                      className="h-8 min-w-[130px] px-2 border border-slate-300 rounded-xl bg-white text-[12px] text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      aria-label={tr("proParaphraser.output_language_aria", "Idioma de salida")}
                     >
                       <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
