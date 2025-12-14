@@ -155,13 +155,13 @@ export default function ProParaphraser() {
     </div>
   );
 
-  // ===== Tabs Modos (derecha) — EXACTO COMO ANTES =====
+  // ===== Tabs Modos (derecha) — EXACTO COMO ANTES (pero letra más pequeña) =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-2 text-[12px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -798,7 +798,7 @@ export default function ProParaphraser() {
           {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con MODOS + selector + acciones */}
-            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+            <div className="h-11 flex items-center justify-between px-3 border-b border-slate-200 bg-slate-50/60">
               {/* 7 MODOS */}
               <div className="flex items-center gap-0">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
