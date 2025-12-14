@@ -71,7 +71,7 @@ export default function ProParaphraser() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Labels (con claves EXACTAS) =====
+  // ===== Labels (CLAVES EXACTAS TUYAS) =====
   const labelSources = tr("proParaphraser_sources_title", "Fuentes");
   const labelTabText = tr("proParaphraser_tab_text", "Texto");
   const labelTabDocument = tr("proParaphraser_tab_document", "Documento");
@@ -79,14 +79,20 @@ export default function ProParaphraser() {
   const labelEnterText = tr("proParaphraser_enter_text_placeholder", "Escribe o pega tu texto aquí…");
 
   const labelChooseFileTitle = tr("proParaphraser_pick_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr("proParaphraser_accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const labelAcceptedFormats = tr(
+    "proParaphraser_accepted_formats",
+    "Puedes añadir archivos PDF, texto copiado, enlaces web…"
+  );
   const labelFolderHint = tr("proParaphraser_folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
 
   const labelPasteUrls = tr("proParaphraser_paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("proParaphraser_add_urls_button", "Añadir URLs");
   const labelSaveUrls = tr("proParaphraser_save_urls_button", "Guardar");
   const labelCancel = tr("proParaphraser_cancel_button", "Cancelar");
-  const labelUrlsNoteVisible = tr("proParaphraser_urls_note_visible", "Solo se importará el texto visible del sitio web.");
+  const labelUrlsNoteVisible = tr(
+    "proParaphraser_urls_note_visible",
+    "Solo se importará el texto visible del sitio web."
+  );
   const labelUrlsNotePaywalled = tr("proParaphraser_urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("proParaphraser_remove_button", "Quitar");
 
@@ -110,14 +116,15 @@ export default function ProParaphraser() {
   const titleClearLeft = tr("proParaphraser_clear_text_title", "Borrar texto");
   const ariaClearLeft = tr("proParaphraser_clear_text_aria", "Borrar texto");
 
-  // (No existe key en tu lista para este placeholder, así que reutilizo una key existente para evitar que se vea la key en pantalla)
-  const labelUrlTextareaPlaceholder = tr("proParaphraser_paste_urls_label", "Pegar URLs*");
+  // (No me has pasado key para esto; dejo fallback sin inventar key nueva)
+  const labelUrlTextareaPlaceholder = "Introduce aquí una o más URLs (separadas por línea)";
 
   const labelDownload = tr("proParaphraser_download", "Descargar");
   const labelCopy = tr("proParaphraser_copy", "Copiar");
   const labelCopied = tr("proParaphraser_copied", "Copiado");
 
-  // Ayuda izquierda
+  // (No me has pasado estas keys; si ya existen en tu translations, puedes ponerlas tú.
+  //  Yo NO invento claves nuevas aquí.)
   const leftTitle = tr("proParaphraser_left_title", "Aquí aparecerán tus textos o documentos subidos.");
   const leftBody = tr("proParaphraser_left_body", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
 
@@ -141,8 +148,19 @@ export default function ProParaphraser() {
           />
         )}
       </button>
+
+      {/* ✅ Separador visible (el que te faltaba) */}
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span
+          aria-hidden
+          className="self-center"
+          style={{
+            width: 1,
+            height: 26,
+            backgroundColor: DIVIDER,
+            marginLeft: 0,
+          }}
+        />
       )}
     </div>
   );
@@ -153,7 +171,7 @@ export default function ProParaphraser() {
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-3 text-[14px] font-medium"
+        className="relative inline-flex items-center h-[40px] px-2 text-[13px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -166,8 +184,14 @@ export default function ProParaphraser() {
           />
         )}
       </button>
+
+      {/* Separador entre modos */}
       {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
+        <span
+          aria-hidden
+          className="self-center"
+          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
+        />
       )}
     </div>
   );
@@ -452,6 +476,7 @@ export default function ProParaphraser() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
+    // ✅ Los 7 botones siguen controlando el backend (modeRule cambia según mode)
     const modeRule =
       mode === "neutral"
         ? "Modo NEUTRAL: reescribe de forma natural, sin cambiar el tono."
@@ -788,30 +813,15 @@ export default function ProParaphraser() {
           {/* ===== Panel Derecho — ALTURA FIJA + barra inferior ===== */}
           <section className="relative h-[540px] pb-[100px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
             {/* Barra superior con MODOS + selector + acciones */}
-            <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              {/* 7 MODOS */}
-              <div className="flex items-center gap-0">
+            <div className="h-11 flex items-center justify-between px-3 border-b border-slate-200 bg-slate-50/60">
+              {/* ✅ 7 MODOS: más pequeños + más a la izquierda */}
+              <div className="flex items-center gap-0 -ml-1">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
                 <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
-                <ModeTab
-                  active={mode === "professional"}
-                  label={modeLabels.professional}
-                  onClick={() => setMode("professional")}
-                  showDivider
-                />
-                <ModeTab
-                  active={mode === "academic"}
-                  label={modeLabels.academic}
-                  onClick={() => setMode("academic")}
-                  showDivider
-                />
+                <ModeTab active={mode === "professional"} label={modeLabels.professional} onClick={() => setMode("professional")} showDivider />
+                <ModeTab active={mode === "academic"} label={modeLabels.academic} onClick={() => setMode("academic")} showDivider />
                 <ModeTab active={mode === "fluent"} label={modeLabels.fluent} onClick={() => setMode("fluent")} showDivider />
-                <ModeTab
-                  active={mode === "simplified"}
-                  label={modeLabels.simplified}
-                  onClick={() => setMode("simplified")}
-                  showDivider
-                />
+                <ModeTab active={mode === "simplified"} label={modeLabels.simplified} onClick={() => setMode("simplified")} showDivider />
                 <ModeTab active={mode === "creative"} label={modeLabels.creative} onClick={() => setMode("creative")} />
               </div>
 
