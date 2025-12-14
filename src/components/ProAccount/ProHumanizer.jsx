@@ -150,7 +150,7 @@ export default function ProHumanizer() {
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center h-[44px] px-6 text-[13px] font-medium"
+        className="relative inline-flex items-center h-[44px] px-6 text-[14px] font-medium"
         style={{ color: active ? BLUE : GRAY_TEXT }}
         aria-pressed={active}
         aria-label={label}
@@ -591,13 +591,6 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                 onClick={() => setSourceMode("url")}
                 showDivider={false}
               />
-            </div>
-
-            {/* ✅ NUEVO: Importante */}
-            <div className="px-3 py-2 text-[13px] leading-5 text-slate-500 border-b border-slate-200">
-              <strong className="font-medium text-slate-600">Importante:</strong>{" "}
-              el nivel seleccionado (Básico, Estándar o Avanzado) cambia de forma real cómo se humaniza el texto en el
-              prompt.
             </div>
 
             {/* Contenido (con overflow) */}
