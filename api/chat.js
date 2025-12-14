@@ -6,7 +6,7 @@ const CACHE_TTL_SECONDS = Number(process.env.CACHE_TTL_SECONDS || 60 * 60 * 24 *
 
 // LÍMITES PLAN GRATIS (puedes sobreescribir en Vercel → Env Vars)
 const FREE_MAX_CHARS    = Number(process.env.FREE_MAX_CHARS || 12000);    // máx. caracteres por request
-const FREE_DAILY_TOKENS = Number(process.env.FREE_DAILY_TOKENS || 10000); // cuota diaria aprox por IP (≃ 5 páginas)
+const FREE_DAILY_TOKENS = Number(process.env.FREE_DAILY_TOKENS || 20000); // cuota diaria aprox por IP (≃ 5 páginas)
 const FREE_RPM          = Number(process.env.FREE_RPM || 6);              // rate limit: peticiones/min por IP
 
 // Conversión aproximada chars→tokens (prudente)
