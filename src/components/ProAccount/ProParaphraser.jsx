@@ -345,7 +345,7 @@ export default function ProParaphraser() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput = textIsValid || urlItems.length > 0 || documentsText.length > 0;
 
   // ===== Acciones derecha =====
   const handleCopy = async (flash = false) => {
