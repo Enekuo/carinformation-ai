@@ -20,8 +20,11 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 import { addLibraryDoc } from "@/proLibraryStore";
+import { useLocation } from "react-router-dom";
 
 export default function ProHumanizer() {
+  const location = useLocation();
+
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
@@ -53,6 +56,20 @@ export default function ProHumanizer() {
 
   // Guardado en biblioteca (mensaje)
   const [savedToLibrary, setSavedToLibrary] = useState(false);
+
+  useEffect(() => {
+    const incoming = location?.state?.text;
+    if (incoming && typeof incoming === "string") {
+      const cleaned = incoming.slice(0, 12000);
+      setSourceMode("text");
+      setTextValue(cleaned);
+      setResult("");
+      setErrorMsg("");
+      setLoading(false);
+      setCopiedFlash(false);
+      setSavedToLibrary(false);
+    }
+  }, [location?.state?.text]);
 
   // ===== Estilos / constantes =====
   const BLUE = "#2563eb";
