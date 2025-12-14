@@ -20,12 +20,8 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 import { addLibraryDoc } from "@/proLibraryStore";
-import { useTranslation } from "@/lib/translations";
 
 export default function ProHumanizer() {
-  const { t } = useTranslation();
-  const tr = (key, fallback) => t(key) || fallback;
-
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
   const [textValue, setTextValue] = useState("");
@@ -35,7 +31,7 @@ export default function ProHumanizer() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Modos (7) — misma barra / estructura
+  // Modos (7) — misma barra
   const [mode, setMode] = useState("neutral"); // neutral | informal | professional | academic | fluent | simplified | creative
 
   // Idioma de salida
@@ -71,63 +67,51 @@ export default function ProHumanizer() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Labels (con claves) =====
-  const labelSources = tr("proHumanizer_sources_title", "Fuentes");
-  const labelTabText = tr("proHumanizer_tab_text", "Texto");
-  const labelTabDocument = tr("proHumanizer_tab_document", "Documento");
-  const labelTabUrl = tr("proHumanizer_tab_url", "URL");
-  const labelEnterText = tr("proHumanizer_enter_text_placeholder", "Escribe o pega tu texto aquí…");
+  // ===== Textos (SIN claves) =====
+  const labelSources = "Fuentes";
+  const labelTabText = "Texto";
+  const labelTabDocument = "Documento";
+  const labelTabUrl = "URL";
+  const labelEnterText = "Escribe o pega tu texto aquí…";
 
-  const labelChooseFileTitle = tr("proHumanizer_pick_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr(
-    "proHumanizer_accepted_formats",
-    "Puedes añadir archivos PDF, texto copiado, enlaces web…"
-  );
-  const labelFolderHint = tr("proHumanizer_folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
+  const labelChooseFileTitle = "Elige tu archivo o carpeta";
+  const labelAcceptedFormats = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
+  const labelFolderHint = "Aquí aparecerán tus textos o documentos subidos.";
 
-  const labelPasteUrls = tr("proHumanizer_paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("proHumanizer_add_urls_button", "Añadir URLs");
-  const labelSaveUrls = tr("proHumanizer_save_urls_button", "Guardar");
-  const labelCancel = tr("proHumanizer_cancel_button", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "proHumanizer_urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
-  );
-  const labelUrlsNotePaywalled = tr("proHumanizer_urls_note_paywalled", "No se admiten artículos de pago.");
-  const labelRemove = tr("proHumanizer_remove_button", "Quitar");
+  const labelPasteUrls = "Pegar URLs*";
+  const labelAddUrl = "Añadir URLs";
+  const labelSaveUrls = "Guardar";
+  const labelCancel = "Cancelar";
+  const labelUrlsNoteVisible = "Solo se importará el texto visible del sitio web.";
+  const labelUrlsNotePaywalled = "No se admiten artículos de pago.";
+  const labelRemove = "Quitar";
 
-  const LBL_ES = tr("proHumanizer_language_es", "Castellano");
-  const LBL_EUS = tr("proHumanizer_language_eus", "Euskera");
-  const LBL_EN = tr("proHumanizer_language_en", "Inglés");
+  const LBL_ES = "Castellano";
+  const LBL_EUS = "Euskera";
+  const LBL_EN = "Inglés";
 
-  const labelGenerateFromSources = tr("proHumanizer_generate_button", "Humanizar texto");
-  const labelHelpRight = tr(
-    "proHumanizer_help_right",
-    'Selecciona una fuente (texto, documentos o URLs) y pulsa "Humanizar texto".'
-  );
+  const labelGenerateFromSources = "Humanizar texto";
+  const labelHelpRight = 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Humanizar texto".';
 
-  const labelSaveButton = tr("proHumanizer_save_to_library_button", "Guardar");
-  const librarySavedMessage = tr("proHumanizer_saved_to_library", "Guardado en biblioteca");
+  const labelSaveButton = "Guardar";
+  const librarySavedMessage = "Guardado en biblioteca";
 
-  const ariaCopyResult = tr("proHumanizer_copy_result_aria", "Copiar resultado");
-  const ariaDeleteInput = tr("proHumanizer_delete_input_aria", "Eliminar texto de entrada y resultado");
-  const titleCopyResult = tr("proHumanizer_copy_result_title", "Copiar resultado");
-  const titleDeleteInput = tr("proHumanizer_delete_input_title", "Eliminar texto de entrada y resultado");
-  const titleClearLeft = tr("proHumanizer_clear_text_title", "Borrar texto");
-  const ariaClearLeft = tr("proHumanizer_clear_text_aria", "Borrar texto");
+  const ariaCopyResult = "Copiar resultado";
+  const ariaDeleteInput = "Eliminar texto de entrada y resultado";
+  const titleCopyResult = "Copiar resultado";
+  const titleDeleteInput = "Eliminar texto de entrada y resultado";
+  const titleClearLeft = "Borrar texto";
+  const ariaClearLeft = "Borrar texto";
 
-  const labelUrlTextareaPlaceholder = tr(
-    "proHumanizer_urls_textarea_placeholder",
-    "Introduce aquí una o más URLs (separadas por línea)"
-  );
+  const labelUrlTextareaPlaceholder = "Introduce aquí una o más URLs (separadas por línea)";
 
-  const labelDownload = tr("proHumanizer_download", "Descargar");
-  const labelCopy = tr("proHumanizer_copy", "Copiar");
-  const labelCopied = tr("proHumanizer_copied", "Copiado");
+  const labelDownload = "Descargar";
+  const labelCopy = "Copiar";
+  const labelCopied = "Copiado";
 
   // Ayuda izquierda
-  const leftTitle = tr("proHumanizer_left_title", "Aquí aparecerán tus textos o documentos subidos.");
-  const leftBody = tr("proHumanizer_left_body", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
+  const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
 
   // ===== Tabs Fuentes (izquierda) =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
@@ -186,13 +170,13 @@ export default function ProHumanizer() {
   );
 
   const modeLabels = {
-    neutral: tr("proHumanizer_mode_neutral", "Neutrala"),
-    informal: tr("proHumanizer_mode_informal", "Informala"),
-    professional: tr("proHumanizer_mode_professional", "Profesionala"),
-    academic: tr("proHumanizer_mode_academic", "Akademikoa"),
-    fluent: tr("proHumanizer_mode_fluent", "Jariozkoa"),
-    simplified: tr("proHumanizer_mode_simplified", "Sinplifikatua"),
-    creative: tr("proHumanizer_mode_creative", "Sortzailea"),
+    neutral: "Neutrala",
+    informal: "Informala",
+    professional: "Profesionala",
+    academic: "Akademikoa",
+    fluent: "Jariozkoa",
+    simplified: "Sinplifikatua",
+    creative: "Sortzailea",
   };
 
   // ===== Utils =====
@@ -393,7 +377,7 @@ export default function ProHumanizer() {
 
     addLibraryDoc({
       kind: "humanizer",
-      title: titleFromText || tr("proHumanizer_default_title", "Humanizado"),
+      title: titleFromText || "Humanizado",
       content: result,
       createdAt,
       createdAtLabel,
@@ -433,18 +417,13 @@ export default function ProHumanizer() {
     const validNow = textOk || urlItems.length > 0 || documentsText.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
-      setErrorMsg(tr("proHumanizer_error_max_chars", "Has superado el límite de caracteres permitido."));
+      setErrorMsg("Has superado el límite de caracteres permitido.");
       setLoading(false);
       return;
     }
 
     if (!validNow) {
-      setErrorMsg(
-        tr(
-          "proHumanizer_error_need_input",
-          "Añade texto suficiente, URLs o documentos antes de humanizar."
-        )
-      );
+      setErrorMsg("Añade texto suficiente, URLs o documentos antes de humanizar.");
       setLoading(false);
       return;
     }
@@ -570,9 +549,7 @@ MODO CREATIVO:
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error(
-            tr("proHumanizer_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde.")
-          );
+          throw new Error("Has alcanzado el límite de peticiones. Inténtalo más tarde.");
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -587,7 +564,7 @@ MODO CREATIVO:
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error(tr("proHumanizer_error_no_text", "No se recibió texto de la API."));
+      if (!rawText) throw new Error("No se recibió texto de la API.");
 
       const cleaned = String(rawText || "")
         .replace(/\r/g, "")
@@ -596,7 +573,7 @@ MODO CREATIVO:
 
       setResult(cleaned);
     } catch (err) {
-      setErrorMsg(err.message || tr("proHumanizer_error_generic", "Error humanizando el texto."));
+      setErrorMsg(err.message || "Error humanizando el texto.");
     } finally {
       setLoading(false);
     }
@@ -737,7 +714,9 @@ MODO CREATIVO:
                             </div>
                             <div className="min-w-0 flex-1">
                               <span className="text-sm font-medium block truncate">{file.name}</span>
-                              <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                              <span className="text-xs text-slate-500">
+                                {(file.size / 1024 / 1024).toFixed(2)} MB
+                              </span>
                             </div>
                           </div>
                           <button
@@ -850,25 +829,10 @@ MODO CREATIVO:
               <div className="flex items-center gap-0 -ml-2">
                 <ModeTab active={mode === "neutral"} label={modeLabels.neutral} onClick={() => setMode("neutral")} showDivider />
                 <ModeTab active={mode === "informal"} label={modeLabels.informal} onClick={() => setMode("informal")} showDivider />
-                <ModeTab
-                  active={mode === "professional"}
-                  label={modeLabels.professional}
-                  onClick={() => setMode("professional")}
-                  showDivider
-                />
-                <ModeTab
-                  active={mode === "academic"}
-                  label={modeLabels.academic}
-                  onClick={() => setMode("academic")}
-                  showDivider
-                />
+                <ModeTab active={mode === "professional"} label={modeLabels.professional} onClick={() => setMode("professional")} showDivider />
+                <ModeTab active={mode === "academic"} label={modeLabels.academic} onClick={() => setMode("academic")} showDivider />
                 <ModeTab active={mode === "fluent"} label={modeLabels.fluent} onClick={() => setMode("fluent")} showDivider />
-                <ModeTab
-                  active={mode === "simplified"}
-                  label={modeLabels.simplified}
-                  onClick={() => setMode("simplified")}
-                  showDivider
-                />
+                <ModeTab active={mode === "simplified"} label={modeLabels.simplified} onClick={() => setMode("simplified")} showDivider />
                 <ModeTab active={mode === "creative"} label={modeLabels.creative} onClick={() => setMode("creative")} />
               </div>
 
@@ -879,7 +843,7 @@ MODO CREATIVO:
                     <button
                       type="button"
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label={tr("proHumanizer_output_language_aria", "Idioma de salida")}
+                      aria-label="Idioma de salida"
                     >
                       <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
