@@ -71,7 +71,7 @@ export default function ProParaphraser() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Labels (claves corregidas con _ ) =====
+  // ===== Labels (claves) =====
   const labelSources = tr("proParaphraser_sources_title", "Fuentes");
   const labelTabText = tr("proParaphraser_tab_text", "Texto");
   const labelTabDocument = tr("proParaphraser_tab_document", "Documento");
@@ -155,7 +155,7 @@ export default function ProParaphraser() {
     </div>
   );
 
-  // ===== Tabs Modos (derecha) — EXACTO COMO ANTES (pero letra más pequeña) =====
+  // ===== Tabs Modos (derecha) =====
   const ModeTab = ({ active, label, onClick, showDivider }) => (
     <div className="relative flex items-stretch">
       <button
@@ -460,23 +460,68 @@ export default function ProParaphraser() {
         ? "Output language: English (ISO: en). Write everything in English."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
+    // ===== MODO (más fuerte, para que cada botón se note de verdad) =====
     const modeRule =
       mode === "neutral"
-        ? "Modo NEUTRAL: reescribe de forma natural, sin cambiar el tono."
+        ? [
+            "Modo NEUTRAL:",
+            "Reescribe de forma natural y correcta.",
+            "Mantén el tono y el nivel del texto.",
+            "No hagas el texto ni más informal, ni más académico, ni más simple.",
+          ].join(" ")
         : mode === "informal"
-        ? "Modo INFORMAL: tono más cercano y sencillo, pero correcto."
+        ? [
+            "Modo INFORMAL:",
+            "Usa un tono cercano y conversacional.",
+            "Prefiere frases más cortas.",
+            "Usa vocabulario cotidiano.",
+            "Evita estructuras formales o académicas.",
+            "Debe sonar como si una persona se lo explicara a otra.",
+          ].join(" ")
         : mode === "professional"
-        ? "Modo PROFESIONAL: tono formal, claro y orientado a negocio."
+        ? [
+            "Modo PROFESIONAL:",
+            "Usa un tono formal y profesional.",
+            "Sé claro, directo y preciso.",
+            "Evita expresiones coloquiales.",
+            "Adecuado para un contexto laboral o empresarial.",
+          ].join(" ")
         : mode === "academic"
-        ? "Modo ACADÉMICO: tono más técnico/riguroso, vocabulario preciso."
+        ? [
+            "Modo ACADÉMICO:",
+            "Usa un tono formal y riguroso.",
+            "Emplea vocabulario preciso y estructurado.",
+            "Frases algo más elaboradas si ayuda a la claridad.",
+            "Apto para contextos educativos o académicos.",
+          ].join(" ")
         : mode === "fluent"
-        ? "Modo FLUIDO: prioriza fluidez y lectura agradable, sin cambiar significado."
+        ? [
+            "Modo FLUIDO:",
+            "Prioriza la fluidez y la lectura agradable.",
+            "Une frases cuando sea posible.",
+            "Evita repeticiones innecesarias.",
+            "Mejora transiciones para que el texto se lea de forma continua.",
+          ].join(" ")
         : mode === "simplified"
-        ? "Modo SIMPLIFICADO: frases más cortas y fáciles, lenguaje simple."
-        : "Modo CREATIVO: más variación estilística, manteniendo el significado.";
+        ? [
+            "Modo SIMPLIFICADO:",
+            "Usa frases cortas y claras.",
+            "Emplea vocabulario sencillo.",
+            "Evita estructuras complejas y subordinadas largas.",
+            "Facilita la comprensión del texto.",
+            "Piensa en alguien con fatiga lectora.",
+          ].join(" ")
+        : [
+            "Modo CREATIVO:",
+            "Permite mayor libertad estilística.",
+            "Varía la estructura de las frases.",
+            "Usa un estilo más expresivo.",
+            "Mantén el significado original sin inventar datos.",
+            "Debe notarse una variación clara respecto a Neutral.",
+          ].join(" ");
 
     const formattingRules =
-      "Devuelve el texto parafraseado en formato normal (sin listas obligatorias), claro y natural. " +
+      "Devuelve el texto parafraseado en formato normal, claro y natural. " +
       "No inventes datos. Mantén el mismo idioma que se pide.";
 
     const userContent = [
@@ -961,7 +1006,7 @@ export default function ProParaphraser() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar (IGUAL que el corrector) */}
+            {/* Barra inferior: copiar, descargar, guardar */}
             {result && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
