@@ -1757,7 +1757,14 @@ proParaphraser_tab_url: {
   ES: "URL",
   EUS: "URLa",
 },
-
+proParaphraser_left_title: {
+  ES: "Aquí verás los textos o documentos que subas para corregir.",
+  EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak.",
+},
+proParaphraser_left_body: {
+  ES: "Puedes añadir archivos PDF, texto copiado o enlaces web…",
+  EUS: "Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak...",
+},
 proParaphraser_enter_text_placeholder: {
   ES: "Escribe o pega tu texto aquí…",
   EUS: "Idatzi edo itsatsi hemen zure testua…",
@@ -1839,8 +1846,8 @@ proParaphraser_generate_button: {
 },
 
 proParaphraser_help_right: {
-  ES: 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Crear parafraseo".',
-  EUS: 'Aukeratu iturri bat (testua, dokumentuak edo URLak) eta sakatu "Parafraseoa sortu".',
+  ES: "Elige entre los botones superiores el estilo de texto que prefieras y crea el parafraseo con tu contenido.",
+  EUS: "Aukeratu goiko botoien artean nahi duzun testu-estiloa, eta sortu parafraseoa zure edukiarekin.",
 },
 
 proParaphraser_mode_neutral: {
