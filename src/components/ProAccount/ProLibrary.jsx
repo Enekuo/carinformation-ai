@@ -11,13 +11,14 @@ export default function ProLibrary() {
 
   const navigate = useNavigate();
 
-  // ===== STORE BIBLIOTECA (traducciones / resúmenes / correcciones) =====
+  // ===== STORE BIBLIOTECA (traducciones / resúmenes / correcciones / nuevas) =====
   const { docs, renameDoc, deleteDoc } = useLibraryDocs();
 
   // ===== STORE CARPETAS =====
   const { folders } = useLibraryFolders();
 
-  // ===== Filtros (all | text | summary | corrections | folders) =====
+  // ===== Filtros =====
+  // all | text | summary | corrections | paraphraser | aiDetector | humanizer | folders
   const [type, setType] = useState("all");
 
   const createAction = useMemo(() => {
@@ -37,6 +38,24 @@ export default function ProLibrary() {
           label: tr("library_create_correction", "Crear corrección"),
           href: "/cuenta-pro/corrector",
         };
+
+      // ===== NUEVAS =====
+      case "paraphraser":
+        return {
+          label: tr("library_create_paraphrase", "Crear parafraseo"),
+          href: "/cuenta-pro/parafraseador",
+        };
+      case "aiDetector":
+        return {
+          label: tr("library_create_ai_detector", "Crear análisis IA"),
+          href: "/cuenta-pro/detector-ia",
+        };
+      case "humanizer":
+        return {
+          label: tr("library_create_humanizer", "Crear humanizado"),
+          href: "/cuenta-pro/humanizador",
+        };
+
       case "folders":
         return {
           label: tr("library_create_folder", "Crear carpeta"),
@@ -118,12 +137,25 @@ export default function ProLibrary() {
   };
 
   // ========= Helpers visuales =========
+  const svgToDataUri = (svg) => {
+    const cleaned = svg
+      .replace(/\n/g, "")
+      .replace(/\t/g, "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(cleaned)}`;
+  };
+
   const getDocVisual = (doc) => {
-    // translation | summary | corrector
+    // translation | summary | corrector | paraphraser | ai-detector | humanizer
     let kind = "translation";
+
     if (doc.kind === "translation") kind = "translation";
     else if (doc.kind === "summary") kind = "summary";
     else if (doc.kind === "corrector") kind = "corrector";
+    else if (doc.kind === "paraphraser") kind = "paraphraser";
+    else if (doc.kind === "ai-detector") kind = "ai-detector";
+    else if (doc.kind === "humanizer") kind = "humanizer";
 
     if (kind === "translation") {
       return {
@@ -131,7 +163,7 @@ export default function ProLibrary() {
         border: "#FFE2A8",
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
-        iconSize: 56, // ANTES 40 → ahora como la plantilla nueva
+        iconSize: 56,
       };
     }
 
@@ -141,17 +173,80 @@ export default function ProLibrary() {
         border: "#D9E7FF",
         iconSrc: "/Library2.jpg",
         labelPrefix: tr("library_prefix_summary", "Laburpena:"),
-        iconSize: 56, // ANTES 40 → ahora como la plantilla nueva
+        iconSize: 56,
       };
     }
 
-    // Corrector → verde como antes
+    if (kind === "corrector") {
+      return {
+        bg: "#E6F9EE",
+        border: "#C6EED9",
+        iconSrc: "/Library3.png",
+        labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
+        iconSize: 80,
+      };
+    }
+
+    // ===== NUEVAS (plantillas visibles con SVG inline, sin archivos nuevos) =====
+    if (kind === "paraphraser") {
+      const iconSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+          <rect x="0" y="0" width="96" height="96" rx="20" fill="#FFE6C7"/>
+          <path d="M30 38h26" stroke="#F97316" stroke-width="5" stroke-linecap="round"/>
+          <path d="M52 30l8 8-8 8" fill="none" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M66 58H40" stroke="#F97316" stroke-width="5" stroke-linecap="round"/>
+          <path d="M44 50l-8 8 8 8" fill="none" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `;
+      return {
+        bg: "#FFF3E6",
+        border: "#FFD8B8",
+        iconSrc: svgToDataUri(iconSvg),
+        labelPrefix: tr("library_prefix_paraphraser", "Parafraseoa:"),
+        iconSize: 56,
+      };
+    }
+
+    if (kind === "ai-detector") {
+      const iconSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+          <rect x="0" y="0" width="96" height="96" rx="20" fill="#DDE6FF"/>
+          <rect x="28" y="26" width="40" height="48" rx="8" fill="none" stroke="#4F46E5" stroke-width="5"/>
+          <path d="M38 40h20" stroke="#4F46E5" stroke-width="5" stroke-linecap="round"/>
+          <path d="M38 52h20" stroke="#4F46E5" stroke-width="5" stroke-linecap="round"/>
+          <path d="M38 64h14" stroke="#4F46E5" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="68" cy="68" r="9" fill="none" stroke="#4F46E5" stroke-width="5"/>
+          <path d="M75 75l7 7" stroke="#4F46E5" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      `;
+      return {
+        bg: "#EEF2FF",
+        border: "#D7DDFF",
+        iconSrc: svgToDataUri(iconSvg),
+        labelPrefix: tr("library_prefix_ai_detector", "IA:"),
+        iconSize: 56,
+      };
+    }
+
+    // humanizer
+    const iconSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+        <rect x="0" y="0" width="96" height="96" rx="20" fill="#DCFCE7"/>
+        <path d="M48 22c-10.5 0-19 8.5-19 19v8c0 6 3.7 11.4 9.4 13.7V74c0 3.3 2.7 6 6 6h7.2c3.3 0 6-2.7 6-6V62.7C63.3 60.4 67 55 67 49v-8c0-10.5-8.5-19-19-19z"
+          fill="none" stroke="#16A34A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M41 44c-2.8 0-5 2.2-5 5v1c-1.8.6-3 2.3-3 4.2 0 2.5 2 4.5 4.5 4.5"
+          fill="none" stroke="#16A34A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M55 44c2.8 0 5 2.2 5 5v1c1.8.6 3 2.3 3 4.2 0 2.5-2 4.5-4.5 4.5"
+          fill="none" stroke="#16A34A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M48 40v24" fill="none" stroke="#16A34A" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    `;
     return {
-      bg: "#E6F9EE",
-      border: "#C6EED9",
-      iconSrc: "/Library3.png",
-      labelPrefix: tr("library_prefix_corrector", "Zuzenketa:"),
-      iconSize: 80,
+      bg: "#F0FDF4",
+      border: "#CFF5DB",
+      iconSrc: svgToDataUri(iconSvg),
+      labelPrefix: tr("library_prefix_humanizer", "Humanizatua:"),
+      iconSize: 56,
     };
   };
 
@@ -184,15 +279,8 @@ export default function ProLibrary() {
       ? docs.filter((d) => currentFolder.docIds.includes(d.id))
       : [];
 
-  // Prefijos ya definidos en translations (los “que estaban bien”)
-  const translationPrefixLabel = tr(
-    "library_prefix_translation",
-    "Itzulpena:"
-  ).replace(/:$/, "");
-  const summaryPrefixLabel = tr(
-    "library_prefix_summary",
-    "Laburpena:"
-  ).replace(/:$/, "");
+  const translationPrefixLabel = tr("library_prefix_translation", "Itzulpena:").replace(/:$/, "");
+  const summaryPrefixLabel = tr("library_prefix_summary", "Laburpena:").replace(/:$/, "");
 
   // ===== Render =====
   return (
@@ -207,18 +295,15 @@ export default function ProLibrary() {
                 {[
                   { id: "all", label: tr("library_filter_all", "Todos") },
                   { id: "text", label: tr("library_filter_texts", "Textos") },
-                  {
-                    id: "summary",
-                    label: tr("library_filter_summaries", "Resúmenes"),
-                  },
-                  {
-                    id: "corrections",
-                    label: tr("library_filter_corrections", "Zuzenketak"),
-                  },
-                  {
-                    id: "folders",
-                    label: tr("library_filter_folders", "Mis carpetas"),
-                  },
+                  { id: "summary", label: tr("library_filter_summaries", "Resúmenes") },
+                  { id: "corrections", label: tr("library_filter_corrections", "Zuzenketak") },
+
+                  // ===== NUEVOS FILTROS =====
+                  { id: "paraphraser", label: tr("library_filter_paraphrases", "Parafraseos") },
+                  { id: "aiDetector", label: tr("library_filter_ai_detector", "Detector IA") },
+                  { id: "humanizer", label: tr("library_filter_humanizer", "Humanizador") },
+
+                  { id: "folders", label: tr("library_filter_folders", "Mis carpetas") },
                 ].map(({ id, label }) => {
                   const active = type === id;
 
@@ -263,11 +348,14 @@ export default function ProLibrary() {
               )}
             </div>
 
-            {/* ===== TARJETAS NORMALES (ALL / TEXT / SUMMARY / CORRECTIONS) ===== */}
+            {/* ===== TARJETAS NORMALES ===== */}
             {(type === "all" ||
               type === "text" ||
               type === "summary" ||
-              type === "corrections") && (
+              type === "corrections" ||
+              type === "paraphraser" ||
+              type === "aiDetector" ||
+              type === "humanizer") && (
               <div className="flex flex-wrap gap-[38px]">
                 {/* Crear nuevo */}
                 <Link
@@ -281,10 +369,7 @@ export default function ProLibrary() {
                       className="flex items-center justify-center rounded-full bg-indigo-50"
                       style={{ width: 70, height: 70 }}
                     >
-                      <Plus
-                        className="text-indigo-600"
-                        style={{ width: 21, height: 21 }}
-                      />
+                      <Plus className="text-indigo-600" style={{ width: 21, height: 21 }} />
                     </div>
                     <span className="mt-4 text-[20px] leading-6 text-slate-900">
                       {createAction.label}
@@ -292,22 +377,21 @@ export default function ProLibrary() {
                   </div>
                 </Link>
 
-                {/* Tarjetas documento (traducciones / resúmenes / corrector) */}
+                {/* Tarjetas documento */}
                 {docs
                   .filter((doc) => {
                     if (type === "text") return doc.kind === "translation";
                     if (type === "summary") return doc.kind === "summary";
                     if (type === "corrections") return doc.kind === "corrector";
+
+                    if (type === "paraphraser") return doc.kind === "paraphraser";
+                    if (type === "aiDetector") return doc.kind === "ai-detector";
+                    if (type === "humanizer") return doc.kind === "humanizer";
+
                     return true;
                   })
                   .map((doc) => {
-                    const {
-                      bg,
-                      border,
-                      iconSrc,
-                      labelPrefix,
-                      iconSize,
-                    } = getDocVisual(doc);
+                    const { bg, border, iconSrc, labelPrefix, iconSize } = getDocVisual(doc);
                     const dateLabel = formatDateLabel(doc);
 
                     return (
@@ -321,9 +405,7 @@ export default function ProLibrary() {
                           backgroundColor: bg,
                           border: `1px solid ${border}`,
                         }}
-                        onClick={() =>
-                          navigate(`/cuenta-pro/biblioteca/${doc.id}`)
-                        }
+                        onClick={() => navigate(`/cuenta-pro/biblioteca/${doc.id}`)}
                       >
                         {/* Menú (3 puntos) */}
                         <button
@@ -332,9 +414,7 @@ export default function ProLibrary() {
                           className="absolute top-3 right-3 h-8 w-8 inline-flex items-center justify-center rounded-full hover:bg-white/60"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setMenuOpenFor((prev) =>
-                              prev === doc.id ? null : doc.id
-                            );
+                            setMenuOpenFor((prev) => (prev === doc.id ? null : doc.id));
                           }}
                           type="button"
                         >
@@ -354,24 +434,14 @@ export default function ProLibrary() {
                               }}
                             >
                               <Pencil className="w-5 h-5 text-slate-600" />
-                              <span>
-                                {tr(
-                                  "library_doc_edit_title",
-                                  "Editar título"
-                                )}
-                              </span>
+                              <span>{tr("library_doc_edit_title", "Editar título")}</span>
                             </button>
                             <button
                               className="w-full flex items-center gap-3 px-3 py-2 text-slate-800 hover:bg-slate-50"
                               onClick={() => handleDeleteDoc(doc.id)}
                             >
                               <Trash2 className="w-5 h-5 text-slate-600" />
-                              <span>
-                                {tr(
-                                  "library_doc_delete",
-                                  "Eliminar documento"
-                                )}
-                              </span>
+                              <span>{tr("library_doc_delete", "Eliminar documento")}</span>
                             </button>
                           </div>
                         )}
@@ -400,12 +470,9 @@ export default function ProLibrary() {
                               overflow: "hidden",
                             }}
                           >
-                            <span className="font-semibold text-slate-900">
-                              {labelPrefix}
-                            </span>{" "}
+                            <span className="font-semibold text-slate-900">{labelPrefix}</span>{" "}
                             <span className="font-normal text-slate-700">
-                              {doc.title ||
-                                tr("library_untitled", "Sin título")}
+                              {doc.title || tr("library_untitled", "Sin título")}
                             </span>
                           </h3>
                           {dateLabel && (
@@ -442,16 +509,12 @@ export default function ProLibrary() {
 
                     {folderDocs.length === 0 ? (
                       <p className="text-sm text-slate-500">
-                        {tr(
-                          "folder_empty",
-                          "Esta carpeta todavía no tiene documentos."
-                        )}
+                        {tr("folder_empty", "Esta carpeta todavía no tiene documentos.")}
                       </p>
                     ) : (
                       <div className="flex flex-wrap gap-[38px]">
                         {folderDocs.map((doc) => {
-                          const { bg, border, iconSrc, labelPrefix } =
-                            getDocVisual(doc);
+                          const { bg, border, iconSrc, labelPrefix } = getDocVisual(doc);
                           const dateLabel = formatDateLabel(doc);
 
                           return (
@@ -465,18 +528,10 @@ export default function ProLibrary() {
                                 backgroundColor: bg,
                                 border: `1px solid ${border}`,
                               }}
-                              onClick={() =>
-                                navigate(`/cuenta-pro/biblioteca/${doc.id}`)
-                              }
+                              onClick={() => navigate(`/cuenta-pro/biblioteca/${doc.id}`)}
                             >
                               <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                                <img
-                                  src={iconSrc}
-                                  alt=""
-                                  width={40}
-                                  height={40}
-                                  className="block select-none"
-                                />
+                                <img src={iconSrc} alt="" width={40} height={40} className="block select-none" />
                                 <h3
                                   className="mt-6 text-[18px] leading-[24px] pr-4"
                                   style={{
@@ -486,12 +541,9 @@ export default function ProLibrary() {
                                     overflow: "hidden",
                                   }}
                                 >
-                                  <span className="font-semibold text-slate-900">
-                                    {labelPrefix}
-                                  </span>{" "}
+                                  <span className="font-semibold text-slate-900">{labelPrefix}</span>{" "}
                                   <span className="font-normal text-slate-700">
-                                    {doc.title ||
-                                      tr("library_untitled", "Sin título")}
+                                    {doc.title || tr("library_untitled", "Sin título")}
                                   </span>
                                 </h3>
                                 {dateLabel && (
@@ -508,15 +560,12 @@ export default function ProLibrary() {
                   </>
                 )}
 
-                {/* Lista vertical de carpetas (sin carpeta abierta) */}
+                {/* Lista vertical de carpetas */}
                 {!currentFolder && (
                   <div className="flex flex-col gap-3 w-full max-w-xl">
                     {folders.length === 0 && (
                       <div className="rounded-xl border border-dashed border-slate-300 p-6 text-slate-500">
-                        {tr(
-                          "library_no_folders",
-                          "Aún no tienes carpetas. Crea la primera."
-                        )}
+                        {tr("library_no_folders", "Aún no tienes carpetas. Crea la primera.")}
                       </div>
                     )}
 
@@ -531,9 +580,7 @@ export default function ProLibrary() {
                           <Folder className="w-5 h-5 text-sky-500" />
                           <span className="font-medium truncate">{f.name}</span>
                         </div>
-                        <p className="text-xs text-slate-500">
-                          {new Date(f.createdAt).toLocaleString()}
-                        </p>
+                        <p className="text-xs text-slate-500">{new Date(f.createdAt).toLocaleString()}</p>
                       </button>
                     ))}
                   </div>
@@ -546,15 +593,8 @@ export default function ProLibrary() {
 
       {/* MODAL Crear carpeta */}
       {isFolderModalOpen && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="absolute inset-0 bg-black/45"
-            onClick={closeFolderModal}
-          />
+        <div className="fixed inset-0 z-[60] flex items-center justify-center" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-black/45" onClick={closeFolderModal} />
           <div className="relative w-full max-w-lg bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
@@ -565,18 +605,8 @@ export default function ProLibrary() {
                 className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500"
                 aria-label={tr("close", "Cerrar")}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
@@ -588,28 +618,18 @@ export default function ProLibrary() {
                 autoFocus
                 value={folderName}
                 onChange={(e) => setFolderName(e.target.value)}
-                placeholder={tr(
-                  "folder_modal_placeholder",
-                  "Ponle un nombre…"
-                )}
+                placeholder={tr("folder_modal_placeholder", "Ponle un nombre…")}
                 className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
               />
 
-              {/* Lista de documentos para seleccionar */}
               <div className="mt-4">
                 <p className="text-xs font-medium text-slate-600 mb-2">
-                  {tr(
-                    "folder_modal_select_docs",
-                    "Elige qué documentos quieres guardar en esta carpeta"
-                  )}
+                  {tr("folder_modal_select_docs", "Elige qué documentos quieres guardar en esta carpeta")}
                 </p>
                 <div className="max-h-64 overflow-y-auto space-y-2 rounded-[12px] border border-slate-200 bg-slate-50/60 px-1.5 py-2">
                   {docs.length === 0 ? (
                     <p className="px-3 py-2 text-xs text-slate-500">
-                      {tr(
-                        "folder_modal_no_docs",
-                        "Todavía no tienes documentos guardados en tu biblioteca."
-                      )}
+                      {tr("folder_modal_no_docs", "Todavía no tienes documentos guardados en tu biblioteca.")}
                     </p>
                   ) : (
                     docs.map((doc) => {
@@ -624,18 +644,13 @@ export default function ProLibrary() {
                         >
                           <div className="flex flex-col">
                             <span className="truncate">
-                              <span className="font-semibold">
-                                {labelPrefix}
-                              </span>{" "}
+                              <span className="font-semibold">{labelPrefix}</span>{" "}
                               <span className="font-normal">
-                                {doc.title ||
-                                  tr("library_untitled", "Sin título")}
+                                {doc.title || tr("library_untitled", "Sin título")}
                               </span>
                             </span>
                             {dateLabel && (
-                              <span className="text-[11px] text-slate-500 mt-0.5">
-                                {dateLabel}
-                              </span>
+                              <span className="text-[11px] text-slate-500 mt-0.5">{dateLabel}</span>
                             )}
                           </div>
                           <input
@@ -644,9 +659,7 @@ export default function ProLibrary() {
                             checked={checked}
                             onChange={() => {
                               setSelectedDocIds((prev) =>
-                                prev.includes(doc.id)
-                                  ? prev.filter((id) => id !== doc.id)
-                                  : [...prev, doc.id]
+                                prev.includes(doc.id) ? prev.filter((id) => id !== doc.id) : [...prev, doc.id]
                               );
                             }}
                           />
@@ -678,15 +691,8 @@ export default function ProLibrary() {
 
       {/* MODAL Editar título del documento */}
       {editModalOpen && (
-        <div
-          className="fixed inset-0 z-[70] flex items-center justify-center"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="absolute inset-0 bg-black/45"
-            onClick={closeEditModal}
-          />
+        <div className="fixed inset-0 z-[70] flex items-center justify-center" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-black/45" onClick={closeEditModal} />
           <div className="relative w_full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
@@ -697,18 +703,8 @@ export default function ProLibrary() {
                 className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500"
                 aria-label={tr("close", "Cerrar")}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
@@ -720,10 +716,7 @@ export default function ProLibrary() {
                 autoFocus
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                placeholder={tr(
-                  "library_doc_title_placeholder",
-                  "Escribe un título"
-                )}
+                placeholder={tr("library_doc_title_placeholder", "Escribe un título")}
                 className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") saveEditTitle();
