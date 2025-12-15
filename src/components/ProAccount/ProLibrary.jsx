@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Plus, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
-import { useLibraryDocs } from "@/proLibraryStore";
+import { useLibraryDocs, addLibraryDoc } from "@/proLibraryStore";
 import { useLibraryFolders, addFolder } from "@/proLibraryFoldersStore";
 
 export default function ProLibrary() {
@@ -69,6 +69,53 @@ export default function ProLibrary() {
         };
     }
   }, [type, tr]);
+
+  // ===== Crear plantilla (lo que pediste) =====
+  const handleCreateTemplate = () => {
+    // En folders no se crea doc, se abre modal
+    if (type === "folders") {
+      openFolderModal();
+      return;
+    }
+
+    let kind = "translation";
+    let title = tr("library_untitled", "Sin título");
+    let content = "";
+
+    if (type === "text") {
+      kind = "translation";
+      title = tr("library_new_translation_title", "Nueva traducción");
+      content = "";
+    } else if (type === "summary") {
+      kind = "summary";
+      title = tr("library_new_summary_title", "Nuevo resumen");
+      content = "";
+    } else if (type === "corrections") {
+      kind = "corrector";
+      title = tr("library_new_corrector_title", "Nueva corrección");
+      content = "";
+    } else if (type === "paraphraser") {
+      kind = "paraphraser";
+      title = tr("library_new_paraphraser_title", "Nuevo parafraseo");
+      content = "";
+    } else if (type === "aiDetector") {
+      kind = "ai-detector";
+      title = tr("library_new_ai_detector_title", "Nuevo análisis IA");
+      content = "";
+    } else if (type === "humanizer") {
+      kind = "humanizer";
+      title = tr("library_new_humanizer_title", "Nuevo humanizado");
+      content = "";
+    } else {
+      // all → por defecto traducir
+      kind = "translation";
+      title = tr("library_new_translation_title", "Nueva traducción");
+      content = "";
+    }
+
+    const id = addLibraryDoc({ kind, title, content });
+    navigate(`/cuenta-pro/biblioteca/${id}`);
+  };
 
   // ===== Menú contextual por documento =====
   const [menuOpenFor, setMenuOpenFor] = useState(null); // id
@@ -298,7 +345,6 @@ export default function ProLibrary() {
                   { id: "summary", label: tr("library_filter_summaries", "Resúmenes") },
                   { id: "corrections", label: tr("library_filter_corrections", "Zuzenketak") },
 
-                  // ===== NUEVOS FILTROS =====
                   { id: "paraphraser", label: tr("library_filter_paraphrases", "Parafraseos") },
                   { id: "aiDetector", label: tr("library_filter_ai_detector", "Detector IA") },
                   { id: "humanizer", label: tr("library_filter_humanizer", "Humanizador") },
@@ -358,11 +404,11 @@ export default function ProLibrary() {
               type === "humanizer") && (
               <div className="flex flex-wrap gap-[38px]">
                 {/* Crear nuevo */}
-                <Link
-                  to={createAction.href}
+                <button
+                  type="button"
+                  onClick={handleCreateTemplate}
                   className="rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition"
                   style={{ width: 280, height: 196, borderRadius: 16 }}
-                  role="button"
                 >
                   <div className="h-full w-full flex flex-col items-center justify-center">
                     <div
@@ -375,7 +421,7 @@ export default function ProLibrary() {
                       {createAction.label}
                     </span>
                   </div>
-                </Link>
+                </button>
 
                 {/* Tarjetas documento */}
                 {docs
@@ -460,9 +506,7 @@ export default function ProLibrary() {
                             }`}
                           />
                           <h3
-                            className={`${
-                              doc.kind === "corrector" ? "mt-4" : "mt-8"
-                            } text-[18px] leading-[24px] pr-4`}
+                            className={`${doc.kind === "corrector" ? "mt-4" : "mt-8"} text-[18px] leading-[24px] pr-4`}
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 2,
