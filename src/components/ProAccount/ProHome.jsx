@@ -112,6 +112,93 @@ export default function ProHome() {
           </p>
         </div>
 
+        {/* ⭐ PARAFRASEATZAILEA (NUEVA) */}
+        <div
+          onClick={() => navigate("/cuenta-pro/parafraseatzailea")}
+          className="
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            cursor-pointer transform transition
+            hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+            hover:bg-[#FFF7ED] hover:border-2 hover:border-[#FED7AA]
+          "
+        >
+          <div className="w-12 h-12 rounded-xl bg-[#FED7AA] flex items-center justify-center mb-4">
+            {/* Icono (mismo estilo, flechas) */}
+            <svg
+              viewBox="0 0 24 24"
+              className="w-7 h-7 text-orange-500"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 7h10M17 7l-3-3M17 7l-3 3" />
+              <path d="M17 17H7M7 17l3 3M7 17l3-3" />
+            </svg>
+          </div>
+
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">
+            {tr("proHome.cardParaphraser_title", "Parafraseatzailea")}
+          </h3>
+          <p className="text-sm text-slate-500">
+            {tr(
+              "proHome.cardParaphraser_desc",
+              "Berridatzi testua estilo desberdinetan, esanahia mantenduz."
+            )}
+          </p>
+        </div>
+
+        {/* ⭐ IA DETEKTOREA (NUEVA) */}
+        <div
+          onClick={() => navigate("/cuenta-pro/ia-detektorea")}
+          className="
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            cursor-pointer transform transition
+            hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+            hover:bg-[#EEF2FF] hover:border-2 hover:border-[#C7D2FE]
+          "
+        >
+          <div className="w-12 h-12 rounded-xl bg-[#C7D2FE] flex items-center justify-center mb-4">
+            <FileText className="h-6 w-6 text-indigo-600" />
+          </div>
+
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">
+            {tr("proHome.cardAiDetector_title", "IA detektorea")}
+          </h3>
+          <p className="text-sm text-slate-500">
+            {tr(
+              "proHome.cardAiDetector_desc",
+              "Aztertu testua eta kalkulatu IA bidez sortua izateko probabilitatea."
+            )}
+          </p>
+        </div>
+
+        {/* ⭐ GIZATIARTZAILEA (NUEVA) */}
+        <div
+          onClick={() => navigate("/cuenta-pro/gizatiartzailea")}
+          className="
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            cursor-pointer transform transition
+            hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+            hover:bg-[#F0FDF4] hover:border-2 hover:border-[#86EFAC]
+          "
+        >
+          <div className="w-12 h-12 rounded-xl bg-[#DCFCE7] flex items-center justify-center mb-4">
+            <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+          </div>
+
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">
+            {tr("proHome.cardHumanizer_title", "Gizatiartzailea")}
+          </h3>
+          <p className="text-sm text-slate-500">
+            {tr(
+              "proHome.cardHumanizer_desc",
+              "Eman testuari tonu naturalagoa eta irakurketa arinagoa."
+            )}
+          </p>
+        </div>
+
       </section>
     </>
   );
