@@ -112,9 +112,9 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ PARAFRASEATZAILEA (NUEVA) */}
+        {/* ⭐ PARAFRASEADOR (NUEVA) */}
         <div
-          onClick={() => navigate("/cuenta-pro/parafraseatzailea")}
+          onClick={() => navigate("/cuenta-pro/parafraseador")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
@@ -123,6 +123,7 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FED7AA] flex items-center justify-center mb-4">
+            {/* Icono (mismo estilo, flechas) */}
             <svg
               viewBox="0 0 24 24"
               className="w-7 h-7 text-orange-500"
@@ -138,19 +139,19 @@ export default function ProHome() {
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
-            {tr("proHome.cardParaphraser_title", "Parafraseatzailea")}
+            {tr("proHome.cardParaphraser_title", "Parafraseador")}
           </h3>
           <p className="text-sm text-slate-500">
             {tr(
               "proHome.cardParaphraser_desc",
-              "Berridatzi testua estilo desberdinetan, esanahia mantenduz."
+              "Reescribe tu texto con distintos estilos manteniendo el significado."
             )}
           </p>
         </div>
 
-        {/* ⭐ IA DETEKTOREA (NUEVA) */}
+        {/* ⭐ DETECTOR IA (NUEVA) */}
         <div
-          onClick={() => navigate("/cuenta-pro/ia-detektorea")}
+          onClick={() => navigate("/cuenta-pro/detector-ia")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
@@ -163,19 +164,19 @@ export default function ProHome() {
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
-            {tr("proHome.cardAiDetector_title", "IA detektorea")}
+            {tr("proHome.cardAiDetector_title", "Detector IA")}
           </h3>
           <p className="text-sm text-slate-500">
             {tr(
               "proHome.cardAiDetector_desc",
-              "Aztertu testua eta kalkulatu IA bidez sortua izateko probabilitatea."
+              "Analiza el texto y estima la probabilidad de que haya sido generado por IA."
             )}
           </p>
         </div>
 
-        {/* ⭐ GIZATIARTZAILEA (NUEVA) */}
+        {/* ⭐ HUMANIZADOR (NUEVA) */}
         <div
-          onClick={() => navigate("/cuenta-pro/gizatiartzailea")}
+          onClick={() => navigate("/cuenta-pro/humanizador")}
           className="
             bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
@@ -188,12 +189,12 @@ export default function ProHome() {
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
-            {tr("proHome.cardHumanizer_title", "Gizatiartzailea")}
+            {tr("proHome.cardHumanizer_title", "Humanizador")}
           </h3>
           <p className="text-sm text-slate-500">
             {tr(
               "proHome.cardHumanizer_desc",
-              "Eman testuari tonu naturalagoa eta irakurketa arinagoa."
+              "Haz que tu texto suene más natural, claro y fluido."
             )}
           </p>
         </div>
