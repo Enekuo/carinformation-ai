@@ -29,7 +29,7 @@ export default function ProHome() {
         <div
           onClick={() => navigate("/cuenta-pro/traductor")}
           className="
-            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
             hover:bg-[#FFFBEB] hover:border-2 hover:border-[#FEF3C7]
@@ -66,7 +66,7 @@ export default function ProHome() {
         <div
           onClick={() => navigate("/cuenta-pro/resumen")}
           className="
-            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
             hover:bg-[#E0EAFF] hover:border-2 hover:border-[#93C5FD]
@@ -91,7 +91,7 @@ export default function ProHome() {
         <div
           onClick={() => navigate("/cuenta-pro/corrector")}
           className="
-            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
             hover:bg-[#DCFCE7] hover:border-2 hover:border-[#4ADE80]
@@ -116,14 +116,13 @@ export default function ProHome() {
         <div
           onClick={() => navigate("/cuenta-pro/parafraseatzailea")}
           className="
-            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
             hover:bg-[#FFF7ED] hover:border-2 hover:border-[#FED7AA]
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FED7AA] flex items-center justify-center mb-4">
-            {/* Icono (mismo estilo, flechas) */}
             <svg
               viewBox="0 0 24 24"
               className="w-7 h-7 text-orange-500"
@@ -153,7 +152,7 @@ export default function ProHome() {
         <div
           onClick={() => navigate("/cuenta-pro/ia-detektorea")}
           className="
-            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
             hover:bg-[#EEF2FF] hover:border-2 hover:border-[#C7D2FE]
@@ -178,7 +177,7 @@ export default function ProHome() {
         <div
           onClick={() => navigate("/cuenta-pro/gizatiartzailea")}
           className="
-            bg-white rounded-2xl shadow-sm border border-slate-200 p-6
+            bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
             cursor-pointer transform transition
             hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
             hover:bg-[#F0FDF4] hover:border-2 hover:border-[#86EFAC]

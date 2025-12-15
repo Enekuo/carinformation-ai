@@ -1620,6 +1620,32 @@ cookies_last_update: {
     ES: "Revisa tu texto y corrige los errores gramaticales.",
     EUS: "Testua berrikusi eta akats gramatikoak zuzentzen ditu.",
   },
+  cardParaphraser_title: {
+    ES: "Parafraseador",
+    EUS: "Parafrasatzailea",
+  },
+  cardParaphraser_desc: {
+    ES: "",
+    EUS: "",
+  },
+  cardAiDetector_title: {
+    ES: "Detector de IA",
+    EUS: "IA-detektorea",
+  },
+  cardAiDetector_desc: {
+    ES: "", 
+    EUS: "",
+  },
+  cardHumanizer_title: {
+    ES: "Humanizador",
+    EUS: "Humanizatzailea",
+  },
+  cardHumanizer_desc: {
+    ES: "",
+    EUS: "",
+  },
+
+
   },
  
   // =========================
