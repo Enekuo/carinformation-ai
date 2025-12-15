@@ -2235,11 +2235,11 @@ library_create_paraphrase: {
 },
 library_filter_ai_detector: {
   ES: "Detector IA",
-  EUS: "IA Detektorea",
+  EUS: "IA aztertzailea",
 },
 library_create_ai_detector: {
-  ES: "Crear análisis IA",
-  EUS: "Sortu IA azterketa",
+  ES: "Crear detección IA",
+  EUS: "Sortu IA aztertzailea",
 },
 library_filter_humanizer: {
   ES: "Humanizador",
