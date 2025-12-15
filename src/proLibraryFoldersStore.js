@@ -16,7 +16,7 @@ function loadInitialFolders() {
     return parsed;
   } catch {
     return [];
-  }
+  } 
 }
 
 function persist() {
