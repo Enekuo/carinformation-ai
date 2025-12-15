@@ -69,17 +69,23 @@ export function addLibraryDoc({ kind, title, content }) {
   const createdAt = new Date().toISOString();
   const createdAtLabel = formatDateLabel(createdAt);
 
-  // ⬇️ AQUÍ EL CAMBIO IMPORTANTE: ahora aceptamos también "corrector"
+  // Ahora aceptamos también: paraphraser / ai-detector / humanizer
   const safeKind =
     kind === "translation"
       ? "translation"
       : kind === "corrector"
       ? "corrector"
+      : kind === "paraphraser"
+      ? "paraphraser"
+      : kind === "ai-detector"
+      ? "ai-detector"
+      : kind === "humanizer"
+      ? "humanizer"
       : "summary";
 
   const doc = {
     id,
-    kind: safeKind, // "translation" | "summary" | "corrector"
+    kind: safeKind, // "translation" | "summary" | "corrector" | "paraphraser" | "ai-detector" | "humanizer"
     title: clipTitle(title, 35),
     content: String(content || ""),
     createdAt,
