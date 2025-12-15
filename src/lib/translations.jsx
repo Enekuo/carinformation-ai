@@ -2225,7 +2225,30 @@ library_create_correction: {
   ES: "Crear corrección",
   EUS: "Sortu zuzenketa",
 },
-
+library_filter_paraphrases: {
+  ES: "Parafraseos",
+  EUS: "Parafraseoak",
+},
+library_create_paraphrase: {
+  ES: "Crear parafraseo",
+  EUS: "Sortu parafraseoa",
+},
+library_filter_ai_detector: {
+  ES: "Detector IA",
+  EUS: "IA Detektorea",
+},
+library_create_ai_detector: {
+  ES: "Crear análisis IA",
+  EUS: "Sortu IA azterketa",
+},
+library_filter_humanizer: {
+  ES: "Humanizador",
+  EUS: "Gizatiartzailea",
+},
+library_create_humanizer: {
+  ES: "Crear humanizado",
+  EUS: "Sortu humanizatua",
+},
 // =========================
   //        Pro Suggestions
   // =========================                          
