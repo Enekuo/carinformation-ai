@@ -1,5 +1,5 @@
 import React from "react";
-import { FileText, CheckCircle2 } from "lucide-react";
+import { FileText, CheckCircle2, Globe, Brain } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ export default function ProHome() {
       {/* Tarjetas principales */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
 
-        {/* ⭐ TRADUCTOR (icono nuevo amarillo con flechas) */}
+        {/* ⭐ TRADUCTOR (icono globo amarillo) */}
         <div
           onClick={() => navigate("/cuenta-pro/traductor")}
           className="
@@ -36,19 +36,7 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FEF3C7] flex items-center justify-center mb-4">
-            {/* Icono flechas amarillo */}
-            <svg
-              viewBox="0 0 24 24"
-              className="w-7 h-7 text-yellow-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 7h10M17 7l-3-3M17 7l-3 3" />
-              <path d="M17 17H7M7 17l3 3M7 17l3-3" />
-            </svg>
+            <Globe className="h-7 w-7 text-yellow-600" />
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
@@ -123,7 +111,6 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FED7AA] flex items-center justify-center mb-4">
-            {/* Icono (mismo estilo, flechas) */}
             <svg
               viewBox="0 0 24 24"
               className="w-7 h-7 text-orange-500"
@@ -174,7 +161,7 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ HUMANIZADOR (NUEVA) */}
+        {/* ⭐ HUMANIZADOR (icono cerebro verde) */}
         <div
           onClick={() => navigate("/cuenta-pro/humanizador")}
           className="
@@ -185,7 +172,7 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#DCFCE7] flex items-center justify-center mb-4">
-            <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+            <Brain className="h-7 w-7 text-emerald-600" />
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
