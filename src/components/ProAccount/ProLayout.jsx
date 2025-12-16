@@ -58,101 +58,26 @@ export default function LayoutPro({ children }) {
     pathname === "/cuenta-pro/humanizador" ||
     pathname === "/cuenta-pro/detector-ia";
 
-  // ===== TÍTULO DINÁMICO EN HEADER (por ruta + traducido) =====
-  const headerInfo = useMemo(() => {
-    // Biblioteca detalle
-    if (pathname.startsWith("/cuenta-pro/biblioteca/")) {
-      return {
-        title: tr("proHeader.library", "Biblioteca"),
-        subtitle: "",
-      };
-    }
-
-    // Rutas exactas
-    if (pathname === "/cuenta-pro") {
-      return {
-        title: tr("proHeader.home", "Home"),
-        subtitle: "",
-      };
-    }
-
+  // ===== TÍTULO DINÁMICO EN HEADER (SOLO 6 HERRAMIENTAS, SIN SUBTÍTULO) =====
+  const headerTitle = useMemo(() => {
     if (pathname === "/cuenta-pro/traductor") {
-      return {
-        title: tr("proHeader.translator", "Traductor"),
-        subtitle: tr("proHeader.translator_sub", ""),
-      };
+      return tr("proHeader.translator", "Traductor");
     }
-
     if (pathname === "/cuenta-pro/resumen") {
-      return {
-        title: tr("proHeader.summary", "Resumen"),
-        subtitle: tr("proHeader.summary_sub", ""),
-      };
+      return tr("proHeader.summary", "Resumen");
     }
-
     if (pathname === "/cuenta-pro/corrector") {
-      return {
-        title: tr("proHeader.corrector", "Corrector"),
-        subtitle: tr("proHeader.corrector_sub", ""),
-      };
+      return tr("proHeader.corrector", "Corrector");
     }
-
     if (pathname === "/cuenta-pro/parafraseador") {
-      return {
-        title: tr("proHeader.paraphraser", "Parafraseador"),
-        subtitle: tr("proHeader.paraphraser_sub", ""),
-      };
+      return tr("proHeader.paraphraser", "Parafraseador");
     }
-
     if (pathname === "/cuenta-pro/detector-ia") {
-      return {
-        title: tr("proHeader.aiDetector", "Detector de IA"),
-        subtitle: tr("proHeader.aiDetector_sub", ""),
-      };
+      return tr("proHeader.aiDetector", "Detector de IA");
     }
-
     if (pathname === "/cuenta-pro/humanizador") {
-      return {
-        title: tr("proHeader.humanizer", "Humanizador"),
-        subtitle: tr("proHeader.humanizer_sub", ""),
-      };
+      return tr("proHeader.humanizer", "Humanizador");
     }
-
-    if (pathname === "/cuenta-pro/biblioteca") {
-      return {
-        title: tr("proHeader.library", "Biblioteca"),
-        subtitle: tr("proHeader.library_sub", ""),
-      };
-    }
-
-    if (pathname === "/cuenta-pro/chat-ia") {
-      return {
-        title: tr("proHeader.chat", "Chat con IA"),
-        subtitle: tr("proHeader.chat_sub", ""),
-      };
-    }
-
-    if (pathname === "/cuenta-pro/sugerencias") {
-      return {
-        title: tr("proHeader.suggestions", "Sugerencias"),
-        subtitle: tr("proHeader.suggestions_sub", ""),
-      };
-    }
-
-    if (pathname === "/cuenta-pro/ayuda") {
-      return {
-        title: tr("proHeader.help", "Ayuda"),
-        subtitle: tr("proHeader.help_sub", ""),
-      };
-    }
-
-    if (pathname === "/cuenta-pro/ajustes") {
-      return {
-        title: tr("proHeader.settings", "Ajustes"),
-        subtitle: tr("proHeader.settings_sub", ""),
-      };
-    }
-
     return null;
   }, [pathname, tr]);
 
@@ -461,21 +386,16 @@ export default function LayoutPro({ children }) {
         }`}
       >
         <header className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200">
-          {/* IZQUIERDA (vacío para mantener estructura) */}
+          {/* IZQUIERDA (fijo para no mover el centro) */}
           <div className="w-[180px]" />
 
-          {/* CENTRO: Título dinámico */}
+          {/* CENTRO: título SOLO si es herramienta */}
           <div className="flex-1 min-w-0 flex items-center justify-center px-4">
-            {headerInfo && (
+            {headerTitle && (
               <div className="min-w-0 text-center">
                 <div className="text-[16px] font-semibold text-slate-900 truncate">
-                  {headerInfo.title}
+                  {headerTitle}
                 </div>
-                {headerInfo.subtitle ? (
-                  <div className="text-[12px] text-slate-500 truncate">
-                    {headerInfo.subtitle}
-                  </div>
-                ) : null}
               </div>
             )}
           </div>
