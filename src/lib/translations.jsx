@@ -2249,6 +2249,14 @@ library_create_humanizer: {
   ES: "Crear humanizado",
   EUS: "Sortu humanizatua",
 },
+library_prefix_paraphraser: {
+  ES: "Parafraseo:",
+  EUS: "Parafraseoa:",
+},
+library_prefix_humanizer: {
+  ES: "Humanizado:",
+  EUS: "Humanizatua:",
+},
 // =========================
   //        Pro Suggestions
   // =========================                          
