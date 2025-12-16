@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Home as HomeIcon,
   Wrench,
@@ -57,6 +57,104 @@ export default function LayoutPro({ children }) {
     pathname === "/cuenta-pro/parafraseador" ||
     pathname === "/cuenta-pro/humanizador" ||
     pathname === "/cuenta-pro/detector-ia";
+
+  // ===== TÍTULO DINÁMICO EN HEADER (por ruta + traducido) =====
+  const headerInfo = useMemo(() => {
+    // Biblioteca detalle
+    if (pathname.startsWith("/cuenta-pro/biblioteca/")) {
+      return {
+        title: tr("proHeader.library", "Biblioteca"),
+        subtitle: "",
+      };
+    }
+
+    // Rutas exactas
+    if (pathname === "/cuenta-pro") {
+      return {
+        title: tr("proHeader.home", "Home"),
+        subtitle: "",
+      };
+    }
+
+    if (pathname === "/cuenta-pro/traductor") {
+      return {
+        title: tr("proHeader.translator", "Traductor"),
+        subtitle: tr("proHeader.translator_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/resumen") {
+      return {
+        title: tr("proHeader.summary", "Resumen"),
+        subtitle: tr("proHeader.summary_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/corrector") {
+      return {
+        title: tr("proHeader.corrector", "Corrector"),
+        subtitle: tr("proHeader.corrector_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/parafraseador") {
+      return {
+        title: tr("proHeader.paraphraser", "Parafraseador"),
+        subtitle: tr("proHeader.paraphraser_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/detector-ia") {
+      return {
+        title: tr("proHeader.aiDetector", "Detector de IA"),
+        subtitle: tr("proHeader.aiDetector_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/humanizador") {
+      return {
+        title: tr("proHeader.humanizer", "Humanizador"),
+        subtitle: tr("proHeader.humanizer_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/biblioteca") {
+      return {
+        title: tr("proHeader.library", "Biblioteca"),
+        subtitle: tr("proHeader.library_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/chat-ia") {
+      return {
+        title: tr("proHeader.chat", "Chat con IA"),
+        subtitle: tr("proHeader.chat_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/sugerencias") {
+      return {
+        title: tr("proHeader.suggestions", "Sugerencias"),
+        subtitle: tr("proHeader.suggestions_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/ayuda") {
+      return {
+        title: tr("proHeader.help", "Ayuda"),
+        subtitle: tr("proHeader.help_sub", ""),
+      };
+    }
+
+    if (pathname === "/cuenta-pro/ajustes") {
+      return {
+        title: tr("proHeader.settings", "Ajustes"),
+        subtitle: tr("proHeader.settings_sub", ""),
+      };
+    }
+
+    return null;
+  }, [pathname, tr]);
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex">
@@ -363,8 +461,26 @@ export default function LayoutPro({ children }) {
         }`}
       >
         <header className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200">
-          <div />
+          {/* IZQUIERDA (vacío para mantener estructura) */}
+          <div className="w-[180px]" />
 
+          {/* CENTRO: Título dinámico */}
+          <div className="flex-1 min-w-0 flex items-center justify-center px-4">
+            {headerInfo && (
+              <div className="min-w-0 text-center">
+                <div className="text-[16px] font-semibold text-slate-900 truncate">
+                  {headerInfo.title}
+                </div>
+                {headerInfo.subtitle ? (
+                  <div className="text-[12px] text-slate-500 truncate">
+                    {headerInfo.subtitle}
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
+
+          {/* DERECHA */}
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-full border border-slate-200 bg-white flex items-center justify-center">
               <Gem size={18} className="text-slate-700" />
