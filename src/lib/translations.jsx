@@ -1535,8 +1535,8 @@ cookies_last_update: {
  },
 
  proHeader_summary: {
-  ES: "Resumen",
-  EUS: "Laburpena",
+  ES: "Resumidor",
+  EUS: "Laburtzailea",
   EN: "Summary",
  },
 
@@ -1554,7 +1554,7 @@ cookies_last_update: {
 
  proHeader_aiDetector: {
   ES: "Detector de IA",
-  EUS: "AA detektagailua",
+  EUS: "IA detektagailua",
   EN: "AI Detector",
  },
 
@@ -2037,11 +2037,7 @@ proParaphraser_error_generic: {
   // =========================    
  proSidebar_aiDetector: {
   ES: "Detector de IA",
-  EUS: "IA detektorea",
-},
-aiDetector_title: {
-  ES: "Detector de IA",
-  EUS: "IA detektorea",
+  EUS: "IA detektagailua",
 },
 aiDetector_subtitle: {
   ES: "Mantén la autenticidad de tus textos comprobando si podrían contener contenido generado por IA.",
