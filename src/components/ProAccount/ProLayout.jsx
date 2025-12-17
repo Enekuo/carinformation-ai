@@ -61,22 +61,22 @@ export default function LayoutPro({ children }) {
   // ===== TÍTULO DINÁMICO EN HEADER (SOLO 6 HERRAMIENTAS, SIN SUBTÍTULO) =====
   const headerTitle = useMemo(() => {
     if (pathname === "/cuenta-pro/traductor") {
-      return tr("proHeader.translator", "Traductor");
+      return tr("proHeader_translator", "Traductor");
     }
     if (pathname === "/cuenta-pro/resumen") {
-      return tr("proHeader.summary", "Resumen");
+      return tr("proHeader_summary", "Resumen");
     }
     if (pathname === "/cuenta-pro/corrector") {
-      return tr("proHeader.corrector", "Corrector");
+      return tr("proHeader_corrector", "Corrector");
     }
     if (pathname === "/cuenta-pro/parafraseador") {
-      return tr("proHeader.paraphraser", "Parafraseador");
+      return tr("proHeader_paraphraser", "Parafraseador");
     }
     if (pathname === "/cuenta-pro/detector-ia") {
-      return tr("proHeader.aiDetector", "Detector de IA");
+      return tr("proHeader_aiDetector", "Detector de IA");
     }
     if (pathname === "/cuenta-pro/humanizador") {
-      return tr("proHeader.humanizer", "Humanizador");
+      return tr("proHeader_humanizer", "Humanizador");
     }
     return null;
   }, [pathname, tr]);
