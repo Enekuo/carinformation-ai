@@ -437,9 +437,9 @@ export default function ProLibrary() {
                         <img
                           src={getDocVisual({ kind: "paraphraser" }).iconSrc}
                           alt=""
-                          width={56}
-                          height={56}
-                          className="block select-none -mt-2 -mb-4"
+                          width={80}
+                          height={80}
+                          className="block select-none -mt-2 -mb-4 object-contain"
                         />
                         <h3
                           className="mt-8 text-[18px] leading-[24px] pr-4"
