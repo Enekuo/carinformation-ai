@@ -393,7 +393,7 @@ export default function LayoutPro({ children }) {
           <div className="flex-1 min-w-0 flex items-center justify-center px-4">
             {headerTitle && (
               <div className="min-w-0 text-center">
-                <div className="text-[16px] font-semibold text-slate-900 truncate">
+                <div className="text-[20px] font-semibold tracking-tight text-slate-900 truncate">
                   {headerTitle}
                 </div>
               </div>
