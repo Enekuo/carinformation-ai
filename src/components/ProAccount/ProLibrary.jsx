@@ -250,7 +250,7 @@ export default function ProLibrary() {
         border: "#FFD8B8",
         iconSrc: "/Library4.png",
         labelPrefix: tr("library_prefix_paraphraser", "Parafraseoa:"),
-        iconSize: 80,
+        iconSize: 56,
       };
     }
 
