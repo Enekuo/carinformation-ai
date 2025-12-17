@@ -155,12 +155,12 @@ export default function LayoutPro({ children }) {
               </button>
 
               {toolsOpen && !collapsed && (
-                <div className="ml-3 mt-1 space-y-1">
+                <div className="ml-2 mt-1 space-y-1">
                   <button
                     onClick={() => navigate("/cuenta-pro/traductor")}
                     className={`
                       w-full flex items-center
-                      pl-6 pr-3 h-9
+                      pl-4 pr-2 h-9
                       text-sm
                       ${
                         isActive("/cuenta-pro/traductor")
@@ -177,7 +177,7 @@ export default function LayoutPro({ children }) {
                     onClick={() => navigate("/cuenta-pro/resumen")}
                     className={`
                       w-full flex items-center
-                      pl-6 pr-3 h-9
+                      pl-4 pr-2 h-9
                       text-sm
                       ${
                         isActive("/cuenta-pro/resumen")
@@ -194,7 +194,7 @@ export default function LayoutPro({ children }) {
                     onClick={() => navigate("/cuenta-pro/corrector")}
                     className={`
                       w-full flex items-center
-                      pl-6 pr-3 h-9
+                      pl-4 pr-2 h-9
                       text-sm
                       ${
                         isActive("/cuenta-pro/corrector")
@@ -211,7 +211,7 @@ export default function LayoutPro({ children }) {
                     onClick={() => navigate("/cuenta-pro/parafraseador")}
                     className={`
                       w-full flex items-center
-                      pl-6 pr-3 h-9
+                      pl-4 pr-2 h-9
                       text-sm
                       ${
                         isActive("/cuenta-pro/parafraseador")
@@ -228,7 +228,7 @@ export default function LayoutPro({ children }) {
                     onClick={() => navigate("/cuenta-pro/detector-ia")}
                     className={`
                       w-full flex items-center
-                      pl-6 pr-3 h-9
+                      pl-4 pr-2 h-9
                       text-sm
                       ${
                         isActive("/cuenta-pro/detector-ia")
@@ -245,7 +245,7 @@ export default function LayoutPro({ children }) {
                     onClick={() => navigate("/cuenta-pro/humanizador")}
                     className={`
                       w-full flex items-center
-                      pl-6 pr-3 h-9
+                      pl-4 pr-2 h-9
                       text-sm
                       ${
                         isActive("/cuenta-pro/humanizador")
