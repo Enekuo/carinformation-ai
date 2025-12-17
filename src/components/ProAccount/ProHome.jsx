@@ -3,6 +3,9 @@ import { FileText, CheckCircle2, Globe, Brain, Search } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
 
+// ✅ Imagen nueva para la tarjeta Parafraseador
+import Library4 from "@/assets/Library4.png";
+
 export default function ProHome() {
   const userName = "(usuario)";
 
@@ -24,7 +27,7 @@ export default function ProHome() {
 
       {/* Tarjetas principales */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
-        {/* ⭐ TRADUCTOR (icono globo amarillo) */}
+        {/* ⭐ TRADUCTOR */}
         <div
           onClick={() => navigate("/cuenta-pro/traductor")}
           className="
@@ -49,7 +52,7 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ RESUMIDOR (icono azul nuevo) */}
+        {/* ⭐ RESUMIDOR */}
         <div
           onClick={() => navigate("/cuenta-pro/resumen")}
           className="
@@ -74,7 +77,7 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ CORRECTOR GRAMATICAL (EN VERDE) */}
+        {/* ⭐ CORRECTOR */}
         <div
           onClick={() => navigate("/cuenta-pro/corrector")}
           className="
@@ -99,7 +102,7 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ PARAFRASEADOR (NUEVA) */}
+        {/* ⭐ PARAFRASEADOR (Library4) */}
         <div
           onClick={() => navigate("/cuenta-pro/parafraseador")}
           className="
@@ -110,18 +113,12 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#FED7AA] flex items-center justify-center mb-4">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-7 h-7 text-orange-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 7h10M17 7l-3-3M17 7l-3 3" />
-              <path d="M17 17H7M7 17l3 3M7 17l3-3" />
-            </svg>
+            <img
+              src={Library4}
+              alt="Library4"
+              className="w-7 h-7 object-contain"
+              draggable="false"
+            />
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
@@ -135,7 +132,7 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ DETECTOR IA (LUPA AZUL INCLINADA) */}
+        {/* ⭐ DETECTOR IA (lupa azul inclinada) */}
         <div
           onClick={() => navigate("/cuenta-pro/detector-ia")}
           className="
@@ -146,7 +143,7 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#C7D2FE] flex items-center justify-center mb-4">
-            <Search className="h-6 w-6 text-blue-700 -rotate-6" />
+            <Search className="h-6 w-6 text-blue-700 -rotate-12" />
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
@@ -160,7 +157,7 @@ export default function ProHome() {
           </p>
         </div>
 
-        {/* ⭐ HUMANIZADOR (icono cerebro verde) */}
+        {/* ⭐ HUMANIZADOR */}
         <div
           onClick={() => navigate("/cuenta-pro/humanizador")}
           className="
