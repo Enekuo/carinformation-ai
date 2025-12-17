@@ -81,9 +81,7 @@ export default function ProAiDetector() {
       });
     } catch (e) {
       console.error(e);
-      setErrorMsg(
-        tr("aiDetector_error_network", "Error de red. Intenta de nuevo.")
-      );
+      setErrorMsg(tr("aiDetector_error_network", "Error de red. Intenta de nuevo."));
     } finally {
       setLoading(false);
     }
@@ -106,10 +104,9 @@ export default function ProAiDetector() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      {/* ✅ ELIMINADO: título + subtítulo (lo rojo) */}
-
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
-        <div className="relative bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[520px]">
+        {/* IZQUIERDA */}
+        <div className="relative bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[500px]">
           <textarea
             value={text}
             onChange={(e) => {
@@ -118,7 +115,7 @@ export default function ProAiDetector() {
               setErrorMsg("");
             }}
             disabled={loading}
-            className="w-full h-52 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-28 disabled:opacity-60"
+            className="w-full h-52 resize-none border-none outline-none bg-transparent px-1 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0 overflow-y-auto mb-24 disabled:opacity-60"
             placeholder={tr(
               "aiDetector_placeholder",
               "Escribe o pega aquí el texto que quieres analizar..."
@@ -202,7 +199,8 @@ export default function ProAiDetector() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[560px] flex flex-col">
+        {/* DERECHA */}
+        <div className="bg-white rounded-2xl border border-slate-200 px-7 py-7 min-h-[500px] flex flex-col">
           <div className="mt-2 text-center">
             {loading ? (
               <>
@@ -210,10 +208,7 @@ export default function ProAiDetector() {
                   {tr("aiDetector_right_loading_title", "Analizando el texto…")}
                 </div>
                 <div className="mt-2 text-xs text-slate-400">
-                  {tr(
-                    "aiDetector_right_loading_subtitle",
-                    "Esto puede tardar unos segundos"
-                  )}
+                  {tr("aiDetector_right_loading_subtitle", "Esto puede tardar unos segundos")}
                 </div>
               </>
             ) : (
@@ -222,19 +217,11 @@ export default function ProAiDetector() {
                   {result ? `${aiValue}%` : "--%"}
                 </div>
                 <div className="mt-2 text-sm text-slate-500">
-                  {tr(
-                    "aiDetector_right_percent_subtitle",
-                    "del texto podría estar generado por IA"
-                  )}
+                  {tr("aiDetector_right_percent_subtitle", "del texto podría estar generado por IA")}
                 </div>
 
-                {!!result?.note && (
-                  <div className="mt-3 text-xs text-slate-500">{result.note}</div>
-                )}
-
-                {!!errorMsg && (
-                  <div className="mt-3 text-xs text-red-600">{errorMsg}</div>
-                )}
+                {!!result?.note && <div className="mt-3 text-xs text-slate-500">{result.note}</div>}
+                {!!errorMsg && <div className="mt-3 text-xs text-red-600">{errorMsg}</div>}
               </>
             )}
           </div>
@@ -256,9 +243,7 @@ export default function ProAiDetector() {
                   {tr("aiDetector_label_ai", "AI-generated")}
                 </span>
               </div>
-              <span className="text-sm text-slate-700">
-                {result ? `${aiValue}%` : "--%"}
-              </span>
+              <span className="text-sm text-slate-700">{result ? `${aiValue}%` : "--%"}</span>
             </div>
 
             <div className="h-px bg-slate-200" />
@@ -270,9 +255,7 @@ export default function ProAiDetector() {
                   {tr("aiDetector_label_human", "Human-written")}
                 </span>
               </div>
-              <span className="text-sm text-slate-700">
-                {result ? `${humanValue}%` : "--%"}
-              </span>
+              <span className="text-sm text-slate-700">{result ? `${humanValue}%` : "--%"}</span>
             </div>
 
             <div className="h-px bg-slate-200" />
@@ -281,10 +264,7 @@ export default function ProAiDetector() {
           <div className="mt-auto pt-6">
             {!!result && (
               <div className="mb-3 text-[11px] leading-4 text-slate-400 text-center">
-                {tr(
-                  "aiDetector_disclaimer",
-                  "Estimación orientativa. Puede no ser 100% precisa."
-                )}
+                {tr("aiDetector_disclaimer", "Estimación orientativa. Puede no ser 100% precisa.")}
               </div>
             )}
 
