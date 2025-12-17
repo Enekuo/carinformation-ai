@@ -146,7 +146,7 @@ export default function ProHome() {
           "
         >
           <div className="w-12 h-12 rounded-xl bg-[#C7D2FE] flex items-center justify-center mb-4">
-            <Search className="h-6 w-6 text-blue-700 -rotate-12" />
+            <Search className="h-6 w-6 text-blue-700 -rotate-6" />
           </div>
 
           <h3 className="text-lg font-semibold text-slate-800 mb-1">
