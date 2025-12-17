@@ -245,19 +245,10 @@ export default function ProLibrary() {
     }
 
     if (kind === "paraphraser") {
-      const iconSvg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
-          <rect x="0" y="0" width="96" height="96" rx="20" fill="#FFE6C7"/>
-          <path d="M30 38h26" stroke="#F97316" stroke-width="5" stroke-linecap="round"/>
-          <path d="M52 30l8 8-8 8" fill="none" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M66 58H40" stroke="#F97316" stroke-width="5" stroke-linecap="round"/>
-          <path d="M44 50l-8 8 8 8" fill="none" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      `;
       return {
         bg: "#FFF3E6",
         border: "#FFD8B8",
-        iconSrc: svgToDataUri(iconSvg),
+        iconSrc: "/Library4.png",
         labelPrefix: tr("library_prefix_paraphraser", "Parafraseoa:"),
         iconSize: 56,
       };
@@ -343,7 +334,10 @@ export default function ProLibrary() {
                     id: "humanizer",
                     label: tr("library_filter_humanizer", "Humanizador"),
                   },
-                  { id: "folders", label: tr("library_filter_folders", "Mis carpetas") },
+                  {
+                    id: "folders",
+                    label: tr("library_filter_folders", "Mis carpetas"),
+                  },
                 ].map(({ id, label }) => {
                   const active = type === id;
 
@@ -408,7 +402,10 @@ export default function ProLibrary() {
                       className="flex items-center justify-center rounded-full bg-indigo-50"
                       style={{ width: 70, height: 70 }}
                     >
-                      <Plus className="text-indigo-600" style={{ width: 21, height: 21 }} />
+                      <Plus
+                        className="text-indigo-600"
+                        style={{ width: 21, height: 21 }}
+                      />
                     </div>
                     <span className="mt-4 text-[20px] leading-6 text-slate-900">
                       {createAction.label}
@@ -647,7 +644,10 @@ export default function ProLibrary() {
 
                     {folderDocs.length === 0 ? (
                       <p className="text-sm text-slate-500">
-                        {tr("folder_empty", "Esta carpeta todavía no tiene documentos.")}
+                        {tr(
+                          "folder_empty",
+                          "Esta carpeta todavía no tiene documentos."
+                        )}
                       </p>
                     ) : (
                       <div className="flex flex-wrap gap-[38px]">
@@ -715,7 +715,10 @@ export default function ProLibrary() {
                   <div className="flex flex-col gap-3 w-full max-w-xl">
                     {folders.length === 0 && (
                       <div className="rounded-xl border border-dashed border-slate-300 p-6 text-slate-500">
-                        {tr("library_no_folders", "Aún no tienes carpetas. Crea la primera.")}
+                        {tr(
+                          "library_no_folders",
+                          "Aún no tienes carpetas. Crea la primera."
+                        )}
                       </div>
                     )}
 
@@ -819,12 +822,9 @@ export default function ProLibrary() {
                         >
                           <div className="flex flex-col">
                             <span className="truncate">
-                              <span className="font-semibold">
-                                {labelPrefix}
-                              </span>{" "}
+                              <span className="font-semibold">{labelPrefix}</span>{" "}
                               <span className="font-normal">
-                                {doc.title ||
-                                  tr("library_untitled", "Sin título")}
+                                {doc.title || tr("library_untitled", "Sin título")}
                               </span>
                             </span>
                             {dateLabel && (
@@ -878,10 +878,7 @@ export default function ProLibrary() {
           role="dialog"
           aria-modal="true"
         >
-          <div
-            className="absolute inset-0 bg-black/45"
-            onClick={closeEditModal}
-          />
+          <div className="absolute inset-0 bg-black/45" onClick={closeEditModal} />
           <div className="relative w_full max-w-md bg-white rounded-[18px] border border-slate-200 shadow-[0_24px_80px_rgba(2,6,23,0.22)]">
             <div className="px-6 pt-5 pb-3 flex items-center justify-between">
               <h3 className="text-[18px] leading-6 font-semibold text-slate-900">
@@ -892,12 +889,7 @@ export default function ProLibrary() {
                 className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500"
                 aria-label={tr("close", "Cerrar")}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                >
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -915,10 +907,7 @@ export default function ProLibrary() {
                 autoFocus
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                placeholder={tr(
-                  "library_doc_title_placeholder",
-                  "Escribe un título"
-                )}
+                placeholder={tr("library_doc_title_placeholder", "Escribe un título")}
                 className="w-full rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-[14px] leading-[22px] outline-none focus:ring-2 focus:ring-sky-500"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") saveEditTitle();
