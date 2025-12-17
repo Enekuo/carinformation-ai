@@ -1,5 +1,15 @@
-import React from "react";
-import { FileText, CheckCircle2, Globe, Brain } from "lucide-react";
+import React, { useState } from "react";
+import {
+  FileText,
+  CheckCircle2,
+  Globe,
+  Brain,
+  Search,
+  SearchCheck,
+  SearchCode,
+  FileSearch,
+  SearchSlash,
+} from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
 
@@ -10,21 +20,56 @@ export default function ProHome() {
   const tr = (key, fallback) => t(key) || fallback;
   const navigate = useNavigate();
 
+  const [searchIconOption, setSearchIconOption] = useState("Search");
+
+  const searchOptions = [
+    { id: "Search", Icon: Search },
+    { id: "SearchCheck", Icon: SearchCheck },
+    { id: "SearchCode", Icon: SearchCode },
+    { id: "FileSearch", Icon: FileSearch },
+    { id: "SearchSlash", Icon: SearchSlash },
+  ];
+
   return (
     <>
       {/* Saludo + título */}
-      <div className="mt-6 ml-10 mb-6">
-        <p className="text-base text-slate-400">
-          {tr("proHome.greeting_prefix", "Hola")} {userName}
-        </p>
-        <h1 className="text-3xl font-semibold text-slate-900">
-          {tr("proHome.title", "Bienvenido a Euskalia Pro")}
-        </h1>
+      <div className="mt-6 ml-10 mb-6 flex items-start justify-between gap-6">
+        <div>
+          <p className="text-base text-slate-400">
+            {tr("proHome.greeting_prefix", "Hola")} {userName}
+          </p>
+          <h1 className="text-3xl font-semibold text-slate-900">
+            {tr("proHome.title", "Bienvenido a Euskalia Pro")}
+          </h1>
+        </div>
+
+        {/* 5 opciones de lupa (arriba a la derecha) */}
+        <div className="flex items-center gap-2">
+          {searchOptions.map(({ id, Icon }) => {
+            const active = searchIconOption === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setSearchIconOption(id)}
+                className={`
+                  h-10 w-10 rounded-xl border
+                  flex items-center justify-center
+                  transition
+                  ${active ? "bg-white border-slate-300 shadow-sm" : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50"}
+                `}
+                aria-label={id}
+                title={id}
+              >
+                <Icon className="h-5 w-5 text-slate-700" />
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Tarjetas principales */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-10 mr-10">
-
         {/* ⭐ TRADUCTOR (icono globo amarillo) */}
         <div
           onClick={() => navigate("/cuenta-pro/traductor")}
@@ -185,9 +230,7 @@ export default function ProHome() {
             )}
           </p>
         </div>
-
       </section>
     </>
   );
 }
- 
