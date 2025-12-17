@@ -4,7 +4,7 @@ import { useTranslation } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
 
 // ✅ Imagen nueva para la tarjeta Parafraseador
-import Library4 from "@/assets/Library4.png";
+import Library4 from "@/public/Library4.png";
 
 export default function ProHome() {
   const userName = "(usuario)";
