@@ -438,7 +438,7 @@ export default function ProLibrary() {
                         <img
                          src={getDocVisual({ kind: "paraphraser" }).iconSrc}
                          alt=""
-                         className="block select-none -mt-2 -mb-4"
+                         className="block select-none mt-2 -mb-4 w-[64px] h-auto max-h-[64px] object-contain"
                          draggable={false}
                           />
                         </div>
