@@ -434,7 +434,7 @@ export default function ProLibrary() {
                       }
                     >
                       <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                        <div className="h-[80px] w-[80px] flex items-center justify-start">
+                        <div className="h-[80px] w-[80px] flex items-start justify-start">
                         <img
                          src={getDocVisual({ kind: "paraphraser" }).iconSrc}
                          alt=""
