@@ -434,11 +434,11 @@ export default function ProLibrary() {
                       }
                     >
                       <div className="h-full w-full px-5 pt-2 pb-6 flex flex-col">
-                        <div className="h-[96px] w-[96px] flex items-start justify-start">
-                        <img
-                         src={getDocVisual({ kind: "paraphraser" }).iconSrc}
-                         alt=""
-                         className="block select-none mt-2 -mb-4 w-[64px] h-auto max-h-[64px] object-contain"
+                        <div className="h-[96px] w-full flex items-center">
+  <img
+    src={getDocVisual({ kind: "paraphraser" }).iconSrc}
+    alt=""
+    className="block select-none w-[64px] h-[64px] object-contain"
                          draggable={false}
                           />
                         </div>
