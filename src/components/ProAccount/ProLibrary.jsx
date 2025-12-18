@@ -204,15 +204,39 @@ export default function ProLibrary() {
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(cleaned)}`;
   };
 
+  // ✅ Normaliza kinds antiguos para que SIEMPRE se pinten con la plantilla nueva
+  const normalizeKind = (kind) => {
+    const k = String(kind || "").toLowerCase().trim();
+
+    // translation
+    if (k === "translation" || k === "traductor" || k === "translator") return "translation";
+
+    // summary
+    if (k === "summary" || k === "resumen" || k === "laburpena") return "summary";
+
+    // corrector
+    if (k === "corrector" || k === "corrections" || k === "correction") return "corrector";
+
+    // paraphraser (soporta antiguas)
+    if (
+      k === "paraphraser" ||
+      k === "paraphrase" ||
+      k === "parafraseador" ||
+      k === "parafraseo" ||
+      k === "paraphrasing"
+    ) {
+      return "paraphraser";
+    }
+
+    // humanizer
+    if (k === "humanizer" || k === "humanize" || k === "humanizador") return "humanizer";
+
+    return k || "translation";
+  };
+
   const getDocVisual = (doc) => {
     // translation | summary | corrector | paraphraser | humanizer
-    let kind = "translation";
-
-    if (doc.kind === "translation") kind = "translation";
-    else if (doc.kind === "summary") kind = "summary";
-    else if (doc.kind === "corrector") kind = "corrector";
-    else if (doc.kind === "paraphraser") kind = "paraphraser";
-    else if (doc.kind === "humanizer") kind = "humanizer";
+    const kind = normalizeKind(doc?.kind);
 
     if (kind === "translation") {
       return {
@@ -435,17 +459,17 @@ export default function ProLibrary() {
                     >
                       <div className="h-full w-full px-5 pt-2 pb-6 flex flex-col">
                         <div className="h-[96px] w-full flex items-center justify-start">
-                        <img
-                         src={getDocVisual({ kind: "paraphraser" }).iconSrc}
-                         alt=""
-                         className="block select-none w-[90px] h-[90px] object-contain -ml-4"
-                         draggable={false}
+                          <img
+                            src={getDocVisual({ kind: "paraphraser" }).iconSrc}
+                            alt=""
+                            className="block select-none w-[90px] h-[90px] object-contain -ml-4"
+                            draggable={false}
                           />
                         </div>
                         <h3
                           className="-mt-1 text-[18px] leading-[24px] pr-4"
                           style={{
-                            display: "-webkit-box", 
+                            display: "-webkit-box",
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
                             overflow: "hidden",
@@ -510,16 +534,18 @@ export default function ProLibrary() {
                 {/* Tarjetas documento */}
                 {docs
                   .filter((doc) => {
-                    if (type === "text") return doc.kind === "translation";
-                    if (type === "summary") return doc.kind === "summary";
-                    if (type === "corrections") return doc.kind === "corrector";
-                    if (type === "paraphraser") return doc.kind === "paraphraser";
-                    if (type === "humanizer") return doc.kind === "humanizer";
+                    const k = normalizeKind(doc.kind);
+                    if (type === "text") return k === "translation";
+                    if (type === "summary") return k === "summary";
+                    if (type === "corrections") return k === "corrector";
+                    if (type === "paraphraser") return k === "paraphraser";
+                    if (type === "humanizer") return k === "humanizer";
                     return true;
                   })
                   .map((doc) => {
+                    const nk = normalizeKind(doc.kind);
                     const { bg, border, iconSrc, labelPrefix, iconSize } =
-                      getDocVisual(doc);
+                      getDocVisual({ kind: nk });
                     const dateLabel = formatDateLabel(doc);
 
                     return (
@@ -581,42 +607,74 @@ export default function ProLibrary() {
                         )}
 
                         {/* Contenido tarjeta */}
-                        <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
-                          <img
-                            src={iconSrc}
-                            alt=""
-                            width={iconSize || 40}
-                            height={iconSize || 40}
-                            className={`block select-none ${
-                              doc.kind === "corrector"
-                                ? "-mt-1 -ml-3"
-                                : "-mt-2 -mb-4"
-                            }`}
-                          />
-                          <h3
-                            className={`${
-                              doc.kind === "corrector" ? "mt-4" : "mt-8"
-                            } text-[18px] leading-[24px] pr-4`}
-                            style={{
-                              display: "-webkit-box",
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: "vertical",
-                              overflow: "hidden",
-                            }}
-                          >
-                            <span className="font-semibold text-slate-900">
-                              {labelPrefix}
-                            </span>{" "}
-                            <span className="font-normal text-slate-700">
-                              {doc.title || tr("library_untitled", "Sin título")}
-                            </span>
-                          </h3>
-                          {dateLabel && (
-                            <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
-                              {dateLabel}
-                            </p>
-                          )}
-                        </div>
+                        {nk === "paraphraser" ? (
+                          <div className="h-full w-full px-5 pt-2 pb-6 flex flex-col">
+                            <div className="h-[96px] w-full flex items-center justify-start">
+                              <img
+                                src={iconSrc}
+                                alt=""
+                                className="block select-none w-[90px] h-[90px] object-contain -ml-4"
+                                draggable={false}
+                              />
+                            </div>
+                            <h3
+                              className="-mt-1 text-[18px] leading-[24px] pr-4"
+                              style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <span className="font-semibold text-slate-900">
+                                {labelPrefix}
+                              </span>{" "}
+                              <span className="font-normal text-slate-700">
+                                {doc.title || tr("library_untitled", "Sin título")}
+                              </span>
+                            </h3>
+                            {dateLabel && (
+                              <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
+                                {dateLabel}
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                            <img
+                              src={iconSrc}
+                              alt=""
+                              width={iconSize || 40}
+                              height={iconSize || 40}
+                              className={`block select-none ${
+                                nk === "corrector" ? "-mt-1 -ml-3" : "-mt-2 -mb-4"
+                              }`}
+                            />
+                            <h3
+                              className={`${
+                                nk === "corrector" ? "mt-4" : "mt-8"
+                              } text-[18px] leading-[24px] pr-4`}
+                              style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <span className="font-semibold text-slate-900">
+                                {labelPrefix}
+                              </span>{" "}
+                              <span className="font-normal text-slate-700">
+                                {doc.title || tr("library_untitled", "Sin título")}
+                              </span>
+                            </h3>
+                            {dateLabel && (
+                              <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
+                                {dateLabel}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -653,8 +711,9 @@ export default function ProLibrary() {
                     ) : (
                       <div className="flex flex-wrap gap-[38px]">
                         {folderDocs.map((doc) => {
+                          const nk = normalizeKind(doc.kind);
                           const { bg, border, iconSrc, labelPrefix } =
-                            getDocVisual(doc);
+                            getDocVisual({ kind: nk });
                           const dateLabel = formatDateLabel(doc);
 
                           return (
@@ -812,7 +871,8 @@ export default function ProLibrary() {
                     </p>
                   ) : (
                     docs.map((doc) => {
-                      const { labelPrefix } = getDocVisual(doc);
+                      const nk = normalizeKind(doc.kind);
+                      const { labelPrefix } = getDocVisual({ kind: nk });
                       const dateLabel = formatDateLabel(doc);
                       const checked = selectedDocIds.includes(doc.id);
 
