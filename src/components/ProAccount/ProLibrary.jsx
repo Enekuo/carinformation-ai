@@ -443,9 +443,9 @@ export default function ProLibrary() {
                           />
                         </div>
                         <h3
-                          className="mt-8 text-[18px] leading-[24px] pr-4"
+                          className="mt-3 text-[18px] leading-[24px] pr-4"
                           style={{
-                            display: "-webkit-box",
+                            display: "-webkit-box", 
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
                             overflow: "hidden",
