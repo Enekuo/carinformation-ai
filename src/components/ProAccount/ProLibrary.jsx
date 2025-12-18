@@ -434,16 +434,16 @@ export default function ProLibrary() {
                       }
                     >
                       <div className="h-full w-full px-5 pt-2 pb-6 flex flex-col">
-                        <div className="h-[96px] w-full flex items-center">
+                        <div className="h-[96px] w-full flex items-center justify-start">
                         <img
                          src={getDocVisual({ kind: "paraphraser" }).iconSrc}
                          alt=""
-                         className="block select-none w-[90px] h-[90px] object-contain"
+                         className="block select-none w-[90px] h-[90px] object-contain -ml-2"
                          draggable={false}
                           />
                         </div>
                         <h3
-                          className="-mt-1 text-[18px] leading-[24px] pr-4 -ml-1"
+                          className="-mt-1 text-[18px] leading-[24px] pr-4"
                           style={{
                             display: "-webkit-box", 
                             WebkitLineClamp: 2,
