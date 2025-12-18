@@ -2289,6 +2289,17 @@ library_prefix_humanizer: {
   ES: "Humanizado:",
   EUS: "Humanizatua:",
 },
+library_doc_title_label: {
+  ES: "Título del documento",
+  EUS: "Dokumentuaren izenburua",
+},
+
+library_doc_title_placeholder: {
+  ES: "Escribe un título…",
+  EUS: "Idatzi izenburu bat…",
+},
+
+
 // =========================
   //        Pro Suggestions
   // =========================                          
