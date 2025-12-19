@@ -244,7 +244,7 @@ export default function ProLibrary() {
         border: "#FFE2A8",
         iconSrc: "/Library1.png",
         labelPrefix: tr("library_prefix_translation", "Itzulpena:"),
-        iconSize: 72,
+        iconSize: 60,
       };
     }
 
