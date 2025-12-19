@@ -294,7 +294,7 @@ export default function ProLibrary() {
     return {
       bg: "#F0FDF4",
       border: "#CFF5DB",
-      iconSrc: svgToDataUri(iconSvg),
+      iconSrc: "/Library5.png",
       labelPrefix: tr("library_prefix_humanizer", "Humanizatua:"),
       iconSize: 56,
     };
