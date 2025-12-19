@@ -652,7 +652,7 @@ export default function ProLibrary() {
                             />
                             <h3
                               className={`${
-                                nk === "corrector" ? "mt-8" : "mt-8"
+                                nk === "corrector" ? "mt-4" : "mt-8"
                               } text-[18px] leading-[24px] pr-4`}
                               style={{
                                 display: "-webkit-box",
