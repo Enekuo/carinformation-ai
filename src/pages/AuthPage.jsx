@@ -16,7 +16,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
-      {/* 1. MEDIDAS DEL HEADER (px-8 py-6) */}
+      {/* 1. HEADER: Posición y tamaño exactos del logo "Euskalia" */}
       <header className="px-8 py-6 flex items-center justify-between">
         <Link
           to="/"
@@ -25,37 +25,38 @@ export default function AuthPage() {
           Euskalia
         </Link>
 
-        {/* Botón Cuenta Pro (medidas exactas guardadas) */}
-        <Link
-          to="/cuenta-pro"
-          className="
-            text-sm font-semibold
-            px-4 py-2 rounded-full
-            bg-blue-600 text-white
-            shadow-sm hover:bg-blue-700
-            transition-colors
-          "
-        >
-          Cuenta Pro
-        </Link>
+        {/* Mantenemos la estructura de la derecha para que el logo no se mueva */}
+        <div className="flex items-center">
+          <Link
+            to="/cuenta-pro"
+            className="
+              text-sm font-semibold
+              px-4 py-2 rounded-full
+              bg-blue-600 text-white
+              shadow-sm hover:bg-blue-700
+              transition-colors
+            "
+          >
+            Cuenta Pro
+          </Link>
+        </div>
       </header>
 
-      {/* 2. POSICIÓN DEL BLOQUE CENTRAL (flex-1 items-center justify-center) */}
+      {/* 2. BLOQUE CENTRAL: Mismas medidas que Iniciar Sesión */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        {/* Contenedor con ancho máximo guardado (max-w-md) */}
         <div className="w-full max-w-md flex flex-col items-center">
           
-          {/* Círculo con 'E' (medidas de posición) */}
+          {/* Círculo con 'E' */}
           <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
             <span className="text-indigo-600 font-bold">E</span>
           </div>
 
-          {/* 3. TÍTULO (text-2xl font-semibold mb-6) */}
+          {/* TÍTULO CENTRAL */}
           <h1 className="text-2xl font-semibold mb-6 text-center">
             {tr("authPage.welcome", "Crea tu cuenta")}
           </h1>
 
-          {/* 4. BOTÓN GOOGLE (py-3 text-sm rounded-full) */}
+          {/* BOTÓN GOOGLE */}
           <button
             type="button"
             onClick={() => alert("Demo: Google")}
@@ -79,7 +80,7 @@ export default function AuthPage() {
             <span>{tr("authPage.continueWithGoogle", "Registrarte con Google")}</span>
           </button>
 
-          {/* 5. SEPARADOR (my-6 gap-4 text-xs) */}
+          {/* SEPARADOR */}
           <div className="flex items-center w-full gap-4 my-6">
             <span className="h-px flex-1 bg-slate-200" />
             <span className="text-xs text-slate-400">
@@ -88,7 +89,7 @@ export default function AuthPage() {
             <span className="h-px flex-1 bg-slate-200" />
           </div>
 
-          {/* 6. INPUT Y BOTÓN SUBMIT (py-3 text-sm rounded-full) */}
+          {/* FORMULARIO */}
           <form onSubmit={onSubmit} className="w-full space-y-4">
             <input
               type="email"
@@ -117,7 +118,7 @@ export default function AuthPage() {
             </button>
           </form>
 
-          {/* LEGAL (text-xs mt-4) */}
+          {/* LEGAL */}
           <p className="mt-4 text-xs text-center text-slate-500">
             {tr("authPage.legalText.prefix", "Al continuar, aceptas nuestros")}{" "}
             <button type="button" className="underline hover:text-slate-700">
@@ -130,7 +131,7 @@ export default function AuthPage() {
             .
           </p>
 
-          {/* ENLACE REGISTRO (mt-6 text-sm) */}
+          {/* ENLACE INFERIOR */}
           <p className="mt-6 text-sm text-slate-600">
             {tr("authPage.noAccount", "¿Ya tienes cuenta?")}{" "}
             <Link to="/iniciar-sesion" className="font-medium text-indigo-600 hover:underline">
