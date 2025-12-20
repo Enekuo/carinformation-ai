@@ -50,20 +50,19 @@ export default function AuthPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        {/* TARJETA MÁS GRANDE */}
-        <div className="w-full max-w-[620px] bg-white rounded-[44px] shadow-sm px-8 pt-10 pb-14 flex flex-col items-center">
-          {/* TÍTULO MÁS GRANDE */}
-          <h1 className="text-4xl font-semibold mb-8 text-center">
+        {/* TARJETA (padding como el ejemplo) */}
+        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-4 py-12 flex flex-col items-center">
+          <h1 className="text-3xl font-semibold mb-0 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
-          {/* Google (más grande) */}
+          {/* Google */}
           <button
             type="button"
-            className="w-full max-w-[560px] flex items-center justify-center gap-4 rounded-full border border-slate-200 bg-white py-4 text-base font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               viewBox="0 0 533.5 544.3"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -89,13 +88,13 @@ export default function AuthPage() {
             </span>
           </button>
 
-          {/* Microsoft (más grande) */}
+          {/* Microsoft */}
           <button
             type="button"
-            className="mt-4 w-full max-w-[560px] flex items-center justify-center gap-4 rounded-full border border-slate-200 bg-white py-4 text-base font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="mt-3 w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               viewBox="0 0 23 23"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
@@ -106,15 +105,11 @@ export default function AuthPage() {
               <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
             </svg>
             <span>
-              {tr(
-                "authPage.continueWithMicrosoft",
-                "Jarraitu Microsoft-ekin"
-              )}
+              {tr("authPage.continueWithMicrosoft", "Jarraitu Microsoft-ekin")}
             </span>
           </button>
 
-          {/* Texto inferior (más grande) */}
-          <p className="mt-12 text-base text-slate-600">
+          <p className="mt-10 text-sm text-slate-600">
             {tr("authPage.noAccount", "Ez duzu konturik?")}{" "}
             <Link
               to="/crear-cuenta"
