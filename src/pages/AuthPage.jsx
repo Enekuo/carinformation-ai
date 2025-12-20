@@ -74,7 +74,6 @@ export default function AuthPage() {
 
           <button
             type="button"
-            onClick={() => alert("Demo: continuar con Google")}
             className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg className="h-5 w-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
@@ -86,26 +85,27 @@ export default function AuthPage() {
             <span>{tr("authPage.continueWithGoogle", "Registrarte con Google")}</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => alert("Demo: continuar con Microsoft")}
-            className="mt-3 w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
-          >
-            {/* Icono Microsoft (4 cuadrados) */}
-            <svg className="h-5 w-5" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect x="1" y="1" width="9" height="9" fill="#F25022" />
-              <rect x="13" y="1" width="9" height="9" fill="#7FBA00" />
-              <rect x="1" y="13" width="9" height="9" fill="#00A4EF" />
-              <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
-            </svg>
-            <span>{tr("authPage.continueWithMicrosoft", "Registrarte con Microsoft")}</span>
-          </button>
-
           <div className="flex items-center w-full gap-4 my-6">
             <span className="h-px flex-1 bg-slate-200" />
             <span className="text-xs text-slate-400">{tr("authPage.or", "o")}</span>
             <span className="h-px flex-1 bg-slate-200" />
           </div>
+
+          <form onSubmit={onSubmit} className="w-full space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={tr("authPage.emailOrUserPlaceholder", "Introduce tu correo electrónico")}
+              className="w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button
+              type="submit"
+              className="w-full rounded-full bg-slate-900 text-white py-3 text-sm font-semibold hover:bg-slate-950 transition-colors"
+            >
+              {tr("authPage.signInButton", "Crear cuenta")}
+            </button>
+          </form>
 
           <p className="mt-6 text-sm text-slate-600">
             {tr("authPage.noAccount", "¿Ya tienes cuenta?")}{" "}

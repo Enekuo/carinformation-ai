@@ -1,4 +1,4 @@
-// Iniciar sesion
+// Crear cuenta
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -74,49 +74,35 @@ export default function RegisterPage() {
             <span>Registrarte con Google</span>
           </button>
 
-          {/* Separador */}
-          <div className="flex items-center w-full gap-4 my-6">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs text-slate-400">o</span>
-            <span className="h-px flex-1 bg-slate-200" />
-          </div>
-
-          {/* Formulario */}
-          <form className="w-full space-y-4">
-            <input
-              type="email"
-              className="
-                w-full rounded-full border border-slate-200 bg-white
-                px-4 py-3 text-sm outline-none
-                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-              "
-              placeholder="Introduce tu correo electrónico"
-            />
-
-            <input
-              type="text"
-              className="
-                w-full rounded-full border border-slate-200 bg-white
-                px-4 py-3 text-sm outline-none
-                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-              "
-              placeholder="Nombre o nombre de usuario"
-            />
-
-            <button
-              type="submit"
-              className="
-                w-full rounded-full bg-slate-900 text-white
-                py-3 text-sm font-semibold
-                hover:bg-slate-950 transition-colors
-              "
-            >
-              Crear cuenta
-            </button>
-          </form>
+          {/* Botón Microsoft */}
+          <button
+            type="button"
+            className="
+              w-full flex items-center justify-center gap-3
+              rounded-full border border-slate-200 bg-white
+              py-3 text-sm font-medium shadow-sm
+              hover:bg-slate-50 transition-colors
+              mt-3
+            "
+          >
+            <span className="mr-2 flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 23 23"
+                className="h-5 w-5"
+                aria-hidden="true"
+              >
+                <rect x="1" y="1" width="9" height="9" fill="#F25022" />
+                <rect x="13" y="1" width="9" height="9" fill="#7FBA00" />
+                <rect x="1" y="13" width="9" height="9" fill="#00A4EF" />
+                <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
+              </svg>
+            </span>
+            <span>Registrarte con Microsoft</span>
+          </button>
 
           {/* Términos y privacidad */}
-          <p className="mt-4 text-xs text-center text-slate-500">
+          <p className="mt-6 text-xs text-center text-slate-500">
             Al continuar, aceptas nuestros{" "}
             <button type="button" className="underline">
               Términos
