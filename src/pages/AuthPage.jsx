@@ -50,7 +50,8 @@ export default function AuthPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        <div className="w-full max-w-md flex flex-col items-center">
+        {/* TARJETA (padding como el ejemplo) */}
+        <div className="w-full max-w-[700px] bg-white rounded-[40px] shadow-sm p-12 flex flex-col items-center">
           <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
             <span className="text-indigo-600 font-bold">E</span>
           </div>
@@ -62,7 +63,7 @@ export default function AuthPage() {
           {/* Google */}
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
               className="h-5 w-5"
@@ -94,7 +95,7 @@ export default function AuthPage() {
           {/* Microsoft */}
           <button
             type="button"
-            className="mt-3 w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="mt-3 w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
               className="h-5 w-5"
@@ -126,4 +127,3 @@ export default function AuthPage() {
     </div>
   );
 }
-
