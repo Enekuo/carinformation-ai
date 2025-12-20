@@ -31,19 +31,19 @@ export default function RegisterPage() {
 
       {/* Contenido centrado vertical y horizontalmente */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        <div className="w-full max-w-md flex flex-col items-center">
+        <div className="w-full max-w-lg flex flex-col items-center">
           {/* TÍTULO */}
-          <h1 className="text-2xl font-semibold mb-6 text-center">
+          <h1 className="text-3xl font-semibold mb-8 text-center">
             Crea tu cuenta
           </h1>
 
-          {/* Botón Google – icono plano como en iniciar sesión */}
+          {/* Botón Google */}
           <button
             type="button"
             className="
               w-full flex items-center justify-center gap-3
               rounded-full border border-slate-200 bg-white
-              py-3 text-sm font-medium shadow-sm
+              py-4 text-base font-medium shadow-sm
               hover:bg-slate-50 transition-colors
             "
           >
@@ -51,7 +51,7 @@ export default function RegisterPage() {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 48 48"
-                className="h-5 w-5"
+                className="h-6 w-6"
               >
                 <path
                   fill="#EA4335"
@@ -80,16 +80,16 @@ export default function RegisterPage() {
             className="
               w-full flex items-center justify-center gap-3
               rounded-full border border-slate-200 bg-white
-              py-3 text-sm font-medium shadow-sm
+              py-4 text-base font-medium shadow-sm
               hover:bg-slate-50 transition-colors
-              mt-3
+              mt-4
             "
           >
             <span className="mr-2 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 23 23"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 aria-hidden="true"
               >
                 <rect x="1" y="1" width="9" height="9" fill="#F25022" />
@@ -102,7 +102,7 @@ export default function RegisterPage() {
           </button>
 
           {/* Términos y privacidad */}
-          <p className="mt-6 text-xs text-center text-slate-500">
+          <p className="mt-8 text-sm text-center text-slate-500">
             Al continuar, aceptas nuestros{" "}
             <button type="button" className="underline">
               Términos
@@ -115,7 +115,7 @@ export default function RegisterPage() {
           </p>
 
           {/* Enlace a iniciar sesión */}
-          <p className="mt-6 text-sm text-slate-600">
+          <p className="mt-6 text-base text-slate-600">
             ¿Ya tienes cuenta?{" "}
             <a
               href="/iniciar-sesion"
