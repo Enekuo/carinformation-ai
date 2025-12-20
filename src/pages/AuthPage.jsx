@@ -17,24 +17,27 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white">
+    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
       {/* Header minimal con marca */}
-      <header className="h-16 w-full flex items-center px-6 sm:px-10">
-        <Link to="/" className="text-slate-900 font-semibold tracking-tight">
+      <header className="px-8 py-6 flex items-center justify-between">
+        <Link
+          to="/"
+          className="font-semibold text-lg hover:opacity-80 transition-opacity"
+        >
           Euskalia
         </Link>
       </header>
 
       {/* Contenido centrado */}
-      <main className="px-4">
-        <div className="max-w-md mx-auto pt-6 sm:pt-10">
+      <main className="flex-1 flex items-center justify-center px-4 pb-16">
+        <div className="w-full max-w-md flex flex-col items-center">
           {/* Icono superior (círculo simple) */}
           <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
             <span className="text-indigo-600 font-bold">E</span>
           </div>
 
           {/* Título */}
-          <h1 className="text-center text-2xl sm:text-3xl font-semibold text-slate-900">
+          <h1 className="text-2xl font-semibold mb-6 text-center">
             {tr("authPage.welcome", "Welcome back")}
           </h1>
 
@@ -42,11 +45,16 @@ export default function AuthPage() {
           <button
             type="button"
             onClick={() => alert("Demo: continuar con Google")}
-            className="mt-6 w-full h-12 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-medium shadow-sm hover:shadow-md transition flex items-center justify-center"
+            className="
+              w-full flex items-center justify-center gap-3
+              rounded-full border border-slate-200 bg-white
+              py-3 text-sm font-medium shadow-sm
+              hover:bg-slate-50 transition-colors
+            "
           >
             {/* SVG Google inline para no depender de assets externos */}
             <svg
-              className="h-5 w-5 mr-3"
+              className="h-5 w-5"
               viewBox="0 0 533.5 544.3"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -55,43 +63,49 @@ export default function AuthPage() {
               <path fill="#FBBC04" d="M119.4 325.8c-10.3-30.9-10.3-64.4 0-95.3V160H31.5c-42.7 85.5-42.7 188.5 0 274l87.9-67.2z" />
               <path fill="#EA4335" d="M272 106.5c39.7-.6 77.8 14 106.9 41.3l80.1-80.1C406.3 25.2 344.9 0 272 0 167.1 0 76 59.1 31.5 160l87.9 70.5C141 154.4 201.1 106.5 272 106.5z" />
             </svg>
-            {tr("authPage.continueWithGoogle", "Continuar con Google")}
+            <span>{tr("authPage.continueWithGoogle", "Continuar con Google")}</span>
           </button>
 
           {/* Separador */}
-          <div className="relative flex items-center py-6">
-            <div className="flex-grow border-t border-slate-200" />
-            <span className="mx-4 text-slate-400 text-sm font-medium">
+          <div className="flex items-center w-full gap-4 my-6">
+            <span className="h-px flex-1 bg-slate-200" />
+            <span className="text-xs text-slate-400">
               {tr("authPage.or", "or")}
             </span>
-            <div className="flex-grow border-t border-slate-200" />
+            <span className="h-px flex-1 bg-slate-200" />
           </div>
 
           {/* Formulario email + continuar */}
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div className="relative">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={tr(
-                  "authPage.emailOrUserPlaceholder",
-                  "Enter email or username"
-                )}
-                className="w-full h-12 rounded-xl border border-slate-300 px-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-300"
-              />
-            </div>
+          <form onSubmit={onSubmit} className="w-full space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={tr(
+                "authPage.emailOrUserPlaceholder",
+                "Enter email or username"
+              )}
+              className="
+                w-full rounded-full border border-slate-200 bg-white
+                px-4 py-3 text-sm outline-none
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+              "
+            />
 
             <button
               type="submit"
-              className="w-full h-12 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold transition"
+              className="
+                w-full rounded-full bg-slate-900 text-white
+                py-3 text-sm font-semibold
+                hover:bg-slate-950 transition-colors
+              "
             >
               {tr("authPage.signInButton", "Continue")}
             </button>
           </form>
 
           {/* Legal */}
-          <p className="mt-6 text-center text-xs text-slate-500">
+          <p className="mt-4 text-xs text-center text-slate-500">
             {tr("authPage.legalText.prefix", "By continuing, you agree to our")}{" "}
             <a href="#" className="underline hover:text-slate-700">
               {tr("authPage.legalText.terms", "Terms")}
@@ -104,14 +118,14 @@ export default function AuthPage() {
           </p>
 
           {/* Registro */}
-          <p className="mt-4 text-center text-sm text-slate-600">
+          <p className="mt-6 text-sm text-slate-600">
             {tr("authPage.noAccount", "Don't have an account?")}{" "}
-            <a href="#" className="text-indigo-600 hover:underline">
+            <a href="#" className="font-medium text-indigo-600 hover:underline">
               {tr("authPage.signUp", "Sign up")}
             </a>
           </p>
         </div>
-      </main> 
+      </main>
     </div>
   );
 }
