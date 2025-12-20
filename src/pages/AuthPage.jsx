@@ -16,28 +16,24 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
-      
-      {/* CAMBIO CLAVE: Usamos 'style' para forzar la posición.
-          Esto ignora cualquier configuración de Tailwind que esté fallando.
-      */}
-      <header 
-        style={{ 
-          padding: '24px 32px', // 24px arriba/abajo, 32px izquierda/derecha
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-          boxSizing: 'border-box'
+      <header
+        style={{
+          padding: "24px 32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          boxSizing: "border-box",
         }}
       >
         <Link
           to="/"
-          style={{ 
-            fontSize: '18px',          // Tamaño text-lg
-            fontWeight: '600',         // Grosor font-semibold
-            color: '#0f172a',          // Color slate-900
-            textDecoration: 'none',
-            fontFamily: 'sans-serif'   // Asegura que la fuente no varíe
+          style={{
+            fontSize: "18px",
+            fontWeight: "600",
+            color: "#0f172a",
+            textDecoration: "none",
+            fontFamily: "sans-serif",
           }}
           className="hover:opacity-80 transition-opacity"
         >
@@ -47,29 +43,27 @@ export default function AuthPage() {
         <Link
           to="/cuenta-pro"
           style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            backgroundColor: '#2563eb', // blue-600
-            color: 'white',
-            padding: '8px 16px',
-            borderRadius: '9999px',
-            textDecoration: 'none'
+            fontSize: "14px",
+            fontWeight: "600",
+            backgroundColor: "#2563eb",
+            color: "white",
+            padding: "8px 16px",
+            borderRadius: "9999px",
+            textDecoration: "none",
           }}
         >
           Cuenta Pro
         </Link>
       </header>
 
-      {/* CUERPO DE LA PÁGINA */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
         <div className="w-full max-w-md flex flex-col items-center">
-          
           <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
             <span className="text-indigo-600 font-bold">E</span>
           </div>
 
           <h1 className="text-2xl font-semibold mb-6 text-center">
-            {tr("authPage.welcome", "Crea tu cuenta")}
+            {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
           {/* Google */}
@@ -77,16 +71,32 @@ export default function AuthPage() {
             type="button"
             className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
-            <svg className="h-5 w-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.6-34.1-4.7-50.2H272v95h147.1c-6.3 34-25.1 62.7-53.5 81.8v67h86.6c50.7-46.7 81.3-115.6 81.3-193.6z" />
-              <path fill="#34A853" d="M272 544.3c72.9 0 134.2-24.1 178.9-65.2l-86.6-67c-24.1 16.2-55 25.8-92.3 25.8-70.9 0-131-47.9-152.6-112.1H31.5v70.4C76 485.2 167.1 544.3 272 544.3z" />
-              <path fill="#FBBC04" d="M119.4 325.8c-10.3-30.9-10.3-64.4 0-95.3V160H31.5c-42.7 85.5-42.7 188.5 0 274l87.9-67.2z" />
-              <path fill="#EA4335" d="M272 106.5c39.7-.6 77.8 14 106.9 41.3l80.1-80.1C406.3 25.2 344.9 0 272 0 167.1 0 76 59.1 31.5 160l87.9 70.5C141 154.4 201.1 106.5 272 106.5z" />
+            <svg
+              className="h-5 w-5"
+              viewBox="0 0 533.5 544.3"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="#4285F4"
+                d="M533.5 278.4c0-17.4-1.6-34.1-4.7-50.2H272v95h147.1c-6.3 34-25.1 62.7-53.5 81.8v67h86.6c50.7-46.7 81.3-115.6 81.3-193.6z"
+              />
+              <path
+                fill="#34A853"
+                d="M272 544.3c72.9 0 134.2-24.1 178.9-65.2l-86.6-67c-24.1 16.2-55 25.8-92.3 25.8-70.9 0-131-47.9-152.6-112.1H31.5v70.4C76 485.2 167.1 544.3 272 544.3z"
+              />
+              <path
+                fill="#FBBC04"
+                d="M119.4 325.8c-10.3-30.9-10.3-64.4 0-95.3V160H31.5c-42.7 85.5-42.7 188.5 0 274l87.9-67.2z"
+              />
+              <path
+                fill="#EA4335"
+                d="M272 106.5c39.7-.6 77.8 14 106.9 41.3l80.1-80.1C406.3 25.2 344.9 0 272 0 167.1 0 76 59.1 31.5 160l87.9 70.5C141 154.4 201.1 106.5 272 106.5z"
+              />
             </svg>
-            <span>{tr("authPage.continueWithGoogle", "Registrarte con Google")}</span>
+            <span>{tr("authPage.continueWithGoogle", "Jarraitu Google-rekin")}</span>
           </button>
 
-          {/* Microsoft (AÑADIDO) */}
+          {/* Microsoft */}
           <button
             type="button"
             className="mt-3 w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
@@ -102,12 +112,14 @@ export default function AuthPage() {
               <rect x="1" y="13" width="9" height="9" fill="#00A4EF" />
               <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
             </svg>
-            <span>{tr("authPage.continueWithMicrosoft", "Registrarte con Microsoft")}</span>
+            <span>
+              {tr("authPage.continueWithMicrosoft", "Jarraitu Microsoft-ekin")}
+            </span>
           </button>
 
           <div className="flex items-center w-full gap-4 my-6">
             <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs text-slate-400">{tr("authPage.or", "o")}</span>
+            <span className="text-xs text-slate-400">{tr("authPage.or", "edo")}</span>
             <span className="h-px flex-1 bg-slate-200" />
           </div>
 
@@ -116,21 +128,27 @@ export default function AuthPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={tr("authPage.emailOrUserPlaceholder", "Introduce tu correo electrónico")}
+              placeholder={tr(
+                "authPage.emailOrUserPlaceholder",
+                "Idatzi zure posta edo erabiltzaile-izena"
+              )}
               className="w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               type="submit"
               className="w-full rounded-full bg-slate-900 text-white py-3 text-sm font-semibold hover:bg-slate-950 transition-colors"
             >
-              {tr("authPage.signInButton", "Crear cuenta")}
+              {tr("authPage.signInButton", "Jarraitu")}
             </button>
           </form>
 
-          <p className="mt-6 text-sm text-slate-600">
-            {tr("authPage.noAccount", "¿Ya tienes cuenta?")}{" "}
-            <Link to="/iniciar-sesion" className="font-medium text-indigo-600 hover:underline">
-              {tr("authPage.signUp", "Iniciar sesión")}
+          <p className="mt-10 text-sm text-slate-600">
+            {tr("authPage.noAccount", "Ez duzu konturik?")}{" "}
+            <Link
+              to="/registrarse"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              {tr("authPage.signUp", "Erregistratu")}
             </Link>
           </p>
         </div>

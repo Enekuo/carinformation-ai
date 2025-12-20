@@ -696,7 +696,12 @@ faq_item7_answer: {
     },
   },
 
+
+
+
+
   //CREAR CUENTA // 
+
   registerPage_title: {
   ES: "Crea tu cuenta",
   EUS: "Sortu zure kontua",
@@ -741,9 +746,13 @@ registerPage_login: {
   ES: "Iniciar sesión",
   EUS: "Hasi saioa",
 },
+     
+
+
 
 
   // INICIAR SESION //
+  
   authPage: {
     pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
     pageDescription:        { ES: "Accede a tu cuenta para seguir usando Euskalia.", EUS: "Sartu zure kontura Euskalia erabiltzen jarraitzeko." },
@@ -751,7 +760,11 @@ registerPage_login: {
     welcome:                { ES: "BIENVENIDO",                  EUS: "ONGI ETORRI" },
     continueWithGoogle:     { ES: "Continuar con Google",                 EUS: "Jarraitu Google-rekin" },
     or:                     { ES: "o",                                    EUS: "edo" },
-
+   
+   continueWithMicrosoft: {
+    ES: "Continuar con Microsoft",
+    EUS: "Jarraitu Microsoft-ekin",
+  }, 
     emailOrUserPlaceholder: { ES: "Introduce tu correo o nombre de usuario", EUS: "Idatzi zure posta edo erabiltzaile-izena" },
     signInButton:           { ES: "Continuar",                            EUS: "Jarraitu" },
 
