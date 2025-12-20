@@ -50,13 +50,9 @@ export default function AuthPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-4 py-12 flex flex-col items-center">
-          <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-            <span className="text-indigo-600 font-bold">E</span>
-          </div>
-
-          {/* TÍTULO – más grande y más arriba */}
-          <h1 className="text-3xl font-semibold mb-0 -mt-8 text-center">
+        {/* TARJETA (padding como el ejemplo) */}
+        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-4 pt-8 pb-12 flex flex-col items-center">
+          <h1 className="text-3xl font-semibold mb-6 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
@@ -109,7 +105,10 @@ export default function AuthPage() {
               <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
             </svg>
             <span>
-              {tr("authPage.continueWithMicrosoft", "Jarraitu Microsoft-ekin")}
+              {tr(
+                "authPage.continueWithMicrosoft",
+                "Jarraitu Microsoft-ekin"
+              )}
             </span>
           </button>
 
