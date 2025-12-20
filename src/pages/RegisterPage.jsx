@@ -1,4 +1,4 @@
-// Iniuciar sesion
+// Iniciar sesion
 import React from "react";
 import { Link } from "react-router-dom";
 
