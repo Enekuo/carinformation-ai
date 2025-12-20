@@ -72,6 +72,7 @@ export default function AuthPage() {
             {tr("authPage.welcome", "Crea tu cuenta")}
           </h1>
 
+          {/* Google */}
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
@@ -83,6 +84,25 @@ export default function AuthPage() {
               <path fill="#EA4335" d="M272 106.5c39.7-.6 77.8 14 106.9 41.3l80.1-80.1C406.3 25.2 344.9 0 272 0 167.1 0 76 59.1 31.5 160l87.9 70.5C141 154.4 201.1 106.5 272 106.5z" />
             </svg>
             <span>{tr("authPage.continueWithGoogle", "Registrarte con Google")}</span>
+          </button>
+
+          {/* Microsoft (AÑADIDO) */}
+          <button
+            type="button"
+            className="mt-3 w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
+          >
+            <svg
+              className="h-5 w-5"
+              viewBox="0 0 23 23"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <rect x="1" y="1" width="9" height="9" fill="#F25022" />
+              <rect x="13" y="1" width="9" height="9" fill="#7FBA00" />
+              <rect x="1" y="13" width="9" height="9" fill="#00A4EF" />
+              <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
+            </svg>
+            <span>{tr("authPage.continueWithMicrosoft", "Registrarte con Microsoft")}</span>
           </button>
 
           <div className="flex items-center w-full gap-4 my-6">
