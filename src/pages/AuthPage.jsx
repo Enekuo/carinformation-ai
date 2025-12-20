@@ -56,7 +56,7 @@ export default function AuthPage() {
           </div>
 
           {/* TÍTULO – más grande y más arriba */}
-          <h1 className="text-3xl font-semibold mb-4 text-center">
+          <h1 className="text-3xl font-semibold mb-2 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
