@@ -506,8 +506,8 @@ export default function ProLibrary() {
                         <img
                           src={getDocVisual({ kind: "humanizer" }).iconSrc}
                           alt=""
-                          width={92}
-                          height={92}
+                          width={96}
+                          height={96}
                           className="block select-none -mt-2 -mb-4 -ml-2"
                         />
                         <h3
