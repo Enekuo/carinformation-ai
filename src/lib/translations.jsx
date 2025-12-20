@@ -696,7 +696,51 @@ faq_item7_answer: {
     },
   },
 
+  //CREAR CUENTA // 
+  registerPage_title: {
+  ES: "Crea tu cuenta",
+  EUS: "Sortu zure kontua",
+},
 
+registerPage_google: {
+  ES: "Registrarte con Google",
+  EUS: "Erregistratu Google-rekin",
+},
+
+registerPage_microsoft: {
+  ES: "Registrarte con Microsoft",
+  EUS: "Erregistratu Microsoft-ekin",
+},
+
+registerPage_termsPrefix: {
+  ES: "Al continuar, aceptas nuestros",
+  EUS: "Jarraitzeko, gure",
+},
+
+registerPage_terms: {
+  ES: "Términos",
+  EUS: "Baldintzak",
+},
+
+registerPage_and: {
+  ES: "y",
+  EUS: "eta",
+},
+
+registerPage_privacy: {
+  ES: "Política de Privacidad",
+  EUS: "Pribatutasun-politika",
+},
+
+registerPage_haveAccount: {
+  ES: "¿Ya tienes cuenta?",
+  EUS: "Baduzu konturik?",
+},
+
+registerPage_login: {
+  ES: "Iniciar sesión",
+  EUS: "Hasi saioa",
+},
 
 
   // INICIAR SESION //

@@ -30,7 +30,7 @@ export default function RegisterPage() {
         <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm p-12 flex flex-col items-center">
           {/* TÍTULO */}
           <h1 className="text-[32px] font-bold mb-10 text-slate-800 tracking-tight">
-            {tr("authPage.welcome", "Crea tu cuenta")}
+            {tr("registerPage_title", "Crea tu cuenta")}
           </h1>
 
           {/* BOTONES SOCIALES */}
@@ -45,7 +45,7 @@ export default function RegisterPage() {
                 alt="Google"
                 className="h-5 w-5"
               />
-              {tr("authPage.continueWithGoogle", "Registrarte con Google")}
+              {tr("registerPage_google", "Registrarte con Google")}
             </button>
 
             {/* Microsoft */}
@@ -58,36 +58,36 @@ export default function RegisterPage() {
                 alt="Microsoft"
                 className="h-5 w-5"
               />
-              {tr("authPage.continueWithMicrosoft", "Registrarte con Microsoft")}
+              {tr("registerPage_microsoft", "Registrarte con Microsoft")}
             </button>
           </div>
 
           {/* TEXTOS INFERIORES DENTRO DEL PADDING */}
           <p className="mt-8 text-[13px] text-center text-slate-500 max-w-[300px] leading-relaxed">
-            {tr("authPage.legalText.prefix", "Al continuar, aceptas nuestros")}{" "}
+            {tr("registerPage_termsPrefix", "Al continuar, aceptas nuestros")}{" "}
             <Link
               to="/terminos"
               className="underline decoration-slate-300 hover:text-slate-800"
             >
-              {tr("authPage.legalText.terms", "Términos")}
+              {tr("registerPage_terms", "Términos")}
             </Link>{" "}
-            {tr("authPage.legalText.and", "y")}{" "}
+            {tr("registerPage_and", "y")}{" "}
             <Link
               to="/privacidad"
               className="underline decoration-slate-300 hover:text-slate-800"
             >
-              {tr("authPage.legalText.privacy", "Política de Privacidad")}
+              {tr("registerPage_privacy", "Política de Privacidad")}
             </Link>
             .
           </p>
 
           <p className="mt-10 text-sm text-slate-600">
-            {tr("authPage.noAccount", "¿Ya tienes cuenta?")}{" "}
+            {tr("registerPage_haveAccount", "¿Ya tienes cuenta?")}{" "}
             <Link
               to="/iniciar-sesion"
               className="font-semibold text-blue-600 hover:underline"
             >
-              {tr("authPage.signUp", "Iniciar sesión")}
+              {tr("registerPage_login", "Iniciar sesión")}
             </Link>
           </p>
         </div>
