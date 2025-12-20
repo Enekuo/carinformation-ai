@@ -50,9 +50,10 @@ export default function AuthPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        {/* TARJETA (padding como el ejemplo) */}
-        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-4 py-12 flex flex-col items-center">
-          <h1 className="text-3xl font-semibold mb-0 text-center">
+        {/* TARJETA */}
+        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-6 pt-8 pb-12 flex flex-col items-center">
+          {/* TITULO MUCHO MAS ARRIBA */}
+          <h1 className="text-3xl font-semibold mb-6 -mt-6 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
