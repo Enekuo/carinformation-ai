@@ -145,7 +145,7 @@ export default function AuthPage() {
           <p className="mt-10 text-sm text-slate-600">
             {tr("authPage.noAccount", "Ez duzu konturik?")}{" "}
             <Link
-              to="/RegisterPage"
+              to="/crear-cuenta"
               className="font-medium text-indigo-600 hover:underline"
             >
               {tr("authPage.signUp", "Erregistratu")}
