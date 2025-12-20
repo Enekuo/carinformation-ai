@@ -1,4 +1,4 @@
-// AuthPage (Crear Cuenta) - Con Logo Unificado
+// AuthPage (Crear Cuenta) - POSICIÓN DE LOGO BLINDADA
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
@@ -15,23 +15,36 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col" style={{ width: '100%' }}>
       
-      {/* HEADER UNIFICADO 
-         Esta es la pieza clave. px-8 y py-6 garantizan que el logo 
-         esté a 32px del borde izq y 24px del superior en AMBAS páginas.
-      */}
-      <header className="px-8 py-6 flex items-center justify-between">
+      {/* HEADER: USAMOS STYLE PARA FORZAR LA POSICIÓN EXACTA (32px izq, 24px arriba) */}
+      <header 
+        style={{ 
+          paddingLeft: '32px', 
+          paddingRight: '32px', 
+          paddingTop: '24px', 
+          paddingBottom: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%'
+        }}
+      >
         <Link
           to="/"
-          className="font-semibold text-lg hover:opacity-80 transition-opacity"
+          style={{ 
+            fontSize: '18px', 
+            fontWeight: '600',
+            textDecoration: 'none',
+            color: '#0f172a', // Color exacto slate-900
+            lineHeight: '1.5rem'
+          }}
+          className="hover:opacity-80 transition-opacity"
         >
           Euskalia
         </Link>
 
-        {/* Mantenemos el botón de la derecha para que el logo 
-           mantenga su alineación horizontal exacta (justify-between).
-        */}
+        {/* Botón Pro a la derecha para mantener el equilibrio del layout */}
         <Link
           to="/cuenta-pro"
           className="text-sm font-semibold px-4 py-2 rounded-full bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors"
@@ -40,7 +53,7 @@ export default function AuthPage() {
         </Link>
       </header>
 
-      {/* BLOQUE CENTRAL */}
+      {/* CONTENIDO CENTRAL: Manteniendo las medidas guardadas */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
         <div className="w-full max-w-md flex flex-col items-center">
           
