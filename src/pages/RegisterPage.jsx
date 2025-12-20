@@ -3,80 +3,82 @@ import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#1E293B] flex flex-col font-sans">
-      {/* Navbar / Header */}
-      <header className="w-full p-6 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold tracking-tight">
+    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col font-sans">
+      {/* Barra superior: Euskalia + Cuenta Pro */}
+      <header className="px-8 py-6 flex items-center justify-between">
+        <Link to="/" className="font-bold text-xl text-slate-800 hover:opacity-80 transition-opacity">
           Euskalia
         </Link>
+
         <Link
           to="/cuenta-pro"
-          className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-6 py-2 rounded-full text-sm font-semibold transition-colors shadow-sm"
+          className="text-sm font-semibold px-5 py-2.5 rounded-full bg-[#2563EB] text-white shadow-md hover:bg-blue-700 transition-all active:scale-95"
         >
           Cuenta Pro
         </Link>
       </header>
 
-      {/* Contenedor Principal Centrado */}
-      <main className="flex-grow flex items-center justify-center px-4">
-        <div className="max-w-[440px] w-full text-center">
+      {/* Contenido centrado */}
+      <main className="flex-1 flex items-center justify-center px-4 pb-20">
+        <div className="w-full max-w-[400px] flex flex-col items-center">
           
-          {/* Título */}
-          <h1 className="text-[32px] font-bold mb-10 text-[#0F172A]">
+          {/* TÍTULO */}
+          <h1 className="text-[32px] font-bold mb-10 text-slate-800 tracking-tight">
             Crea tu cuenta
           </h1>
 
-          {/* Botones de Autenticación */}
-          <div className="space-y-4">
+          {/* BOTONES SOCIALES */}
+          <div className="w-full space-y-3">
             {/* Google */}
             <button
               type="button"
-              className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 py-3.5 px-4 rounded-full shadow-sm hover:bg-slate-50 transition-all text-[15px] font-medium text-slate-700"
+              className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition-colors active:bg-slate-100"
             >
-              <img 
-                src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
-                alt="Google" 
-                className="w-5 h-5"
-              />
+              <svg xmlns="http://www.w3.org/2000/center" viewBox="0 0 48 48" className="h-5 w-5">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6 1.54 7.38 2.84l5.42-5.42C33.64 3.46 29.3 1.5 24 1.5 14.78 1.5 7.06 6.98 3.9 14.9l6.87 5.33C12.13 14.64 17.49 9.5 24 9.5z"/>
+                <path fill="#34A853" d="M46.5 24.5c0-1.57-.14-3.08-.41-4.5H24v9.02h12.7c-.55 2.9-2.23 5.36-4.76 7.02l7.43 5.77C43.82 38.21 46.5 31.9 46.5 24.5z"/>
+                <path fill="#4A90E2" d="M10.77 28.27A14.46 14.46 0 0 1 9.5 24c0-1.48.26-2.92.73-4.27l-6.87-5.33A22.4 22.4 0 0 0 1.5 24c0 3.62.87 7.04 2.4 10.06l6.87-5.79z"/>
+                <path fill="#FBBC05" d="M24 46.5c5.85 0 10.77-1.93 14.36-5.22l-7.43-5.77C29.05 36.94 26.7 37.8 24 37.8c-6.51 0-11.87-5.14-13.23-11.93l-6.87 5.79C7.06 41.02 14.78 46.5 24 46.5z"/>
+              </svg>
               Registrarte con Google
             </button>
 
             {/* Microsoft */}
             <button
               type="button"
-              className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 py-3.5 px-4 rounded-full shadow-sm hover:bg-slate-50 transition-all text-[15px] font-medium text-slate-700"
+              className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition-colors active:bg-slate-100"
             >
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
-                alt="Microsoft" 
-                className="w-5 h-5"
-              />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" className="h-5 w-5">
+                <rect x="1" y="1" width="9" height="9" fill="#F25022" />
+                <rect x="13" y="1" width="9" height="9" fill="#7FBA00" />
+                <rect x="1" y="13" width="9" height="9" fill="#00A4EF" />
+                <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
+              </svg>
               Registrarte con Microsoft
             </button>
           </div>
 
-          {/* Textos Legales */}
-          <p className="mt-8 text-[13px] text-slate-500 leading-relaxed px-10">
+          {/* TEXTOS INFERIORES */}
+          <p className="mt-8 text-[13px] text-center text-slate-500 max-w-[320px] leading-relaxed">
             Al continuar, aceptas nuestros{" "}
-            <Link to="/terminos" className="text-slate-500 hover:text-slate-800 underline underline-offset-2">
+            <Link to="/terminos" className="underline decoration-slate-300 hover:text-slate-800">
               Términos
             </Link>{" "}
             y{" "}
-            <Link to="/privacidad" className="text-slate-500 hover:text-slate-800 underline underline-offset-2">
+            <Link to="/privacidad" className="underline decoration-slate-300 hover:text-slate-800">
               Política de Privacidad
             </Link>.
           </p>
 
-          {/* Enlace de Login */}
-          <div className="mt-12 text-[15px] text-slate-600">
+          <p className="mt-10 text-sm text-slate-600">
             ¿Ya tienes cuenta?{" "}
             <Link
               to="/iniciar-sesion"
-              className="text-[#4F46E5] font-semibold hover:underline decoration-2 underline-offset-4"
+              className="font-semibold text-blue-600 hover:underline"
             >
               Iniciar sesión
             </Link>
-          </div>
+          </p>
         </div>
       </main>
     </div>
