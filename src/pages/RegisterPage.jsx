@@ -13,7 +13,6 @@ export default function RegisterPage() {
           Euskalia
         </Link>
 
-        {/* Botón temporal para acceder a la cuenta Pro */}
         <Link
           to="/cuenta-pro"
           className="
@@ -28,7 +27,7 @@ export default function RegisterPage() {
         </Link>
       </header>
 
-      {/* Contenido centrado vertical y horizontalmente */}
+      {/* Contenido centrado */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
         <div className="w-full max-w-md flex flex-col items-center">
           {/* TÍTULO */}
@@ -36,7 +35,7 @@ export default function RegisterPage() {
             Crea tu cuenta
           </h1>
 
-          {/* Botón Google – MÁS PEQUEÑO */}
+          {/* BOTÓN GOOGLE — MÁS PEQUEÑO */}
           <button
             type="button"
             className="
@@ -73,7 +72,7 @@ export default function RegisterPage() {
             <span>Registrarte con Google</span>
           </button>
 
-          {/* Botón Microsoft – MÁS PEQUEÑO */}
+          {/* BOTÓN MICROSOFT — MÁS PEQUEÑO */}
           <button
             type="button"
             className="
@@ -100,7 +99,7 @@ export default function RegisterPage() {
             <span>Registrarte con Microsoft</span>
           </button>
 
-          {/* Términos y privacidad */}
+          {/* Términos */}
           <p className="mt-6 text-xs text-center text-slate-500">
             Al continuar, aceptas nuestros{" "}
             <button type="button" className="underline">
@@ -113,7 +112,7 @@ export default function RegisterPage() {
             .
           </p>
 
-          {/* Enlace a iniciar sesión */}
+          {/* Login */}
           <p className="mt-6 text-sm text-slate-600">
             ¿Ya tienes cuenta?{" "}
             <a
