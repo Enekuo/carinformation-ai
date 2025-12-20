@@ -1,4 +1,4 @@
-// Crear Cuenta
+// AuthPage (Crear Cuenta)
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
@@ -11,14 +11,12 @@ export default function AuthPage() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Aquí iría tu lógica real de login
-    // Por ahora lo dejamos como demo
     alert("Demo: continuar con " + (email || "Google"));
   };
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
-      {/* Barra superior: Euskalia (izquierda) + Cuenta Pro (derecha) */}
+      {/* 1. MEDIDAS DEL HEADER (px-8 py-6) */}
       <header className="px-8 py-6 flex items-center justify-between">
         <Link
           to="/"
@@ -27,7 +25,7 @@ export default function AuthPage() {
           Euskalia
         </Link>
 
-        {/* Botón temporal para acceder a la cuenta Pro */}
+        {/* Botón Cuenta Pro (medidas exactas guardadas) */}
         <Link
           to="/cuenta-pro"
           className="
@@ -42,18 +40,25 @@ export default function AuthPage() {
         </Link>
       </header>
 
-      {/* Contenido centrado vertical y horizontalmente */}
+      {/* 2. POSICIÓN DEL BLOQUE CENTRAL (flex-1 items-center justify-center) */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
+        {/* Contenedor con ancho máximo guardado (max-w-md) */}
         <div className="w-full max-w-md flex flex-col items-center">
-          {/* TÍTULO */}
+          
+          {/* Círculo con 'E' (medidas de posición) */}
+          <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
+            <span className="text-indigo-600 font-bold">E</span>
+          </div>
+
+          {/* 3. TÍTULO (text-2xl font-semibold mb-6) */}
           <h1 className="text-2xl font-semibold mb-6 text-center">
             {tr("authPage.welcome", "Crea tu cuenta")}
           </h1>
 
-          {/* Botón Google – icono plano */}
+          {/* 4. BOTÓN GOOGLE (py-3 text-sm rounded-full) */}
           <button
             type="button"
-            onClick={() => alert("Demo: continuar con Google")}
+            onClick={() => alert("Demo: Google")}
             className="
               w-full flex items-center justify-center gap-3
               rounded-full border border-slate-200 bg-white
@@ -61,70 +66,43 @@ export default function AuthPage() {
               hover:bg-slate-50 transition-colors
             "
           >
-            <span className="mr-2 flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 48 48"
-                className="h-5 w-5"
-              >
-                <path
-                  fill="#EA4335"
-                  d="M24 9.5c3.54 0 6 1.54 7.38 2.84l5.42-5.42C33.64 3.46 29.3 1.5 24 1.5 14.78 1.5 7.06 6.98 3.9 14.9l6.87 5.33C12.13 14.64 17.49 9.5 24 9.5z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M46.5 24.5c0-1.57-.14-3.08-.41-4.5H24v9.02h12.7c-.55 2.9-2.23 5.36-4.76 7.02l7.43 5.77C43.82 38.21 46.5 31.9 46.5 24.5z"
-                />
-                <path
-                  fill="#4A90E2"
-                  d="M10.77 28.27A14.46 14.46 0 0 1 9.5 24c0-1.48.26-2.92.73-4.27l-6.87-5.33A22.4 22.4 0 0 0 1.5 24c0 3.62.87 7.04 2.4 10.06l6.87-5.79z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M24 46.5c5.85 0 10.77-1.93 14.36-5.22l-7.43-5.77C29.05 36.94 26.7 37.8 24 37.8c-6.51 0-11.87-5.14-13.23-11.93l-6.87 5.79C7.06 41.02 14.78 46.5 24 46.5z"
-                />
-              </svg>
-            </span>
-            <span>
-              {tr("authPage.continueWithGoogle", "Registrarte con Google")}
-            </span>
+            <svg
+              className="h-5 w-5"
+              viewBox="0 0 533.5 544.3"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.6-34.1-4.7-50.2H272v95h147.1c-6.3 34-25.1 62.7-53.5 81.8v67h86.6c50.7-46.7 81.3-115.6 81.3-193.6z" />
+              <path fill="#34A853" d="M272 544.3c72.9 0 134.2-24.1 178.9-65.2l-86.6-67c-24.1 16.2-55 25.8-92.3 25.8-70.9 0-131-47.9-152.6-112.1H31.5v70.4C76 485.2 167.1 544.3 272 544.3z" />
+              <path fill="#FBBC04" d="M119.4 325.8c-10.3-30.9-10.3-64.4 0-95.3V160H31.5c-42.7 85.5-42.7 188.5 0 274l87.9-67.2z" />
+              <path fill="#EA4335" d="M272 106.5c39.7-.6 77.8 14 106.9 41.3l80.1-80.1C406.3 25.2 344.9 0 272 0 167.1 0 76 59.1 31.5 160l87.9 70.5C141 154.4 201.1 106.5 272 106.5z" />
+            </svg>
+            <span>{tr("authPage.continueWithGoogle", "Registrarte con Google")}</span>
           </button>
 
-          {/* Separador */}
+          {/* 5. SEPARADOR (my-6 gap-4 text-xs) */}
           <div className="flex items-center w-full gap-4 my-6">
             <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs text-slate-400">{tr("authPage.or", "o")}</span>
+            <span className="text-xs text-slate-400">
+              {tr("authPage.or", "o")}
+            </span>
             <span className="h-px flex-1 bg-slate-200" />
           </div>
 
-          {/* Formulario */}
+          {/* 6. INPUT Y BOTÓN SUBMIT (py-3 text-sm rounded-full) */}
           <form onSubmit={onSubmit} className="w-full space-y-4">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="
-                w-full rounded-full border border-slate-200 bg-white
-                px-4 py-3 text-sm outline-none
-                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-              "
               placeholder={tr(
                 "authPage.emailOrUserPlaceholder",
                 "Introduce tu correo electrónico"
               )}
-            />
-
-            <input
-              type="text"
               className="
                 w-full rounded-full border border-slate-200 bg-white
                 px-4 py-3 text-sm outline-none
                 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
               "
-              placeholder={tr(
-                "authPage.usernamePlaceholder",
-                "Nombre o nombre de usuario"
-              )}
             />
 
             <button
@@ -139,28 +117,25 @@ export default function AuthPage() {
             </button>
           </form>
 
-          {/* Términos y privacidad */}
+          {/* LEGAL (text-xs mt-4) */}
           <p className="mt-4 text-xs text-center text-slate-500">
             {tr("authPage.legalText.prefix", "Al continuar, aceptas nuestros")}{" "}
-            <button type="button" className="underline">
+            <button type="button" className="underline hover:text-slate-700">
               {tr("authPage.legalText.terms", "Términos")}
             </button>{" "}
             {tr("authPage.legalText.and", "y")}{" "}
-            <button type="button" className="underline">
+            <button type="button" className="underline hover:text-slate-700">
               {tr("authPage.legalText.privacy", "Política de Privacidad")}
             </button>
             .
           </p>
 
-          {/* Enlace a iniciar sesión */}
+          {/* ENLACE REGISTRO (mt-6 text-sm) */}
           <p className="mt-6 text-sm text-slate-600">
-            {tr("authPage.alreadyHaveAccount", "¿Ya tienes cuenta?")}{" "}
-            <a
-              href="/iniciar-sesion"
-              className="font-medium text-indigo-600 hover:underline"
-            >
-              {tr("authPage.signInLink", "Iniciar sesión")}
-            </a>
+            {tr("authPage.noAccount", "¿Ya tienes cuenta?")}{" "}
+            <Link to="/iniciar-sesion" className="font-medium text-indigo-600 hover:underline">
+              {tr("authPage.signUp", "Iniciar sesión")}
+            </Link>
           </p>
         </div>
       </main>
