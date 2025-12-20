@@ -1,4 +1,4 @@
-// AuthPage (Crear Cuenta) - POSICIÓN DE LOGO BLINDADA
+// AuthPage (Crear Cuenta) - POSICIÓN CORREGIDA MANUALMENTE
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
@@ -15,49 +15,55 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col" style={{ width: '100%' }}>
+    <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
       
-      {/* HEADER: USAMOS STYLE PARA FORZAR LA POSICIÓN EXACTA (32px izq, 24px arriba) */}
+      {/* CAMBIO CLAVE: Usamos 'style' para forzar la posición.
+          Esto ignora cualquier configuración de Tailwind que esté fallando.
+      */}
       <header 
         style={{ 
-          paddingLeft: '32px', 
-          paddingRight: '32px', 
-          paddingTop: '24px', 
-          paddingBottom: '24px',
+          padding: '24px 32px', // 24px arriba/abajo, 32px izquierda/derecha
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          width: '100%'
+          width: '100%',
+          boxSizing: 'border-box'
         }}
       >
         <Link
           to="/"
           style={{ 
-            fontSize: '18px', 
-            fontWeight: '600',
+            fontSize: '18px',          // Tamaño text-lg
+            fontWeight: '600',         // Grosor font-semibold
+            color: '#0f172a',          // Color slate-900
             textDecoration: 'none',
-            color: '#0f172a', // Color exacto slate-900
-            lineHeight: '1.5rem'
+            fontFamily: 'sans-serif'   // Asegura que la fuente no varíe
           }}
           className="hover:opacity-80 transition-opacity"
         >
           Euskalia
         </Link>
 
-        {/* Botón Pro a la derecha para mantener el equilibrio del layout */}
         <Link
           to="/cuenta-pro"
-          className="text-sm font-semibold px-4 py-2 rounded-full bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors"
+          style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            backgroundColor: '#2563eb', // blue-600
+            color: 'white',
+            padding: '8px 16px',
+            borderRadius: '9999px',
+            textDecoration: 'none'
+          }}
         >
           Cuenta Pro
         </Link>
       </header>
 
-      {/* CONTENIDO CENTRAL: Manteniendo las medidas guardadas */}
+      {/* CUERPO DE LA PÁGINA */}
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
         <div className="w-full max-w-md flex flex-col items-center">
           
-          {/* Círculo con 'E' */}
           <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
             <span className="text-indigo-600 font-bold">E</span>
           </div>
@@ -66,7 +72,6 @@ export default function AuthPage() {
             {tr("authPage.welcome", "Crea tu cuenta")}
           </h1>
 
-          {/* BOTÓN GOOGLE */}
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
@@ -80,14 +85,12 @@ export default function AuthPage() {
             <span>{tr("authPage.continueWithGoogle", "Registrarte con Google")}</span>
           </button>
 
-          {/* SEPARADOR */}
           <div className="flex items-center w-full gap-4 my-6">
             <span className="h-px flex-1 bg-slate-200" />
             <span className="text-xs text-slate-400">{tr("authPage.or", "o")}</span>
             <span className="h-px flex-1 bg-slate-200" />
           </div>
 
-          {/* FORMULARIO */}
           <form onSubmit={onSubmit} className="w-full space-y-4">
             <input
               type="email"
@@ -104,7 +107,6 @@ export default function AuthPage() {
             </button>
           </form>
 
-          {/* ENLACE INFERIOR */}
           <p className="mt-6 text-sm text-slate-600">
             {tr("authPage.noAccount", "¿Ya tienes cuenta?")}{" "}
             <Link to="/iniciar-sesion" className="font-medium text-indigo-600 hover:underline">
