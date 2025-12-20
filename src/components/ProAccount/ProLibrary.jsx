@@ -508,7 +508,7 @@ export default function ProLibrary() {
                           alt=""
                           width={86}
                           height={86}
-                          className="block select-none -mt-2 -mb-4"
+                          className="block select-none -mt-2 -mb-4 -ml-2"
                         />
                         <h3
                           className="mt-8 text-[18px] leading-[24px] pr-4"
