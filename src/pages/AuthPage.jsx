@@ -1,18 +1,11 @@
 // Iniciar sesion
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/translations";
 
 export default function AuthPage() {
   const { t } = useTranslation?.() || { t: () => null };
   const tr = (k, f) => (typeof t === "function" ? t(k) : null) || f;
-
-  const [email, setEmail] = useState("");
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    alert("Demo: continuar con " + (email || "Google"));
-  };
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] text-slate-900 flex flex-col">
@@ -93,7 +86,9 @@ export default function AuthPage() {
                 d="M272 106.5c39.7-.6 77.8 14 106.9 41.3l80.1-80.1C406.3 25.2 344.9 0 272 0 167.1 0 76 59.1 31.5 160l87.9 70.5C141 154.4 201.1 106.5 272 106.5z"
               />
             </svg>
-            <span>{tr("authPage.continueWithGoogle", "Jarraitu Google-rekin")}</span>
+            <span>
+              {tr("authPage.continueWithGoogle", "Jarraitu Google-rekin")}
+            </span>
           </button>
 
           {/* Microsoft */}
@@ -117,31 +112,6 @@ export default function AuthPage() {
             </span>
           </button>
 
-          <div className="flex items-center w-full gap-4 my-6">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs text-slate-400">{tr("authPage.or", "edo")}</span>
-            <span className="h-px flex-1 bg-slate-200" />
-          </div>
-
-          <form onSubmit={onSubmit} className="w-full space-y-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={tr(
-                "authPage.emailOrUserPlaceholder",
-                "Idatzi zure posta edo erabiltzaile-izena"
-              )}
-              className="w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-full bg-slate-900 text-white py-3 text-sm font-semibold hover:bg-slate-950 transition-colors"
-            >
-              {tr("authPage.signInButton", "Jarraitu")}
-            </button>
-          </form>
-
           <p className="mt-10 text-sm text-slate-600">
             {tr("authPage.noAccount", "Ez duzu konturik?")}{" "}
             <Link
@@ -156,3 +126,4 @@ export default function AuthPage() {
     </div>
   );
 }
+
