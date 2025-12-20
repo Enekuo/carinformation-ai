@@ -51,7 +51,7 @@ export default function AuthPage() {
 
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
         {/* TARJETA (padding como el ejemplo) */}
-        <div className="w-full max-w-[700px] bg-white rounded-[40px] shadow-sm p-12 flex flex-col items-center">
+        <div className="w-full max-w-[700px] bg-white rounded-[40px] shadow-sm p-8 flex flex-col items-center">
           <div className="mx-auto h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
             <span className="text-indigo-600 font-bold">E</span>
           </div>
