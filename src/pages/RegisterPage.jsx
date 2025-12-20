@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
       {/* Contenido centrado con tarjeta de padding blanco */}
       <main className="flex-1 flex items-center justify-center px-4 pb-20">
-        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm p-12 flex flex-col items-center">
+        <div className="w-full max-w-[500px] bg-white rounded-[32px] shadow-sm p-12 flex flex-col items-center">
           {/* TÍTULO */}
           <h1 className="text-[32px] font-bold mb-10 text-slate-800 tracking-tight">
             {tr("registerPage_title", "Crea tu cuenta")}
@@ -63,7 +63,7 @@ export default function RegisterPage() {
           </div>
 
           {/* TEXTOS INFERIORES DENTRO DEL PADDING */}
-          <p className="mt-8 text-[13px] text-center text-slate-500 max-w-[300px] leading-relaxed">
+          <p className="mt-8 text-[12px] text-center text-slate-500 max-w-[300px] leading-relaxed">
             {tr("registerPage_termsPrefix", "Al continuar, aceptas nuestros")}{" "}
             <Link
               to="/terminos"
