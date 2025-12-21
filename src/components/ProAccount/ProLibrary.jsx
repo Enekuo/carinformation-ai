@@ -691,7 +691,7 @@ export default function ProLibrary() {
                                   : nk === "summary"
                                   ? "mt-7"
                                   : nk === "humanizer"
-                                  ? "mt-6"
+                                  ? "mt-4"
                                   : "mt-8"
                               } text-[18px] leading-[24px] pr-4`}
                               style={{
