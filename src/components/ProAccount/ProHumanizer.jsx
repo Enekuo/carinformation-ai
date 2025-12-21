@@ -21,9 +21,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { addLibraryDoc } from "@/proLibraryStore";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "@/lib/translations";
 
 export default function ProHumanizer() {
   const location = useLocation();
+
+  const { t } = useTranslation?.() || { t: () => null };
+  const tr = (k, f) => (typeof t === "function" ? t(k) : null) || f;
 
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
@@ -84,51 +88,57 @@ export default function ProHumanizer() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Textos (SIN claves) =====
-  const labelSources = "Fuentes";
-  const labelTabText = "Texto";
-  const labelTabDocument = "Documento";
-  const labelTabUrl = "URL";
-  const labelEnterText = "Escribe o pega tu texto aquí…";
+  // ===== Textos (CON claves) =====
+  const labelSources = tr("proHumanizer_sources", "Fuentes");
+  const labelTabText = tr("proHumanizer_tabText", "Texto");
+  const labelTabDocument = tr("proHumanizer_tabDocument", "Documento");
+  const labelTabUrl = tr("proHumanizer_tabUrl", "URL");
+  const labelEnterText = tr("proHumanizer_enterText", "Escribe o pega tu texto aquí…");
 
-  const labelChooseFileTitle = "Elige tu archivo o carpeta";
-  const labelAcceptedFormats = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
-  const labelFolderHint = "Aquí aparecerán tus textos o documentos subidos.";
+  const labelChooseFileTitle = tr("proHumanizer_chooseFileTitle", "Elige tu archivo o carpeta");
+  const labelAcceptedFormats = tr("proHumanizer_acceptedFormats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const labelFolderHint = tr("proHumanizer_folderHint", "Aquí aparecerán tus textos o documentos subidos.");
 
-  const labelPasteUrls = "Pegar URLs*";
-  const labelAddUrl = "Añadir URLs";
-  const labelSaveUrls = "Guardar";
-  const labelCancel = "Cancelar";
-  const labelUrlsNoteVisible = "Solo se importará el texto visible del sitio web.";
-  const labelUrlsNotePaywalled = "No se admiten artículos de pago.";
-  const labelRemove = "Quitar";
+  const labelPasteUrls = tr("proHumanizer_pasteUrls", "Pegar URLs*");
+  const labelAddUrl = tr("proHumanizer_addUrls", "Añadir URLs");
+  const labelSaveUrls = tr("proHumanizer_save", "Guardar");
+  const labelCancel = tr("proHumanizer_cancel", "Cancelar");
+  const labelUrlsNoteVisible = tr("proHumanizer_urlsNoteVisible", "Solo se importará el texto visible del sitio web.");
+  const labelUrlsNotePaywalled = tr("proHumanizer_urlsNotePaywalled", "No se admiten artículos de pago.");
+  const labelRemove = tr("proHumanizer_remove", "Quitar");
 
-  const LBL_ES = "Castellano";
-  const LBL_EUS = "Euskera";
-  const LBL_EN = "Inglés";
+  const LBL_ES = tr("proHumanizer_langES", "Castellano");
+  const LBL_EUS = tr("proHumanizer_langEUS", "Euskera");
+  const LBL_EN = tr("proHumanizer_langEN", "Inglés");
 
-  const labelGenerateFromSources = "Humanizar texto";
-  const labelHelpRight = 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Humanizar texto".';
+  const labelGenerateFromSources = tr("proHumanizer_generate", "Humanizar texto");
+  const labelHelpRight = tr(
+    "proHumanizer_helpRight",
+    'Selecciona una fuente (texto, documentos o URLs) y pulsa "Humanizar texto".'
+  );
 
-  const labelSaveButton = "Guardar";
-  const librarySavedMessage = "Guardado en biblioteca";
+  const labelSaveButton = tr("proHumanizer_saveButton", "Guardar");
+  const librarySavedMessage = tr("proHumanizer_savedToLibrary", "Guardado en biblioteca");
 
-  const ariaCopyResult = "Copiar resultado";
-  const ariaDeleteInput = "Eliminar texto de entrada y resultado";
-  const titleCopyResult = "Copiar resultado";
-  const titleDeleteInput = "Eliminar texto de entrada y resultado";
-  const titleClearLeft = "Borrar texto";
-  const ariaClearLeft = "Borrar texto";
+  const ariaCopyResult = tr("proHumanizer_copyResultAria", "Copiar resultado");
+  const ariaDeleteInput = tr("proHumanizer_deleteInputAria", "Eliminar texto de entrada y resultado");
+  const titleCopyResult = tr("proHumanizer_copyResultTitle", "Copiar resultado");
+  const titleDeleteInput = tr("proHumanizer_deleteInputTitle", "Eliminar texto de entrada y resultado");
+  const titleClearLeft = tr("proHumanizer_clearLeftTitle", "Borrar texto");
+  const ariaClearLeft = tr("proHumanizer_clearLeftAria", "Borrar texto");
 
-  const labelUrlTextareaPlaceholder = "Introduce aquí una o más URLs (separadas por línea)";
+  const labelUrlTextareaPlaceholder = tr(
+    "proHumanizer_urlTextareaPlaceholder",
+    "Introduce aquí una o más URLs (separadas por línea)"
+  );
 
-  const labelDownload = "Descargar";
-  const labelCopy = "Copiar";
-  const labelCopied = "Copiado";
+  const labelDownload = tr("proHumanizer_download", "Descargar");
+  const labelCopy = tr("proHumanizer_copy", "Copiar");
+  const labelCopied = tr("proHumanizer_copied", "Copiado");
 
   // Ayuda izquierda
-  const leftTitle = "Aquí aparecerán tus textos o documentos subidos.";
-  const leftBody = "Puedes añadir archivos PDF, texto copiado, enlaces web…";
+  const leftTitle = tr("proHumanizer_leftTitle", "Aquí aparecerán tus textos o documentos subidos.");
+  const leftBody = tr("proHumanizer_leftBody", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
 
   // ===== Tabs Fuentes (izquierda) =====
   const TabBtn = ({ active, icon: Icon, label, onClick, showDivider }) => (
@@ -189,9 +199,9 @@ export default function ProHumanizer() {
   );
 
   const modeLabels = {
-    basic: "Básico",
-    standard: "Estándar",
-    advanced: "Avanzado",
+    basic: tr("proHumanizer_modeBasic", "Básico"),
+    standard: tr("proHumanizer_modeStandard", "Estándar"),
+    advanced: tr("proHumanizer_modeAdvanced", "Avanzado"),
   };
 
   // ===== Utils =====
@@ -432,13 +442,13 @@ export default function ProHumanizer() {
     const validNow = textOk || urlItems.length > 0 || documentsText.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
-      setErrorMsg("Has superado el límite de caracteres permitido.");
+      setErrorMsg(tr("proHumanizer_errorMaxChars", "Has superado el límite de caracteres permitido."));
       setLoading(false);
       return;
     }
 
     if (!validNow) {
-      setErrorMsg("Añade texto suficiente, URLs o documentos antes de humanizar.");
+      setErrorMsg(tr("proHumanizer_errorNeedInput", "Añade texto suficiente, URLs o documentos antes de humanizar."));
       setLoading(false);
       return;
     }
@@ -547,7 +557,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error("Has alcanzado el límite de peticiones. Inténtalo más tarde.");
+          throw new Error(tr("proHumanizer_errorRateLimit", "Has alcanzado el límite de peticiones. Inténtalo más tarde."));
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -562,7 +572,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error("No se recibió texto de la API.");
+      if (!rawText) throw new Error(tr("proHumanizer_errorNoApiText", "No se recibió texto de la API."));
 
       const cleaned = String(rawText || "")
         .replace(/\r/g, "")
@@ -571,7 +581,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
 
       setResult(cleaned);
     } catch (err) {
-      setErrorMsg(err.message || "Error humanizando el texto.");
+      setErrorMsg(err.message || tr("proHumanizer_errorGeneric", "Error humanizando el texto."));
     } finally {
       setLoading(false);
     }
@@ -840,7 +850,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                     <button
                       type="button"
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                      aria-label="Idioma de salida"
+                      aria-label={tr("proHumanizer_outputLanguageAria", "Idioma de salida")}
                     >
                       <span className="truncate">
                         {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}

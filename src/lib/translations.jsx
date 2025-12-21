@@ -1574,7 +1574,7 @@ cookies_last_update: {
 },
   
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                     // =========================
                                     // =========================
                                     //        PRO ACCOUNT 
@@ -2194,7 +2194,62 @@ aiDetector_error_network: {
   ES: "Humanizador",
   EUS: "Gizatiartzailea",
 },
+proHumanizer_sources: { ES: "Fuentes", EUS: "Iturriak" },
+proHumanizer_tabText: { ES: "Texto", EUS: "Testua" },
+proHumanizer_tabDocument: { ES: "Documento", EUS: "Dokumentua" },
+proHumanizer_tabUrl: { ES: "URL", EUS: "URL" },
+proHumanizer_enterText: { ES: "Escribe o pega tu texto aquí…", EUS: "Idatzi edo itsatsi zure testua hemen…" },
 
+proHumanizer_chooseFileTitle: { ES: "Elige tu archivo o carpeta", EUS: "Aukeratu zure fitxategia edo karpeta" },
+proHumanizer_acceptedFormats: { ES: "Puedes añadir archivos PDF, texto copiado, enlaces web…", EUS: "PDF fitxategiak, kopiatutako testua, web estekak… gehi ditzakezu" },
+proHumanizer_folderHint: { ES: "Aquí aparecerán tus textos o documentos subidos.", EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak." },
+
+proHumanizer_pasteUrls: { ES: "Pegar URLs*", EUS: "Itsatsi URLak*" },
+proHumanizer_addUrls: { ES: "Añadir URLs", EUS: "Gehitu URLak" },
+proHumanizer_save: { ES: "Guardar", EUS: "Gorde" },
+proHumanizer_cancel: { ES: "Cancelar", EUS: "Utzi" },
+proHumanizer_urlsNoteVisible: { ES: "Solo se importará el texto visible del sitio web.", EUS: "Webguneko testu ikusgarria bakarrik inportatuko da." },
+proHumanizer_urlsNotePaywalled: { ES: "No se admiten artículos de pago.", EUS: "Ordainpeko artikuluak ez dira onartzen." },
+proHumanizer_remove: { ES: "Quitar", EUS: "Kendu" },
+
+proHumanizer_langES: { ES: "Castellano", EUS: "Gaztelania" },
+proHumanizer_langEUS: { ES: "Euskera", EUS: "Euskara" },
+proHumanizer_langEN: { ES: "Inglés", EUS: "Ingelesa" },
+
+proHumanizer_generate: { ES: "Humanizar texto", EUS: "Testua humanizatu" },
+proHumanizer_helpRight: { ES: 'Selecciona una fuente (texto, documentos o URLs) y pulsa "Humanizar texto".', EUS: 'Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu "Testua humanizatu".' },
+
+proHumanizer_saveButton: { ES: "Guardar", EUS: "Gorde" },
+proHumanizer_savedToLibrary: { ES: "Guardado en biblioteca", EUS: "Liburutegian gordeta" },
+
+proHumanizer_copyResultAria: { ES: "Copiar resultado", EUS: "Emaitza kopiatu" },
+proHumanizer_deleteInputAria: { ES: "Eliminar texto de entrada y resultado", EUS: "Sarrerako testua eta emaitza ezabatu" },
+proHumanizer_copyResultTitle: { ES: "Copiar resultado", EUS: "Emaitza kopiatu" },
+proHumanizer_deleteInputTitle: { ES: "Eliminar texto de entrada y resultado", EUS: "Sarrerako testua eta emaitza ezabatu" },
+proHumanizer_clearLeftTitle: { ES: "Borrar texto", EUS: "Testua ezabatu" },
+proHumanizer_clearLeftAria: { ES: "Borrar texto", EUS: "Testua ezabatu" },
+
+proHumanizer_urlTextareaPlaceholder: { ES: "Introduce aquí una o más URLs (separadas por línea)", EUS: "Sartu hemen URL bat edo gehiago (lerroz banatuta)" },
+
+proHumanizer_download: { ES: "Descargar", EUS: "Deskargatu" },
+proHumanizer_copy: { ES: "Copiar", EUS: "Kopiatu" },
+proHumanizer_copied: { ES: "Copiado", EUS: "Kopiatuta" },
+
+proHumanizer_leftTitle: { ES: "Aquí aparecerán tus textos o documentos subidos.", EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak." },
+proHumanizer_leftBody: { ES: "Puedes añadir archivos PDF, texto copiado, enlaces web…", EUS: "PDF fitxategiak, kopiatutako testua, web estekak… gehi ditzakezu" },
+
+proHumanizer_modeBasic: { ES: "Básico", EUS: "Oinarrizkoa" },
+proHumanizer_modeStandard: { ES: "Estándar", EUS: "Estandarra" },
+proHumanizer_modeAdvanced: { ES: "Avanzado", EUS: "Aurreratua" },
+
+proHumanizer_errorMaxChars: { ES: "Has superado el límite de caracteres permitido.", EUS: "Baimendutako karaktere-muga gainditu duzu." },
+proHumanizer_errorNeedInput: { ES: "Añade texto suficiente, URLs o documentos antes de humanizar.", EUS: "Gehitu testu nahikoa, URLak edo dokumentuak humanizatu aurretik." },
+proHumanizer_errorRateLimit: { ES: "Has alcanzado el límite de peticiones. Inténtalo más tarde.", EUS: "Eskaera-muga lortu duzu. Saiatu berriro geroago." },
+proHumanizer_errorNoApiText: { ES: "No se recibió texto de la API.", EUS: "Ez da testurik jaso API-tik." },
+proHumanizer_errorGeneric: { ES: "Error humanizando el texto.", EUS: "Errorea testua humanizatzean." },
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // =========================
   //        Pro library
   // =========================    
@@ -2660,11 +2715,7 @@ proHelp: {
     ES: "Personaliza tu experiencia en Olondo.AI.",
     EUS: "Pertsonalizatu zure esperientzia Olondo.AI-n.",
   },
-
-  // =========================
-  //          PERFIL
-  // =========================
-
+  //PERFIL
   settings_profile_title: {
     ES: "Perfil",
     EUS: "Profila",
@@ -2693,11 +2744,7 @@ proHelp: {
     ES: "Gestionar plan",
     EUS: "Plana kudeatu",
   },
-
-  // =========================
   //        APARIENCIA
-  // =========================
-
   settings_appearance_title: {
     ES: "Apariencia",
     EUS: "Itxura",
@@ -2722,11 +2769,7 @@ proHelp: {
     ES: "Cambia el idioma desde aquí.",
     EUS: "Aldatu hizkuntza hemendik.",
   },
-
-  // =========================
   //      NOTIFICACIONES
-  // =========================
-
   settings_notifications_title: {
     ES: "Notificaciones",
     EUS: "Jakinarazpenak",
@@ -2762,11 +2805,6 @@ proHelp: {
     ES: "Recibos, cambios de plan y recordatorios de pago.",
     EUS: "Ordainagiriak, plan-aldaketak eta ordainketa-oharpenak.",
   },
-
-  // =========================
-  //            CTA
-  // =========================
-
   settings_cta_save: {
     ES: "Guardar cambios",
     EUS: "Aldaketak gorde",
