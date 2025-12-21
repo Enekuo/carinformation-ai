@@ -49,26 +49,20 @@ export default function AuthPage() {
         </Link>
       </header>
 
-      {/* Fondo + tarjeta */}
-      <main className="relative flex-1 flex items-center justify-center px-4 pb-16">
-        {/* halo suave */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-[650px] w-[650px] rounded-full bg-blue-500/10 blur-3xl" />
-        </div>
-
-        {/* TARJETA MÁS GRANDE + PADDING BLANCO */}
-        <div className="w-full max-w-[640px] bg-white rounded-[44px] border border-slate-100 shadow-[0_26px_80px_-30px_rgba(15,23,42,0.28)] px-10 pt-10 pb-14 flex flex-col items-center">
-          <h1 className="text-[42px] font-semibold tracking-tight mb-10 text-center">
+      <main className="flex-1 flex items-center justify-center px-4 pb-16">
+        {/* TARJETA: SOLO AUMENTAMOS PADDING Y TAMAÑO DEL CONTENEDOR */}
+        <div className="w-full max-w-[720px] bg-white rounded-[44px] shadow-sm px-14 pt-14 pb-16 flex flex-col items-center">
+          <h1 className="text-2xl font-semibold mb-6 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
           {/* Google */}
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-4 text-base font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               viewBox="0 0 533.5 544.3"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -97,10 +91,10 @@ export default function AuthPage() {
           {/* Microsoft */}
           <button
             type="button"
-            className="mt-4 w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-4 text-base font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="mt-3 w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               viewBox="0 0 23 23"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
@@ -115,7 +109,7 @@ export default function AuthPage() {
             </span>
           </button>
 
-          <p className="mt-12 text-base text-slate-600">
+          <p className="mt-10 text-sm text-slate-600">
             {tr("authPage.noAccount", "Ez duzu konturik?")}{" "}
             <Link
               to="/crear-cuenta"
