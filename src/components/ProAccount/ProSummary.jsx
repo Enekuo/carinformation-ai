@@ -1283,7 +1283,7 @@ export default function ProSummary() {
                         </article>
 
                         {/* BLOQUE "LISTO PARA GUARDAR" + BOTÓN */}
-                        <div className="flex justify-end mt-26">
+                        <div className="flex justify-end mt-20">
                           <div className="flex flex-col items-end gap-1">
                             {savedToLibrary && (
                               <p className="text-xs text-emerald-600">
