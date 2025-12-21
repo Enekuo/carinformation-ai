@@ -2192,7 +2192,7 @@ aiDetector_error_network: {
  
   proSidebar_humanizer: {
   ES: "Humanizador",
-  EUS: "Gizatiartzailea",
+  EUS: "Humanizatzailea",
 },
 proHumanizer_sources: { ES: "Fuentes", EUS: "Iturriak" },
 proHumanizer_tabText: { ES: "Texto", EUS: "Testua" },
