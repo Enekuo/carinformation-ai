@@ -94,6 +94,9 @@ export default function ProTranslator() {
   const [savedToLibrary, setSavedToLibrary] = useState(false);
   const savedTimerRef = useRef(null);
 
+  // ✅ NUEVO: estado de validez del resultado (solo "success" permite Guardar)
+  const [resultStatus, setResultStatus] = useState("idle"); // "idle" | "loading" | "success" | "error"
+
   useEffect(
     () => () => {
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
@@ -130,6 +133,70 @@ export default function ProTranslator() {
     autoResize(rightTA.current);
   }, [rightText]);
 
+  // ✅ NUEVO: detecta mensajes que NO son traducción real (rechazos típicos)
+  const isNonResultMessage = (txt) => {
+    const s = (txt || "").trim();
+    if (!s) return true;
+
+    const low = s.toLowerCase();
+
+    // patrones típicos de rechazo en ES / EN / EUS
+    const patterns = [
+      "lo siento",
+      "no puedo ayudar",
+      "no puedo",
+      "no estoy disponible",
+      "no puedo asistirte",
+      "i'm sorry",
+      "i cannot",
+      "i can't",
+      "i am unable",
+      "i can’t",
+      "sorry,",
+      "ezin dut",
+      "barkatu",
+      "ez naiz gai",
+    ];
+
+    if (patterns.some((p) => low.includes(p))) return true;
+
+    return false;
+  };
+
+  // ✅ NUEVO: aplica salida y marca success/error correctamente
+  const applyTranslationOutput = (data) => {
+    const out = (data?.content ?? data?.translation ?? "").toString();
+
+    // Si backend algún día devuelve flags, los respetamos
+    const flaggedRefusal =
+      data?.refusal === true ||
+      data?.blocked === true ||
+      data?.ok === false ||
+      typeof data?.error === "string";
+
+    if (flaggedRefusal) {
+      setRightText(out || "");
+      setResultStatus("error");
+      return;
+    }
+
+    if (!out.trim()) {
+      setRightText("");
+      setResultStatus("idle");
+      return;
+    }
+
+    if (isNonResultMessage(out)) {
+      // mostramos el mensaje, pero NO permitimos Guardar
+      setRightText(out);
+      setResultStatus("error");
+      return;
+    }
+
+    setRightText(out);
+    setResultStatus("success");
+  };
+
   // === Traducción MODO TEXTO
   useEffect(() => {
     if (sourceMode !== "text") return;
@@ -138,11 +205,13 @@ export default function ProTranslator() {
 
     if (!leftText.trim()) {
       setRightText("");
+      setResultStatus("idle");
       return;
     }
 
     if (leftText.length >= MAX_CHARS) {
       setErr(`Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres.`);
+      setResultStatus("error");
       return;
     }
 
@@ -150,6 +219,7 @@ export default function ProTranslator() {
     const timer = setTimeout(async () => {
       try {
         setLoading(true);
+        setResultStatus("loading");
 
         const system = `${directionText(
           src,
@@ -181,12 +251,13 @@ export default function ProTranslator() {
         }
 
         const data = await res.json();
-        setRightText(data?.content ?? data?.translation ?? "");
+        applyTranslationOutput(data);
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate error:", e);
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev) setErr("No se pudo traducir ahora mismo.");
+          setResultStatus("error");
         }
       } finally {
         setLoading(false);
@@ -206,6 +277,7 @@ export default function ProTranslator() {
     if (!urlItems.length) {
       setRightText("");
       setErr("");
+      setResultStatus("idle");
       return;
     }
 
@@ -215,6 +287,7 @@ export default function ProTranslator() {
       try {
         setLoading(true);
         setErr("");
+        setResultStatus("loading");
 
         const urls = urlItems.map((u) => u.url);
         const res = await fetch("/api/chat", {
@@ -235,15 +308,17 @@ export default function ProTranslator() {
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat (urls) error:", res.status, raw);
           setErr("No se pudieron procesar las URLs ahora mismo.");
+          setResultStatus("error");
           return;
         }
 
         const data = await res.json();
-        setRightText(data?.content ?? data?.translation ?? "");
+        applyTranslationOutput(data);
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate urls error:", e);
           setErr("No se pudieron procesar las URLs ahora mismo.");
+          setResultStatus("error");
         }
       } finally {
         setLoading(false);
@@ -272,6 +347,7 @@ export default function ProTranslator() {
     if (!documents.length) {
       setRightText("");
       setErr("");
+      setResultStatus("idle");
       return;
     }
 
@@ -281,6 +357,7 @@ export default function ProTranslator() {
       try {
         setLoading(true);
         setErr("");
+        setResultStatus("loading");
 
         const contents = await Promise.all(
           documents.map(({ file }) => readFileAsText(file))
@@ -290,6 +367,7 @@ export default function ProTranslator() {
         if (!combined.trim()) {
           setErr("No se ha podido leer el documento.");
           setRightText("");
+          setResultStatus("error");
           return;
         }
 
@@ -320,15 +398,17 @@ export default function ProTranslator() {
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat (documents) error:", res.status, raw);
           setErr("No se han podido procesar los documentos ahora mismo.");
+          setResultStatus("error");
           return;
         }
 
         const data = await res.json();
-        setRightText(data?.content ?? data?.translation ?? "");
+        applyTranslationOutput(data);
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate documents error:", e);
           setErr("No se han podido procesar los documentos ahora mismo.");
+          setResultStatus("error");
         }
       } finally {
         setLoading(false);
@@ -576,6 +656,7 @@ export default function ProTranslator() {
     setUrlItems([]);
     setUrlsTextarea("");
     setErr("");
+    setResultStatus("idle");
   };
 
   const handleCopy = async () => {
@@ -610,6 +691,9 @@ export default function ProTranslator() {
 
   // 🔹 guardar traducción en la biblioteca + mostrar mensaje
   const handleSaveTranslation = () => {
+    // ✅ Solo guardamos si el resultado está marcado como success
+    if (resultStatus !== "success") return;
+
     const text = rightText?.trim();
     if (!text) return;
 
@@ -710,8 +794,8 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // 🔹 solo mostramos "Guardar" cuando haya resultado y no esté cargando
-  const hasResult = !!(rightText && rightText.trim().length > 0) && !loading;
+  // ✅ SOLO mostramos "Guardar" cuando el resultado es real (success) y no está cargando
+  const canSave = resultStatus === "success" && !!rightText?.trim() && !loading;
 
   return (
     <>
@@ -1176,7 +1260,7 @@ export default function ProTranslator() {
                       </span>
                     </button>
 
-                    {hasResult && (
+                    {canSave && (
                       <button
                         type="button"
                         onClick={handleSaveTranslation}
