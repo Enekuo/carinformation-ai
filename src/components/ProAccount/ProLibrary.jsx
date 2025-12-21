@@ -640,7 +640,7 @@ export default function ProLibrary() {
                             )}
                           </div>
                         ) : nk === "humanizer" ? (
-                          <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                          <div className="h-full w-full px-5 pt-5 pb-6 flex flex-col">
                             <img
                               src={iconSrc}
                               alt=""
