@@ -639,6 +639,38 @@ export default function ProLibrary() {
                               </p>
                             )}
                           </div>
+                        ) : nk === "humanizer" ? (
+                          // ✅ Humanizer: mismo layout que la plantilla
+                          <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
+                            <img
+                              src={iconSrc}
+                              alt=""
+                              width={100}
+                              height={100}
+                              className="block select-none -mt-2 -mb-4 -ml-6"
+                            />
+                            <h3
+                              className="mt-6 text-[18px] leading-[24px] pr-4"
+                              style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <span className="font-semibold text-slate-900">
+                                {labelPrefix}
+                              </span>{" "}
+                              <span className="font-normal text-slate-700">
+                                {doc.title || tr("library_untitled", "Sin título")}
+                              </span>
+                            </h3>
+                            {dateLabel && (
+                              <p className="mt-auto text-[14px] leading-[20px] text-slate-700">
+                                {dateLabel}
+                              </p>
+                            )}
+                          </div>
                         ) : (
                           <div className="h-full w-full px-5 pt-8 pb-6 flex flex-col">
                             <img
