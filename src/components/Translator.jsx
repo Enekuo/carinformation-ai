@@ -194,12 +194,13 @@ export default function Translator() {
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate error:", e);
-          setErr("No se pudo traducir ahora mismo.");
+          const hasPrev = !!(rightText && rightText.trim().length > 0);
+          if (!hasPrev) setErr("No se pudo traducir ahora mismo.");
         }
       } finally {
         setLoading(false);
       }
-    }, 450);
+    }, 900);
 
     return () => {
       clearTimeout(timer);
@@ -246,11 +247,13 @@ export default function Translator() {
             (language || "ES").toString().toUpperCase() === "EUS"
               ? "EUS"
               : "ES";
-          setErr(
-            uiLang === "EUS"
-              ? "Ezin izan dira URLak orain prozesatu."
-              : "No se pudieron procesar las URLs ahora mismo."
-          );
+          const hasPrev = !!(rightText && rightText.trim().length > 0);
+          if (!hasPrev)
+            setErr(
+              uiLang === "EUS"
+                ? "Ezin izan dira URLak orain prozesatu."
+                : "No se pudieron procesar las URLs ahora mismo."
+            );
           return;
         }
 
@@ -263,11 +266,13 @@ export default function Translator() {
             (language || "ES").toString().toUpperCase() === "EUS"
               ? "EUS"
               : "ES";
-          setErr(
-            uiLang === "EUS"
-              ? "Ezin izan dira URLak orain prozesatu."
-              : "No se pudieron procesar las URLs ahora mismo."
-          );
+          const hasPrev = !!(rightText && rightText.trim().length > 0);
+          if (!hasPrev)
+            setErr(
+              uiLang === "EUS"
+                ? "Ezin izan dira URLak orain prozesatu."
+                : "No se pudieron procesar las URLs ahora mismo."
+            );
         }
       } finally {
         setLoading(false);
@@ -357,11 +362,13 @@ export default function Translator() {
             (language || "ES").toString().toUpperCase() === "EUS"
               ? "EUS"
               : "ES";
-          setErr(
-            uiLang === "EUS"
-              ? "Ezin izan dira dokumentuak orain prozesatu."
-              : "No se han podido procesar los documentos ahora mismo."
-          );
+          const hasPrev = !!(rightText && rightText.trim().length > 0);
+          if (!hasPrev)
+            setErr(
+              uiLang === "EUS"
+                ? "Ezin izan dira dokumentuak orain prozesatu."
+                : "No se han podido procesar los documentos ahora mismo."
+            );
           return;
         }
 
@@ -374,11 +381,13 @@ export default function Translator() {
             (language || "ES").toString().toUpperCase() === "EUS"
               ? "EUS"
               : "ES";
-          setErr(
-            uiLang === "EUS"
-              ? "Ezin izan dira dokumentuak orain prozesatu."
-              : "No se han podido procesar los documentos ahora mismo."
-          );
+          const hasPrev = !!(rightText && rightText.trim().length > 0);
+          if (!hasPrev)
+            setErr(
+              uiLang === "EUS"
+                ? "Ezin izan dira dokumentuak orain prozesatu."
+                : "No se han podido procesar los documentos ahora mismo."
+            );
         }
       } finally {
         setLoading(false);
