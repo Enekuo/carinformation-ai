@@ -1631,8 +1631,8 @@ cookies_last_update: {
 },
 
  proSidebar_summary: {
-  ES: "Resumen",
-  EUS: "Laburpena", 
+  ES: "Resumidor",
+  EUS: "Laburtzailea", 
  },
  proSidebar_corrector: {
   ES: "Corrector",
