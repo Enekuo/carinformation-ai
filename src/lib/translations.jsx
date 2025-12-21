@@ -46,7 +46,7 @@ export const translations = {
 
   /* === Bloque de Resumen (Euskalia) === */
   summary: {
-    title:                 { ES: "Resumen", EUS: "Laburpena" },
+    title:                 { ES: "Resumidor", EUS: "Laburtzailea" },
     sources_title:         { ES: "Fuentes", EUS: "Iturriak" },
     sources_tab_text:      { ES: "Texto", EUS: "Testua" },
     sources_tab_document:  { ES: "Documento", EUS: "Dokumentua" },
@@ -752,7 +752,7 @@ registerPage_login: {
 
 
   // INICIAR SESION //
-  
+
   authPage: {
     pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
     pageDescription:        { ES: "Accede a tu cuenta para seguir usando Euskalia.", EUS: "Sartu zure kontura Euskalia erabiltzen jarraitzeko." },
