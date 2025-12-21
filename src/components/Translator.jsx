@@ -141,7 +141,7 @@ export default function Translator() {
 
   // ==== Traducción con OpenAI vía /api/chat (modo TEXTO, debounced) ====
   useEffect(() => {
-    if (sourceMode !== "text") return; // solo traducimos cuando está en modo texto
+    if (sourceMode !== "text") return;
 
     if (leftText.length < MAX_CHARS) setErr("");
 
@@ -312,7 +312,6 @@ export default function Translator() {
         setLoading(true);
         setErr("");
 
-        // Leemos todos los documentos como texto (ideal para .txt, .md, etc.)
         const contents = await Promise.all(
           documents.map(({ file }) => readFileAsText(file))
         );
@@ -558,11 +557,8 @@ export default function Translator() {
         });
       };
 
-      if (el.readyState >= 3) {
-        start();
-      } else {
-        el.addEventListener("canplay", start, { once: true });
-      }
+      if (el.readyState >= 3) start();
+      else el.addEventListener("canplay", start, { once: true });
 
       el.onended = () => {
         setSpeaking(false);
@@ -658,7 +654,7 @@ export default function Translator() {
     }
   };
 
-  // ===== Botón de borrar: ahora limpia TODO (izquierda + derecha + URLs + docs) =====
+  // ===== Botón de borrar: limpia TODO =====
   const handleClearLeft = () => {
     setLeftText("");
     setRightText("");
@@ -806,10 +802,8 @@ export default function Translator() {
                     <span>{labelTabText}</span>
                   </button>
 
-                  {/* línea separadora */}
                   <span className="mx-4 h-5 w-px bg-slate-200" />
 
-                  {/* Documento */}
                   <button
                     type="button"
                     onClick={() => setSourceMode("document")}
@@ -829,10 +823,8 @@ export default function Translator() {
                     <span>{labelTabDocument}</span>
                   </button>
 
-                  {/* línea separadora */}
                   <span className="mx-4 h-5 w-px bg-slate-200" />
 
-                  {/* URL */}
                   <button
                     type="button"
                     onClick={() => setSourceMode("url")}
@@ -852,14 +844,12 @@ export default function Translator() {
                     <span>{labelTabUrl}</span>
                   </button>
 
-                  {/* línea final después de URL */}
                   <span className="ml-4 h-5 w-px bg-slate-200" />
                 </div>
 
-                {/* selector: solo las flechas centradas */}
+                {/* selector: centrado */}
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                   <div className="relative pointer-events-auto flex items-center">
-                    {/* idioma izquierda */}
                     <div className="relative mr-16" ref={leftRef}>
                       <button
                         type="button"
@@ -898,7 +888,6 @@ export default function Translator() {
                       />
                     </div>
 
-                    {/* flechas EXACTAMENTE centradas */}
                     <button
                       type="button"
                       aria-label="Intercambiar idiomas"
@@ -928,7 +917,6 @@ export default function Translator() {
                       </svg>
                     </button>
 
-                    {/* idioma derecha */}
                     <div className="relative ml-16" ref={rightRef}>
                       <button
                         type="button"
@@ -970,7 +958,6 @@ export default function Translator() {
                 </div>
               </div>
 
-              {/* Botón de borrar en la misma línea del selector, alineado a la derecha */}
               <button
                 type="button"
                 onClick={handleClearLeft}
@@ -984,9 +971,7 @@ export default function Translator() {
               </button>
             </div>
 
-            {/* paneles */}
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              {/* IZQUIERDA: entrada / documentos / URL según tab */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 {sourceMode === "text" && (
                   <>
@@ -1198,7 +1183,6 @@ export default function Translator() {
                 )}
               </div>
 
-              {/* DERECHA: salida */}
               <div className="p-8 md:p-10 relative">
                 <textarea
                   ref={rightTA}
@@ -1214,7 +1198,7 @@ export default function Translator() {
                     loading ? "italic text-slate-500" : ""
                   }`}
                 />
-                {err && <p className="mt-2 text-sm text-red-500">{err}</p>}
+
                 {err && (
                   <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
                     {err}
