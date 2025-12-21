@@ -26,8 +26,13 @@ export default function RegisterPage() {
       </header>
 
       {/* Contenido centrado con tarjeta de padding blanco */}
-      <main className="flex-1 flex items-center justify-center px-4 pb-20">
-        <div className="w-full max-w-[500px] bg-white rounded-[32px] shadow-sm p-12 flex flex-col items-center">
+      <main className="relative flex-1 flex items-center justify-center px-4 pb-20">
+        {/* Halo suave (mismo efecto que en login) */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="h-[520px] w-[520px] rounded-full bg-blue-500/10 blur-3xl" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-[500px] bg-white rounded-[32px] shadow-sm p-12 flex flex-col items-center">
           {/* TÍTULO */}
           <h1 className="text-[32px] font-bold mb-10 text-slate-800 tracking-tight">
             {tr("registerPage_title", "Crea tu cuenta")}
