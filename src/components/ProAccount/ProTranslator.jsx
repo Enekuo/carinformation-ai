@@ -94,15 +94,6 @@ export default function ProTranslator() {
   const [savedToLibrary, setSavedToLibrary] = useState(false);
   const savedTimerRef = useRef(null);
 
-  // 🔹 abort + control de “petición activa” para evitar estados pegados
-  const textAbortRef = useRef(null);
-  const urlAbortRef = useRef(null);
-  const docAbortRef = useRef(null);
-
-  const textReqIdRef = useRef(0);
-  const urlReqIdRef = useRef(0);
-  const docReqIdRef = useRef(0);
-
   useEffect(
     () => () => {
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
@@ -114,7 +105,6 @@ export default function ProTranslator() {
   const swap = () => {
     setSrc(dst);
     setDst(src);
-    setErr("");
   };
 
   useEffect(() => {
@@ -144,19 +134,10 @@ export default function ProTranslator() {
   useEffect(() => {
     if (sourceMode !== "text") return;
 
-    // si el usuario cambia algo, nunca dejamos el error “pegado”
     if (leftText.length < MAX_CHARS) setErr("");
 
     if (!leftText.trim()) {
       setRightText("");
-      setErr("");
-      if (textAbortRef.current) {
-        try {
-          textAbortRef.current.abort();
-        } catch {}
-        textAbortRef.current = null;
-      }
-      setLoading(false);
       return;
     }
 
@@ -165,22 +146,10 @@ export default function ProTranslator() {
       return;
     }
 
-    // abortar la anterior en cuanto empieza un nuevo ciclo
-    if (textAbortRef.current) {
-      try {
-        textAbortRef.current.abort();
-      } catch {}
-    }
-
     const controller = new AbortController();
-    textAbortRef.current = controller;
-
-    const myReqId = ++textReqIdRef.current;
-
     const timer = setTimeout(async () => {
       try {
         setLoading(true);
-        setErr("");
 
         const system = `${directionText(
           src,
@@ -212,31 +181,21 @@ export default function ProTranslator() {
         }
 
         const data = await res.json();
-
-        // solo aplica si sigue siendo la petición activa
-        if (textReqIdRef.current === myReqId && !controller.signal.aborted) {
-          setRightText(data?.content ?? data?.translation ?? "");
-          setErr("");
-        }
+        setRightText(data?.content ?? data?.translation ?? "");
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate error:", e);
-          if (textReqIdRef.current === myReqId) {
-            setErr("No se pudo traducir ahora mismo.");
-          }
+          const hasPrev = !!(rightText && rightText.trim().length > 0);
+          if (!hasPrev) setErr("No se pudo traducir ahora mismo.");
         }
       } finally {
-        if (textReqIdRef.current === myReqId) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
-    }, 450);
+    }, 900);
 
     return () => {
       clearTimeout(timer);
-      try {
-        controller.abort();
-      } catch {}
+      controller.abort();
     };
   }, [leftText, src, dst, sourceMode]);
 
@@ -247,26 +206,10 @@ export default function ProTranslator() {
     if (!urlItems.length) {
       setRightText("");
       setErr("");
-      if (urlAbortRef.current) {
-        try {
-          urlAbortRef.current.abort();
-        } catch {}
-        urlAbortRef.current = null;
-      }
-      setLoading(false);
       return;
     }
 
-    if (urlAbortRef.current) {
-      try {
-        urlAbortRef.current.abort();
-      } catch {}
-    }
-
     const controller = new AbortController();
-    urlAbortRef.current = controller;
-
-    const myReqId = ++urlReqIdRef.current;
 
     const run = async () => {
       try {
@@ -291,37 +234,26 @@ export default function ProTranslator() {
         if (!res.ok) {
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat (urls) error:", res.status, raw);
-          if (urlReqIdRef.current === myReqId) {
-            setErr("No se pudieron procesar las URLs ahora mismo.");
-          }
+          setErr("No se pudieron procesar las URLs ahora mismo.");
           return;
         }
 
         const data = await res.json();
-        if (urlReqIdRef.current === myReqId && !controller.signal.aborted) {
-          setRightText(data?.content ?? data?.translation ?? "");
-          setErr("");
-        }
+        setRightText(data?.content ?? data?.translation ?? "");
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate urls error:", e);
-          if (urlReqIdRef.current === myReqId) {
-            setErr("No se pudieron procesar las URLs ahora mismo.");
-          }
+          setErr("No se pudieron procesar las URLs ahora mismo.");
         }
       } finally {
-        if (urlReqIdRef.current === myReqId) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     run();
 
     return () => {
-      try {
-        controller.abort();
-      } catch {}
+      controller.abort();
     };
   }, [sourceMode, src, dst, urlItems]);
 
@@ -340,26 +272,10 @@ export default function ProTranslator() {
     if (!documents.length) {
       setRightText("");
       setErr("");
-      if (docAbortRef.current) {
-        try {
-          docAbortRef.current.abort();
-        } catch {}
-        docAbortRef.current = null;
-      }
-      setLoading(false);
       return;
     }
 
-    if (docAbortRef.current) {
-      try {
-        docAbortRef.current.abort();
-      } catch {}
-    }
-
     const controller = new AbortController();
-    docAbortRef.current = controller;
-
-    const myReqId = ++docReqIdRef.current;
 
     const run = async () => {
       try {
@@ -372,10 +288,8 @@ export default function ProTranslator() {
         const combined = contents.join("\n\n---\n\n").slice(0, MAX_CHARS);
 
         if (!combined.trim()) {
-          if (docReqIdRef.current === myReqId) {
-            setErr("No se ha podido leer el documento.");
-            setRightText("");
-          }
+          setErr("No se ha podido leer el documento.");
+          setRightText("");
           return;
         }
 
@@ -405,37 +319,26 @@ export default function ProTranslator() {
         if (!res.ok) {
           const raw = await res.text().catch(() => "");
           console.error("API /api/chat (documents) error:", res.status, raw);
-          if (docReqIdRef.current === myReqId) {
-            setErr("No se han podido procesar los documentos ahora mismo.");
-          }
+          setErr("No se han podido procesar los documentos ahora mismo.");
           return;
         }
 
         const data = await res.json();
-        if (docReqIdRef.current === myReqId && !controller.signal.aborted) {
-          setRightText(data?.content ?? data?.translation ?? "");
-          setErr("");
-        }
+        setRightText(data?.content ?? data?.translation ?? "");
       } catch (e) {
         if (e.name !== "AbortError") {
           console.error("translate documents error:", e);
-          if (docReqIdRef.current === myReqId) {
-            setErr("No se han podido procesar los documentos ahora mismo.");
-          }
+          setErr("No se han podido procesar los documentos ahora mismo.");
         }
       } finally {
-        if (docReqIdRef.current === myReqId) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     run();
 
     return () => {
-      try {
-        controller.abort();
-      } catch {}
+      controller.abort();
     };
   }, [sourceMode, src, dst, documents]);
 
@@ -673,27 +576,6 @@ export default function ProTranslator() {
     setUrlItems([]);
     setUrlsTextarea("");
     setErr("");
-
-    if (textAbortRef.current) {
-      try {
-        textAbortRef.current.abort();
-      } catch {}
-      textAbortRef.current = null;
-    }
-    if (urlAbortRef.current) {
-      try {
-        urlAbortRef.current.abort();
-      } catch {}
-      urlAbortRef.current = null;
-    }
-    if (docAbortRef.current) {
-      try {
-        docAbortRef.current.abort();
-      } catch {}
-      docAbortRef.current = null;
-    }
-
-    setLoading(false);
   };
 
   const handleCopy = async () => {
@@ -842,10 +724,7 @@ export default function ProTranslator() {
                 <div className="flex items-center text-sm font-medium text-slate-600">
                   <button
                     type="button"
-                    onClick={() => {
-                      setSourceMode("text");
-                      setErr("");
-                    }}
+                    onClick={() => setSourceMode("text")}
                     className={`inline-flex items-center gap-2 ${
                       sourceMode === "text"
                         ? "text-blue-600"
@@ -866,10 +745,7 @@ export default function ProTranslator() {
 
                   <button
                     type="button"
-                    onClick={() => {
-                      setSourceMode("document");
-                      setErr("");
-                    }}
+                    onClick={() => setSourceMode("document")}
                     className={`inline-flex items-center gap-2 ${
                       sourceMode === "document"
                         ? "text-blue-600"
@@ -890,10 +766,7 @@ export default function ProTranslator() {
 
                   <button
                     type="button"
-                    onClick={() => {
-                      setSourceMode("url");
-                      setErr("");
-                    }}
+                    onClick={() => setSourceMode("url")}
                     className={`inline-flex items-center gap-2 ${
                       sourceMode === "url"
                         ? "text-blue-600"
@@ -942,7 +815,6 @@ export default function ProTranslator() {
                         onSelect={(val) => {
                           setSrc(val);
                           setOpenLeft(false);
-                          setErr("");
                         }}
                         align="left"
                       />
@@ -998,7 +870,6 @@ export default function ProTranslator() {
                         onSelect={(val) => {
                           setDst(val);
                           setOpenRight(false);
-                          setErr("");
                         }}
                         align="right"
                       />
