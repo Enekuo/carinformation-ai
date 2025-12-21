@@ -51,11 +51,13 @@ export default function AuthPage() {
 
       {/* Fondo con halo suave + tarjeta */}
       <main className="relative flex-1 flex items-center justify-center px-4 pb-16">
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        {/* Halo DETRÁS */}
+        <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
           <div className="h-[520px] w-[520px] rounded-full bg-blue-500/10 blur-3xl" />
         </div>
 
-        <div className="w-full max-w-[500px] bg-white rounded-[40px] border border-slate-100 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.25)] px-6 pt-6 pb-12 flex flex-col items-center">
+        {/* Tarjeta ENCIMA + blanco puro */}
+        <div className="relative z-10 w-full max-w-[500px] bg-white rounded-[40px] border border-slate-100 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.25)] px-6 pt-6 pb-12 flex flex-col items-center">
           <h1 className="text-3xl font-semibold tracking-tight mb-6 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
