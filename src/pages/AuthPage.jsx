@@ -49,18 +49,21 @@ export default function AuthPage() {
         </Link>
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-4 pb-16">
-        {/* TARJETA */}
-        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-6 pt-16 pb-24 flex flex-col items-center">
-          {/* TITULO MUCHO MAS ARRIBA */}
-          <h1 className="text-3xl font-semibold mb-6 -mt-6 text-center">
+      {/* Fondo con halo suave + tarjeta */}
+      <main className="relative flex-1 flex items-center justify-center px-4 pb-16">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="h-[520px] w-[520px] rounded-full bg-blue-500/10 blur-3xl" />
+        </div>
+
+        <div className="w-full max-w-[500px] bg-white rounded-[40px] border border-slate-100 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.25)] px-6 pt-6 pb-12 flex flex-col items-center">
+          <h1 className="text-3xl font-semibold tracking-tight mb-6 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
           </h1>
 
           {/* Google */}
           <button
             type="button"
-            className="w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
               className="h-5 w-5"
@@ -92,7 +95,7 @@ export default function AuthPage() {
           {/* Microsoft */}
           <button
             type="button"
-            className="mt-3 w-full max-w-[520px] flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
+            className="mt-3 w-full flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white py-3 text-sm font-medium shadow-sm hover:bg-slate-50 transition-colors"
           >
             <svg
               className="h-5 w-5"
