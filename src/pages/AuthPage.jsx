@@ -51,7 +51,7 @@ export default function AuthPage() {
 
       <main className="flex-1 flex items-center justify-center px-4 pb-16">
         {/* TARJETA */}
-        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-6 pt-10 pb-16 flex flex-col items-center">
+        <div className="w-full max-w-[500px] bg-white rounded-[40px] shadow-sm px-6 pt-16 pb-24 flex flex-col items-center">
           {/* TITULO MUCHO MAS ARRIBA */}
           <h1 className="text-3xl font-semibold mb-6 -mt-6 text-center">
             {tr("authPage.welcome", "ONGI ETORRI")}
