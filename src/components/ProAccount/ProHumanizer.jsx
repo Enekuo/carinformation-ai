@@ -27,7 +27,14 @@ export default function ProHumanizer() {
   const location = useLocation();
 
   const { t } = useTranslation?.() || { t: () => null };
-  const tr = (k, f) => (typeof t === "function" ? t(k) : null) || f;
+
+  // ✅ FIX: si t devuelve la propia clave (cuando falta traducción), usamos fallback
+  const tr = (k, f) => {
+    const v = typeof t === "function" ? t(k) : null;
+    if (!v) return f;
+    if (typeof v === "string" && v.trim() === k) return f;
+    return v;
+  };
 
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
@@ -90,11 +97,15 @@ export default function ProHumanizer() {
     out: { opacity: 0, y: -12 },
   };
 
-  // ===== Helpers (validación / rechazo) =====
+  // ===== Helpers =====
   const isTextEnough = (s) => {
     const trimmed = (s || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     return trimmed.length >= 20 && words.length >= 5;
+  };
+
+  const hasAnyText = (s) => {
+    return String(s || "").trim().length > 0;
   };
 
   const isRefusal = (s) => {
@@ -111,7 +122,8 @@ export default function ProHumanizer() {
     );
   };
 
-  const hasRealResult = useMemo(() => isTextEnough(result), [result]);
+  // ✅ Resultado real = texto no vacío
+  const hasRealResult = useMemo(() => hasAnyText(result), [result]);
 
   // ===== Textos (CON claves) =====
   const labelSources = tr("proHumanizer_sources", "Fuentes");
@@ -179,10 +191,7 @@ export default function ProHumanizer() {
         <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
         )}
       </button>
 
@@ -210,16 +219,11 @@ export default function ProHumanizer() {
         <span>{label}</span>
 
         {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
         )}
       </button>
 
-      {showDivider && (
-        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
-      )}
+      {showDivider && <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />}
     </div>
   );
 
@@ -313,14 +317,7 @@ export default function ProHumanizer() {
 
             const mb = size / 1024 / 1024;
             if (mb > MAX_FILE_MB) {
-              return resolve({
-                id,
-                name,
-                mime,
-                size,
-                base64: null,
-                tooLarge: true,
-              });
+              return resolve({ id, name, mime, size, base64: null, tooLarge: true });
             }
 
             const fr = new FileReader();
@@ -425,15 +422,16 @@ export default function ProHumanizer() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const docsTextIsValid = useMemo(() => {
-    return (documentsText || []).some((d) => isTextEnough(d?.text));
+  // ✅ para documentos: basta con que haya algo de texto (muchos docs son cortos)
+  const docsTextHasAny = useMemo(() => {
+    return (documentsText || []).some((d) => hasAnyText(d?.text));
   }, [documentsText]);
 
   const docsFilesIsValid = useMemo(() => {
     return (documentsFiles || []).some((d) => !!d?.base64 && !d?.tooLarge);
   }, [documentsFiles]);
 
-  const hasValidInput = textIsValid || urlItems.length > 0 || docsTextIsValid || docsFilesIsValid;
+  const hasValidInput = textIsValid || urlItems.length > 0 || docsTextHasAny || docsFilesIsValid;
 
   // ===== Acciones derecha =====
   const handleCopy = async (flash = false) => {
@@ -519,8 +517,6 @@ export default function ProHumanizer() {
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
 
-    const validNow = textOk || urlItems.length > 0 || docsTextIsValid || docsFilesIsValid;
-
     if ((textValue || "").length > MAX_CHARS) {
       setErrorMsg(tr("proHumanizer_errorMaxChars", "Has superado el límite de caracteres permitido."));
       setLoading(false);
@@ -538,6 +534,23 @@ export default function ProHumanizer() {
       setLoading(false);
       return;
     }
+
+    // ✅ Caso clave: has subido documento pero NO hay texto extraído ni base64 válido
+    const userHasDocs = documents.length > 0;
+    const canReadDocs = docsTextHasAny || docsFilesIsValid;
+
+    if (userHasDocs && !canReadDocs && !textOk && urlItems.length === 0) {
+      setErrorMsg(
+        tr(
+          "proHumanizer_errorDocUnreadable",
+          "No se ha podido leer el documento. Prueba con otro archivo o pega el texto directamente."
+        )
+      );
+      setLoading(false);
+      return;
+    }
+
+    const validNow = textOk || urlItems.length > 0 || docsTextHasAny || docsFilesIsValid;
 
     if (!validNow) {
       setErrorMsg(tr("proHumanizer_errorNeedInput", "Añade texto suficiente, URLs o documentos antes de humanizar."));
@@ -678,12 +691,13 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
         .replace(/\n{3,}/g, "\n\n")
         .trim();
 
+      // ✅ Si el modelo rechaza, lo tratamos como error y NO como resultado
       if (isRefusal(cleaned)) {
         setResult("");
         setErrorMsg(
           tr(
             "proHumanizer_errorRefusal",
-            "No se pudo procesar el contenido del documento. Prueba con otro archivo o pega el texto."
+            "No se pudo procesar el contenido. Prueba con otro archivo o pega el texto directamente."
           )
         );
       } else {
@@ -959,9 +973,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label={tr("proHumanizer_outputLanguageAria", "Idioma de salida")}
                     >
-                      <span className="truncate">
-                        {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
-                      </span>
+                      <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
