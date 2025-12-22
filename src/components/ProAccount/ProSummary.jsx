@@ -1279,7 +1279,7 @@ export default function ProSummary() {
                       </div>
                     )}
                   </div>
-                )}
+                )} 
               </div>
             </section>
           </motion.section>
