@@ -88,35 +88,20 @@ export default function ProGrammarCorrector() {
     "grammar.enter_text_here_full",
     "Escribe o pega aquí el texto que quieres corregir…"
   );
-  const labelChooseFileTitle = tr(
-    "grammar.choose_file_title",
-    "Elige tu archivo o carpeta"
-  );
+  const labelChooseFileTitle = tr("grammar.choose_file_title", "Elige tu archivo o carpeta");
   const labelAcceptedFormats = tr(
     "grammar.accepted_formats",
     "Puedes añadir archivos de texto (.txt, .md) o documentos para corregir su contenido."
   );
-  const labelFolderHint = tr(
-    "grammar.folder_hint",
-    "Aquí aparecerán tus textos o documentos subidos."
-  );
+  const labelFolderHint = tr("grammar.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
   const labelPasteUrls = tr("grammar.paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("grammar.add_url", "Añadir URLs");
   const labelSaveUrls = tr("grammar.save_urls", "Guardar");
   const labelCancel = tr("grammar.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "grammar.urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
-  );
-  const labelUrlsNotePaywalled = tr(
-    "grammar.urls_note_paywalled",
-    "No se admiten artículos de pago."
-  );
+  const labelUrlsNoteVisible = tr("grammar.urls_note_visible", "Solo se importará el texto visible del sitio web.");
+  const labelUrlsNotePaywalled = tr("grammar.urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("grammar.remove", "Quitar");
-  const labelGenerateFromSources = tr(
-    "grammar.correct_button",
-    "Corregir texto"
-  );
+  const labelGenerateFromSources = tr("grammar.correct_button", "Corregir texto");
   const labelHelpRight = tr(
     "grammar.create_help_right",
     "Elige la fuente del texto (escribir, subir documento o URLs) y pulsa «Corregir texto»."
@@ -132,10 +117,7 @@ export default function ProGrammarCorrector() {
 
   // Guardar (mismo sistema que Translator)
   const labelSaveTranslation = tr("save_button_label", "Guardar");
-  const librarySavedMessage = tr(
-    "library_saved_toast",
-    "Guardado en biblioteca"
-  );
+  const librarySavedMessage = tr("library_saved_toast", "Guardado en biblioteca");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -160,10 +142,7 @@ export default function ProGrammarCorrector() {
         aria-pressed={active}
         aria-label={label}
       >
-        <Icon
-          className="w-[18px] h-[18px] shrink-0"
-          style={{ color: active ? BLUE : GRAY_ICON }}
-        />
+        <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
           <span
@@ -173,11 +152,7 @@ export default function ProGrammarCorrector() {
         )}
       </button>
       {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
@@ -196,9 +171,7 @@ export default function ProGrammarCorrector() {
       } catch {}
     }
     const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
+    return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
   const canonicalize = (s) =>
@@ -246,11 +219,7 @@ export default function ProGrammarCorrector() {
         {segments.map((seg, index) => (
           <span
             key={index}
-            className={
-              seg.changed
-                ? "bg-emerald-100 text-emerald-900 rounded px-[2px]"
-                : undefined
-            }
+            className={seg.changed ? "bg-emerald-100 text-emerald-900 rounded px-[2px]" : undefined}
           >
             {seg.text}
             {index < segments.length - 1 ? " " : ""}
@@ -318,8 +287,7 @@ export default function ProGrammarCorrector() {
             if (!isTxt && !isMd) return resolve(null);
 
             const fr = new FileReader();
-            fr.onload = () =>
-              resolve({ id, name, text: String(fr.result || "") });
+            fr.onload = () => resolve({ id, name, text: String(fr.result || "") });
             fr.onerror = () => resolve(null);
             fr.readAsText(file, "utf-8");
           })
@@ -409,8 +377,7 @@ export default function ProGrammarCorrector() {
     return trimmed.length >= 1 && words.length >= 1;
   }, [textValue]);
 
-  const hasValidInput =
-    textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones barra derecha =====
   const handleCopy = async (flash = false) => {
@@ -433,9 +400,7 @@ export default function ProGrammarCorrector() {
   const handleDownload = () => {
     if (!result) return;
     try {
-      const blob = new Blob([result], {
-        type: "text/plain;charset=utf-8",
-      });
+      const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -454,11 +419,7 @@ export default function ProGrammarCorrector() {
     const now = new Date();
     const createdAt = now.toISOString();
     const createdAtLabel = now
-      .toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
+      .toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" })
       .replace(".", "");
 
     const titleFromText = (textValue || "").trim().slice(0, 80);
@@ -483,15 +444,8 @@ export default function ProGrammarCorrector() {
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold">
-        {tr("grammar.limit_title", "Has alcanzado el límite del plan Gratis")}
-      </div>
-      <p className="text-xs text-slate-600 mt-1">
-        {tr(
-          "grammar.limit_note",
-          "Límite actual: 12.000 caracteres por petición."
-        )}
-      </p>
+      <div className="text-sm font-semibold">{tr("grammar.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
+      <p className="text-xs text-slate-600 mt-1">{tr("grammar.limit_note", "Límite actual: 12.000 caracteres por petición.")}</p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
           href="/pricing"
@@ -542,9 +496,7 @@ export default function ProGrammarCorrector() {
       return;
     }
     if (!validNow) {
-      setErrorMsg(
-        "Añade algo de texto, documentos o URLs antes de pedir la corrección."
-      );
+      setErrorMsg("Añade algo de texto, documentos o URLs antes de pedir la corrección.");
       setLoading(false);
       return;
     }
@@ -568,9 +520,7 @@ export default function ProGrammarCorrector() {
     const docsInline = documentsText?.length
       ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
-          .map(
-            (d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`
-          )
+          .map((d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`)
           .join("\n\n")
       : "";
 
@@ -626,9 +576,7 @@ export default function ProGrammarCorrector() {
           return;
         }
         if (res.status === 429) {
-          throw new Error(
-            "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
-          );
+          throw new Error("Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium.");
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -666,15 +614,10 @@ export default function ProGrammarCorrector() {
   // ===== Contador / barra =====
   const charCount = (textValue || "").length;
   const pct = Math.min(100, Math.round((charCount / MAX_CHARS) * 100));
-  const nearLimit =
-    charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
+  const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
   const overLimit = charCount > MAX_CHARS;
 
-  const barClass = overLimit
-    ? "bg-red-500"
-    : nearLimit
-    ? "bg-amber-500"
-    : "bg-sky-500";
+  const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
 
   // ===== Render =====
   return (
@@ -689,19 +632,15 @@ export default function ProGrammarCorrector() {
           transition={{ duration: 0.3 }}
         >
           {/* ===== Panel Fuentes (izquierda) ===== */}
-          <aside className="min-h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+          {/* ✅ ALTURA FIJA para que NO crezca al añadir documentos */}
+          <aside className="h-[540px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
             {/* Título */}
             <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-              <div className="text-sm font-medium text-slate-700">
-                {labelSources}
-              </div>
+              <div className="text-sm font-medium text-slate-700">{labelSources}</div>
             </div>
 
             {/* Tabs */}
-            <div
-              className="flex items-center px-2 border-b"
-              style={{ borderColor: DIVIDER }}
-            >
+            <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
               <TabBtn
                 active={sourceMode === "text"}
                 icon={FileText}
@@ -733,14 +672,8 @@ export default function ProGrammarCorrector() {
                     <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
                       <FileText className="w-6 h-6 text-slate-500" />
                     </div>
-                    <p className="text-[15px] font-semibold text-slate-600">
-                      {leftTitle}
-                    </p>
-                    {leftBody && (
-                      <p className="mt-1 text-[13px] leading-6 text-slate-500">
-                        {leftBody}
-                      </p>
-                    )}
+                    <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
+                    {leftBody && <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>}
                   </div>
                 </div>
               )}
@@ -760,23 +693,15 @@ export default function ProGrammarCorrector() {
                   />
                   <div className="mt-2">
                     <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-1 ${barClass}`}
-                        style={{ width: `${pct}%` }}
-                      />
+                      <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
                     </div>
                     <div className="mt-1 text-right text-xs">
                       <span
                         className={
-                          overLimit
-                            ? "text-red-600"
-                            : nearLimit
-                            ? "text-amber-600"
-                            : "text-slate-500"
+                          overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"
                         }
                       >
-                        {charCount.toLocaleString()} /{" "}
-                        {MAX_CHARS.toLocaleString()}
+                        {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -785,9 +710,7 @@ export default function ProGrammarCorrector() {
 
               {sourceMode === "document" && (
                 <div
-                  className={`h-full w-full flex flex-col relative ${
-                    dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
-                  }`}
+                  className={`h-full w-full flex flex-col relative ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -801,58 +724,52 @@ export default function ProGrammarCorrector() {
                     accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
                     onChange={onFiles}
                   />
+
+                  {/* ✅ El botón no encoge */}
                   <button
                     type="button"
                     onClick={triggerPick}
-                    className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                    className="shrink-0 w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                     aria-label={labelChooseFileTitle}
                     title={labelChooseFileTitle}
                   >
                     <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                       <Plus className="w-10 h-10 text-sky-600" />
                     </div>
-                    <div className="text-xl font-semibold text-slate-800">
-                      {labelChooseFileTitle}
-                    </div>
-                    <div className="mt-4 text-sm text-slate-500">
-                      {labelAcceptedFormats}
-                    </div>
-                    <div className="mt-1 text-xs text-slate-400">
-                      {labelFolderHint}
-                    </div>
+                    <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
+                    <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
+                    <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
                   </button>
 
+                  {/* ✅ Lista con SCROLL para que la tabla NO crezca */}
                   {documents.length > 0 && (
-                    <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
-                      {documents.map(({ id, file }) => (
-                        <li
-                          key={id}
-                          className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                        >
-                          <div className="min-w-0 flex items-center gap-3 flex-1">
-                            <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                              <FileIcon className="w-4 h-4" />
+                    <div className="mt-4 flex-1 overflow-y-auto overflow-x-hidden rounded-xl border border-slate-200">
+                      <ul className="divide-y divide-slate-200">
+                        {documents.map(({ id, file }) => (
+                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <FileIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-sm font-medium block truncate">{file.name}</span>
+                                <span className="text-xs text-slate-500">
+                                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                                </span>
+                              </div>
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-sm font-medium block truncate">
-                                {file.name}
-                              </span>
-                              <span className="text-xs text-slate-500">
-                                {(file.size / 1024 / 1024).toFixed(2)} MB
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => removeDocument(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                            <button
+                              onClick={() => removeDocument(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </div>
               )}
@@ -890,11 +807,7 @@ export default function ProGrammarCorrector() {
                         spellCheck={false}
                       />
                       <div className="mt-2 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          onClick={addUrlsFromTextarea}
-                          className="h-9"
-                        >
+                        <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
                           {labelSaveUrls}
                         </Button>
                         <button
@@ -918,10 +831,7 @@ export default function ProGrammarCorrector() {
                   {urlItems.length > 0 && (
                     <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
                       {urlItems.map(({ id, url, host }) => (
-                        <li
-                          key={id}
-                          className="flex items-center justify-between gap-3 px-3 py-2"
-                        >
+                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
                           <div className="min-w-0 flex items-center gap-3 flex-1">
                             <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                               <UrlIcon className="w-4 h-4" />
@@ -974,9 +884,7 @@ export default function ProGrammarCorrector() {
                     title={showDiff ? labelHideChanges : labelViewChanges}
                   >
                     <span className="text-sm leading-none">🔍</span>
-                    <span className="truncate">
-                      {showDiff ? labelHideChanges : labelViewChanges}
-                    </span>
+                    <span className="truncate">{showDiff ? labelHideChanges : labelViewChanges}</span>
                   </button>
                 )}
               </div>
@@ -992,28 +900,14 @@ export default function ProGrammarCorrector() {
                                  shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label="Idioma principal del texto"
                     >
-                      <span className="truncate">
-                        {outputLang === "es"
-                          ? LBL_ES
-                          : outputLang === "en"
-                          ? LBL_EN
-                          : LBL_EUS}
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-slate-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
+                      <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                      <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
                     </button>
                   </DropdownMenuTrigger>
 
-                  <DropdownMenuContent
-                    align="end"
-                    className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
-                  >
+                  <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
                     <DropdownMenuItem
                       onClick={() => {
                         if (outputLang !== "es") {
@@ -1057,18 +951,12 @@ export default function ProGrammarCorrector() {
                   onClick={() => handleCopy(true)}
                   title="Copiar texto corregido"
                   className={`h-8 w-8 flex items-center justify-center ${
-                    result
-                      ? "text-slate-600 hover:text-slate-800"
-                      : "text-slate-300 cursor-not-allowed"
+                    result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                   }`}
                   aria-label="Copiar resultado"
                   disabled={!result}
                 >
-                  {copiedFlash ? (
-                    <Check className="w-4 h-4" style={{ color: BLUE }} />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
+                  {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
 
                 {/* Eliminar texto de la izquierda */}
@@ -1077,9 +965,7 @@ export default function ProGrammarCorrector() {
                   onClick={handleClearLeft}
                   title="Eliminar texto de entrada y resultado"
                   className={`h-8 w-8 flex items-center justify-center ${
-                    sourceMode === "text" && textValue
-                      ? "text-slate-600 hover:text-slate-800"
-                      : "text-slate-300 cursor-not-allowed"
+                    sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                   }`}
                   aria-label="Eliminar texto de entrada y resultado"
                   disabled={!(sourceMode === "text" && textValue)}
@@ -1092,10 +978,7 @@ export default function ProGrammarCorrector() {
             {/* Estado inicial */}
             {!loading && !result && !errorKind && (
               <>
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 z-10"
-                  style={{ top: "30%" }}
-                >
+                <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                   <Button
                     type="button"
                     onClick={handleGenerate}
@@ -1107,13 +990,8 @@ export default function ProGrammarCorrector() {
                   </Button>
                 </div>
 
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-                  style={{ top: "43%" }}
-                >
-                  <p className="text-sm leading-6 text-slate-600 max-w-xl">
-                    {labelHelpRight}
-                  </p>
+                <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "43%" }}>
+                  <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
                 </div>
               </>
             )}
@@ -1139,17 +1017,11 @@ export default function ProGrammarCorrector() {
                             <span className="text-lg">✅</span>
                           </div>
                           <p className="text-sm font-medium text-emerald-800">
-                            {tr(
-                              "grammar.no_errors_message",
-                              "¡Muy bien! No hemos detectado errores."
-                            )}
+                            {tr("grammar.no_errors_message", "¡Muy bien! No hemos detectado errores.")}
                           </p>
                         </div>
                       ) : (
-                        // Caso normal
-                        <article className="prose prose-slate max-w-none">
-                          {renderResult()}
-                        </article>
+                        <article className="prose prose-slate max-w-none">{renderResult()}</article>
                       )}
                     </>
                   )}
@@ -1168,11 +1040,7 @@ export default function ProGrammarCorrector() {
             {/* ✅ Barra inferior: SOLO si hay corrección (hasDiff) */}
             {result && hasDiff && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
-                {savedToLibrary && (
-                  <p className="text-xs text-emerald-600 mb-1">
-                    {librarySavedMessage}
-                  </p>
-                )}
+                {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
 
                 <div className="flex items-center gap-4">
                   {/* Copiar */}
@@ -1182,15 +1050,9 @@ export default function ProGrammarCorrector() {
                     aria-label={t("translator.copy")}
                     className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
-                    {copiedFlash ? (
-                      <Check className="w-5 h-5" />
-                    ) : (
-                      <Copy className="w-5 h-5" />
-                    )}
+                    {copiedFlash ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copiedFlash
-                        ? t("translator.copied")
-                        : t("translator.copy")}
+                      {copiedFlash ? t("translator.copied") : t("translator.copy")}
                     </span>
                   </button>
 
