@@ -25,7 +25,7 @@ import { addLibraryDoc } from "@/proLibraryStore";
 export default function ProSummary() {
   const { t } = useTranslation();
 
-  // ✅ IMPORTANT: evita que se muestre la clave (ej: "ready_message") si falta traducción
+  // ✅ evita que se muestre la clave literal (ej: "ready_message") si falta traducción
   const tr = (key, fallback) => {
     const val = t(key);
     return !val || val === key ? fallback : val;
@@ -1123,26 +1123,30 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        {/* ✅ BLOQUE ABAJO DEL TODO:
-                            - Solo aparece cuando HAY RESULTADO
-                            - Botón Guardar solo aparece cuando HAY RESULTADO
-                            - Toast verde encima al guardar */}
-                        {!isTooShortResult && (
-                          <div className="absolute left-0 right-0 bottom-6">
-                            <div className="px-6 max-w-3xl mx-auto flex items-center justify-between">
-                              {/* Izquierda: iconos */}
-                              <div className="flex items-center gap-4">
+                        {/* ===== CONTROLES ABAJO DERECHA (como tu captura) ===== */}
+                        {(() => {
+                          const hasResult =
+                            !!result && result.trim().length > 0 && !isTooShortResult;
+
+                          if (!hasResult) return null;
+
+                          return (
+                            <>
+                              {/* Toast verde encima */}
+                              {savedToLibrary && (
+                                <p className="absolute bottom-[84px] right-6 text-xs text-emerald-600">
+                                  {librarySavedMessage}
+                                </p>
+                              )}
+
+                              {/* Controles abajo derecha */}
+                              <div className="absolute bottom-6 right-6 flex items-center gap-4">
                                 <button
                                   type="button"
                                   onClick={() => handleCopy(true)}
                                   title="Copiar"
-                                  className={`inline-flex items-center justify-center ${
-                                    result
-                                      ? "text-slate-500 hover:text-slate-700"
-                                      : "text-slate-300 cursor-not-allowed"
-                                  }`}
+                                  className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
                                   aria-label="Copiar"
-                                  disabled={!result}
                                 >
                                   {copiedFlash ? (
                                     <Check className="w-5 h-5" style={{ color: BLUE }} />
@@ -1155,24 +1159,13 @@ export default function ProSummary() {
                                   type="button"
                                   onClick={handleDownloadPdf}
                                   title="PDF"
-                                  className={`inline-flex items-center justify-center ${
-                                    result
-                                      ? "text-slate-500 hover:text-slate-700"
-                                      : "text-slate-300 cursor-not-allowed"
-                                  }`}
+                                  className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
                                   aria-label="PDF"
-                                  disabled={!result}
                                 >
                                   <FileDown className="w-5 h-5" />
                                 </button>
-                              </div>
 
-                              {/* Derecha: toast + botón (SIN pastilla / SIN ready_message) */}
-                              <div className="flex flex-col items-end gap-1">
-                                {savedToLibrary && (
-                                  <p className="text-xs text-emerald-600">{librarySavedMessage}</p>
-                                )}
-
+                                {/* Botón Guardar SOLO cuando hay resultado */}
                                 <motion.button
                                   type="button"
                                   onClick={handleSaveSummary}
@@ -1185,9 +1178,9 @@ export default function ProSummary() {
                                   {labelSaveSummary}
                                 </motion.button>
                               </div>
-                            </div>
-                          </div>
-                        )}
+                            </>
+                          );
+                        })()}
                       </>
                     )}
 
