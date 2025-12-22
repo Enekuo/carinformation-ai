@@ -119,9 +119,12 @@ export default function ProTranslator() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  // ✅ Scroll sin barra visible (mantiene tamaño fijo)
+  // ✅ Scroll sin barra visible (pero NO cambia altura)
   const HIDE_SCROLLBAR =
     "overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
+
+  // ✅ ALTURA FIJA del área de contenido (esto evita que “se alarguen las tablas”)
+  const FIXED_PANEL_H = "h-[400px] md:h-[420px]";
 
   const isNonResultMessage = (txt) => {
     const s = (txt || "").trim();
@@ -952,7 +955,7 @@ export default function ProTranslator() {
                         setLeftText(e.target.value.slice(0, MAX_CHARS))
                       }
                       placeholder={t("translator.left_placeholder")}
-                      className={`w-full h-[400px] md:h-[420px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${HIDE_SCROLLBAR}`}
+                      className={`w-full ${FIXED_PANEL_H} resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${HIDE_SCROLLBAR}`}
                     />
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                       {leftText.length.toLocaleString()} /{" "}
@@ -984,7 +987,7 @@ export default function ProTranslator() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`w-full flex flex-col relative ${
+                    className={`w-full ${FIXED_PANEL_H} flex flex-col relative overflow-hidden ${
                       dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                     }`}
                     onDragEnter={onDragEnter}
@@ -1000,20 +1003,22 @@ export default function ProTranslator() {
                       accept=".pdf,.ppt,.pptx,.doc,.docx,.csv,.json,.xml,.epub,.txt,.vtt,.srt,.md,.rtf,.html,.htm,.jpg,.jpeg,.png"
                       onChange={onFiles}
                     />
+
+                    {/* Zona superior (NO empuja el tamaño) */}
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-10 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/40 hover:bg-slate-50 transition px-6 py-8 text-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)] flex-none"
                       aria-label={labelChooseFileTitle}
                       title={labelChooseFileTitle}
                     >
-                      <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
-                        <Plus className="w-10 h-10 text-sky-600" />
+                      <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center">
+                        <Plus className="w-9 h-9 text-sky-600" />
                       </div>
                       <div className="text-xl font-semibold text-slate-800">
                         {labelChooseFileTitle}
                       </div>
-                      <div className="mt-4 text-sm text-slate-500">
+                      <div className="mt-3 text-sm text-slate-500">
                         {labelAcceptedFormats}
                       </div>
                       <div className="mt-1 text-xs text-slate-400">
@@ -1021,9 +1026,9 @@ export default function ProTranslator() {
                       </div>
                     </button>
 
-                    {/* ✅ SI NO CABEN: SCROLL SOLO AQUÍ (lado izquierdo), SIN AGRANDAR TABLA */}
+                    {/* ✅ LISTA: si no cabe, SOLO aquí aparece scroll (y NO alarga tabla) */}
                     {documents.length > 0 && (
-                      <div className="mt-4 max-h-[240px] overflow-y-auto rounded-xl border border-slate-200">
+                      <div className="mt-4 flex-1 min-h-0 overflow-y-auto rounded-xl border border-slate-200 bg-white">
                         <ul className="divide-y divide-slate-200">
                           {documents.map(({ id, file }) => (
                             <li
@@ -1060,8 +1065,8 @@ export default function ProTranslator() {
                 )}
 
                 {sourceMode === "url" && (
-                  <div className="h-full w-full flex flex-col">
-                    <div className="mb-3 flex items-center justify-between">
+                  <div className={`w-full ${FIXED_PANEL_H} flex flex-col overflow-hidden`}>
+                    <div className="mb-3 flex items-center justify-between flex-none">
                       <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
                         <UrlIcon className="w-4 h-4" />
                         {labelPasteUrls}
@@ -1079,7 +1084,7 @@ export default function ProTranslator() {
                     </div>
 
                     {urlInputOpen && (
-                      <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white">
+                      <div className="mb-4 rounded-xl border border-slate-300 p-3 bg-white flex-none">
                         <textarea
                           value={urlsTextarea}
                           onChange={(e) => setUrlsTextarea(e.target.value)}
@@ -1113,7 +1118,7 @@ export default function ProTranslator() {
                     )}
 
                     {urlItems.length > 0 && (
-                      <ul className="flex-1 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200">
+                      <ul className="flex-1 min-h-0 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
                         {urlItems.map(({ id, url, host }) => (
                           <li
                             key={id}
@@ -1162,7 +1167,7 @@ export default function ProTranslator() {
                   }
                   onChange={(e) => setRightText(e.target.value)}
                   placeholder={t("translator.right_placeholder")}
-                  className={`w-full h-[400px] md:h-[420px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                  className={`w-full ${FIXED_PANEL_H} resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
                     loading ? "italic text-slate-500" : ""
                   } ${HIDE_SCROLLBAR}`}
                 />
