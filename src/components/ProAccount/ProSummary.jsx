@@ -9,6 +9,7 @@ import {
   Copy,
   Trash,
   Check,
+  FileDown,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
@@ -142,19 +143,9 @@ export default function ProSummary() {
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
 
-  // Mensajes panel derecho
-  const labelReadyMessage = tr(
-    "summary.ready_message",
-    
-  );
-  const labelSaveSummary = tr(
-    "summary.save_button_label",
-    
-  );
-  const librarySavedMessage = tr(
-    "library_saved_toast",
-    "Guardado en biblioteca"
-  );
+  // Botón Guardar
+  const labelSaveSummary = tr("summary.save_button_label", "Gorde");
+  const librarySavedMessage = tr("library_saved_toast", "Guardado en biblioteca");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -262,9 +253,7 @@ export default function ProSummary() {
       .replace(/\s{2,}/g, " ")
       .trim();
 
-    const sentences = t
-      .split(/(?<=[.!?…])\s+/)
-      .filter(Boolean);
+    const sentences = t.split(/(?<=[.!?…])\s+/).filter(Boolean);
     let clipped = sentences.slice(0, maxSentences).join(" ");
 
     const words = clipped.split(/\s+/);
@@ -371,8 +360,7 @@ export default function ProSummary() {
             if (!isTxt && !isMd) return resolve(null);
 
             const fr = new FileReader();
-            fr.onload = () =>
-              resolve({ id, name, text: String(fr.result || "") });
+            fr.onload = () => resolve({ id, name, text: String(fr.result || "") });
             fr.onerror = () => resolve(null);
             fr.readAsText(file, "utf-8");
           })
@@ -452,8 +440,7 @@ export default function ProSummary() {
     setUrlsTextarea("");
     setUrlInputOpen(false);
   };
-  const removeUrl = (id) =>
-    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -462,10 +449,9 @@ export default function ProSummary() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput =
-    textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
-  // ===== Acciones barra derecha =====
+  // ===== Acciones barra derecha (abajo) =====
   const handleCopy = async (flash = false) => {
     if (!result) return;
     try {
@@ -477,6 +463,28 @@ export default function ProSummary() {
     } catch {}
   };
 
+  const handleDownloadPdf = () => {
+    if (!result) return;
+    const text = (result || "").replace(/\n/g, "<br/>");
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(`
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <title>Laburpena - Euskalia</title>
+          <style>
+            body{ font-family: Inter, sans-serif; padding: 32px; line-height: 1.6; color:#0f172a;}
+          </style>
+        </head>
+        <body>${text}</body>
+      </html>
+    `);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
   const handleClearLeft = () => {
     if (!(sourceMode === "text" && textValue)) return;
     setTextValue("");
@@ -484,8 +492,15 @@ export default function ProSummary() {
   };
 
   const handleSaveSummary = () => {
-    // No permitir guardar si no hay resultado o si es el mensaje de "texto demasiado breve"
-    if (!result || isTooShortResult) return;
+    // ✅ Solo permitir guardar si hay un resumen real (no loading, no errores, no "too short")
+    const canSave =
+      !!(result && result.trim().length > 0) &&
+      !loading &&
+      !errorKind &&
+      !errorMsg &&
+      !isTooShortResult;
+
+    if (!canSave) return;
 
     // Crear título automático a partir del propio resumen
     const raw = result.trim();
@@ -514,16 +529,10 @@ export default function ProSummary() {
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
       <div className="text-sm font-semibold">
-        {tr(
-          "summary.limit_title",
-          "Has alcanzado el límite del plan Gratis"
-        )}
+        {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
       </div>
       <p className="text-xs text-slate-600 mt-1">
-        {tr(
-          "summary.limit_note",
-          "Límite actual: 12.000 caracteres por petición."
-        )}
+        {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
       </p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
@@ -546,10 +555,7 @@ export default function ProSummary() {
   const PremiumPromptNote = () => (
     <div className="rounded-xl border border-indigo-200 bg-indigo-50 px-6 py-5 text-indigo-900 shadow-sm">
       <div className="text-sm font-semibold">
-        {tr(
-          "summary.premium_prompt_title",
-          "Función disponible en el plan Premium"
-        )}
+        {tr("summary.premium_prompt_title", "Función disponible en el plan Premium")}
       </div>
       <p className="text-sm text-slate-700 mt-2">
         {tr(
@@ -606,9 +612,7 @@ export default function ProSummary() {
       return;
     }
     if (!validNow) {
-      setErrorMsg(
-        "Añade texto suficiente, URLs o documentos antes de generar el resumen."
-      );
+      setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
       setLoading(false);
       return;
     }
@@ -653,10 +657,7 @@ export default function ProSummary() {
     const docsInline = documentsText?.length
       ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
-          .map(
-            (d) =>
-              `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`
-          )
+          .map((d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`)
           .join("\n\n")
       : "";
 
@@ -665,9 +666,7 @@ export default function ProSummary() {
         ? `Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: "${tooShortMsg}".`
         : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList
-        ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
-        : "",
+      urlsList ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}` : "",
       docsInline,
       chatInput ? `\nENFOQUE OPCIONAL: ${chatInput}` : "",
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
@@ -747,11 +746,7 @@ export default function ProSummary() {
         .trim();
 
       // Caso "texto demasiado breve": mostrar mensaje pero marcar que NO es guardable
-      if (
-        cleaned &&
-        cleaned.trim().toLowerCase() ===
-          tooShortMsg.trim().toLowerCase()
-      ) {
+      if (cleaned && cleaned.trim().toLowerCase() === tooShortMsg.trim().toLowerCase()) {
         setResult(tooShortMsg);
         setIsTooShortResult(true);
         setLastSummarySig(canonicalize(textValue));
@@ -776,15 +771,14 @@ export default function ProSummary() {
   // ===== Contador / barra =====
   const charCount = (textValue || "").length;
   const pct = Math.min(100, Math.round((charCount / MAX_CHARS) * 100));
-  const nearLimit =
-    charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
+  const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
   const overLimit = charCount > MAX_CHARS;
 
-  const barClass = overLimit
-    ? "bg-red-500"
-    : nearLimit
-    ? "bg-amber-500"
-    : "bg-sky-500";
+  const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
+
+  // ✅ Solo mostrar Guardar si hay un resultado real (no loading, no errores, no "too short")
+  const canShowSave =
+    !!(result && result.trim().length > 0) && !loading && !errorKind && !errorMsg && !isTooShortResult;
 
   return (
     <>
@@ -802,16 +796,11 @@ export default function ProSummary() {
             <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
               {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-                <div className="text-sm font-medium text-slate-700">
-                  {labelSources}
-                </div>
+                <div className="text-sm font-medium text-slate-700">{labelSources}</div>
               </div>
 
               {/* Tabs */}
-              <div
-                className="flex items-center px-2 border-b"
-                style={{ borderColor: DIVIDER }}
-              >
+              <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
                 <TabBtn
                   active={sourceMode === "text"}
                   icon={FileText}
@@ -843,13 +832,9 @@ export default function ProSummary() {
                       <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
                         <FileText className="w-6 h-6 text-slate-500" />
                       </div>
-                      <p className="text-[15px] font-semibold text-slate-600">
-                        {leftTitle}
-                      </p>
+                      <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
                       {leftBody && (
-                        <p className="mt-1 text-[13px] leading-6 text-slate-500">
-                          {leftBody}
-                        </p>
+                        <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>
                       )}
                     </div>
                   </div>
@@ -866,10 +851,7 @@ export default function ProSummary() {
                     />
                     <div className="mt-2">
                       <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className={`h-1 ${barClass}`}
-                          style={{ width: `${pct}%` }}
-                        />
+                        <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
                       </div>
                       <div className="mt-1 text-right text-xs">
                         <span
@@ -881,8 +863,7 @@ export default function ProSummary() {
                               : "text-slate-500"
                           }
                         >
-                          {charCount.toLocaleString()} /{" "}
-                          {MAX_CHARS.toLocaleString()}
+                          {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -917,15 +898,9 @@ export default function ProSummary() {
                       <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                         <Plus className="w-10 h-10 text-sky-600" />
                       </div>
-                      <div className="text-xl font-semibold text-slate-800">
-                        {labelChooseFileTitle}
-                      </div>
-                      <div className="mt-4 text-sm text-slate-500">
-                        {labelAcceptedFormats}
-                      </div>
-                      <div className="mt-1 text-xs text-slate-400">
-                        {labelFolderHint}
-                      </div>
+                      <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
+                      <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
+                      <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
                     </button>
 
                     {documents.length > 0 && (
@@ -940,9 +915,7 @@ export default function ProSummary() {
                                 <FileIcon className="w-4 h-4" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">
-                                  {file.name}
-                                </span>
+                                <span className="text-sm font-medium block truncate">{file.name}</span>
                                 <span className="text-xs text-slate-500">
                                   {(file.size / 1024 / 1024).toFixed(2)} MB
                                 </span>
@@ -995,11 +968,7 @@ export default function ProSummary() {
                           aria-label={labelPasteUrls}
                         />
                         <div className="mt-2 flex items-center gap-2">
-                          <Button
-                            type="button"
-                            onClick={addUrlsFromTextarea}
-                            className="h-9"
-                          >
+                          <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
                             {labelSaveUrls}
                           </Button>
                           <button
@@ -1062,7 +1031,7 @@ export default function ProSummary() {
 
             {/* ===== Panel Derecho ===== */}
             <section className="relative min-h-[630px] pb-[140px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-              {/* Barra superior con tabs + selector + acciones */}
+              {/* Barra superior con tabs + selector */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
                   <LengthTab
@@ -1094,11 +1063,7 @@ export default function ProSummary() {
                         aria-label="Idioma de salida"
                       >
                         <span className="truncate">
-                          {outputLang === "es"
-                            ? LBL_ES
-                            : outputLang === "en"
-                            ? LBL_EN
-                            : LBL_EUS}
+                          {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
                         </span>
                         <svg
                           className="w-4 h-4 text-slate-500"
@@ -1151,78 +1116,34 @@ export default function ProSummary() {
                       <DropdownMenuArrow className="fill-white" />
                     </DropdownMenuContent>
                   </DropdownMenu>
-
-                  {/* Copiar resultado */}
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(true)}
-                    title="Copiar resultado"
-                    className={`h-9 w-9 flex items-center justify-center ${
-                      result
-                        ? "text-slate-600 hover:text-slate-800"
-                        : "text-slate-300 cursor-not-allowed"
-                    }`}
-                    aria-label="Copiar resultado"
-                    disabled={!result}
-                  >
-                    {copiedFlash ? (
-                      <Check className="w-4 h-4" style={{ color: BLUE }} />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </button>
-
-                  {/* Eliminar texto de la izquierda */}
-                  <button
-                    type="button"
-                    onClick={handleClearLeft}
-                    title="Eliminar texto de entrada y resultado"
-                    className={`h-9 w-9 flex items-center justify-center ${
-                      sourceMode === "text" && textValue
-                        ? "text-slate-600 hover:text-slate-800"
-                        : "text-slate-300 cursor-not-allowed"
-                    }`}
-                    aria-label="Eliminar texto de entrada y resultado"
-                    disabled={!(sourceMode === "text" && textValue)}
-                  >
-                    <Trash className="w-4 h-4" />
-                  </button>
                 </div>
               </div>
 
               {/* Estado inicial */}
               {!loading && !result && !errorKind && (
                 <>
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 z-10"
-                    style={{ top: "30%" }}
-                  >
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                     <Button
                       type="button"
                       onClick={handleGenerate}
                       disabled={loading || !hasValidInput}
                       className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
-                      style={{
-                        backgroundColor: "#2563eb",
-                        color: "#ffffff",
-                      }}
+                      style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
                     >
                       {labelGenerateFromSources}
                     </Button>
                   </div>
 
                   <div
-                    className="absolute left-1/2 -translate-x-1/2 text-center px-6" 
+                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
                     style={{ top: "40%" }}
                   >
-                    <p className="text-sm leading-6 text-slate-600 max-w-xl">
-                      {labelHelpRight}
-                    </p>
+                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
                   </div>
                 </>
               )}
 
-              {/* Resultado / errores / loader / aviso / límite */}
+              {/* Resultado / errores / loader / límite */}
               <div className="w-full">
                 {(result || errorMsg || loading || errorKind) && (
                   <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
@@ -1237,38 +1158,23 @@ export default function ProSummary() {
                     {isOutdated && !loading && result && !isTooShortResult && (
                       <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
                         <span className="truncate">
-                          {tr(
-                            "summary.outdated_notice",
-                            "El texto ha cambiado. Actualiza el resumen."
-                          )}
+                          {tr("summary.outdated_notice", "El texto ha cambiado. Actualiza el resumen.")}
                         </span>
                         <div className="shrink-0 flex items-center gap-2">
                           <Button
                             type="button"
                             onClick={handleGenerate}
                             className="h-8 px-3 rounded-full text-[13px]"
-                            style={{
-                              backgroundColor: "#2563eb",
-                              color: "#fff",
-                            }}
+                            style={{ backgroundColor: "#2563eb", color: "#fff" }}
                           >
-                            {tr(
-                              "summary.outdated_update",
-                              "Actualizar"
-                            )}
+                            {tr("summary.outdated_update", "Actualizar")}
                           </Button>
                           <button
                             type="button"
                             onClick={() => setIsOutdated(false)}
                             className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                            title={tr(
-                              "summary.outdated_close",
-                              "Ocultar aviso"
-                            )}
-                            aria-label={tr(
-                              "summary.outdated_close",
-                              "Ocultar aviso"
-                            )}
+                            title={tr("summary.outdated_close", "Ocultar aviso")}
+                            aria-label={tr("summary.outdated_close", "Ocultar aviso")}
                           >
                             ×
                           </button>
@@ -1282,35 +1188,53 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        {/* BLOQUE "LISTO PARA GUARDAR" + BOTÓN */}
+                        {/* ✅ ICONOS + GUARDAR (abajo) */}
                         <div className="flex justify-end mt-20">
-                          <div className="flex flex-col items-end gap-1">
+                          <div className="flex flex-col items-end gap-1 text-slate-500">
                             {savedToLibrary && (
-                              <p className="text-xs text-emerald-600">
-                                {librarySavedMessage}
-                              </p>
+                              <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>
                             )}
 
-                            {/* Solo mostrar mensaje "Listo" + botón guardar
-                                si NO es el aviso de texto demasiado breve */}
-                            {!isTooShortResult && (
-                              <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
-                                <p className="text-xs text-slate-500">
-                                  {labelReadyMessage}
-                                </p>
-                                <motion.button
+                            <div className="flex items-center gap-4">
+                              <button
+                                type="button"
+                                onClick={() => handleCopy(true)}
+                                aria-label="Copiar resultado"
+                                className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                                  result ? "" : "opacity-50 cursor-not-allowed"
+                                }`}
+                                disabled={!result}
+                              >
+                                {copiedFlash ? (
+                                  <Check className="w-5 h-5" style={{ color: BLUE }} />
+                                ) : (
+                                  <Copy className="w-5 h-5" />
+                                )}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={handleDownloadPdf}
+                                aria-label="Descargar"
+                                className={`group relative p-2 rounded-md hover:bg-slate-100 ${
+                                  result ? "" : "opacity-50 cursor-not-allowed"
+                                }`}
+                                disabled={!result}
+                              >
+                                <FileDown className="w-5 h-5" />
+                              </button>
+
+                              {canShowSave && (
+                                <button
                                   type="button"
                                   onClick={handleSaveSummary}
-                                  initial={{ opacity: 0, y: 4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ duration: 0.25 }}
-                                  className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
+                                  className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
                                   style={{ backgroundColor: "#22c55e" }}
                                 >
                                   {labelSaveSummary}
-                                </motion.button>
-                              </div>
-                            )}
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1347,10 +1271,7 @@ export default function ProSummary() {
                     <Button
                       type="button"
                       className="h-10 rounded-full px-4 shrink-0 hover:brightness-95"
-                      style={{
-                        backgroundColor: "#2563eb",
-                        color: "#ffffff",
-                      }}
+                      style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
                       onClick={() => setShowPremiumNote(true)}
                     >
                       {labelGenerateWithPrompt}
