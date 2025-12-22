@@ -142,7 +142,8 @@ export default function ProSummary() {
   const labelSaveSummary = tr("save_button_label", "Gorde");
   const librarySavedMessage = tr("library_saved_toast", "Liburutegian gordeta");
 
-  // ✅ Tooltips abajo (copiar / copiado / pdf) con claves
+  // ✅ Tooltips/labels COPY + PDF con claves (si no existen, usa fallback)
+  // (Si prefieres reutilizar las del translator sin añadir nuevas, dímelo y lo cambio a translator.copy / translator.pdf / translator.copied)
   const labelCopy = tr("summary.copy", "Copiar");
   const labelCopied = tr("summary.copied", "Copiado");
   const labelPdf = tr("summary.pdf", "PDF");
@@ -444,7 +445,8 @@ export default function ProSummary() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput =
+    textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones =====
   const handleCopy = async (flash = false) => {
@@ -466,7 +468,7 @@ export default function ProSummary() {
     win.document.write(`
       <html>
         <head>
-          <title>Resumen</title>
+          <title>${tr("summary.pdf_title", "Resumen")}</title>
           <meta charset="utf-8" />
           <style>
             body { font-family: Arial, sans-serif; padding: 32px; line-height: 1.55; }
@@ -578,7 +580,10 @@ export default function ProSummary() {
     }
     if (!validNow) {
       setErrorMsg(
-        "Añade texto suficiente, URLs o documentos antes de generar el resumen."
+        tr(
+          "summary.error_need_input",
+          "Añade texto suficiente, URLs o documentos antes de generar el resumen."
+        )
       );
       setLoading(false);
       return;
@@ -685,7 +690,10 @@ export default function ProSummary() {
         }
         if (res.status === 429) {
           throw new Error(
-            "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
+            tr(
+              "summary.error_rate_limit",
+              "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
+            )
           );
         }
         const txt = await res.text();
@@ -701,7 +709,7 @@ export default function ProSummary() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error("No se recibió texto de la API.");
+      if (!rawText) throw new Error(tr("summary.error_no_text", "No se recibió texto de la API."));
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -730,7 +738,7 @@ export default function ProSummary() {
       setLastSummarySig(canonicalize(textValue));
       setIsOutdated(false);
     } catch (err) {
-      setErrorMsg(err.message || "Error generando el resumen.");
+      setErrorMsg(err.message || tr("summary.error_generic", "Error generando el resumen."));
     } finally {
       setLoading(false);
     }
@@ -1053,7 +1061,7 @@ export default function ProSummary() {
                       <button
                         type="button"
                         className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                        aria-label="Idioma de salida"
+                        aria-label={tr("summary.output_language_aria", "Idioma de salida")}
                       >
                         <span className="truncate">
                           {outputLang === "es"
@@ -1118,13 +1126,13 @@ export default function ProSummary() {
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
-                    title="Copiar resultado"
+                    title={copiedFlash ? labelCopied : labelCopy}
                     className={`h-9 w-9 flex items-center justify-center ${
                       result
                         ? "text-slate-600 hover:text-slate-800"
                         : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label="Copiar resultado"
+                    aria-label={copiedFlash ? labelCopied : labelCopy}
                     disabled={!result}
                   >
                     {copiedFlash ? (
@@ -1138,13 +1146,13 @@ export default function ProSummary() {
                   <button
                     type="button"
                     onClick={handleClearLeft}
-                    title="Eliminar texto de entrada y resultado"
+                    title={tr("summary.clear_input", "Eliminar")}
                     className={`h-9 w-9 flex items-center justify-center ${
                       sourceMode === "text" && textValue
                         ? "text-slate-600 hover:text-slate-800"
                         : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label="Eliminar texto de entrada y resultado"
+                    aria-label={tr("summary.clear_input", "Eliminar")}
                     disabled={!(sourceMode === "text" && textValue)}
                   >
                     <Trash className="w-4 h-4" />
@@ -1202,9 +1210,7 @@ export default function ProSummary() {
                         {/* ===== CONTROLES ABAJO DERECHA (iconos separados del botón verde) ===== */}
                         {(() => {
                           const hasResult =
-                            !!result &&
-                            result.trim().length > 0 &&
-                            !isTooShortResult;
+                            !!result && result.trim().length > 0 && !isTooShortResult;
 
                           if (!hasResult) return null;
 
@@ -1224,34 +1230,25 @@ export default function ProSummary() {
                                   <button
                                     type="button"
                                     onClick={() => handleCopy(true)}
-                                    aria-label={labelCopy}
-                                    className="group relative inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-700"
+                                    title={copiedFlash ? labelCopied : labelCopy}
+                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
+                                    aria-label={copiedFlash ? labelCopied : labelCopy}
                                   >
                                     {copiedFlash ? (
-                                      <Check
-                                        className="w-5 h-5"
-                                        style={{ color: BLUE }}
-                                      />
+                                      <Check className="w-5 h-5" style={{ color: BLUE }} />
                                     ) : (
                                       <Copy className="w-6 h-6" />
                                     )}
-
-                                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                                      {copiedFlash ? labelCopied : labelCopy}
-                                    </span>
                                   </button>
 
                                   <button
                                     type="button"
                                     onClick={handleDownloadPdf}
+                                    title={labelPdf}
+                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700 ml-[12px]"
                                     aria-label={labelPdf}
-                                    className="group relative inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-700"
                                   >
                                     <FileDown className="w-6 h-6" />
-
-                                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                                      {labelPdf}
-                                    </span>
                                   </button>
                                 </div>
 
