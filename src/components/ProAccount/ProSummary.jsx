@@ -1140,8 +1140,8 @@ export default function ProSummary() {
                               )}
 
                               {/* Controles abajo derecha */}
-                              <div className="absolute bottom-6 right-6 flex items-center gap-4">
-                                <button
+                              <div className="absolute bottom-6 right-[40px] flex items-center gap-4">
+                                <button 
                                   type="button"
                                   onClick={() => handleCopy(true)}
                                   title="Copiar"
