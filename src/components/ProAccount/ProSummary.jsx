@@ -24,7 +24,12 @@ import { addLibraryDoc } from "@/proLibraryStore";
 
 export default function ProSummary() {
   const { t } = useTranslation();
-  const tr = (key, fallback) => t(key) || fallback;
+
+  // ✅ IMPORTANT: evita que se muestre la clave (ej: "ready_message") si falta traducción
+  const tr = (key, fallback) => {
+    const val = t(key);
+    return !val || val === key ? fallback : val;
+  };
 
   // ===== Estado =====
   const [sourceMode, setSourceMode] = useState(null); // null | "text" | "document" | "url"
@@ -133,16 +138,9 @@ export default function ProSummary() {
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
 
-  // Mensajes panel derecho (CLAVES CORRECTAS: SIN inventar)
-  const labelReadyMessage = tr(
-    "ready_message",
-    "Resumen listo · Guardar en tu biblioteca"
-  );
-  const labelSaveSummary = tr("save_button_label", "Guardar");
-  const librarySavedMessage = tr(
-    "library_saved_toast",
-    "Guardado en biblioteca"
-  );
+  // ✅ Botón guardar + toast (verde)
+  const labelSaveSummary = tr("save_button_label", "Gorde");
+  const librarySavedMessage = tr("library_saved_toast", "Liburutegian gordeta");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -277,6 +275,7 @@ export default function ProSummary() {
     setIsOutdated(false);
     setIsTooShortResult(false);
     setLoading(false);
+    setSavedToLibrary(false);
   };
 
   const handleLengthChange = (mode) => {
@@ -326,6 +325,7 @@ export default function ProSummary() {
     setErrorKind(null);
     setIsOutdated(false);
     setIsTooShortResult(false);
+    setSavedToLibrary(false);
   }, [urlItems]);
 
   useEffect(() => {
@@ -545,6 +545,7 @@ export default function ProSummary() {
     setErrorMsg("");
     setErrorKind(null);
     setIsTooShortResult(false);
+    setSavedToLibrary(false);
 
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
@@ -726,7 +727,7 @@ export default function ProSummary() {
             initial="initial"
             animate="in"
             exit="out"
-            variants={pageVariants} 
+            variants={pageVariants}
             transition={{ duration: 0.3 }}
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
@@ -1122,11 +1123,14 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        {/* ===== BLOQUE ABAJO DEL TODO (anclado al fondo) ===== */}
+                        {/* ✅ BLOQUE ABAJO DEL TODO:
+                            - Solo aparece cuando HAY RESULTADO
+                            - Botón Guardar solo aparece cuando HAY RESULTADO
+                            - Toast verde encima al guardar */}
                         {!isTooShortResult && (
                           <div className="absolute left-0 right-0 bottom-6">
                             <div className="px-6 max-w-3xl mx-auto flex items-center justify-between">
-                              {/* Izquierda: iconos sin círculo */}
+                              {/* Izquierda: iconos */}
                               <div className="flex items-center gap-4">
                                 <button
                                   type="button"
@@ -1163,27 +1167,23 @@ export default function ProSummary() {
                                 </button>
                               </div>
 
-                              {/* Derecha: ready + guardar */}
+                              {/* Derecha: toast + botón (SIN pastilla / SIN ready_message) */}
                               <div className="flex flex-col items-end gap-1">
                                 {savedToLibrary && (
                                   <p className="text-xs text-emerald-600">{librarySavedMessage}</p>
                                 )}
 
-                                <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
-                                  <p className="text-xs text-slate-500">{labelReadyMessage}</p>
-
-                                  <motion.button
-                                    type="button"
-                                    onClick={handleSaveSummary}
-                                    initial={{ opacity: 0, y: 4 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.25 }}
-                                    className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
-                                    style={{ backgroundColor: "#22c55e" }}
-                                  >
-                                    {labelSaveSummary}
-                                  </motion.button>
-                                </div>
+                                <motion.button
+                                  type="button"
+                                  onClick={handleSaveSummary}
+                                  initial={{ opacity: 0, y: 4 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.25 }}
+                                  className="inline-flex items-center justify-center rounded-full px-6 h-9 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
+                                  style={{ backgroundColor: "#22c55e" }}
+                                >
+                                  {labelSaveSummary}
+                                </motion.button>
                               </div>
                             </div>
                           </div>
