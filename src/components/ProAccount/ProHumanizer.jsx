@@ -47,7 +47,7 @@ export default function ProHumanizer() {
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]
-  const [documentsFiles, setDocumentsFiles] = useState([]); // [{id,name,mime,size,base64}]
+  const [documentsFiles, setDocumentsFiles] = useState([]); // [{id,name,mime,size,base64,tooLarge?}]
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -82,7 +82,7 @@ export default function ProHumanizer() {
   const GRAY_ICON = "#94a3b8";
   const DIVIDER = "#e5e7eb";
   const MAX_CHARS = 12000;
-  const MAX_FILE_MB = 12; // límite razonable para base64 (ajústalo si quieres)
+  const MAX_FILE_MB = 12;
 
   const pageVariants = {
     initial: { opacity: 0, y: 12 },
@@ -90,7 +90,28 @@ export default function ProHumanizer() {
     out: { opacity: 0, y: -12 },
   };
 
-  const hasRealResult = useMemo(() => (result || "").trim().length > 0, [result]);
+  // ===== Helpers (validación / rechazo) =====
+  const isTextEnough = (s) => {
+    const trimmed = (s || "").trim();
+    const words = trimmed.split(/\s+/).filter(Boolean);
+    return trimmed.length >= 20 && words.length >= 5;
+  };
+
+  const isRefusal = (s) => {
+    const x = String(s || "").trim().toLowerCase();
+    if (!x) return false;
+    return (
+      x.includes("ezin dut") ||
+      x.includes("eskaera hori bete") ||
+      x.includes("barkatu, baina ezin") ||
+      x.includes("lo siento") ||
+      x.includes("no puedo ayudar") ||
+      x.includes("no puedo cumplir") ||
+      (x.includes("sorry") && x.includes("can't"))
+    );
+  };
+
+  const hasRealResult = useMemo(() => isTextEnough(result), [result]);
 
   // ===== Textos (CON claves) =====
   const labelSources = tr("proHumanizer_sources", "Fuentes");
@@ -329,7 +350,6 @@ export default function ProHumanizer() {
     const texts = await readTextFromFiles(withIds);
     if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
 
-    // Para PDF/DOCX/etc, mandamos base64 para que el backend lo extraiga (si está implementado ahí)
     const nonText = withIds.filter(({ file }) => {
       const name = (file?.name || "").toLowerCase();
       return !(name.endsWith(".txt") || name.endsWith(".md"));
@@ -405,8 +425,15 @@ export default function ProHumanizer() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidDocs = documentsText.length > 0 || documentsFiles.length > 0;
-  const hasValidInput = textIsValid || urlItems.length > 0 || hasValidDocs;
+  const docsTextIsValid = useMemo(() => {
+    return (documentsText || []).some((d) => isTextEnough(d?.text));
+  }, [documentsText]);
+
+  const docsFilesIsValid = useMemo(() => {
+    return (documentsFiles || []).some((d) => !!d?.base64 && !d?.tooLarge);
+  }, [documentsFiles]);
+
+  const hasValidInput = textIsValid || urlItems.length > 0 || docsTextIsValid || docsFilesIsValid;
 
   // ===== Acciones derecha =====
   const handleCopy = async (flash = false) => {
@@ -492,7 +519,7 @@ export default function ProHumanizer() {
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
 
-    const validNow = textOk || urlItems.length > 0 || documentsText.length > 0 || documentsFiles.length > 0;
+    const validNow = textOk || urlItems.length > 0 || docsTextIsValid || docsFilesIsValid;
 
     if ((textValue || "").length > MAX_CHARS) {
       setErrorMsg(tr("proHumanizer_errorMaxChars", "Has superado el límite de caracteres permitido."));
@@ -500,14 +527,7 @@ export default function ProHumanizer() {
       return;
     }
 
-    if (!validNow) {
-      setErrorMsg(tr("proHumanizer_errorNeedInput", "Añade texto suficiente, URLs o documentos antes de humanizar."));
-      setLoading(false);
-      return;
-    }
-
-    // Si hay ficheros grandes (base64 null por tamaño), avisamos
-    const tooLargeCount = documentsFiles.filter((d) => d?.tooLarge).length;
+    const tooLargeCount = (documentsFiles || []).filter((d) => d?.tooLarge).length;
     if (tooLargeCount > 0) {
       setErrorMsg(
         tr(
@@ -519,16 +539,22 @@ export default function ProHumanizer() {
       return;
     }
 
+    if (!validNow) {
+      setErrorMsg(tr("proHumanizer_errorNeedInput", "Añade texto suficiente, URLs o documentos antes de humanizar."));
+      setLoading(false);
+      return;
+    }
+
     const urlsList = urlItems.map((u) => u.url).join("\n");
 
-    const docsInline = documentsText?.length
+    const docsInline = (documentsText || []).length
       ? "\nDOCUMENTOS (texto extraído):\n" +
         documentsText
           .map((d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`)
           .join("\n\n")
       : "";
 
-    const docsBinaryHint = documentsFiles?.length
+    const docsBinaryHint = (documentsFiles || []).length
       ? `\nDOCUMENTOS ADJUNTOS (para extracción):\n` +
         documentsFiles.map((d) => `--- ${d.name} (${Math.round((d.size || 0) / 1024)} KB) ---`).join("\n")
       : "";
@@ -624,7 +650,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
           outputLang,
           cacheKey,
           documentsText,
-          documentsFiles, // ✅ para PDF/DOCX/etc (base64)
+          documentsFiles,
         }),
       });
 
@@ -652,7 +678,17 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
         .replace(/\n{3,}/g, "\n\n")
         .trim();
 
-      setResult(cleaned);
+      if (isRefusal(cleaned)) {
+        setResult("");
+        setErrorMsg(
+          tr(
+            "proHumanizer_errorRefusal",
+            "No se pudo procesar el contenido del documento. Prueba con otro archivo o pega el texto."
+          )
+        );
+      } else {
+        setResult(cleaned);
+      }
     } catch (err) {
       setErrorMsg(err.message || tr("proHumanizer_errorGeneric", "Error humanizando el texto."));
     } finally {
@@ -795,9 +831,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                             </div>
                             <div className="min-w-0 flex-1">
                               <span className="text-sm font-medium block truncate">{file.name}</span>
-                              <span className="text-xs text-slate-500">
-                                {(file.size / 1024 / 1024).toFixed(2)} MB
-                              </span>
+                              <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                             </div>
                           </div>
                           <button
