@@ -90,39 +90,18 @@ export default function ProSummary() {
   const labelTabText = tr("summary.sources_tab_text", "Texto");
   const labelTabDocument = tr("summary.sources_tab_document", "Documento");
   const labelTabUrl = tr("summary.sources_tab_url", "URL");
-  const labelEnterText = tr(
-    "summary.enter_text_here_full",
-    "Escribe o pega tu texto aquí…"
-  );
-  const labelChooseFileTitle = tr(
-    "summary.choose_file_title",
-    "Elige tu archivo o carpeta"
-  );
-  const labelAcceptedFormats = tr(
-    "summary.accepted_formats",
-    "Puedes añadir archivos PDF, texto copiado, enlaces web…"
-  );
-  const labelFolderHint = tr(
-    "summary.folder_hint",
-    "Aquí aparecerán tus textos o documentos subidos."
-  );
+  const labelEnterText = tr("summary.enter_text_here_full", "Escribe o pega tu texto aquí…");
+  const labelChooseFileTitle = tr("summary.choose_file_title", "Elige tu archivo o carpeta");
+  const labelAcceptedFormats = tr("summary.accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const labelFolderHint = tr("summary.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
   const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "summary.urls_note_visible",
-    "Solo se importará el texto visible del sitio web."
-  );
-  const labelUrlsNotePaywalled = tr(
-    "summary.urls_note_paywalled",
-    "No se admiten artículos de pago."
-  );
+  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible del sitio web.");
+  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("summary.remove", "Quitar");
-  const labelGenerateFromSources = tr(
-    "summary.generate_from_sources",
-    "Laburpena sortu"
-  );
+  const labelGenerateFromSources = tr("summary.generate_from_sources", "Laburpena sortu");
   const labelHelpRight = tr(
     "summary.create_help_right",
     "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”."
@@ -170,24 +149,14 @@ export default function ProSummary() {
         aria-pressed={active}
         aria-label={label}
       >
-        <Icon
-          className="w-[18px] h-[18px] shrink-0"
-          style={{ color: active ? BLUE : GRAY_ICON }}
-        />
+        <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
         )}
       </button>
       {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
@@ -204,18 +173,11 @@ export default function ProSummary() {
       >
         <span className="truncate">{label}</span>
         {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
         )}
       </button>
       {showDivider && (
-        <span
-          aria-hidden
-          className="self-center"
-          style={{ width: 1, height: 22, backgroundColor: DIVIDER }}
-        />
+        <span aria-hidden className="self-center" style={{ width: 1, height: 22, backgroundColor: DIVIDER }} />
       )}
     </div>
   );
@@ -234,9 +196,7 @@ export default function ProSummary() {
       } catch {}
     }
     const seen = new Set();
-    return valid.filter((v) =>
-      seen.has(v.href) ? false : (seen.add(v.href), true)
-    );
+    return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
   };
 
   const enforceLength = (text, mode) => {
@@ -258,8 +218,7 @@ export default function ProSummary() {
 
     const words = clipped.split(/\s+/);
     if (words.length > maxWords) {
-      clipped =
-        words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
+      clipped = words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
     }
     return clipped;
   };
@@ -321,16 +280,7 @@ export default function ProSummary() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [
-    loading,
-    result,
-    urlInputOpen,
-    textValue,
-    urlItems,
-    documents,
-    summaryLength,
-    outputLang,
-  ]);
+  }, [loading, result, urlInputOpen, textValue, urlItems, documents, summaryLength, outputLang]);
 
   // URLs → reset resultado
   useEffect(() => {
@@ -361,8 +311,7 @@ export default function ProSummary() {
             if (!isTxt && !isMd) return resolve(null);
 
             const fr = new FileReader();
-            fr.onload = () =>
-              resolve({ id, name, text: String(fr.result || "") });
+            fr.onload = () => resolve({ id, name, text: String(fr.result || "") });
             fr.onerror = () => resolve(null);
             fr.readAsText(file, "utf-8");
           })
@@ -434,8 +383,7 @@ export default function ProSummary() {
     setUrlsTextarea("");
     setUrlInputOpen(false);
   };
-  const removeUrl = (id) =>
-    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -444,8 +392,7 @@ export default function ProSummary() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput =
-    textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones =====
   const handleCopy = async (flash = false) => {
@@ -519,14 +466,9 @@ export default function ProSummary() {
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold">
-        {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
-      </div>
+      <div className="text-sm font-semibold">{tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
       <p className="text-xs text-slate-600 mt-1">
-        {tr(
-          "summary.limit_note",
-          "Límite actual: 12.000 caracteres por petición."
-        )}
+        {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
       </p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
@@ -579,10 +521,7 @@ export default function ProSummary() {
     }
     if (!validNow) {
       setErrorMsg(
-        tr(
-          "summary.error_need_input",
-          "Añade texto suficiente, URLs o documentos antes de generar el resumen."
-        )
+        tr("summary.error_need_input", "Añade texto suficiente, URLs o documentos antes de generar el resumen.")
       );
       setLoading(false);
       return;
@@ -635,9 +574,7 @@ export default function ProSummary() {
         ? `Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: "${tooShortMsg}".`
         : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList
-        ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
-        : "",
+      urlsList ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}` : "",
       docsInline,
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -708,8 +645,7 @@ export default function ProSummary() {
         data?.message?.content ??
         "";
 
-      if (!rawText)
-        throw new Error(tr("summary.error_no_text", "No se recibió texto de la API."));
+      if (!rawText) throw new Error(tr("summary.error_no_text", "No se recibió texto de la API."));
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -747,11 +683,7 @@ export default function ProSummary() {
   const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
   const overLimit = charCount > MAX_CHARS;
 
-  const barClass = overLimit
-    ? "bg-red-500"
-    : nearLimit
-    ? "bg-amber-500"
-    : "bg-sky-500";
+  const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
 
   return (
     <>
@@ -766,23 +698,15 @@ export default function ProSummary() {
             transition={{ duration: 0.3 }}
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
-            <aside className="min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <aside className="h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
               {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-                <div className="text-sm font-medium text-slate-700">
-                  {labelSources}
-                </div>
+                <div className="text-sm font-medium text-slate-700">{labelSources}</div>
               </div>
 
               {/* Tabs */}
               <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
-                <TabBtn
-                  active={sourceMode === "text"}
-                  icon={FileText}
-                  label={labelTabText}
-                  onClick={() => setSourceMode("text")}
-                  showDivider
-                />
+                <TabBtn active={sourceMode === "text"} icon={FileText} label={labelTabText} onClick={() => setSourceMode("text")} showDivider />
                 <TabBtn
                   active={sourceMode === "document"}
                   icon={FileIcon}
@@ -790,13 +714,7 @@ export default function ProSummary() {
                   onClick={() => setSourceMode("document")}
                   showDivider
                 />
-                <TabBtn
-                  active={sourceMode === "url"}
-                  icon={UrlIcon}
-                  label={labelTabUrl}
-                  onClick={() => setSourceMode("url")}
-                  showDivider={false}
-                />
+                <TabBtn active={sourceMode === "url"} icon={UrlIcon} label={labelTabUrl} onClick={() => setSourceMode("url")} showDivider={false} />
               </div>
 
               {/* Contenido */}
@@ -807,14 +725,8 @@ export default function ProSummary() {
                       <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
                         <FileText className="w-6 h-6 text-slate-500" />
                       </div>
-                      <p className="text-[15px] font-semibold text-slate-600">
-                        {leftTitle}
-                      </p>
-                      {leftBody && (
-                        <p className="mt-1 text-[13px] leading-6 text-slate-500">
-                          {leftBody}
-                        </p>
-                      )}
+                      <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
+                      {leftBody && <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>}
                     </div>
                   </div>
                 )}
@@ -833,15 +745,7 @@ export default function ProSummary() {
                         <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
                       </div>
                       <div className="mt-1 text-right text-xs">
-                        <span
-                          className={
-                            overLimit
-                              ? "text-red-600"
-                              : nearLimit
-                              ? "text-amber-600"
-                              : "text-slate-500"
-                          }
-                        >
+                        <span className={overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"}>
                           {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                         </span>
                       </div>
@@ -851,9 +755,7 @@ export default function ProSummary() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative min-h-0 ${
-                      dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
-                    }`}
+                    className={`h-full w-full flex flex-col relative min-h-0 ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
                     onDragEnter={onDragEnter}
                     onDragOver={onDragOver}
                     onDragLeave={onDragLeave}
@@ -877,48 +779,37 @@ export default function ProSummary() {
                       <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                         <Plus className="w-10 h-10 text-sky-600" />
                       </div>
-                      <div className="text-xl font-semibold text-slate-800">
-                        {labelChooseFileTitle}
-                      </div>
-                      <div className="mt-4 text-sm text-slate-500">
-                        {labelAcceptedFormats}
-                      </div>
-                      <div className="mt-1 text-xs text-slate-400">
-                        {labelFolderHint}
-                      </div>
+                      <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
+                      <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
+                      <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
                     </button>
 
                     {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
-                        {documents.map(({ id, file }) => (
-                          <li
-                            key={id}
-                            className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
-                          >
-                            <div className="min-w-0 flex items-center gap-3 flex-1">
-                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                                <FileIcon className="w-4 h-4" />
+                      <div className="mt-4 flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+                        <ul className="divide-y divide-slate-200 rounded-xl border border-slate-200">
+                          {documents.map(({ id, file }) => (
+                            <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
+                              <div className="min-w-0 flex items-center gap-3 flex-1">
+                                <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                  <FileIcon className="w-4 h-4" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm font-medium block truncate">{file.name}</span>
+                                  <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                                </div>
                               </div>
-                              <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">
-                                  {file.name}
-                                </span>
-                                <span className="text-xs text-slate-500">
-                                  {(file.size / 1024 / 1024).toFixed(2)} MB
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => removeDocument(id)}
-                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                              title={labelRemove}
-                              aria-label={labelRemove}
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                              <button
+                                onClick={() => removeDocument(id)}
+                                className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                                title={labelRemove}
+                                aria-label={labelRemove}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 )}
@@ -947,10 +838,7 @@ export default function ProSummary() {
                         <textarea
                           value={urlsTextarea}
                           onChange={(e) => setUrlsTextarea(e.target.value)}
-                          placeholder={tr(
-                            "summary.paste_urls_placeholder",
-                            "Introduce aquí una o más URLs (separadas por línea)"
-                          )}
+                          placeholder={tr("summary.paste_urls_placeholder", "Introduce aquí una o más URLs (separadas por línea)")}
                           className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                           aria-label={labelPasteUrls}
                         />
@@ -979,10 +867,7 @@ export default function ProSummary() {
                     {urlItems.length > 0 && (
                       <ul className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
                         {urlItems.map(({ id, url, host }) => (
-                          <li
-                            key={id}
-                            className="flex items-center justify-between gap-3 px-3 py-2"
-                          >
+                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
                             <div className="min-w-0 flex items-center gap-3 flex-1">
                               <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                                 <UrlIcon className="w-4 h-4" />
@@ -1017,27 +902,13 @@ export default function ProSummary() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            <section className="relative h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
               {/* Barra superior */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
-                  <LengthTab
-                    active={summaryLength === "breve"}
-                    label={LBL_SHORT}
-                    onClick={() => handleLengthChange("breve")}
-                    showDivider
-                  />
-                  <LengthTab
-                    active={summaryLength === "medio"}
-                    label={LBL_MED}
-                    onClick={() => handleLengthChange("medio")}
-                    showDivider
-                  />
-                  <LengthTab
-                    active={summaryLength === "detallado"}
-                    label={LBL_LONG}
-                    onClick={() => handleLengthChange("detallado")}
-                  />
+                  <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => handleLengthChange("breve")} showDivider />
+                  <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => handleLengthChange("medio")} showDivider />
+                  <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => handleLengthChange("detallado")} />
                 </div>
 
                 <div className="flex items-center gap-1">
@@ -1049,28 +920,14 @@ export default function ProSummary() {
                         className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                         aria-label={tr("summary.output_language_aria", "Idioma de salida")}
                       >
-                        <span className="truncate">
-                          {outputLang === "es"
-                            ? LBL_ES
-                            : outputLang === "en"
-                            ? LBL_EN
-                            : LBL_EUS}
-                        </span>
-                        <svg
-                          className="w-4 h-4 text-slate-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
+                        <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                        <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                           <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                         </svg>
                       </button>
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent
-                      align="end"
-                      className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
-                    >
+                    <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
                       <DropdownMenuItem
                         onClick={() => {
                           if (outputLang !== "es") {
@@ -1114,18 +971,12 @@ export default function ProSummary() {
                     onClick={() => handleCopy(true)}
                     title={copiedFlash ? tooltipCopied : tooltipCopy}
                     className={`h-9 w-9 flex items-center justify-center ${
-                      result
-                        ? "text-slate-600 hover:text-slate-800"
-                        : "text-slate-300 cursor-not-allowed"
+                      result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
                     aria-label={copiedFlash ? tooltipCopied : tooltipCopy}
                     disabled={!result}
                   >
-                    {copiedFlash ? (
-                      <Check className="w-4 h-4" style={{ color: BLUE }} />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
+                    {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                   </button>
 
                   {/* Eliminar texto */}
@@ -1134,9 +985,7 @@ export default function ProSummary() {
                     onClick={handleClearLeft}
                     title={tr("summary.clear_input", "Eliminar")}
                     className={`h-9 w-9 flex items-center justify-center ${
-                      sourceMode === "text" && textValue
-                        ? "text-slate-600 hover:text-slate-800"
-                        : "text-slate-300 cursor-not-allowed"
+                      sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
                     aria-label={tr("summary.clear_input", "Eliminar")}
                     disabled={!(sourceMode === "text" && textValue)}
@@ -1149,10 +998,7 @@ export default function ProSummary() {
               {/* Estado inicial */}
               {!loading && !result && !errorKind && (
                 <>
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 z-10"
-                    style={{ top: "30%" }}
-                  >
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                     <Button
                       type="button"
                       onClick={handleGenerate}
@@ -1164,13 +1010,8 @@ export default function ProSummary() {
                     </Button>
                   </div>
 
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
-                    style={{ top: "40%" }}
-                  >
-                    <p className="text-sm leading-6 text-slate-600 max-w-xl">
-                      {labelHelpRight}
-                    </p>
+                  <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
                   </div>
                 </>
               )}
@@ -1194,8 +1035,7 @@ export default function ProSummary() {
                         </article>
 
                         {(() => {
-                          const hasResult =
-                            !!result && result.trim().length > 0 && !isTooShortResult;
+                          const hasResult = !!result && result.trim().length > 0 && !isTooShortResult;
 
                           if (!hasResult) return null;
 
