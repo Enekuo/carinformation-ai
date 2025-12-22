@@ -90,11 +90,9 @@ export default function ProTranslator() {
   const mediaStreamRef = useRef(null);
   const micChunksRef = useRef([]);
 
-  // 🔹 estado para el mensaje "Guardado en biblioteca"
   const [savedToLibrary, setSavedToLibrary] = useState(false);
   const savedTimerRef = useRef(null);
 
-  // ✅ estado de validez del resultado (solo "success" permite Guardar)
   const [resultStatus, setResultStatus] = useState("idle"); // "idle" | "loading" | "success" | "error"
 
   useEffect(
@@ -121,7 +119,10 @@ export default function ProTranslator() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  // ✅ detecta mensajes que NO son traducción real (rechazos típicos)
+  // ✅ Scroll sin barra visible (mantiene tamaño fijo)
+  const HIDE_SCROLLBAR =
+    "overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
+
   const isNonResultMessage = (txt) => {
     const s = (txt || "").trim();
     if (!s) return true;
@@ -150,7 +151,6 @@ export default function ProTranslator() {
     return false;
   };
 
-  // ✅ aplica salida y marca success/error correctamente
   const applyTranslationOutput = (data) => {
     const out = (data?.content ?? data?.translation ?? "").toString();
 
@@ -945,23 +945,19 @@ export default function ProTranslator() {
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 {sourceMode === "text" && (
                   <>
-                    {/* ✅ wrapper con scroll (tamaño fijo, barra cuando haga falta) */}
-                    <div className="w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto">
-                      <textarea
-                        ref={leftTA}
-                        value={leftText}
-                        onChange={(e) =>
-                          setLeftText(e.target.value.slice(0, MAX_CHARS))
-                        }
-                        placeholder={t("translator.left_placeholder")}
-                        className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
-                      />
-                    </div>
-
+                    <textarea
+                      ref={leftTA}
+                      value={leftText}
+                      onChange={(e) =>
+                        setLeftText(e.target.value.slice(0, MAX_CHARS))
+                      }
+                      placeholder={t("translator.left_placeholder")}
+                      className={`w-full h-[400px] md:h-[420px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${HIDE_SCROLLBAR}`}
+                    />
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
-                      {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                      {leftText.length.toLocaleString()} /{" "}
+                      {MAX_CHARS.toLocaleString()}
                     </div>
-
                     <div className="absolute bottom-4 left-6">
                       <button
                         type="button"
@@ -977,7 +973,9 @@ export default function ProTranslator() {
                           }`}
                         />
                         <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                          {listening ? t("translator.listening") : t("translator.dictate")}
+                          {listening
+                            ? t("translator.listening")
+                            : t("translator.dictate")}
                         </span>
                       </button>
                     </div>
@@ -986,7 +984,7 @@ export default function ProTranslator() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative ${
+                    className={`w-full flex flex-col relative ${
                       dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                     }`}
                     onDragEnter={onDragEnter}
@@ -1023,37 +1021,40 @@ export default function ProTranslator() {
                       </div>
                     </button>
 
+                    {/* ✅ SI NO CABEN: SCROLL SOLO AQUÍ (lado izquierdo), SIN AGRANDAR TABLA */}
                     {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-y-auto max-h-[260px]">
-                        {documents.map(({ id, file }) => (
-                          <li
-                            key={id}
-                            className="flex items-center justify_between gap-3 px-3 py-2 bg-white"
-                          >
-                            <div className="min-w-0 flex items-center gap-3 flex-1">
-                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                                <FileIcon className="w-4 h-4" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">
-                                  {file.name}
-                                </span>
-                                <span className="text-xs text-slate-500">
-                                  {(file.size / 1024 / 1024).toFixed(2)} MB
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => removeDocument(id)}
-                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                              title={labelRemove}
-                              aria-label={labelRemove}
+                      <div className="mt-4 max-h-[240px] overflow-y-auto rounded-xl border border-slate-200">
+                        <ul className="divide-y divide-slate-200">
+                          {documents.map(({ id, file }) => (
+                            <li
+                              key={id}
+                              className="flex items-center justify-between gap-3 px-3 py-2 bg-white"
                             >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                              <div className="min-w-0 flex items-center gap-3 flex-1">
+                                <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                  <FileIcon className="w-4 h-4" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm font-medium block truncate">
+                                    {file.name}
+                                  </span>
+                                  <span className="text-xs text-slate-500">
+                                    {(file.size / 1024 / 1024).toFixed(2)} MB
+                                  </span>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => removeDocument(id)}
+                                className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                                title={labelRemove}
+                                aria-label={labelRemove}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 )}
@@ -1112,7 +1113,7 @@ export default function ProTranslator() {
                     )}
 
                     {urlItems.length > 0 && (
-                      <ul className="flex-1 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200 max-h-[360px] md:max-h-[400px]">
+                      <ul className="flex-1 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200">
                         {urlItems.map(({ id, url, host }) => (
                           <li
                             key={id}
@@ -1152,22 +1153,19 @@ export default function ProTranslator() {
 
               {/* DERECHA */}
               <div className="p-8 md:p-10 relative">
-                {/* ✅ wrapper con scroll (tamaño fijo, barra cuando haga falta) */}
-                <div className="w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto">
-                  <textarea
-                    ref={rightTA}
-                    value={
-                      loading && document.activeElement !== rightTA.current
-                        ? t("translator.loading")
-                        : rightText
-                    }
-                    onChange={(e) => setRightText(e.target.value)}
-                    placeholder={t("translator.right_placeholder")}
-                    className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
-                      loading ? "italic text-slate-500" : ""
-                    }`}
-                  />
-                </div>
+                <textarea
+                  ref={rightTA}
+                  value={
+                    loading && document.activeElement !== rightTA.current
+                      ? t("translator.loading")
+                      : rightText
+                  }
+                  onChange={(e) => setRightText(e.target.value)}
+                  placeholder={t("translator.right_placeholder")}
+                  className={`w-full h-[400px] md:h-[420px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                    loading ? "italic text-slate-500" : ""
+                  } ${HIDE_SCROLLBAR}`}
+                />
 
                 {err && (
                   <div className="absolute bottom-4 left-8 text-sm text-red-500">
@@ -1239,7 +1237,6 @@ export default function ProTranslator() {
                 </div>
               </div>
             </div>
-            {/* fin paneles */}
           </div>
         </div>
       </section>
