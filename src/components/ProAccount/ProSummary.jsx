@@ -142,6 +142,11 @@ export default function ProSummary() {
   const labelSaveSummary = tr("save_button_label", "Gorde");
   const librarySavedMessage = tr("library_saved_toast", "Liburutegian gordeta");
 
+  // ✅ Tooltips abajo (copiar / copiado / pdf) con claves
+  const labelCopy = tr("summary.copy", "Copiar");
+  const labelCopied = tr("summary.copied", "Copiado");
+  const labelPdf = tr("summary.pdf", "PDF");
+
   // Ayuda izquierda
   const leftRaw = tr(
     "summary.create_help_left",
@@ -316,7 +321,16 @@ export default function ProSummary() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen, textValue, urlItems, documents, summaryLength, outputLang]);
+  }, [
+    loading,
+    result,
+    urlInputOpen,
+    textValue,
+    urlItems,
+    documents,
+    summaryLength,
+    outputLang,
+  ]);
 
   // URLs → reset resultado
   useEffect(() => {
@@ -430,8 +444,7 @@ export default function ProSummary() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput =
-    textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones =====
   const handleCopy = async (flash = false) => {
@@ -509,7 +522,10 @@ export default function ProSummary() {
         {tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}
       </div>
       <p className="text-xs text-slate-600 mt-1">
-        {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
+        {tr(
+          "summary.limit_note",
+          "Límite actual: 12.000 caracteres por petición."
+        )}
       </p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
@@ -561,7 +577,9 @@ export default function ProSummary() {
       return;
     }
     if (!validNow) {
-      setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
+      setErrorMsg(
+        "Añade texto suficiente, URLs o documentos antes de generar el resumen."
+      );
       setLoading(false);
       return;
     }
@@ -939,7 +957,11 @@ export default function ProSummary() {
                           aria-label={labelPasteUrls}
                         />
                         <div className="mt-2 flex items-center gap-2">
-                          <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
+                          <Button
+                            type="button"
+                            onClick={addUrlsFromTextarea}
+                            className="h-9"
+                          >
                             {labelSaveUrls}
                           </Button>
                           <button
@@ -963,7 +985,10 @@ export default function ProSummary() {
                     {urlItems.length > 0 && (
                       <ul className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
                         {urlItems.map(({ id, url, host }) => (
-                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
+                          <li
+                            key={id}
+                            className="flex items-center justify-between gap-3 px-3 py-2"
+                          >
                             <div className="min-w-0 flex items-center gap-3 flex-1">
                               <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
                                 <UrlIcon className="w-4 h-4" />
@@ -1031,7 +1056,11 @@ export default function ProSummary() {
                         aria-label="Idioma de salida"
                       >
                         <span className="truncate">
-                          {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                          {outputLang === "es"
+                            ? LBL_ES
+                            : outputLang === "en"
+                            ? LBL_EN
+                            : LBL_EUS}
                         </span>
                         <svg
                           className="w-4 h-4 text-slate-500"
@@ -1173,7 +1202,9 @@ export default function ProSummary() {
                         {/* ===== CONTROLES ABAJO DERECHA (iconos separados del botón verde) ===== */}
                         {(() => {
                           const hasResult =
-                            !!result && result.trim().length > 0 && !isTooShortResult;
+                            !!result &&
+                            result.trim().length > 0 &&
+                            !isTooShortResult;
 
                           if (!hasResult) return null;
 
@@ -1193,25 +1224,34 @@ export default function ProSummary() {
                                   <button
                                     type="button"
                                     onClick={() => handleCopy(true)}
-                                    title="Copiar"
-                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
-                                    aria-label="Copiar"
+                                    aria-label={labelCopy}
+                                    className="group relative inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-700"
                                   >
                                     {copiedFlash ? (
-                                      <Check className="w-5 h-5" style={{ color: BLUE }} />
+                                      <Check
+                                        className="w-5 h-5"
+                                        style={{ color: BLUE }}
+                                      />
                                     ) : (
                                       <Copy className="w-6 h-6" />
                                     )}
+
+                                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                                      {copiedFlash ? labelCopied : labelCopy}
+                                    </span>
                                   </button>
 
                                   <button
                                     type="button"
                                     onClick={handleDownloadPdf}
-                                    title="PDF"
-                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700 ml-[12px]"
-                                    aria-label="PDF"
+                                    aria-label={labelPdf}
+                                    className="group relative inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-700"
                                   >
                                     <FileDown className="w-6 h-6" />
+
+                                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                                      {labelPdf}
+                                    </span>
                                   </button>
                                 </div>
 
