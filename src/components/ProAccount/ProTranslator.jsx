@@ -455,37 +455,19 @@ export default function ProTranslator() {
     "summary.choose_file_title",
     "Elige tu archivo o carpeta"
   );
-  const labelAcceptedFormats = tr(
-    "summary.accepted_formats",
-    "Formatos admitidos"
-  );
-  const labelFolderHint = tr(
-    "summary.folder_hint",
-    "Puedes arrastrar varios archivos."
-  );
+  const labelAcceptedFormats = tr("summary.accepted_formats", "Formatos admitidos");
+  const labelFolderHint = tr("summary.folder_hint", "Puedes arrastrar varios archivos.");
 
   const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "summary.urls_note_visible",
-    "Solo se importará el texto visible."
-  );
-  const labelUrlsNotePaywalled = tr(
-    "summary.urls_note_paywalled",
-    "No se admiten artículos de pago."
-  );
+  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible.");
+  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("summary.remove", "Quitar");
 
-  // 🔹 etiqueta para el botón Guardar (traductor)
   const labelSaveTranslation = tr("save_button_label", "Guardar");
-
-  // 🔹 mensaje cuando ya se ha guardado
-  const librarySavedMessage = tr(
-    "library_saved_toast",
-    "Guardado en biblioteca"
-  );
+  const librarySavedMessage = tr("library_saved_toast", "Guardado en biblioteca");
 
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
@@ -674,7 +656,6 @@ export default function ProTranslator() {
     w.print();
   };
 
-  // 🔹 guardar traducción en la biblioteca + mostrar mensaje
   const handleSaveTranslation = () => {
     if (resultStatus !== "success") return;
 
@@ -778,7 +759,6 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // ✅ SOLO mostramos "Guardar" cuando el resultado es real
   const canSave = resultStatus === "success" && !!rightText?.trim() && !loading;
 
   return (
@@ -959,10 +939,10 @@ export default function ProTranslator() {
               </button>
             </div>
 
-            {/* ✅ paneles (ALTURA FIJA + SCROLL INTERNO) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full h-[600px]">
+            {/* paneles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* IZQUIERDA */}
-              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-full flex flex-col min-h-0">
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 {sourceMode === "text" && (
                   <>
                     <textarea
@@ -970,7 +950,7 @@ export default function ProTranslator() {
                       value={leftText}
                       onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
                       placeholder={t("translator.left_placeholder")}
-                      className="w-full flex-1 min-h-0 overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                      className="w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
                     />
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                       {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
@@ -999,7 +979,7 @@ export default function ProTranslator() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative min-h-0 ${
+                    className={`h-full w-full flex flex-col relative ${
                       dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                     }`}
                     onDragEnter={onDragEnter}
@@ -1037,7 +1017,7 @@ export default function ProTranslator() {
                     </button>
 
                     {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-y-auto">
+                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-y-auto max-h-[260px]">
                         {documents.map(({ id, file }) => (
                           <li
                             key={id}
@@ -1072,7 +1052,7 @@ export default function ProTranslator() {
                 )}
 
                 {sourceMode === "url" && (
-                  <div className="h-full w-full flex flex-col min-h-0">
+                  <div className="h-full w-full flex flex-col">
                     <div className="mb-3 flex items-center justify-between">
                       <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
                         <UrlIcon className="w-4 h-4" />
@@ -1125,7 +1105,7 @@ export default function ProTranslator() {
                     )}
 
                     {urlItems.length > 0 && (
-                      <ul className="flex-1 min-h-0 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200">
+                      <ul className="flex-1 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200 max-h-[360px] md:max-h-[400px]">
                         {urlItems.map(({ id, url, host }) => (
                           <li
                             key={id}
@@ -1164,7 +1144,7 @@ export default function ProTranslator() {
               </div>
 
               {/* DERECHA */}
-              <div className="p-8 md:p-10 relative h-full flex flex-col min-h-0">
+              <div className="p-8 md:p-10 relative">
                 <textarea
                   ref={rightTA}
                   value={
@@ -1174,7 +1154,7 @@ export default function ProTranslator() {
                   }
                   onChange={(e) => setRightText(e.target.value)}
                   placeholder={t("translator.right_placeholder")}
-                  className={`w-full flex-1 min-h-0 overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                  className={`w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
                     loading ? "italic text-slate-500" : ""
                   }`}
                 />
@@ -1185,7 +1165,6 @@ export default function ProTranslator() {
                   </div>
                 )}
 
-                {/* ICONOS + BOTÓN GUARDAR + MENSAJE */}
                 <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                   {savedToLibrary && (
                     <p className="text-xs text-emerald-600 mb-1">
@@ -1197,9 +1176,7 @@ export default function ProTranslator() {
                     <button
                       type="button"
                       onClick={handleSpeakToggle}
-                      aria-label={
-                        speaking ? t("translator.stop") : t("translator.listen")
-                      }
+                      aria-label={speaking ? t("translator.stop") : t("translator.listen")}
                       className={`group relative p-2 rounded-md hover:bg-slate-100 ${
                         speaking ? "text-slate-900" : ""
                       }`}
@@ -1220,11 +1197,7 @@ export default function ProTranslator() {
                       aria-label={t("translator.copy")}
                       className="group relative p-2 rounded-md hover:bg-slate-100"
                     >
-                      {copied ? (
-                        <Check className="w-5 h-5" />
-                      ) : (
-                        <CopyIcon className="w-5 h-5" />
-                      )}
+                      {copied ? <Check className="w-5 h-5" /> : <CopyIcon className="w-5 h-5" />}
                       <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
                         {copied ? t("translator.copied") : t("translator.copy")}
                       </span>
