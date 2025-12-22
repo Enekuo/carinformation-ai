@@ -945,16 +945,23 @@ export default function ProTranslator() {
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
                 {sourceMode === "text" && (
                   <>
-                    <textarea
-                      ref={leftTA}
-                      value={leftText}
-                      onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
-                      placeholder={t("translator.left_placeholder")}
-                      className="w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
-                    />
+                    {/* ✅ wrapper con scroll (tamaño fijo, barra cuando haga falta) */}
+                    <div className="w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto">
+                      <textarea
+                        ref={leftTA}
+                        value={leftText}
+                        onChange={(e) =>
+                          setLeftText(e.target.value.slice(0, MAX_CHARS))
+                        }
+                        placeholder={t("translator.left_placeholder")}
+                        className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                      />
+                    </div>
+
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                       {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                     </div>
+
                     <div className="absolute bottom-4 left-6">
                       <button
                         type="button"
@@ -1145,19 +1152,22 @@ export default function ProTranslator() {
 
               {/* DERECHA */}
               <div className="p-8 md:p-10 relative">
-                <textarea
-                  ref={rightTA}
-                  value={
-                    loading && document.activeElement !== rightTA.current
-                      ? t("translator.loading")
-                      : rightText
-                  }
-                  onChange={(e) => setRightText(e.target.value)}
-                  placeholder={t("translator.right_placeholder")}
-                  className={`w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
-                    loading ? "italic text-slate-500" : ""
-                  }`}
-                />
+                {/* ✅ wrapper con scroll (tamaño fijo, barra cuando haga falta) */}
+                <div className="w-full min-h-[360px] md:min-h-[400px] max-h-[360px] md:max-h-[400px] overflow-y-auto">
+                  <textarea
+                    ref={rightTA}
+                    value={
+                      loading && document.activeElement !== rightTA.current
+                        ? t("translator.loading")
+                        : rightText
+                    }
+                    onChange={(e) => setRightText(e.target.value)}
+                    placeholder={t("translator.right_placeholder")}
+                    className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                      loading ? "italic text-slate-500" : ""
+                    }`}
+                  />
+                </div>
 
                 {err && (
                   <div className="absolute bottom-4 left-8 text-sm text-red-500">
