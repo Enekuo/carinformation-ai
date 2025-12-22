@@ -466,16 +466,16 @@ export default function ProParaphraser() {
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
     const modeRule =
-  mode === "neutral"
-    ? `
+      mode === "neutral"
+        ? `
 MODO NEUTRAL (base):
 - Reescribe de forma natural y correcta.
 - Mantén el tono y el nivel del original.
 - Cambia palabras y orden lo justo.
 - NO simplifiques, NO embellezcas, NO hagas más formal ni más informal.
 `.trim()
-    : mode === "informal"
-    ? `
+        : mode === "informal"
+        ? `
 MODO INFORMAL (se tiene que notar):
 - Tono cercano y conversacional, como hablado entre personas.
 - Frases MÁS cortas.
@@ -484,8 +484,8 @@ MODO INFORMAL (se tiene que notar):
 - Puedes usar expresiones naturales tipo: "la verdad", "a veces", "me pasa que…", sin exagerar.
 - PROHIBIDO: "me resulta difícil", "de manera continua", "preservando", "por esta razón".
 `.trim()
-    : mode === "professional"
-    ? `
+        : mode === "professional"
+        ? `
 MODO PROFESIONAL:
 - Tono formal y profesional, claro y práctico.
 - Directo, sin adornos emocionales.
@@ -493,16 +493,16 @@ MODO PROFESIONAL:
 - Estructura ordenada y precisa.
 - PROHIBIDO: coloquialismos, muletillas, humor, exageraciones.
 `.trim()
-    : mode === "academic"
-    ? `
+        : mode === "academic"
+        ? `
 MODO ACADÉMICO:
 - Tono riguroso y formal, con vocabulario más técnico.
 - Frases más largas y elaboradas (sin perder claridad).
 - Usa conectores formales: "por consiguiente", "en este contexto", "asimismo".
 - Apto para contexto educativo / académico.
 `.trim()
-    : mode === "fluent"
-    ? `
+        : mode === "fluent"
+        ? `
 MODO FLUIDO (ritmo, no "más formal"):
 - Prioriza que el texto se lea de forma continua y agradable.
 - Une frases cuando tenga sentido.
@@ -510,8 +510,8 @@ MODO FLUIDO (ritmo, no "más formal"):
 - Elimina repeticiones y comienzos repetidos ("A veces...", "A veces...").
 - Añade transiciones suaves: "además", "por otro lado", "en resumen" (sin pasarte).
 `.trim()
-    : mode === "simplified"
-    ? `
+        : mode === "simplified"
+        ? `
 MODO SIMPLIFICADO (tiene que parecer otro texto):
 - Frases CORTAS y muy claras (idealmente 10–16 palabras).
 - Vocabulario sencillo (sin tecnicismos).
@@ -520,7 +520,7 @@ MODO SIMPLIFICADO (tiene que parecer otro texto):
 - Piensa en fatiga lectora / TDAH: que se entienda a la primera.
 - PROHIBIDO: frases largas, conectores densos, palabras tipo "preservando", "contexto", "consecuentemente".
 `.trim()
-    : `
+        : `
 MODO CREATIVO:
 - Mayor libertad estilística manteniendo el significado.
 - Varía la estructura: cambia el orden de ideas y el ritmo.
@@ -577,7 +577,9 @@ MODO CREATIVO:
 
       if (!res.ok) {
         if (res.status === 429) {
-          throw new Error(tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde."));
+          throw new Error(
+            tr("proParaphraser_error_rate_limit", "Has alcanzado el límite de peticiones. Inténtalo más tarde.")
+          );
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -702,7 +704,9 @@ MODO CREATIVO:
 
               {sourceMode === "document" && (
                 <div
-                  className={`h-full w-full flex flex-col relative ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
+                  className={`h-full w-full flex flex-col relative min-h-0 ${
+                    dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
+                  }`}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -732,30 +736,33 @@ MODO CREATIVO:
                     <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
                   </button>
 
+                  {/* ✅ SCROLL INTERNO PARA VER TODOS LOS DOCUMENTOS */}
                   {documents.length > 0 && (
-                    <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
-                      {documents.map(({ id, file }) => (
-                        <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
-                          <div className="min-w-0 flex items-center gap-3 flex-1">
-                            <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                              <FileIcon className="w-4 h-4" />
+                    <div className="mt-4 flex-1 min-h-0 overflow-y-auto pr-1">
+                      <ul className="divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden bg-white">
+                        {documents.map(({ id, file }) => (
+                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <FileIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-sm font-medium block truncate">{file.name}</span>
+                                <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                              </div>
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-sm font-medium block truncate">{file.name}</span>
-                              <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => removeDocument(id)}
-                            className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                            <button
+                              onClick={() => removeDocument(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </div>
               )}
