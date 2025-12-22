@@ -730,7 +730,7 @@ export default function ProSummary() {
             transition={{ duration: 0.3 }}
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
-            <aside className="min-h-[560px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <aside className="min-h-[620px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
               {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="text-sm font-medium text-slate-700">{labelSources}</div>
@@ -960,7 +960,7 @@ export default function ProSummary() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[560px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            <section className="relative min-h-[620px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
               {/* Barra superior */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
@@ -1058,7 +1058,11 @@ export default function ProSummary() {
                     aria-label="Copiar resultado"
                     disabled={!result}
                   >
-                    {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
+                    {copiedFlash ? (
+                      <Check className="w-4 h-4" style={{ color: BLUE }} />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
                   </button>
 
                   {/* Eliminar texto */}
@@ -1103,7 +1107,7 @@ export default function ProSummary() {
               {/* Resultado / errores / loader / límite */}
               <div className="w-full">
                 {(result || errorMsg || loading || errorKind) && (
-                  <div className="px-6 pt-24 pb-10 max-w-3xl mx-auto">
+                  <div className="px-6 pt-24 pb-[110px] max-w-3xl mx-auto">
                     {errorKind === "limit" && <LimitCard />}
 
                     {errorMsg && !errorKind && (
@@ -1112,95 +1116,79 @@ export default function ProSummary() {
                       </div>
                     )}
 
-                    {isOutdated && !loading && result && !isTooShortResult && (
-                      <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                        <span className="truncate">
-                          {tr("summary.outdated_notice", "El texto ha cambiado. Actualiza el resumen.")}
-                        </span>
-                        <div className="shrink-0 flex items-center gap-2">
-                          <Button
-                            type="button"
-                            onClick={handleGenerate}
-                            className="h-8 px-3 rounded-full text-[13px]"
-                            style={{ backgroundColor: "#2563eb", color: "#fff" }}
-                          >
-                            {tr("summary.outdated_update", "Actualizar")}
-                          </Button>
-                          <button
-                            type="button"
-                            onClick={() => setIsOutdated(false)}
-                            className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
-                            title={tr("summary.outdated_close", "Ocultar aviso")}
-                            aria-label={tr("summary.outdated_close", "Ocultar aviso")}
-                          >
-                            ×
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
                     {result && (
-                      <div className="flex flex-col gap-4">
+                      <>
                         <article className="prose prose-slate max-w-none">
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        {/* ACCIONES ABAJO: IZQ (copiar/pdf) + DER (ready + guardar) */}
+                        {/* ===== BLOQUE ABAJO DEL TODO (anclado al fondo) ===== */}
                         {!isTooShortResult && (
-                          <div className="mt-10 flex items-center justify-between">
-                            {/* Izquierda: iconos sin círculo (como tu 2ª captura) */}
-                            <div className="flex items-center gap-4">
-                              <button
-                                type="button"
-                                onClick={() => handleCopy(true)}
-                                title="Copiar"
-                                className={`inline-flex items-center justify-center ${
-                                  result ? "text-slate-500 hover:text-slate-700" : "text-slate-300 cursor-not-allowed"
-                                }`}
-                                aria-label="Copiar"
-                                disabled={!result}
-                              >
-                                {copiedFlash ? <Check className="w-5 h-5" style={{ color: BLUE }} /> : <Copy className="w-5 h-5" />}
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={handleDownloadPdf}
-                                title="PDF"
-                                className={`inline-flex items-center justify-center ${
-                                  result ? "text-slate-500 hover:text-slate-700" : "text-slate-300 cursor-not-allowed"
-                                }`}
-                                aria-label="PDF"
-                                disabled={!result}
-                              >
-                                <FileDown className="w-5 h-5" />
-                              </button>
-                            </div>
-
-                            {/* Derecha: mensaje + guardar */}
-                            <div className="flex flex-col items-end gap-1">
-                              {savedToLibrary && (
-                                <p className="text-xs text-emerald-600">{librarySavedMessage}</p>
-                              )}
-
-                              <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
-                                <p className="text-xs text-slate-500">{labelReadyMessage}</p>
-                                <motion.button
+                          <div className="absolute left-0 right-0 bottom-6">
+                            <div className="px-6 max-w-3xl mx-auto flex items-center justify-between">
+                              {/* Izquierda: iconos sin círculo */}
+                              <div className="flex items-center gap-4">
+                                <button
                                   type="button"
-                                  onClick={handleSaveSummary}
-                                  initial={{ opacity: 0, y: 4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ duration: 0.25 }}
-                                  className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
-                                  style={{ backgroundColor: "#22c55e" }}
+                                  onClick={() => handleCopy(true)}
+                                  title="Copiar"
+                                  className={`inline-flex items-center justify-center ${
+                                    result
+                                      ? "text-slate-500 hover:text-slate-700"
+                                      : "text-slate-300 cursor-not-allowed"
+                                  }`}
+                                  aria-label="Copiar"
+                                  disabled={!result}
                                 >
-                                  {labelSaveSummary}
-                                </motion.button>
+                                  {copiedFlash ? (
+                                    <Check className="w-5 h-5" style={{ color: BLUE }} />
+                                  ) : (
+                                    <Copy className="w-5 h-5" />
+                                  )}
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={handleDownloadPdf}
+                                  title="PDF"
+                                  className={`inline-flex items-center justify-center ${
+                                    result
+                                      ? "text-slate-500 hover:text-slate-700"
+                                      : "text-slate-300 cursor-not-allowed"
+                                  }`}
+                                  aria-label="PDF"
+                                  disabled={!result}
+                                >
+                                  <FileDown className="w-5 h-5" />
+                                </button>
+                              </div>
+
+                              {/* Derecha: ready + guardar */}
+                              <div className="flex flex-col items-end gap-1">
+                                {savedToLibrary && (
+                                  <p className="text-xs text-emerald-600">{librarySavedMessage}</p>
+                                )}
+
+                                <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
+                                  <p className="text-xs text-slate-500">{labelReadyMessage}</p>
+
+                                  <motion.button
+                                    type="button"
+                                    onClick={handleSaveSummary}
+                                    initial={{ opacity: 0, y: 4 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.25 }}
+                                    className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
+                                    style={{ backgroundColor: "#22c55e" }}
+                                  >
+                                    {labelSaveSummary}
+                                  </motion.button>
+                                </div>
                               </div>
                             </div>
                           </div>
                         )}
-                      </div>
+                      </>
                     )}
 
                     {loading && !result && (
