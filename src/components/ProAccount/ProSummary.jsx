@@ -753,7 +753,7 @@ export default function ProSummary() {
             transition={{ duration: 0.3 }}
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
-            <aside className="min-h-[500px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <aside className="min-h-[590px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="text-sm font-medium text-slate-700">{labelSources}</div>
               </div>
@@ -919,70 +919,75 @@ export default function ProSummary() {
                           onChange={(e) => setUrlsTextarea(e.target.value)}
                           placeholder={tr(
                             "summary.paste_urls_placeholder",
-                            "Escribe o pega las direcciones web (una por línea)…"
+                            "Introduce aquí una o más URLs (separadas por línea)"
                           )}
-                          className="w-full h-32 resize-none outline-none text-sm placeholder:text-slate-400"
+                          className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
+                          aria-label={labelPasteUrls}
                         />
-                        <div className="mt-3 flex items-center justify-end gap-2">
+                        <div className="mt-2 flex items-center gap-2">
+                          <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
+                            {labelSaveUrls}
+                          </Button>
                           <button
+                            type="button"
                             onClick={() => {
-                              setUrlInputOpen(false);
                               setUrlsTextarea("");
+                              setUrlInputOpen(false);
                             }}
-                            className="px-4 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-full"
+                            className="h-9 px-3 rounded-md border border-slate-300 hover:bg-slate-50 text-sm"
                           >
                             {labelCancel}
                           </button>
-                          <button
-                            onClick={addUrlsFromTextarea}
-                            className="px-4 py-1.5 text-sm font-medium bg-sky-600 text-white hover:bg-sky-700 rounded-full shadow-sm"
-                          >
-                            {labelSaveUrls}
-                          </button>
+                        </div>
+                        <div className="mt-6 text-xs text-slate-500">
+                          • {labelUrlsNoteVisible}
+                          <br />• {labelUrlsNotePaywalled}
                         </div>
                       </div>
                     )}
 
-                    <div className="flex-1 overflow-y-auto space-y-2 pr-1">
-                      {urlItems.map((u) => (
-                        <div
-                          key={u.id}
-                          className="flex items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"
-                        >
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs font-semibold text-sky-600 uppercase tracking-wider mb-0.5">
-                              {u.host}
+                    {urlItems.length > 0 && (
+                      <ul className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-200 rounded-xl border border-slate-200">
+                        {urlItems.map(({ id, url, host }) => (
+                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2">
+                            <div className="min-w-0 flex items-center gap-3 flex-1">
+                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                <UrlIcon className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-sm font-medium block truncate text-sky-600 hover:underline"
+                                  title={url}
+                                >
+                                  {host} — {url}
+                                </a>
+                              </div>
                             </div>
-                            <div className="text-sm text-slate-600 truncate">{u.url}</div>
-                          </div>
-                          <button
-                            onClick={() => removeUrl(u.id)}
-                            className="shrink-0 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                            title={labelRemove}
-                            aria-label={labelRemove}
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-100">
-                      <p className="text-xs text-amber-800 leading-relaxed">
-                        • {labelUrlsNoteVisible}
-                        <br />
-                        • {labelUrlsNotePaywalled}
-                      </p>
-                    </div>
+                            <button
+                              onClick={() => removeUrl(id)}
+                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                              title={labelRemove}
+                              aria-label={labelRemove}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 )}
               </div>
             </aside>
 
-            {/* ===== Panel Resultado (derecha) ===== */}
-            <main className="min-h-[500px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col relative">
-              <div className="h-11 flex items-center justify-between px-2 border-b border-slate-200 bg-slate-50/60">
-                <div className="flex items-center">
+            {/* ===== Panel Derecho ===== */}
+            <section className="relative min-h-[590px] pb-[86px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+              {/* Barra superior */}
+              <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
+                <div className="flex items-center gap-2">
                   <LengthTab
                     active={summaryLength === "breve"}
                     label={LBL_SHORT}
@@ -999,203 +1004,237 @@ export default function ProSummary() {
                     active={summaryLength === "detallado"}
                     label={LBL_LONG}
                     onClick={() => handleLengthChange("detallado")}
-                    showDivider={false}
                   />
                 </div>
 
-                <div className="flex items-center gap-1.5 pr-2">
+                <div className="flex items-center gap-1">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="inline-flex items-center gap-2 h-8 px-3 rounded-md text-[13px] font-medium border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
-                        <span className="uppercase text-slate-500">{outputLang}</span>
+                      <button
+                        type="button"
+                        className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                        aria-label="Idioma de salida"
+                      >
+                        <span className="truncate">
+                          {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                        </span>
                         <svg
-                          className="w-3.5 h-3.5 text-slate-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+                          className="w-4 h-4 text-slate-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
+                          <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                         </svg>
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-40 p-1.5">
-                      <DropdownMenuItem onClick={() => setOutputLang("eus")} className="rounded-md">
-                        {LBL_EUS}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setOutputLang("es")} className="rounded-md">
+
+                    <DropdownMenuContent
+                      align="end"
+                      className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+                    >
+                      <DropdownMenuItem
+                        onClick={() => {
+                          if (outputLang !== "es") {
+                            setOutputLang("es");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
                         {LBL_ES}
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setOutputLang("en")} className="rounded-md">
+                      <DropdownMenuItem
+                        onClick={() => {
+                          if (outputLang !== "eus") {
+                            setOutputLang("eus");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
+                        {LBL_EUS}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          if (outputLang !== "en") {
+                            setOutputLang("en");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
                         {LBL_EN}
                       </DropdownMenuItem>
                       <DropdownMenuArrow className="fill-white" />
                     </DropdownMenuContent>
                   </DropdownMenu>
 
+                  {/* Eliminar texto de la izquierda */}
                   <button
-                    onClick={() => {
-                      clearRight();
-                      setSourceMode(null);
-                      setTextValue("");
-                      setDocuments([]);
-                      setDocumentsText([]);
-                      setUrlItems([]);
-                    }}
-                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
-                    title={tr("summary.clear_all", "Limpiar todo")}
+                    type="button"
+                    onClick={handleClearLeft}
+                    title="Eliminar texto de entrada y resultado"
+                    className={`h-9 w-9 flex items-center justify-center ${
+                      sourceMode === "text" && textValue
+                        ? "text-slate-600 hover:text-slate-800"
+                        : "text-slate-300 cursor-not-allowed"
+                    }`}
+                    aria-label="Eliminar texto de entrada y resultado"
+                    disabled={!(sourceMode === "text" && textValue)}
                   >
                     <Trash className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
-              <div className="flex-1 p-8 overflow-y-auto">
-                {errorKind === "limit" ? (
-                  <div className="h-full flex items-center justify-center">
-                    <LimitCard />
-                  </div>
-                ) : loading ? (
-                  <div className="h-full flex flex-col items-center justify-center space-y-4">
-                    <div className="relative w-12 h-12">
-                      <div className="absolute inset-0 border-4 border-slate-100 rounded-full" />
-                      <div
-                        className="absolute inset-0 border-4 border-sky-500 rounded-full border-t-transparent animate-spin"
-                        style={{ animationDuration: "0.8s" }}
-                      />
-                    </div>
-                    <div className="text-sm font-medium text-slate-500 animate-pulse">
-                      {tr("summary.generating_wait", "Laburpena sortzen...")}
-                    </div>
-                  </div>
-                ) : result ? (
-                  <div className="max-w-3xl mx-auto">
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-[17px] leading-[1.7] text-slate-700 whitespace-pre-wrap selection:bg-sky-100 selection:text-sky-900"
+              {/* Estado inicial */}
+              {!loading && !result && !errorKind && (
+                <>
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 z-10"
+                    style={{ top: "30%" }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={handleGenerate}
+                      disabled={loading || !hasValidInput}
+                      className="h-10 md:h-11 w-[220px] md:w-[240px] rounded-full text-[14px] md:text-[15px] font-medium shadow-sm flex items-center justify-center hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                      style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
                     >
-                      {result}
-                    </motion.div>
-
-                    <div className="mt-12 flex items-center justify-between pt-6 border-t border-slate-100">
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={handleSaveSummary}
-                          disabled={isTooShortResult}
-                          className={`inline-flex items-center gap-2 h-10 px-5 rounded-full text-sm font-semibold transition-all shadow-sm ${
-                            savedToLibrary
-                              ? "bg-green-500 text-white"
-                              : isTooShortResult
-                              ? "bg-slate-100 text-slate-400 cursor-not-allowed"
-                              : "bg-slate-900 text-white hover:bg-slate-800 active:scale-95"
-                          }`}
-                        >
-                          {savedToLibrary ? (
-                            <>
-                              <Check className="w-4 h-4" />
-                              {librarySavedMessage}
-                            </>
-                          ) : (
-                            <>
-                              <Plus className="w-4 h-4" />
-                              {labelSaveSummary}
-                            </>
-                          )}
-                        </button>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleCopy(true)}
-                          className="p-2.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition-colors relative"
-                          title={tr("summary.copy_clipboard", "Copiar al portapapeles")}
-                        >
-                          {copiedFlash ? (
-                            <Check className="w-5 h-5 text-green-600" />
-                          ) : (
-                            <Copy className="w-5 h-5" />
-                          )}
-                        </button>
-                        <button
-                          onClick={handleExportPdf}
-                          className="p-2.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition-colors"
-                          title={tr("summary.export_pdf", "Exportar a PDF")}
-                        >
-                          <FileDown className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
+                      {labelGenerateFromSources}
+                    </Button>
                   </div>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-center px-6">
-                    <div className="w-20 h-20 rounded-3xl bg-sky-50 flex items-center justify-center mb-6">
-                      <FileText className="w-10 h-10 text-sky-400" />
-                    </div>
-                    <div className="max-w-sm">
-                      <div className="text-xl font-semibold text-slate-800 mb-3">
-                        {tr("summary.empty_result_title", "Laburpena sortu")}
+
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
+                    style={{ top: "40%" }}
+                  >
+                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+                  </div>
+                </>
+              )}
+
+              {/* Resultado / errores / loader / límite */}
+              <div className="w-full">
+                {(result || errorMsg || loading || errorKind) && (
+                  <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
+                    {errorKind === "limit" && <LimitCard />}
+
+                    {errorMsg && !errorKind && (
+                      <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+                        {errorMsg}
                       </div>
-                      <p className="text-slate-500 leading-relaxed">{labelHelpRight}</p>
-                    </div>
+                    )}
+
+                    {isOutdated && !loading && result && !isTooShortResult && (
+                      <div className="mb-3 flex items-center justify-between gap-3 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                        <span className="truncate">
+                          {tr("summary.outdated_notice", "El texto ha cambiado. Actualiza el resumen.")}
+                        </span>
+                        <div className="shrink-0 flex items-center gap-2">
+                          <Button
+                            type="button"
+                            onClick={handleGenerate}
+                            className="h-8 px-3 rounded-full text-[13px]"
+                            style={{ backgroundColor: "#2563eb", color: "#fff" }}
+                          >
+                            {tr("summary.outdated_update", "Actualizar")}
+                          </Button>
+                          <button
+                            type="button"
+                            onClick={() => setIsOutdated(false)}
+                            className="h-8 w-8 rounded-md hover:bg-amber-100 text-amber-700"
+                            title={tr("summary.outdated_close", "Ocultar aviso")}
+                            aria-label={tr("summary.outdated_close", "Ocultar aviso")}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {result && (
+                      <div className="flex flex-col gap-4">
+                        <article className="prose prose-slate max-w-none">
+                          <p className="whitespace-normal">{result}</p>
+                        </article>
+                      </div>
+                    )}
+
+                    {loading && !result && (
+                      <div className="space-y-3 animate-pulse">
+                        <div className="h-4 bg-slate-200 rounded" />
+                        <div className="h-4 bg-slate-200 rounded w-11/12" />
+                        <div className="h-4 bg-slate-200 rounded w-10/12" />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
 
-              {/* Botón flotante central */}
-              {!loading && !result && !errorKind && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <button
-                    onClick={handleGenerate}
-                    disabled={!hasValidInput}
-                    className={`pointer-events-auto px-8 h-14 rounded-full text-lg font-bold shadow-xl transition-all flex items-center gap-3 ${
-                      hasValidInput
-                        ? "bg-sky-500 text-white hover:bg-sky-600 active:scale-95 shadow-sky-200"
-                        : "bg-slate-200 text-slate-400 cursor-not-allowed"
-                    }`}
-                  >
-                    {labelGenerateFromSources}
-                  </button>
-                </div>
-              )}
+              {/* ===== Barra inferior del RESULTADO (izq: iconos / der: guardar) ===== */}
+              <div className="absolute left-0 right-0 bottom-4 px-6">
+                <div className="flex items-center justify-between">
+                  {/* Izquierda: copiar + PDF (SIN círculo) */}
+                  <div className="flex items-center gap-5">
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(true)}
+                      title="Copiar"
+                      aria-label="Copiar"
+                      disabled={!result}
+                      className={`${result ? iconBtnBase : `${iconBtnBase} ${iconDisabled}`}`}
+                    >
+                      {copiedFlash ? (
+                        <Check className="w-[18px] h-[18px]" style={{ color: BLUE }} />
+                      ) : (
+                        <Copy className="w-[18px] h-[18px]" />
+                      )}
+                    </button>
 
-              {/* Alerta de cambios pendientes (si hay resultado pero se ha editado el texto) */}
-              {isOutdated && result && !loading && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute bottom-6 left-1/2 -translate-x-1/2"
-                >
-                  <button
-                    onClick={handleGenerate}
-                    className="flex items-center gap-2 px-6 h-11 bg-amber-500 text-white text-sm font-bold rounded-full shadow-lg hover:bg-amber-600 transition-colors"
-                  >
-                    <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    {tr("summary.update_required", "Actualizar resumen")}
-                  </button>
-                </motion.div>
-              )}
-            </main>
+                    <button
+                      type="button"
+                      onClick={handleExportPdf}
+                      title="PDF"
+                      aria-label="PDF"
+                      disabled={!result}
+                      className={`${result ? iconBtnBase : `${iconBtnBase} ${iconDisabled}`}`}
+                    >
+                      <FileDown className="w-[18px] h-[18px]" />
+                    </button>
+                  </div>
+
+                  {/* Derecha: mensaje + guardar (solo si hay resultado real) */}
+                  {result && !isTooShortResult && (
+                    <div className="flex flex-col items-end gap-1">
+                      {savedToLibrary && (
+                        <p className="text-xs text-emerald-600">{librarySavedMessage}</p>
+                      )}
+
+                      <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
+                        <p className="text-xs text-slate-500">{labelReadyMessage}</p>
+
+                        <motion.button
+                          type="button"
+                          onClick={handleSaveSummary}
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
+                          style={{ backgroundColor: "#22c55e" }}
+                        >
+                          {labelSaveSummary}
+                        </motion.button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
           </motion.section>
         </div>
       </section>
-
-      {/* Footer / Mobile floating trigger si fuera necesario (opcional) */}
-      <style jsx global>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 3s linear infinite;
-        }
-      `}</style>
     </>
   );
 }
