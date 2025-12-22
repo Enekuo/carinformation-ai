@@ -25,7 +25,7 @@ import { addLibraryDoc } from "@/proLibraryStore";
 export default function ProSummary() {
   const { t } = useTranslation();
 
-  // ✅ evita que se muestre la clave literal (ej: "ready_message") si falta traducción
+  // ✅ evita que se muestre la clave literal si falta traducción
   const tr = (key, fallback) => {
     const val = t(key);
     return !val || val === key ? fallback : val;
@@ -142,11 +142,10 @@ export default function ProSummary() {
   const labelSaveSummary = tr("save_button_label", "Gorde");
   const librarySavedMessage = tr("library_saved_toast", "Liburutegian gordeta");
 
-  // ✅ Tooltips/labels COPY + PDF con claves (si no existen, usa fallback)
-  // (Si prefieres reutilizar las del translator sin añadir nuevas, dímelo y lo cambio a translator.copy / translator.pdf / translator.copied)
-  const labelCopy = tr("summary.copy", "Copiar");
-  const labelCopied = tr("summary.copied", "Copiado");
-  const labelPdf = tr("summary.pdf", "PDF");
+  // ✅ Tooltips existentes del translator (NO nuevas keys)
+  const tooltipCopy = t("translator.copy") || "Copiar";
+  const tooltipCopied = t("translator.copied") || "Copiado";
+  const tooltipPdf = t("translator.pdf") || "PDF";
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -248,13 +247,13 @@ export default function ProSummary() {
     };
     const { maxWords, maxSentences } = config[mode] || config.breve;
 
-    let t = (text || "")
+    let t2 = (text || "")
       .replace(/\r/g, "")
       .replace(/\n+/g, " ")
       .replace(/\s{2,}/g, " ")
       .trim();
 
-    const sentences = t.split(/(?<=[.!?…])\s+/).filter(Boolean);
+    const sentences = t2.split(/(?<=[.!?…])\s+/).filter(Boolean);
     let clipped = sentences.slice(0, maxSentences).join(" ");
 
     const words = clipped.split(/\s+/);
@@ -709,7 +708,8 @@ export default function ProSummary() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error(tr("summary.error_no_text", "No se recibió texto de la API."));
+      if (!rawText)
+        throw new Error(tr("summary.error_no_text", "No se recibió texto de la API."));
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -719,10 +719,7 @@ export default function ProSummary() {
         .replace(/\s{2,}/g, " ")
         .trim();
 
-      if (
-        cleaned &&
-        cleaned.trim().toLowerCase() === tooShortMsg.trim().toLowerCase()
-      ) {
+      if (cleaned && cleaned.trim().toLowerCase() === tooShortMsg.trim().toLowerCase()) {
         setResult(tooShortMsg);
         setIsTooShortResult(true);
         setLastSummarySig(canonicalize(textValue));
@@ -778,10 +775,7 @@ export default function ProSummary() {
               </div>
 
               {/* Tabs */}
-              <div
-                className="flex items-center px-2 border-b"
-                style={{ borderColor: DIVIDER }}
-              >
+              <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
                 <TabBtn
                   active={sourceMode === "text"}
                   icon={FileText}
@@ -836,10 +830,7 @@ export default function ProSummary() {
                     />
                     <div className="mt-2">
                       <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className={`h-1 ${barClass}`}
-                          style={{ width: `${pct}%` }}
-                        />
+                        <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
                       </div>
                       <div className="mt-1 text-right text-xs">
                         <span
@@ -851,8 +842,7 @@ export default function ProSummary() {
                               : "text-slate-500"
                           }
                         >
-                          {charCount.toLocaleString()} /{" "}
-                          {MAX_CHARS.toLocaleString()}
+                          {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -965,11 +955,7 @@ export default function ProSummary() {
                           aria-label={labelPasteUrls}
                         />
                         <div className="mt-2 flex items-center gap-2">
-                          <Button
-                            type="button"
-                            onClick={addUrlsFromTextarea}
-                            className="h-9"
-                          >
+                          <Button type="button" onClick={addUrlsFromTextarea} className="h-9">
                             {labelSaveUrls}
                           </Button>
                           <button
@@ -1126,13 +1112,13 @@ export default function ProSummary() {
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
-                    title={copiedFlash ? labelCopied : labelCopy}
+                    title={copiedFlash ? tooltipCopied : tooltipCopy}
                     className={`h-9 w-9 flex items-center justify-center ${
                       result
                         ? "text-slate-600 hover:text-slate-800"
                         : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label={copiedFlash ? labelCopied : labelCopy}
+                    aria-label={copiedFlash ? tooltipCopied : tooltipCopy}
                     disabled={!result}
                   >
                     {copiedFlash ? (
@@ -1207,7 +1193,6 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        {/* ===== CONTROLES ABAJO DERECHA (iconos separados del botón verde) ===== */}
                         {(() => {
                           const hasResult =
                             !!result && result.trim().length > 0 && !isTooShortResult;
@@ -1223,32 +1208,38 @@ export default function ProSummary() {
                                 </p>
                               )}
 
-                              {/* Controles abajo derecha */}
+                              {/* Controles abajo derecha (POSICIÓN INTACTA) */}
                               <div className="absolute bottom-4 right-6 flex items-center gap-4">
-                                {/* SOLO ICONOS (mover estos) */}
+                                {/* SOLO ICONOS (POSICIÓN INTACTA) */}
                                 <div className="flex items-center gap-4 mr-[40px]">
+                                  {/* Copiar con tooltip ARRIBA */}
                                   <button
                                     type="button"
                                     onClick={() => handleCopy(true)}
-                                    title={copiedFlash ? labelCopied : labelCopy}
-                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
-                                    aria-label={copiedFlash ? labelCopied : labelCopy}
+                                    aria-label={copiedFlash ? tooltipCopied : tooltipCopy}
+                                    className="group relative inline-flex items-center justify-center text-slate-500 hover:text-slate-700 p-2 rounded-md hover:bg-slate-100"
                                   >
                                     {copiedFlash ? (
                                       <Check className="w-5 h-5" style={{ color: BLUE }} />
                                     ) : (
                                       <Copy className="w-6 h-6" />
                                     )}
+                                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                                      {copiedFlash ? tooltipCopied : tooltipCopy}
+                                    </span>
                                   </button>
 
+                                  {/* PDF con tooltip ARRIBA */}
                                   <button
                                     type="button"
                                     onClick={handleDownloadPdf}
-                                    title={labelPdf}
-                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700 ml-[12px]"
-                                    aria-label={labelPdf}
+                                    aria-label={tooltipPdf}
+                                    className="group relative inline-flex items-center justify-center text-slate-500 hover:text-slate-700 p-2 rounded-md hover:bg-slate-100"
                                   >
                                     <FileDown className="w-6 h-6" />
+                                    <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                                      {tooltipPdf}
+                                    </span>
                                   </button>
                                 </div>
 
@@ -1279,7 +1270,7 @@ export default function ProSummary() {
                       </div>
                     )}
                   </div>
-                )} 
+                )}
               </div>
             </section>
           </motion.section>
