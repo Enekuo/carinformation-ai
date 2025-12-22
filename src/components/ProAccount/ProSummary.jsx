@@ -1200,7 +1200,7 @@ export default function ProSummary() {
                                     {copiedFlash ? (
                                       <Check className="w-5 h-5" style={{ color: BLUE }} />
                                     ) : (
-                                      <Copy className="w-5 h-5" />
+                                      <Copy className="w-7 h-7" />
                                     )}
                                   </button>
 
@@ -1211,7 +1211,7 @@ export default function ProSummary() {
                                     className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
                                     aria-label="PDF"
                                   >
-                                    <FileDown className="w-5 h-5" />
+                                    <FileDown className="w-7 h-7" />
                                   </button>
                                 </div>
 
