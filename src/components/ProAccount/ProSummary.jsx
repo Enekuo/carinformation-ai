@@ -347,7 +347,8 @@ export default function ProSummary() {
             if (!isTxt && !isMd) return resolve(null);
 
             const fr = new FileReader();
-            fr.onload = () => resolve({ id, name, text: String(fr.result || "") });
+            fr.onload = () =>
+              resolve({ id, name, text: String(fr.result || "") });
             fr.onerror = () => resolve(null);
             fr.readAsText(file, "utf-8");
           })
@@ -419,7 +420,8 @@ export default function ProSummary() {
     setUrlsTextarea("");
     setUrlInputOpen(false);
   };
-  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) =>
+    setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   // ===== Validación =====
   const textIsValid = useMemo(() => {
@@ -428,7 +430,8 @@ export default function ProSummary() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidInput =
+    textIsValid || urlItems.length > 0 || documents.length > 0;
 
   // ===== Acciones =====
   const handleCopy = async (flash = false) => {
@@ -610,7 +613,9 @@ export default function ProSummary() {
         ? `Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: "${tooShortMsg}".`
         : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}` : "",
+      urlsList
+        ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
+        : "",
       docsInline,
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -688,7 +693,10 @@ export default function ProSummary() {
         .replace(/\s{2,}/g, " ")
         .trim();
 
-      if (cleaned && cleaned.trim().toLowerCase() === tooShortMsg.trim().toLowerCase()) {
+      if (
+        cleaned &&
+        cleaned.trim().toLowerCase() === tooShortMsg.trim().toLowerCase()
+      ) {
         setResult(tooShortMsg);
         setIsTooShortResult(true);
         setLastSummarySig(canonicalize(textValue));
@@ -716,7 +724,11 @@ export default function ProSummary() {
   const nearLimit = charCount >= MAX_CHARS * 0.9 && charCount < MAX_CHARS;
   const overLimit = charCount > MAX_CHARS;
 
-  const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
+  const barClass = overLimit
+    ? "bg-red-500"
+    : nearLimit
+    ? "bg-amber-500"
+    : "bg-sky-500";
 
   return (
     <>
@@ -734,11 +746,16 @@ export default function ProSummary() {
             <aside className="min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
               {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
-                <div className="text-sm font-medium text-slate-700">{labelSources}</div>
+                <div className="text-sm font-medium text-slate-700">
+                  {labelSources}
+                </div>
               </div>
 
               {/* Tabs */}
-              <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
+              <div
+                className="flex items-center px-2 border-b"
+                style={{ borderColor: DIVIDER }}
+              >
                 <TabBtn
                   active={sourceMode === "text"}
                   icon={FileText}
@@ -770,9 +787,13 @@ export default function ProSummary() {
                       <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-slate-200/70 flex items-center justify-center">
                         <FileText className="w-6 h-6 text-slate-500" />
                       </div>
-                      <p className="text-[15px] font-semibold text-slate-600">{leftTitle}</p>
+                      <p className="text-[15px] font-semibold text-slate-600">
+                        {leftTitle}
+                      </p>
                       {leftBody && (
-                        <p className="mt-1 text-[13px] leading-6 text-slate-500">{leftBody}</p>
+                        <p className="mt-1 text-[13px] leading-6 text-slate-500">
+                          {leftBody}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -789,15 +810,23 @@ export default function ProSummary() {
                     />
                     <div className="mt-2">
                       <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
+                        <div
+                          className={`h-1 ${barClass}`}
+                          style={{ width: `${pct}%` }}
+                        />
                       </div>
                       <div className="mt-1 text-right text-xs">
                         <span
                           className={
-                            overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"
+                            overLimit
+                              ? "text-red-600"
+                              : nearLimit
+                              ? "text-amber-600"
+                              : "text-slate-500"
                           }
                         >
-                          {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+                          {charCount.toLocaleString()} /{" "}
+                          {MAX_CHARS.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -832,9 +861,15 @@ export default function ProSummary() {
                       <div className="mx-auto mb-5 w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
                         <Plus className="w-10 h-10 text-sky-600" />
                       </div>
-                      <div className="text-xl font-semibold text-slate-800">{labelChooseFileTitle}</div>
-                      <div className="mt-4 text-sm text-slate-500">{labelAcceptedFormats}</div>
-                      <div className="mt-1 text-xs text-slate-400">{labelFolderHint}</div>
+                      <div className="text-xl font-semibold text-slate-800">
+                        {labelChooseFileTitle}
+                      </div>
+                      <div className="mt-4 text-sm text-slate-500">
+                        {labelAcceptedFormats}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-400">
+                        {labelFolderHint}
+                      </div>
                     </button>
 
                     {documents.length > 0 && (
@@ -849,7 +884,9 @@ export default function ProSummary() {
                                 <FileIcon className="w-4 h-4" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">{file.name}</span>
+                                <span className="text-sm font-medium block truncate">
+                                  {file.name}
+                                </span>
                                 <span className="text-xs text-slate-500">
                                   {(file.size / 1024 / 1024).toFixed(2)} MB
                                 </span>
@@ -1054,7 +1091,9 @@ export default function ProSummary() {
                     onClick={() => handleCopy(true)}
                     title="Copiar resultado"
                     className={`h-9 w-9 flex items-center justify-center ${
-                      result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                      result
+                        ? "text-slate-600 hover:text-slate-800"
+                        : "text-slate-300 cursor-not-allowed"
                     }`}
                     aria-label="Copiar resultado"
                     disabled={!result}
@@ -1087,7 +1126,10 @@ export default function ProSummary() {
               {/* Estado inicial */}
               {!loading && !result && !errorKind && (
                 <>
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 z-10"
+                    style={{ top: "30%" }}
+                  >
                     <Button
                       type="button"
                       onClick={handleGenerate}
@@ -1099,8 +1141,13 @@ export default function ProSummary() {
                     </Button>
                   </div>
 
-                  <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
-                    <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
+                    style={{ top: "40%" }}
+                  >
+                    <p className="text-sm leading-6 text-slate-600 max-w-xl">
+                      {labelHelpRight}
+                    </p>
                   </div>
                 </>
               )}
@@ -1123,7 +1170,7 @@ export default function ProSummary() {
                           <p className="whitespace-normal">{result}</p>
                         </article>
 
-                        {/* ===== CONTROLES ABAJO DERECHA (como tu captura) ===== */}
+                        {/* ===== CONTROLES ABAJO DERECHA (iconos separados del botón verde) ===== */}
                         {(() => {
                           const hasResult =
                             !!result && result.trim().length > 0 && !isTooShortResult;
@@ -1140,32 +1187,35 @@ export default function ProSummary() {
                               )}
 
                               {/* Controles abajo derecha */}
-                              <div className="absolute bottom-6 right-[40px] flex items-center gap-4">
-                                <button 
-                                  type="button"
-                                  onClick={() => handleCopy(true)}
-                                  title="Copiar"
-                                  className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
-                                  aria-label="Copiar"
-                                >
-                                  {copiedFlash ? (
-                                    <Check className="w-5 h-5" style={{ color: BLUE }} />
-                                  ) : (
-                                    <Copy className="w-5 h-5" />
-                                  )}
-                                </button>
+                              <div className="absolute bottom-6 right-6 flex items-center gap-4">
+                                {/* SOLO ICONOS (mover estos) */}
+                                <div className="flex items-center gap-4 mr-[40px]">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopy(true)}
+                                    title="Copiar"
+                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
+                                    aria-label="Copiar"
+                                  >
+                                    {copiedFlash ? (
+                                      <Check className="w-5 h-5" style={{ color: BLUE }} />
+                                    ) : (
+                                      <Copy className="w-5 h-5" />
+                                    )}
+                                  </button>
 
-                                <button
-                                  type="button"
-                                  onClick={handleDownloadPdf}
-                                  title="PDF"
-                                  className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
-                                  aria-label="PDF"
-                                >
-                                  <FileDown className="w-5 h-5" />
-                                </button>
+                                  <button
+                                    type="button"
+                                    onClick={handleDownloadPdf}
+                                    title="PDF"
+                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
+                                    aria-label="PDF"
+                                  >
+                                    <FileDown className="w-5 h-5" />
+                                  </button>
+                                </div>
 
-                                {/* Botón Guardar SOLO cuando hay resultado */}
+                                {/* BOTÓN VERDE (NO SE MUEVE) */}
                                 <motion.button
                                   type="button"
                                   onClick={handleSaveSummary}
