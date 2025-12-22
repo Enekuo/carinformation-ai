@@ -94,7 +94,7 @@ export default function ProTranslator() {
   const [savedToLibrary, setSavedToLibrary] = useState(false);
   const savedTimerRef = useRef(null);
 
-  // ✅ NUEVO: estado de validez del resultado (solo "success" permite Guardar)
+  // ✅ estado de validez del resultado (solo "success" permite Guardar)
   const [resultStatus, setResultStatus] = useState("idle"); // "idle" | "loading" | "success" | "error"
 
   useEffect(
@@ -121,26 +121,13 @@ export default function ProTranslator() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  const autoResize = (el) => {
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
-  };
-  useEffect(() => {
-    autoResize(leftTA.current);
-  }, [leftText]);
-  useEffect(() => {
-    autoResize(rightTA.current);
-  }, [rightText]);
-
-  // ✅ NUEVO: detecta mensajes que NO son traducción real (rechazos típicos)
+  // ✅ detecta mensajes que NO son traducción real (rechazos típicos)
   const isNonResultMessage = (txt) => {
     const s = (txt || "").trim();
     if (!s) return true;
 
     const low = s.toLowerCase();
 
-    // patrones típicos de rechazo en ES / EN / EUS
     const patterns = [
       "lo siento",
       "no puedo ayudar",
@@ -163,11 +150,10 @@ export default function ProTranslator() {
     return false;
   };
 
-  // ✅ NUEVO: aplica salida y marca success/error correctamente
+  // ✅ aplica salida y marca success/error correctamente
   const applyTranslationOutput = (data) => {
     const out = (data?.content ?? data?.translation ?? "").toString();
 
-    // Si backend algún día devuelve flags, los respetamos
     const flaggedRefusal =
       data?.refusal === true ||
       data?.blocked === true ||
@@ -187,7 +173,6 @@ export default function ProTranslator() {
     }
 
     if (isNonResultMessage(out)) {
-      // mostramos el mensaje, pero NO permitimos Guardar
       setRightText(out);
       setResultStatus("error");
       return;
@@ -691,7 +676,6 @@ export default function ProTranslator() {
 
   // 🔹 guardar traducción en la biblioteca + mostrar mensaje
   const handleSaveTranslation = () => {
-    // ✅ Solo guardamos si el resultado está marcado como success
     if (resultStatus !== "success") return;
 
     const text = rightText?.trim();
@@ -794,7 +778,7 @@ export default function ProTranslator() {
   const removeUrl = (id) =>
     setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
-  // ✅ SOLO mostramos "Guardar" cuando el resultado es real (success) y no está cargando
+  // ✅ SOLO mostramos "Guardar" cuando el resultado es real
   const canSave = resultStatus === "success" && !!rightText?.trim() && !loading;
 
   return (
@@ -975,19 +959,18 @@ export default function ProTranslator() {
               </button>
             </div>
 
-            {/* paneles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full">
+            {/* ✅ paneles (ALTURA FIJA + SCROLL INTERNO) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full h-[600px]">
               {/* IZQUIERDA */}
-              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative">
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-full flex flex-col min-h-0">
                 {sourceMode === "text" && (
                   <>
                     <textarea
                       ref={leftTA}
                       value={leftText}
                       onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
-                      onInput={(e) => autoResize(e.currentTarget)}
                       placeholder={t("translator.left_placeholder")}
-                      className="w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                      className="w-full flex-1 min-h-0 overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
                     />
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                       {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
@@ -1016,7 +999,7 @@ export default function ProTranslator() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative ${
+                    className={`h-full w-full flex flex-col relative min-h-0 ${
                       dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
                     }`}
                     onDragEnter={onDragEnter}
@@ -1054,7 +1037,7 @@ export default function ProTranslator() {
                     </button>
 
                     {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
+                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-y-auto">
                         {documents.map(({ id, file }) => (
                           <li
                             key={id}
@@ -1089,7 +1072,7 @@ export default function ProTranslator() {
                 )}
 
                 {sourceMode === "url" && (
-                  <div className="h-full w-full flex flex-col">
+                  <div className="h-full w-full flex flex-col min-h-0">
                     <div className="mb-3 flex items-center justify-between">
                       <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
                         <UrlIcon className="w-4 h-4" />
@@ -1142,7 +1125,7 @@ export default function ProTranslator() {
                     )}
 
                     {urlItems.length > 0 && (
-                      <ul className="flex-1 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200">
+                      <ul className="flex-1 min-h-0 overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200">
                         {urlItems.map(({ id, url, host }) => (
                           <li
                             key={id}
@@ -1181,7 +1164,7 @@ export default function ProTranslator() {
               </div>
 
               {/* DERECHA */}
-              <div className="p-8 md:p-10 relative">
+              <div className="p-8 md:p-10 relative h-full flex flex-col min-h-0">
                 <textarea
                   ref={rightTA}
                   value={
@@ -1190,9 +1173,8 @@ export default function ProTranslator() {
                       : rightText
                   }
                   onChange={(e) => setRightText(e.target.value)}
-                  onInput={(e) => autoResize(e.currentTarget)}
                   placeholder={t("translator.right_placeholder")}
-                  className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
+                  className={`w-full flex-1 min-h-0 overflow-y-auto resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
                     loading ? "italic text-slate-500" : ""
                   }`}
                 />
@@ -1274,6 +1256,7 @@ export default function ProTranslator() {
                 </div>
               </div>
             </div>
+            {/* fin paneles */}
           </div>
         </div>
       </section>
