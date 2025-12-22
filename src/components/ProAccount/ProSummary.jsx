@@ -960,7 +960,7 @@ export default function ProSummary() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[620px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+            <section className="relative min-h-[600px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
               {/* Barra superior */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
