@@ -44,14 +44,20 @@ export const translations = {
 
 
 
-  /* === Bloque de Resumen (Euskalia) === */
+  // =========================
+  //        SUMMARY RESUMIDOR
+  // =========================    
   summary: {
     title:                 { ES: "Resumidor", EUS: "Laburtzailea" },
     sources_title:         { ES: "Fuentes", EUS: "Iturriak" },
     sources_tab_text:      { ES: "Texto", EUS: "Testua" },
     sources_tab_document:  { ES: "Documento", EUS: "Dokumentua" },
     sources_tab_url:       { ES: "URL", EUS: "URL" },
-
+    copy:                  { ES: "Copiar", EUS: "Kopiatu"},
+    copied:                { ES: "Copiado", EUS: "Kopiatuta"},
+    pdf:                   { ES: "PDF", EUS: "PDF" },
+    
+    
     // Mensajes de ayuda (izquierda/derecha)
     create_help_left: {
       ES:  "Aquí aparecerán tus textos o documentos subidos. Puedes añadir archivos PDF, texto copiado, enlaces web...",
