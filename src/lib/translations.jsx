@@ -2393,7 +2393,7 @@ library_create_ai_detector: {
 },
 library_filter_humanizer: {
   ES: "Humanizador",
-  EUS: "humanizatzailea",
+  EUS: "Humanizatzailea",
 },
 library_create_humanizer: {
   ES: "Crear humanizado",
