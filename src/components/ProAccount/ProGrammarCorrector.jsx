@@ -449,6 +449,7 @@ export default function ProGrammarCorrector() {
 
   const handleSaveToLibrary = () => {
     if (!result) return;
+    if (!hasDiff) return; // ✅ SOLO guardar si hay corrección real
 
     const now = new Date();
     const createdAt = now.toISOString();
@@ -1164,8 +1165,8 @@ export default function ProGrammarCorrector() {
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar (IGUAL QUE TRANSLATOR) */}
-            {result && (
+            {/* ✅ Barra inferior: SOLO si hay corrección (hasDiff) */}
+            {result && hasDiff && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && (
                   <p className="text-xs text-emerald-600 mb-1">
@@ -1193,7 +1194,7 @@ export default function ProGrammarCorrector() {
                     </span>
                   </button>
 
-                  {/* Descargar (icono PDF como en translator) */}
+                  {/* Descargar */}
                   <button
                     type="button"
                     onClick={handleDownload}
