@@ -1208,7 +1208,7 @@ export default function ProSummary() {
                                     type="button"
                                     onClick={handleDownloadPdf}
                                     title="PDF"
-                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700"
+                                    className="inline-flex items-center justify-center text-slate-500 hover:text-slate-700 ml-[12px]"
                                     aria-label="PDF"
                                   >
                                     <FileDown className="w-6 h-6" />
