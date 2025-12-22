@@ -1187,7 +1187,7 @@ export default function ProSummary() {
                               )}
 
                               {/* Controles abajo derecha */}
-                              <div className="absolute bottom-6 right-6 flex items-center gap-4">
+                              <div className="absolute bottom-4 right-6 flex items-center gap-4">
                                 {/* SOLO ICONOS (mover estos) */}
                                 <div className="flex items-center gap-4 mr-[40px]">
                                   <button
