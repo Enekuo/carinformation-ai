@@ -2,8 +2,8 @@ import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FileText,
-  File as FileIcon,
   FileDown,
+  File as FileIcon,
   Link2 as UrlIcon,
   Plus,
   X,
@@ -133,12 +133,12 @@ export default function ProSummary() {
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
 
-  // ✅ CLAVES COMO ESTABAN (NO CAMBIAR)
+  // ✅ CLAVES REALES (SIN INVENTAR)
   const labelReadyMessage = tr(
-    "summary.ready_to_save_message",
-    "Gordetzeko prest"
+    "ready_message",
+    "Resumen listo · Guardar en tu biblioteca"
   );
-  const labelSaveSummary = tr("summary.save_button", "Gorde");
+  const labelSaveSummary = tr("save_button_label", "Guardar");
 
   const librarySavedMessage = tr(
     "library_saved_toast",
@@ -232,7 +232,9 @@ export default function ProSummary() {
       } catch {}
     }
     const seen = new Set();
-    return valid.filter((v) => (seen.has(v.href) ? false : (seen.add(v.href), true)));
+    return valid.filter((v) =>
+      seen.has(v.href) ? false : (seen.add(v.href), true)
+    );
   };
 
   const enforceLength = (text, mode) => {
@@ -254,7 +256,8 @@ export default function ProSummary() {
 
     const words = clipped.split(/\s+/);
     if (words.length > maxWords) {
-      clipped = words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
+      clipped =
+        words.slice(0, maxWords).join(" ").replace(/[.,;:–—-]*$/, "") + "…";
     }
     return clipped;
   };
@@ -275,7 +278,6 @@ export default function ProSummary() {
     setIsOutdated(false);
     setIsTooShortResult(false);
     setLoading(false);
-    setCopiedFlash(false);
   };
 
   const handleLengthChange = (mode) => {
@@ -327,7 +329,7 @@ export default function ProSummary() {
     setIsTooShortResult(false);
   }, [urlItems]);
 
-  // Limpieza timer "Guardado en biblioteca"
+  // Limpieza timer "Guardado"
   useEffect(() => {
     return () => {
       if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
@@ -463,9 +465,7 @@ export default function ProSummary() {
     const firstLine = raw.split("\n")[0];
     const maxTitleLength = 80;
     let title = firstLine;
-    if (title.length > maxTitleLength) {
-      title = title.slice(0, maxTitleLength).trimEnd() + "…";
-    }
+    if (title.length > maxTitleLength) title = title.slice(0, maxTitleLength).trimEnd() + "…";
 
     addLibraryDoc({
       kind: "summary",
@@ -480,11 +480,16 @@ export default function ProSummary() {
     }, 2000);
   };
 
-  const handleDownloadPdf = () => {
+  const handleExportPdf = () => {
     if (!result) return;
-    const safe = (result || "").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>");
 
-    const w = window.open("", "_blank", "noopener,noreferrer");
+    const safe = (result || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\n/g, "<br/>");
+
+    const w = window.open("", "_blank");
     if (!w) return;
 
     w.document.open();
@@ -495,14 +500,14 @@ export default function ProSummary() {
           <meta charset="utf-8" />
           <title>Summary</title>
           <style>
-            body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 40px; color: #0f172a; }
-            .box { max-width: 900px; margin: 0 auto; font-size: 16px; line-height: 1.7; white-space: normal; }
+            body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 40px; color:#0f172a; }
+            .wrap{ max-width: 900px; margin: 0 auto; font-size: 16px; line-height: 1.6; }
           </style>
         </head>
         <body>
-          <div class="box">${safe}</div>
+          <div class="wrap">${safe}</div>
           <script>
-            window.onload = function(){ window.print(); };
+            window.onload = () => { window.print(); };
           </script>
         </body>
       </html>
@@ -537,7 +542,7 @@ export default function ProSummary() {
     </div>
   );
 
-  // ===== Helper: cache key (sha-256) =====
+  // ===== Helper: cache key (sha-256) para KV =====
   const sha256Hex = async (input) => {
     try {
       const enc = new TextEncoder().encode(input);
@@ -620,7 +625,9 @@ export default function ProSummary() {
         ? `Resume exclusivamente con la información literal del TEXTO. Prohibido añadir conocimiento externo o inferencias. Si el TEXTO no aporta suficiente contenido, responde exactamente: "${tooShortMsg}".`
         : "Quiero un resumen profesional del siguiente contenido.",
       textValue ? `\nTEXTO:\n${textValue}` : "",
-      urlsList ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}` : "",
+      urlsList
+        ? `\nURLs (extrae solo lo visible; si no puedes, ignóralas):\n${urlsList}`
+        : "",
       docsInline,
       `\nREQUISITO DE FORMATO: ${formattingRules}`,
       `\nREQUISITO DE LONGITUD (${summaryLength.toUpperCase()}): ${lengthRule}`,
@@ -728,6 +735,11 @@ export default function ProSummary() {
 
   const barClass = overLimit ? "bg-red-500" : nearLimit ? "bg-amber-500" : "bg-sky-500";
 
+  // Estilo iconos (SIN círculo)
+  const iconBtnBase =
+    "inline-flex items-center justify-center text-slate-500 hover:text-slate-800 transition";
+  const iconDisabled = "text-slate-300 cursor-not-allowed hover:text-slate-300";
+
   return (
     <>
       <section className="w-full bg-[#F4F8FF] pt-4 pb-16">
@@ -742,12 +754,10 @@ export default function ProSummary() {
           >
             {/* ===== Panel Fuentes (izquierda) ===== */}
             <aside className="min-h-[630px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden flex flex-col">
-              {/* Título */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="text-sm font-medium text-slate-700">{labelSources}</div>
               </div>
 
-              {/* Tabs */}
               <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
                 <TabBtn
                   active={sourceMode === "text"}
@@ -772,7 +782,6 @@ export default function ProSummary() {
                 />
               </div>
 
-              {/* Contenido */}
               <div className="flex-1 overflow-hidden p-3">
                 {!sourceMode && (
                   <div className="h-full w-full flex items-center justify-center">
@@ -804,7 +813,11 @@ export default function ProSummary() {
                       <div className="mt-1 text-right text-xs">
                         <span
                           className={
-                            overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"
+                            overLimit
+                              ? "text-red-600"
+                              : nearLimit
+                              ? "text-amber-600"
+                              : "text-slate-500"
                           }
                         >
                           {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
@@ -816,7 +829,9 @@ export default function ProSummary() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
+                    className={`h-full w-full flex flex-col relative ${
+                      dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
+                    }`}
                     onDragEnter={onDragEnter}
                     onDragOver={onDragOver}
                     onDragLeave={onDragLeave}
@@ -969,8 +984,8 @@ export default function ProSummary() {
             </aside>
 
             {/* ===== Panel Derecho ===== */}
-            <section className="relative min-h-[630px] pb-10 rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
-              {/* Barra superior con tabs + selector + acciones */}
+            <section className="relative min-h-[630px] pb-[86px] rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden -ml-px">
+              {/* Barra superior */}
               <div className="h-11 flex items-center justify-between px-4 border-b border-slate-200 bg-slate-50/60">
                 <div className="flex items-center gap-2">
                   <LengthTab
@@ -993,7 +1008,6 @@ export default function ProSummary() {
                 </div>
 
                 <div className="flex items-center gap-1">
-                  {/* Selector de idioma */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
@@ -1077,7 +1091,10 @@ export default function ProSummary() {
               {/* Estado inicial */}
               {!loading && !result && !errorKind && (
                 <>
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 z-10"
+                    style={{ top: "30%" }}
+                  >
                     <Button
                       type="button"
                       onClick={handleGenerate}
@@ -1089,7 +1106,10 @@ export default function ProSummary() {
                     </Button>
                   </div>
 
-                  <div className="absolute left-1/2 -translate-x-1/2 text-center px-6" style={{ top: "40%" }}>
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 text-center px-6"
+                    style={{ top: "40%" }}
+                  >
                     <p className="text-sm leading-6 text-slate-600 max-w-xl">{labelHelpRight}</p>
                   </div>
                 </>
@@ -1098,7 +1118,7 @@ export default function ProSummary() {
               {/* Resultado / errores / loader / límite */}
               <div className="w-full">
                 {(result || errorMsg || loading || errorKind) && (
-                  <div className="px-6 pt-24 pb-24 max-w-3xl mx-auto">
+                  <div className="px-6 pt-24 pb-32 max-w-3xl mx-auto">
                     {errorKind === "limit" && <LimitCard />}
 
                     {errorMsg && !errorKind && (
@@ -1153,64 +1173,64 @@ export default function ProSummary() {
                 )}
               </div>
 
-              {/* ✅ BARRA INFERIOR SOLO CUANDO HAY RESULTADO */}
-              {result && (
-                <div className="absolute left-0 right-0 bottom-4 px-6">
-                  <div className="max-w-3xl mx-auto flex items-center justify-between">
-                    {/* Abajo izquierda: Copiar + PDF */}
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => handleCopy(true)}
-                        className="h-9 w-9 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white hover:bg-slate-50 shadow-sm"
-                        aria-label="Copiar"
-                        title="Copiar"
-                      >
-                        {copiedFlash ? (
-                          <Check className="w-4 h-4" style={{ color: BLUE }} />
-                        ) : (
-                          <Copy className="w-4 h-4 text-slate-600" />
-                        )}
-                      </button>
+              {/* ===== Barra inferior del RESULTADO (izq: iconos / der: guardar) ===== */}
+              <div className="absolute left-0 right-0 bottom-4 px-6">
+                <div className="flex items-center justify-between">
+                  {/* Izquierda: copiar + PDF (SIN círculo) */}
+                  <div className="flex items-center gap-5">
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(true)}
+                      title="Copiar"
+                      aria-label="Copiar"
+                      disabled={!result}
+                      className={`${result ? iconBtnBase : `${iconBtnBase} ${iconDisabled}`}`}
+                    >
+                      {copiedFlash ? (
+                        <Check className="w-[18px] h-[18px]" style={{ color: BLUE }} />
+                      ) : (
+                        <Copy className="w-[18px] h-[18px]" />
+                      )}
+                    </button>
 
-                      <button
-                        type="button"
-                        onClick={handleDownloadPdf}
-                        className="h-9 w-9 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white hover:bg-slate-50 shadow-sm"
-                        aria-label="PDF"
-                        title="PDF"
-                      >
-                        <FileDown className="w-4 h-4 text-slate-600" />
-                      </button>
-                    </div>
-
-                    {/* Abajo derecha: mensaje + guardar (solo si es guardable) */}
-                    {!isTooShortResult && (
-                      <div className="flex items-center gap-3">
-                        {savedToLibrary && (
-                          <span className="text-xs text-emerald-600">{librarySavedMessage}</span>
-                        )}
-
-                        <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
-                          <span className="text-xs text-slate-500">{labelReadyMessage}</span>
-
-                          <motion.button
-                            type="button"
-                            onClick={handleSaveSummary}
-                            initial={{ opacity: 0, y: 4 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
-                            style={{ backgroundColor: "#22c55e" }}
-                          >
-                            {labelSaveSummary}
-                          </motion.button>
-                        </div>
-                      </div>
-                    )}
+                    <button
+                      type="button"
+                      onClick={handleExportPdf}
+                      title="PDF"
+                      aria-label="PDF"
+                      disabled={!result}
+                      className={`${result ? iconBtnBase : `${iconBtnBase} ${iconDisabled}`}`}
+                    >
+                      <FileDown className="w-[18px] h-[18px]" />
+                    </button>
                   </div>
+
+                  {/* Derecha: mensaje + guardar (solo si hay resultado real) */}
+                  {result && !isTooShortResult && (
+                    <div className="flex flex-col items-end gap-1">
+                      {savedToLibrary && (
+                        <p className="text-xs text-emerald-600">{librarySavedMessage}</p>
+                      )}
+
+                      <div className="inline-flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200 px-4 py-1.5 shadow-sm">
+                        <p className="text-xs text-slate-500">{labelReadyMessage}</p>
+
+                        <motion.button
+                          type="button"
+                          onClick={handleSaveSummary}
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white hover:brightness-95 active:scale-[0.98] transition-all"
+                          style={{ backgroundColor: "#22c55e" }}
+                        >
+                          {labelSaveSummary}
+                        </motion.button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </section>
           </motion.section>
         </div>
