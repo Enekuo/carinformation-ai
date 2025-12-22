@@ -47,6 +47,7 @@ export default function ProHumanizer() {
   // Documentos
   const [documents, setDocuments] = useState([]); // [{id,file}]
   const [documentsText, setDocumentsText] = useState([]); // [{id,name,text}]
+  const [documentsFiles, setDocumentsFiles] = useState([]); // [{id,name,mime,size,base64}]
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -81,12 +82,15 @@ export default function ProHumanizer() {
   const GRAY_ICON = "#94a3b8";
   const DIVIDER = "#e5e7eb";
   const MAX_CHARS = 12000;
+  const MAX_FILE_MB = 12; // límite razonable para base64 (ajústalo si quieres)
 
   const pageVariants = {
     initial: { opacity: 0, y: 12 },
     in: { opacity: 1, y: 0 },
     out: { opacity: 0, y: -12 },
   };
+
+  const hasRealResult = useMemo(() => (result || "").trim().length > 0, [result]);
 
   // ===== Textos (CON claves) =====
   const labelSources = tr("proHumanizer_sources", "Fuentes");
@@ -237,7 +241,7 @@ export default function ProHumanizer() {
         e.preventDefault();
         if (!loading) handleGenerate();
       } else if (meta && e.key.toLowerCase() === "c") {
-        if (result) {
+        if (hasRealResult) {
           e.preventDefault();
           handleCopy(true);
         }
@@ -247,13 +251,13 @@ export default function ProHumanizer() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [loading, result, urlInputOpen]);
+  }, [loading, hasRealResult, urlInputOpen]);
 
   // URLs / docs / nivel / idioma cambian => limpia derecha
   useEffect(() => {
     clearRight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urlItems.length, documents.length, mode, outputLang]);
+  }, [urlItems.length, documents.length, documentsText.length, documentsFiles.length, mode, outputLang]);
 
   // ===== Documentos =====
   const readTextFromFiles = async (items) => {
@@ -277,6 +281,41 @@ export default function ProHumanizer() {
     return results.filter(Boolean);
   };
 
+  const readBase64FromFiles = async (items) => {
+    const results = await Promise.all(
+      items.map(
+        ({ id, file }) =>
+          new Promise((resolve) => {
+            const name = file?.name || "";
+            const mime = file?.type || "application/octet-stream";
+            const size = file?.size || 0;
+
+            const mb = size / 1024 / 1024;
+            if (mb > MAX_FILE_MB) {
+              return resolve({
+                id,
+                name,
+                mime,
+                size,
+                base64: null,
+                tooLarge: true,
+              });
+            }
+
+            const fr = new FileReader();
+            fr.onload = () => {
+              const dataUrl = String(fr.result || "");
+              const base64 = dataUrl.includes(",") ? dataUrl.split(",")[1] : null;
+              resolve({ id, name, mime, size, base64, tooLarge: false });
+            };
+            fr.onerror = () => resolve({ id, name, mime, size, base64: null, tooLarge: false });
+            fr.readAsDataURL(file);
+          })
+      )
+    );
+    return results.filter(Boolean);
+  };
+
   const triggerPick = () => fileInputRef.current?.click();
 
   const addFiles = async (list) => {
@@ -289,6 +328,17 @@ export default function ProHumanizer() {
 
     const texts = await readTextFromFiles(withIds);
     if (texts.length) setDocumentsText((prev) => [...prev, ...texts]);
+
+    // Para PDF/DOCX/etc, mandamos base64 para que el backend lo extraiga (si está implementado ahí)
+    const nonText = withIds.filter(({ file }) => {
+      const name = (file?.name || "").toLowerCase();
+      return !(name.endsWith(".txt") || name.endsWith(".md"));
+    });
+
+    if (nonText.length) {
+      const base64Items = await readBase64FromFiles(nonText);
+      if (base64Items.length) setDocumentsFiles((prev) => [...prev, ...base64Items]);
+    }
 
     clearRight();
   };
@@ -324,6 +374,7 @@ export default function ProHumanizer() {
   const removeDocument = (id) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
     setDocumentsText((prev) => prev.filter((d) => d.id !== id));
+    setDocumentsFiles((prev) => prev.filter((d) => d.id !== id));
     clearRight();
   };
 
@@ -354,13 +405,14 @@ export default function ProHumanizer() {
     return trimmed.length >= 20 && words.length >= 5;
   }, [textValue]);
 
-  const hasValidInput = textIsValid || urlItems.length > 0 || documents.length > 0;
+  const hasValidDocs = documentsText.length > 0 || documentsFiles.length > 0;
+  const hasValidInput = textIsValid || urlItems.length > 0 || hasValidDocs;
 
   // ===== Acciones derecha =====
   const handleCopy = async (flash = false) => {
-    if (!result) return;
+    if (!hasRealResult) return;
     try {
-      await navigator.clipboard.writeText(result);
+      await navigator.clipboard.writeText((result || "").trim());
       if (flash) {
         setCopiedFlash(true);
         setTimeout(() => setCopiedFlash(false), 1200);
@@ -375,9 +427,9 @@ export default function ProHumanizer() {
   };
 
   const handleDownload = () => {
-    if (!result) return;
+    if (!hasRealResult) return;
     try {
-      const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
+      const blob = new Blob([(result || "").trim()], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -390,7 +442,7 @@ export default function ProHumanizer() {
   };
 
   const handleSaveToLibrary = () => {
-    if (!result) return;
+    if (!hasRealResult) return;
 
     const now = new Date();
     const createdAt = now.toISOString();
@@ -403,7 +455,7 @@ export default function ProHumanizer() {
     addLibraryDoc({
       kind: "humanizer",
       title: titleFromText || "Humanizado",
-      content: result,
+      content: (result || "").trim(),
       createdAt,
       createdAtLabel,
     });
@@ -414,7 +466,7 @@ export default function ProHumanizer() {
 
   useEffect(() => {
     setSavedToLibrary(false);
-  }, [result]);
+  }, [hasRealResult]);
 
   // ===== Helper: cache key (sha-256) =====
   const sha256Hex = async (input) => {
@@ -439,7 +491,8 @@ export default function ProHumanizer() {
     const trimmed = (textValue || "").trim();
     const words = trimmed.split(/\s+/).filter(Boolean);
     const textOk = trimmed.length >= 20 && words.length >= 5;
-    const validNow = textOk || urlItems.length > 0 || documentsText.length > 0;
+
+    const validNow = textOk || urlItems.length > 0 || documentsText.length > 0 || documentsFiles.length > 0;
 
     if ((textValue || "").length > MAX_CHARS) {
       setErrorMsg(tr("proHumanizer_errorMaxChars", "Has superado el límite de caracteres permitido."));
@@ -453,6 +506,19 @@ export default function ProHumanizer() {
       return;
     }
 
+    // Si hay ficheros grandes (base64 null por tamaño), avisamos
+    const tooLargeCount = documentsFiles.filter((d) => d?.tooLarge).length;
+    if (tooLargeCount > 0) {
+      setErrorMsg(
+        tr(
+          "proHumanizer_errorFileTooLarge",
+          "Uno o más archivos son demasiado grandes para procesarlos aquí. Prueba con un archivo más pequeño."
+        )
+      );
+      setLoading(false);
+      return;
+    }
+
     const urlsList = urlItems.map((u) => u.url).join("\n");
 
     const docsInline = documentsText?.length
@@ -460,6 +526,11 @@ export default function ProHumanizer() {
         documentsText
           .map((d) => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`)
           .join("\n\n")
+      : "";
+
+    const docsBinaryHint = documentsFiles?.length
+      ? `\nDOCUMENTOS ADJUNTOS (para extracción):\n` +
+        documentsFiles.map((d) => `--- ${d.name} (${Math.round((d.size || 0) / 1024)} KB) ---`).join("\n")
       : "";
 
     const langInstruction =
@@ -518,6 +589,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
       textValue ? `\nTEXTO:\n${textValue}` : "",
       urlsList ? `\nURLs (si no puedes extraer texto, ignóralas):\n${urlsList}` : "",
       docsInline,
+      docsBinaryHint,
       `\n${levelRule}`,
       `\n${formattingRules}`,
       `\n${langInstruction}`,
@@ -552,6 +624,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
           outputLang,
           cacheKey,
           documentsText,
+          documentsFiles, // ✅ para PDF/DOCX/etc (base64)
         }),
       });
 
@@ -904,10 +977,10 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                   onClick={() => handleCopy(true)}
                   title={titleCopyResult}
                   className={`h-9 w-9 flex items-center justify-center ${
-                    result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                    hasRealResult ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                   }`}
                   aria-label={ariaCopyResult}
-                  disabled={!result}
+                  disabled={!hasRealResult}
                 >
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
                 </button>
@@ -917,7 +990,9 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                   onClick={handleClearLeft}
                   title={titleDeleteInput}
                   className={`h-9 w-9 flex items-center justify-center ${
-                    sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
+                    sourceMode === "text" && textValue
+                      ? "text-slate-600 hover:text-slate-800"
+                      : "text-slate-300 cursor-not-allowed"
                   }`}
                   aria-label={ariaDeleteInput}
                   disabled={!(sourceMode === "text" && textValue)}
@@ -929,7 +1004,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
 
             {/* ===== CONTENIDO SCROLLEABLE (cuando sea necesario) ===== */}
             <div className="absolute inset-x-0 top-11 bottom-0 overflow-y-auto">
-              {!loading && !result && !errorMsg && (
+              {!loading && !hasRealResult && !errorMsg && (
                 <>
                   <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: "30%" }}>
                     <Button
@@ -949,7 +1024,7 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                 </>
               )}
 
-              {(result || errorMsg || loading) && (
+              {(hasRealResult || errorMsg || loading) && (
                 <div className="px-6 pt-20 pb-28 max-w-3xl mx-auto">
                   {errorMsg && (
                     <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
@@ -957,15 +1032,15 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                     </div>
                   )}
 
-                  {result && (
+                  {hasRealResult && (
                     <div className="flex flex-col gap-4">
                       <article className="prose prose-slate max-w-none">
-                        <p className="whitespace-pre-wrap">{result}</p>
+                        <p className="whitespace-pre-wrap">{(result || "").trim()}</p>
                       </article>
                     </div>
                   )}
 
-                  {loading && !result && (
+                  {loading && !hasRealResult && (
                     <div className="space-y-3 animate-pulse">
                       <div className="h-4 bg-slate-200 rounded" />
                       <div className="h-4 bg-slate-200 rounded w-11/12" />
@@ -976,8 +1051,8 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
               )}
             </div>
 
-            {/* Barra inferior: copiar, descargar, guardar */}
-            {result && (
+            {/* Barra inferior: copiar, descargar, guardar — SOLO si hay resultado REAL */}
+            {hasRealResult && (
               <div className="absolute bottom-4 right-6 flex flex-col items-end gap-1 text-slate-500">
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
 
