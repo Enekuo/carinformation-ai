@@ -14,16 +14,18 @@ export const translations = {
     tools:     { ES: "Herramientas",  EUS: "Tresnak" },
     resources: { ES: "Recursos",      EUS: "Baliabideak" },
     pricing:   { ES: "Precios",       EUS: "Prezioak" },
-    signIn:    { ES: "Iniciar sesión", EUS: "Hasi saioa" },
-    startFree: { ES: "Crear cuenta", EUS: "Sortu kontua" },
+    signIn:    { ES: "Iniciar sesión",EUS: "Hasi saioa" },
+    startFree: { ES: "Crear cuenta",  EUS: "Sortu kontua" },
   },
-  toolsMenu_translatorTitle:    { ES: "Traductor", EUS: "Itzultzailea" },
-  toolsMenu_translatorSubtitle: { ES: "Euskera ↔ Español", EUS: "Euskara ↔ Gaztelania" },
-  toolsMenu_summaryTitle:       { ES: "Resumen", EUS: "Laburpena" },
-  toolsMenu_summarySubtitle:    { ES: "Resúmenes con IA", EUS: "IArekin laburpenak" },
-  
+  toolsMenu: {
+    translatorTitle:    { ES: "Traductor",         EUS: "Itzultzailea" },
+    translatorSubtitle: { ES: "Euskera ↔ Español", EUS: "Euskara ↔ Gaztelania" },
+    summaryTitle:       { ES: "Resumen",           EUS: "Laburpena" },
+    summarySubtitle:    { ES: "Resúmenes con IA",  EUS: "IArekin laburpenak" },
+  },
+
   resourcesMenu: {
-    support: { ES: "Soporte", EUS: "Laguntza" },
+    support: { ES: "Soporte", EUS: "Laguntza" }, 
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
   // =========================
