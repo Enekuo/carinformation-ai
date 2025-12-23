@@ -464,6 +464,8 @@ export default function ProParaphraser() {
         ? "Idioma de salida: español (ISO: es). Escribe todo en español."
         : outputLang === "en"
         ? "Output language: English (ISO: en). Write everything in English."
+        : outputLang === "fr"
+        ? "Langue de sortie : français (ISO : fr). Rédige tout en français."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
     const modeRule =
@@ -894,7 +896,9 @@ MODO CREATIVO:
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label={tr("proParaphraser_output_language_aria", "Idioma de salida")}
                     >
-                      <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                      <span className="truncate">
+                        {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : outputLang === "fr" ? LBL_FR : LBL_EUS}
+                      </span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
@@ -934,6 +938,17 @@ MODO CREATIVO:
                       className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
                     >
                       {LBL_EN}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "fr") {
+                          setOutputLang("fr");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_FR}
                     </DropdownMenuItem>
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
