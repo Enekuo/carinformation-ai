@@ -108,11 +108,10 @@ export default function ProGrammarCorrector() {
   const labelHideChanges = tr("grammar.hide_changes", "Ocultar cambios");
 
   // Idiomas (para selector)
-  const LBL_EUS = tr("output_language_eus", "Euskera");
-  const LBL_ES = tr("output_language_es",   "Español");
-  const LBL_EN = tr("output_language_en",   "Inglés");
-  const LBL_FR = tr("output_language_fr",   "Français");
-
+  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
   // Guardar (mismo sistema que Translator)
   const labelSaveTranslation = tr("save_button_label", "Guardar");
   const librarySavedMessage = tr("library_saved_toast", "Guardado en biblioteca");
