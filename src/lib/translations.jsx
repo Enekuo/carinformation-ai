@@ -88,11 +88,11 @@ export const translations = {
     length_long:   { ES: "Detallado", EUS: "Zehatza" },
 
     // --- Selector de idioma (sin Auto) ---
-    output_language:     { ES: "Idioma",     EUS: "Hizkuntza" },
-    output_language_es:  { ES: "Castellano", EUS: "Gaztelania" },
-    output_language_eus: { ES: "Euskera",    EUS: "Euskara" },
-    output_language_en:  { ES: "Inglés",     EUS: "Ingelesa" },
-
+    output_language:     { ES: "Idioma",     EUS: "Hizkuntza", EN: "Language" , FR: "Langue" },
+    output_language_eus: { ES: "Euskera",    EUS: "Euskara",   EN: "Basque",    FR: "Basque" },
+    output_language_es:  { ES: "Castellano", EUS: "Gaztelania",EN: "Spanish",   FR: "Espagnol" },
+    output_language_en:  { ES: "Inglés",     EUS: "Ingelesa",  EN: "English",   FR: "Anglais" },
+    output_language_fr:  { ES: "Francés",    EUS: "Frantsesa", EN: "French",    FR: "Français" },
     // Prompt
     generate_from_sources: { ES: "Generar resumen", EUS: "Laburpena sortu" },
     bottom_input_ph: {

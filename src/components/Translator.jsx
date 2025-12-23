@@ -24,28 +24,62 @@ import Footer from "@/components/Footer";
 const OPTIONS = [
   { value: "eus", label: "euskera" },
   { value: "es", label: "castellano" },
+  { value: "en", label: "english" },
+  { value: "fr", label: "français" },
 ];
 
 const MAX_CHARS = 5000;
 
+const langNameES = (code) => {
+  if (code === "eus") return "Euskera";
+  if (code === "es") return "Español";
+  if (code === "en") return "Inglés";
+  if (code === "fr") return "Francés";
+  return "Idioma";
+};
+
 // Texto de dirección para el prompt del sistema (solo para modo TEXTO)
 const directionText = (src, dst) => {
-  if (src === "eus" && dst === "es") {
-    return `
-Eres Euskalia, un traductor profesional.
-Traduce SIEMPRE de Euskera a Español.
-Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
-No cambies de idioma en la traducción.
-`.trim();
-  }
-  if (src === "es" && dst === "eus") {
+  // Caso destino EUS: instrucción en euskera para clavar idioma
+  if (dst === "eus") {
     return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
-Itzuli BETI gaztelaniatik euskarara.
+Itzuli BETI ${langNameES(src)}tik euskarara.
 Erantzun BETI euskaraz itzulpena ematean.
 Ez aldatu hizkuntza itzulpenean.
 `.trim();
   }
+
+  // Caso destino ES
+  if (dst === "es") {
+    return `
+Eres Euskalia, un traductor profesional.
+Traduce SIEMPRE de ${langNameES(src)} a Español.
+Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
+No cambies de idioma en la traducción.
+`.trim();
+  }
+
+  // Caso destino EN
+  if (dst === "en") {
+    return `
+Eres Euskalia, un traductor profesional.
+Traduce SIEMPRE de ${langNameES(src)} a Inglés.
+Responde SIEMPRE en Inglés cuando des la TRADUCCIÓN.
+Do not switch languages in the translation.
+`.trim();
+  }
+
+  // Caso destino FR
+  if (dst === "fr") {
+    return `
+Eres Euskalia, un traductor profesional.
+Traduce SIEMPRE de ${langNameES(src)} a Francés.
+Responde SIEMPRE en Francés cuando des la TRADUCCIÓN.
+Ne change pas de langue dans la traduction.
+`.trim();
+  }
+
   return `
 Eres Euskalia, un traductor profesional.
 Traduce siempre del idioma de origen al idioma de destino indicado.
@@ -244,9 +278,7 @@ export default function Translator() {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
-            setErr(
-              uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo."
-            );
+            setErr(uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo.");
           return;
         }
 
@@ -258,9 +290,7 @@ export default function Translator() {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
-            setErr(
-              uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo."
-            );
+            setErr(uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo.");
         }
       } finally {
         setLoading(false);
@@ -303,7 +333,6 @@ export default function Translator() {
         const contents = await Promise.all(documents.map(({ file }) => readFileAsText(file)));
         const combinedFull = contents.join("\n\n---\n\n");
 
-        // ✅ NUEVO: si supera el límite, error y NO traducir
         if (combinedFull.length > MAX_CHARS) {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
           setRightText("");
@@ -351,9 +380,7 @@ export default function Translator() {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
-            setErr(
-              uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo."
-            );
+            setErr(uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo.");
           return;
         }
 
@@ -365,9 +392,7 @@ export default function Translator() {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
-            setErr(
-              uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo."
-            );
+            setErr(uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo.");
         }
       } finally {
         setLoading(false);
@@ -502,8 +527,6 @@ export default function Translator() {
 
       const el = audioElRef.current;
       el.src = url;
-      el.oncanplay = null;
-      el.oncanplaythrough = null;
 
       const start = () => {
         el.play().catch((e) => {
@@ -522,84 +545,6 @@ export default function Translator() {
         console.error("tts fetch error:", e);
       }
       setSpeaking(false);
-    }
-  };
-
-  // ====== MIC (grabar → /api/transcribe) ======
-  const stopRecording = () => {
-    try {
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
-        mediaRecorderRef.current.stop();
-      }
-      if (mediaStreamRef.current) {
-        mediaStreamRef.current.getTracks().forEach((t) => t.stop());
-        mediaStreamRef.current = null;
-      }
-    } catch {}
-  };
-
-  const handleToggleMic = async () => {
-    if (listening) {
-      setListening(false);
-      stopRecording();
-      return;
-    }
-
-    try {
-      if (!navigator.mediaDevices?.getUserMedia) {
-        console.warn("getUserMedia no disponible");
-        return;
-      }
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaStreamRef.current = stream;
-      micChunksRef.current = [];
-
-      const rec = new MediaRecorder(stream, { mimeType: "audio/webm" });
-      mediaRecorderRef.current = rec;
-
-      rec.ondataavailable = (e) => {
-        if (e.data && e.data.size > 0) micChunksRef.current.push(e.data);
-      };
-
-      rec.onstop = async () => {
-        try {
-          const blob = new Blob(micChunksRef.current, { type: "audio/webm" });
-          micChunksRef.current = [];
-
-          const form = new FormData();
-          form.append("file", blob, "audio.webm");
-          form.append("model", "whisper-1");
-
-          const r = await fetch("/api/transcribe", {
-            method: "POST",
-            body: form,
-          });
-          const data = await r.json().catch(() => null);
-          if (data?.ok && typeof data.text === "string") {
-            const txt = data.text.trim();
-            if (txt) {
-              setLeftText((prev) => (prev ? prev + "\n" + txt : txt).slice(0, MAX_CHARS));
-            }
-          } else {
-            console.error("transcribe fail:", data);
-          }
-        } catch (e) {
-          console.error("transcribe error:", e);
-        } finally {
-          if (mediaStreamRef.current) {
-            mediaStreamRef.current.getTracks().forEach((t) => t.stop());
-            mediaStreamRef.current = null;
-          }
-        }
-      };
-
-      rec.start();
-      setListening(true);
-    } catch (e) {
-      console.error("mic error:", e);
-      setListening(false);
-      stopRecording();
     }
   };
 
@@ -772,6 +717,7 @@ export default function Translator() {
                 {/* selector: centrado */}
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                   <div className="relative pointer-events-auto flex items-center">
+                    {/* ORIGEN */}
                     <div className="relative mr-16" ref={leftRef}>
                       <button
                         type="button"
@@ -783,13 +729,7 @@ export default function Translator() {
                       >
                         <span>{OPTIONS.find((o) => o.value === src)?.label}</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                          <path
-                            d="M6 9l6 6 6-6"
-                            stroke="#334155"
-                            strokeWidth="1.7"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
+                          <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </button>
                       <Dropdown
@@ -803,6 +743,7 @@ export default function Translator() {
                       />
                     </div>
 
+                    {/* SWAP */}
                     <button
                       type="button"
                       aria-label="Intercambiar idiomas"
@@ -810,23 +751,12 @@ export default function Translator() {
                       className="absolute left-1/2 -translate-x-1/2 inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 hover:bg-slate-200 transition"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                        <path
-                          d="M7 7h11M7 7l3-3M7 7l3 3"
-                          stroke="#475569"
-                          strokeWidth="1.7"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M17 17H6M17 17l-3-3M17 17l-3 3"
-                          stroke="#475569"
-                          strokeWidth="1.7"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                        <path d="M7 7h11M7 7l3-3M7 7l3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M17 17H6M17 17l-3-3M17 17l-3 3" stroke="#475569" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </button>
 
+                    {/* DESTINO */}
                     <div className="relative ml-16" ref={rightRef}>
                       <button
                         type="button"
@@ -838,13 +768,7 @@ export default function Translator() {
                       >
                         <span>{OPTIONS.find((o) => o.value === dst)?.label}</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                          <path
-                            d="M6 9l6 6 6-6"
-                            stroke="#334155"
-                            strokeWidth="1.7"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
+                          <path d="M6 9l6 6 6-6" stroke="#334155" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </button>
                       <Dropdown
@@ -892,8 +816,6 @@ export default function Translator() {
                     <div className="absolute bottom-4 right-6 text-[13px] text-slate-400">
                       {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                     </div>
-
-                    {/* ✅ CAMBIO 1: MIC ELIMINADO (no se renderiza ningún botón aquí) */}
                   </>
                 )}
 
@@ -1045,13 +967,11 @@ export default function Translator() {
               </div>
 
               {/* ====== BLOQUE DERECHO ====== */}
-              {/* ✅ CAMBIO 2: ajusto padding-top para que el placeholder no quede tan arriba */}
               <div className="px-6 pt-10 pb-4 md:px-8 md:pt-12 md:pb-5 relative h-[500px] overflow-hidden flex flex-col">
                 <div className="flex-1 min-h-0 pb-8">
                   <textarea
                     ref={rightTA}
                     value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
-                    onChange={(e) => setRightText(e.target.value)}
                     placeholder={t("translator.right_placeholder")}
                     readOnly
                     className={`w-full h-full resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium overflow-y-auto ${
@@ -1060,11 +980,7 @@ export default function Translator() {
                   />
                 </div>
 
-                {err && (
-                  <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
-                    {err}
-                  </div>
-                )}
+                {err && <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">{err}</div>}
 
                 <div className="absolute bottom-4 right-6 flex items-center gap-4 text-slate-500">
                   <button
