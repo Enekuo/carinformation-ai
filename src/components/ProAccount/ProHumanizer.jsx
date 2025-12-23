@@ -138,9 +138,11 @@ export default function ProHumanizer() {
   const labelUrlsNotePaywalled = tr("proHumanizer_urlsNotePaywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("proHumanizer_remove", "Quitar");
 
-  const LBL_ES = tr("proHumanizer_langES", "Castellano");
-  const LBL_EUS = tr("proHumanizer_langEUS", "Euskera");
-  const LBL_EN = tr("proHumanizer_langEN", "Inglés");
+  // ✅ Idiomas (CLAVES COMUNES para TODAS las herramientas)
+  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
 
   const labelGenerateFromSources = tr("proHumanizer_generate", "Humanizar texto");
   const labelHelpRight = tr(
@@ -566,11 +568,14 @@ export default function ProHumanizer() {
         documentsFiles.map((d) => `--- ${d.name} (${Math.round((d.size || 0) / 1024)} KB) ---`).join("\n")
       : "";
 
+    // ✅ + FR
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: español (ISO: es). Escribe todo en español."
         : outputLang === "en"
         ? "Output language: English (ISO: en). Write everything in English."
+        : outputLang === "fr"
+        ? "Langue de sortie : français (ISO : fr). Rédige tout en français."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi guztia euskaraz.";
 
     const levelRule =
@@ -972,7 +977,15 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                       className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label={tr("proHumanizer_outputLanguageAria", "Idioma de salida")}
                     >
-                      <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                      <span className="truncate">
+                        {outputLang === "es"
+                          ? LBL_ES
+                          : outputLang === "en"
+                          ? LBL_EN
+                          : outputLang === "fr"
+                          ? LBL_FR
+                          : LBL_EUS}
+                      </span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
@@ -1013,6 +1026,20 @@ NIVEL ESTÁNDAR (equilibrado, el mejor por defecto):
                     >
                       {LBL_EN}
                     </DropdownMenuItem>
+
+                    {/* ✅ FR */}
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "fr") {
+                          setOutputLang("fr");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_FR}
+                    </DropdownMenuItem>
+
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
                 </DropdownMenu>
