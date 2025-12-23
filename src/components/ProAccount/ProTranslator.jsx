@@ -17,14 +17,16 @@ import { Button } from "@/components/ui/button";
 import { addLibraryDoc } from "@/proLibraryStore";
 
 const OPTIONS = [
-  { value: "eus", label: "euskera" },
-  { value: "es", label: "castellano" },
+  { value: "EUS", label: "euskera" },
+  { value: "ES", label: "castellano" },
+  { value: "EN", label: "english" },
+  { value: "FR", label: "français" },
 ];
 
 const MAX_CHARS = 5000;
 
 const directionText = (src, dst) => {
-  if (src === "eus" && dst === "es") {
+  if (src === "EUS" && dst === "ES") {
     return `
 Eres Euskalia, un traductor profesional.
 Traduce SIEMPRE de Euskera a Español.
@@ -32,7 +34,7 @@ Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
 No cambies de idioma en la traducción.
 `.trim();
   }
-  if (src === "es" && dst === "eus") {
+  if (src === "ES" && dst === "EUS") {
     return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
 Itzuli BETI gaztelaniatik euskarara.
@@ -51,8 +53,8 @@ export default function ProTranslator() {
   const { t, language } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
-  const [src, setSrc] = useState("eus");
-  const [dst, setDst] = useState("es");
+  const [src, setSrc] = useState("EUS");
+  const [dst, setDst] = useState("ES");
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
 
@@ -465,8 +467,14 @@ export default function ProTranslator() {
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible.");
-  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
+  const labelUrlsNoteVisible = tr(
+    "summary.urls_note_visible",
+    "Solo se importará el texto visible."
+  );
+  const labelUrlsNotePaywalled = tr(
+    "summary.urls_note_paywalled",
+    "No se admiten artículos de pago."
+  );
   const labelRemove = tr("summary.remove", "Quitar");
 
   const labelSaveTranslation = tr("save_button_label", "Guardar");
@@ -759,8 +767,7 @@ export default function ProTranslator() {
     setUrlInputOpen(false);
   };
 
-  const removeUrl = (id) =>
-    setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   const canSave = resultStatus === "success" && !!rightText?.trim() && !loading;
 
