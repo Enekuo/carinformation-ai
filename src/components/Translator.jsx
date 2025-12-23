@@ -21,75 +21,83 @@ import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
-const OPTIONS = [
-  { value: "eus", label: "euskera" },
-  { value: "es", label: "castellano" },
-  { value: "en", label: "english" },
-  { value: "fr", label: "français" },
-];
-
 const MAX_CHARS = 5000;
 
-const langNameES = (code) => {
-  if (code === "eus") return "Euskera";
-  if (code === "es") return "Español";
-  if (code === "en") return "Inglés";
-  if (code === "fr") return "Francés";
-  return "Idioma";
-};
+export default function Translator() {
+  const { t, language } = useTranslation();
+  const tr = (k, f) => t(k) || f;
 
-// Texto de dirección para el prompt del sistema (solo para modo TEXTO)
-const directionText = (src, dst) => {
-  // Caso destino EUS: instrucción en euskera para clavar idioma
-  if (dst === "eus") {
-    return `
+  // ====== Labels idioma (claves comunes) ======
+  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
+
+  // ===== opciones selector (mismos valores) =====
+  const OPTIONS = [
+    { value: "es", label: LBL_ES },
+    { value: "eus", label: LBL_EUS },
+    { value: "en", label: LBL_EN },
+    { value: "fr", label: LBL_FR },
+  ];
+
+  // Para el prompt (nombres en ES para que quede natural)
+  const langNameES = (code) => {
+    if (code === "eus") return "Euskera";
+    if (code === "es") return "Español";
+    if (code === "en") return "Inglés";
+    if (code === "fr") return "Francés";
+    return "Idioma";
+  };
+
+  // Texto de dirección para el prompt del sistema (solo para modo TEXTO)
+  const directionText = (src, dst) => {
+    // Caso destino EUS: instrucción en euskera para clavar idioma
+    if (dst === "eus") {
+      return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
 Itzuli BETI ${langNameES(src)}tik euskarara.
 Erantzun BETI euskaraz itzulpena ematean.
 Ez aldatu hizkuntza itzulpenean.
 `.trim();
-  }
+    }
 
-  // Caso destino ES
-  if (dst === "es") {
-    return `
+    // Caso destino ES
+    if (dst === "es") {
+      return `
 Eres Euskalia, un traductor profesional.
 Traduce SIEMPRE de ${langNameES(src)} a Español.
 Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
 No cambies de idioma en la traducción.
 `.trim();
-  }
+    }
 
-  // Caso destino EN
-  if (dst === "en") {
-    return `
+    // Caso destino EN
+    if (dst === "en") {
+      return `
 Eres Euskalia, un traductor profesional.
 Traduce SIEMPRE de ${langNameES(src)} a Inglés.
 Responde SIEMPRE en Inglés cuando des la TRADUCCIÓN.
 Do not switch languages in the translation.
 `.trim();
-  }
+    }
 
-  // Caso destino FR
-  if (dst === "fr") {
-    return `
+    // Caso destino FR
+    if (dst === "fr") {
+      return `
 Eres Euskalia, un traductor profesional.
 Traduce SIEMPRE de ${langNameES(src)} a Francés.
 Responde SIEMPRE en Francés cuando des la TRADUCCIÓN.
 Ne change pas de langue dans la traduction.
 `.trim();
-  }
+    }
 
-  return `
+    return `
 Eres Euskalia, un traductor profesional.
 Traduce siempre del idioma de origen al idioma de destino indicado.
 Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
 `.trim();
-};
-
-export default function Translator() {
-  const { t, language } = useTranslation();
-  const tr = (k, f) => t(k) || f;
+  };
 
   // ===== estado idioma / texto =====
   const [src, setSrc] = useState("eus");
