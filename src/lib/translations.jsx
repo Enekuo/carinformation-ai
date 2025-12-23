@@ -20,8 +20,8 @@ export const translations = {
   toolsMenu: {
     translatorTitle:    { ES: "Traductor",         EUS: "Itzultzailea" },
     translatorSubtitle: { ES: "Euskera ↔ Español", EUS: "Euskara ↔ Gaztelania" },
-    summaryTitle:       { ES: "Resumen",           EUS: "Laburpena" },
-    summarySubtitle:    { ES: "Resúmenes con IA",  EUS: "IArekin laburpenak" },
+    summaryTitle:       { ES: "Resumidor",         EUS: "Laburtzailea" },
+    summarySubtitle:    { ES: "Resúmenes con IA",  EUS: "Laburpenak IA-rekin" },
   },
 
   resourcesMenu: {
