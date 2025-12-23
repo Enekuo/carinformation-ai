@@ -124,18 +124,20 @@ export default function Translator() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  // auto-resize
+  // auto-resize (solo para modos NO texto; en texto queremos scroll)
   const autoResize = (el) => {
     if (!el) return;
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   };
+
   useEffect(() => {
-    autoResize(leftTA.current);
-  }, [leftText]);
+    if (sourceMode !== "text") autoResize(leftTA.current);
+  }, [leftText, sourceMode]);
+
   useEffect(() => {
-    autoResize(rightTA.current);
-  }, [rightText]);
+    if (sourceMode !== "text") autoResize(rightTA.current);
+  }, [rightText, sourceMode]);
 
   // ==== Traducción con OpenAI vía /api/chat (modo TEXTO, debounced) ====
   useEffect(() => {
@@ -875,7 +877,7 @@ export default function Translator() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              {/* ====== BLOQUE IZQUIERDO: FIX + SCROLL PARA DOCUMENTOS ====== */}
+              {/* ====== BLOQUE IZQUIERDO: FIX + SCROLL PARA TEXTO ====== */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-[540px] overflow-hidden flex flex-col">
                 {sourceMode === "text" && (
                   <>
@@ -884,9 +886,8 @@ export default function Translator() {
                         ref={leftTA}
                         value={leftText}
                         onChange={(e) => setLeftText(e.target.value.slice(0, MAX_CHARS))}
-                        onInput={(e) => autoResize(e.currentTarget)}
                         placeholder={t("translator.left_placeholder")}
-                        className="w-full h-full resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium"
+                        className="w-full h-full resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium overflow-y-auto"
                       />
                     </div>
 
@@ -1059,17 +1060,19 @@ export default function Translator() {
                 )}
               </div>
 
-              <div className="p-8 md:p-10 relative">
-                <textarea
-                  ref={rightTA}
-                  value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
-                  onChange={(e) => setRightText(e.target.value)}
-                  onInput={(e) => autoResize(e.currentTarget)}
-                  placeholder={t("translator.right_placeholder")}
-                  className={`w-full min-h-[360px] md:min-h-[400px] resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium ${
-                    loading ? "italic text-slate-500" : ""
-                  }`}
-                />
+              {/* ====== BLOQUE DERECHO: MISMA ALTURA + SCROLL (para que no crezca la caja) ====== */}
+              <div className="p-8 md:p-10 relative h-[540px] overflow-hidden flex flex-col">
+                <div className="flex-1 min-h-0">
+                  <textarea
+                    ref={rightTA}
+                    value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
+                    onChange={(e) => setRightText(e.target.value)}
+                    placeholder={t("translator.right_placeholder")}
+                    className={`w-full h-full resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium overflow-y-auto ${
+                      loading ? "italic text-slate-500" : ""
+                    }`}
+                  />
+                </div>
 
                 {err && (
                   <div className="absolute bottom-4 left-8 md:left-10 text-sm text-red-500">
