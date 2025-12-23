@@ -245,9 +245,7 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS"
-                ? "Ezin izan dira URLak orain prozesatu."
-                : "No se pudieron procesar las URLs ahora mismo."
+              uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo."
             );
           return;
         }
@@ -261,9 +259,7 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS"
-                ? "Ezin izan dira URLak orain prozesatu."
-                : "No se pudieron procesar las URLs ahora mismo."
+              uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo."
             );
         }
       } finally {
@@ -321,11 +317,7 @@ export default function Translator() {
 
         if (!combinedFull.trim()) {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
-          setErr(
-            uiLang === "EUS"
-              ? "Ezin da dokumentuaren edukia irakurri."
-              : "No se ha podido leer el contenido del documento."
-          );
+          setErr(uiLang === "EUS" ? "Ezin da dokumentuaren edukia irakurri." : "No se ha podido leer el contenido del documento.");
           setRightText("");
           return;
         }
@@ -360,9 +352,7 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS"
-                ? "Ezin izan dira dokumentuak orain prozesatu."
-                : "No se han podido procesar los documentos ahora mismo."
+              uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo."
             );
           return;
         }
@@ -376,9 +366,7 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS"
-                ? "Ezin izan dira dokumentuak orain prozesatu."
-                : "No se han podido procesar los documentos ahora mismo."
+              uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo."
             );
         }
       } finally {
@@ -888,7 +876,7 @@ export default function Translator() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* ====== BLOQUE IZQUIERDO ====== */}
-              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-[540px] overflow-hidden flex flex-col isolate">
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-[540px] overflow-hidden flex flex-col">
                 {sourceMode === "text" && (
                   <>
                     <div className="flex-1 min-h-0">
@@ -905,19 +893,7 @@ export default function Translator() {
                       {leftText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                     </div>
 
-                    <div className="absolute bottom-4 left-6">
-                      <button
-                        type="button"
-                        onClick={handleToggleMic}
-                        aria-label={t("translator.dictate")}
-                        className={`group relative p-2 rounded-md hover:bg-slate-100 ${listening ? "ring-2 ring-blue-400" : ""}`}
-                      >
-                        <Mic className={`w-5 h-5 ${listening ? "text-blue-600" : "text-slate-600"}`} />
-                        <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                          {listening ? t("translator.listening") : t("translator.dictate")}
-                        </span>
-                      </button>
-                    </div>
+                    {/* ✅ CAMBIO 1: MIC ELIMINADO (no se renderiza ningún botón aquí) */}
                   </>
                 )}
 
@@ -1068,14 +1044,16 @@ export default function Translator() {
                 )}
               </div>
 
-              {/* ====== BLOQUE DERECHO (CORREGIDO: ocupa hasta la línea roja + NO EDITABLE) ====== */}
-              <div className="px-5 py-4 md:px-6 md:py-5 relative h-[540px] overflow-hidden flex flex-col">
+              {/* ====== BLOQUE DERECHO ====== */}
+              {/* ✅ CAMBIO 2: ajusto padding-top para que el placeholder no quede tan arriba */}
+              <div className="px-6 pt-6 pb-4 md:px-8 md:pt-8 md:pb-5 relative h-[540px] overflow-hidden flex flex-col">
                 <div className="flex-1 min-h-0 pb-8">
                   <textarea
                     ref={rightTA}
-                    readOnly
                     value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
+                    onChange={(e) => setRightText(e.target.value)}
                     placeholder={t("translator.right_placeholder")}
+                    readOnly
                     className={`w-full h-full resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium overflow-y-auto ${
                       loading ? "italic text-slate-500" : ""
                     }`}
