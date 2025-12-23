@@ -25,6 +25,8 @@ import {
 const languages = [
   { code: "EUS", name: "Euskara" },
   { code: "ES",  name: "Español" },
+  { code: "EN",  name: "English" },
+  { code: "FR",  name: "Français"},
 ];
 
 export default function Header() {

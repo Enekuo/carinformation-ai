@@ -37,7 +37,7 @@ export default function Resumen() {
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // Idioma de salida (ES/EUS/EN) — por defecto Euskera
+  // Idioma de salida (ES/EUS/EN/FR) — por defecto Euskera
   const [outputLang, setOutputLang] = useState("eus");
 
   // Track “resumen desactualizado”
@@ -104,9 +104,10 @@ export default function Resumen() {
   const LBL_LONG = tr("summary.length_long", "Detallado");
 
   // Etiquetas de idioma
-  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -494,12 +495,14 @@ export default function Resumen() {
       "Devuelve un único párrafo fluido, sin listas ni viñetas, sin guiones al inicio de línea, " +
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
 
-    // ✅ instrucción de idioma reforzada
+    // ✅ instrucción de idioma reforzada (añadido FR)
     const langInstruction =
       outputLang === "es"
         ? "Idioma de salida: español (ISO: es). Redacta toda la respuesta en español."
         : outputLang === "en"
         ? "Output language: English (ISO: en). Write the entire response in English."
+        : outputLang === "fr"
+        ? "Langue de sortie : français (ISO : fr). Rédige toute la réponse en français."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi erantzun osoa euskaraz.";
 
     const lengthRule =
@@ -513,7 +516,7 @@ export default function Resumen() {
     const docsInline = documentsText?.length
       ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
-          .map(d => `--- ${d.name} ---\n${(d.text || "")}`)
+          .map((d) => `--- ${d.name} ---\n${(d.text || "")}`)
           .join("\n\n")
       : "";
 
@@ -857,7 +860,7 @@ export default function Resumen() {
                         aria-label="Idioma de salida"
                       >
                         <span className="truncate">
-                          {outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}
+                          {outputLang === "eus" ? LBL_EUS : outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_FR}
                         </span>
                         <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                           <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
@@ -866,17 +869,6 @@ export default function Resumen() {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
-                      <DropdownMenuItem
-                        onClick={() => {
-                          if (outputLang !== "es") {
-                            setOutputLang("es");
-                            clearRight();
-                          }
-                        }}
-                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                      >
-                        {LBL_ES}
-                      </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
                           if (outputLang !== "eus") {
@@ -890,6 +882,17 @@ export default function Resumen() {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
+                          if (outputLang !== "es") {
+                            setOutputLang("es");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
+                        {LBL_ES}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
                           if (outputLang !== "en") {
                             setOutputLang("en");
                             clearRight();
@@ -898,6 +901,17 @@ export default function Resumen() {
                         className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
                       >
                         {LBL_EN}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          if (outputLang !== "fr") {
+                            setOutputLang("fr");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
+                        {LBL_FR}
                       </DropdownMenuItem>
                       <DropdownMenuArrow className="fill-white" />
                     </DropdownMenuContent>
