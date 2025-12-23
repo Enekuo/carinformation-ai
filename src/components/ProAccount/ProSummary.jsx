@@ -44,8 +44,8 @@ export default function ProSummary() {
   // Longitud del resumen
   const [summaryLength, setSummaryLength] = useState("breve"); // "breve" | "medio" | "detallado"
 
-  // Idioma de salida (ES/EUS/EN) — por defecto Euskera
-  const [outputLang, setOutputLang] = useState("eus");
+  // Idioma de salida (EUS/ES/EN/FR) — por defecto Euskera
+  const [outputLang, setOutputLang] = useState("EUS");
 
   // Track “resumen desactualizado”
   const [lastSummarySig, setLastSummarySig] = useState(null);
@@ -113,9 +113,10 @@ export default function ProSummary() {
   const LBL_LONG = tr("summary.length_long", "Detallado");
 
   // Etiquetas de idioma
-  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
 
   // ✅ Botón guardar + toast (verde)
   const labelSaveSummary = tr("save_button_label", "Gorde");
@@ -542,17 +543,21 @@ export default function ProSummary() {
       "sin subtítulos ni líneas sueltas. Redacta en frases completas, tono claro e informativo.";
 
     const tooShortMsg =
-      outputLang === "es"
+      outputLang === "ES"
         ? "El texto es demasiado breve para resumir con fidelidad."
-        : outputLang === "en"
+        : outputLang === "EN"
         ? "The text is too short to summarize reliably."
+        : outputLang === "FR"
+        ? "Le texte est trop court pour être résumé de manière fiable."
         : "Testua laburregia da fideltasunez laburtzeko.";
 
     const langInstruction =
-      outputLang === "es"
+      outputLang === "ES"
         ? "Idioma de salida: español (ISO: es). Redacta toda la respuesta en español."
-        : outputLang === "en"
+        : outputLang === "EN"
         ? "Output language: English (ISO: en). Write the entire response in English."
+        : outputLang === "FR"
+        ? "Langue de sortie : français (ISO : fr). Rédige toute la réponse en français."
         : "Irteerako hizkuntza: euskara (ISO: eu). Idatzi erantzun osoa euskaraz.";
 
     const lengthRule =
@@ -920,7 +925,15 @@ export default function ProSummary() {
                         className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                         aria-label={tr("summary.output_language_aria", "Idioma de salida")}
                       >
-                        <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                        <span className="truncate">
+                          {outputLang === "ES"
+                            ? LBL_ES
+                            : outputLang === "EN"
+                            ? LBL_EN
+                            : outputLang === "FR"
+                            ? LBL_FR
+                            : LBL_EUS}
+                        </span>
                         <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                           <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                         </svg>
@@ -930,19 +943,8 @@ export default function ProSummary() {
                     <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
                       <DropdownMenuItem
                         onClick={() => {
-                          if (outputLang !== "es") {
-                            setOutputLang("es");
-                            clearRight();
-                          }
-                        }}
-                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                      >
-                        {LBL_ES}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          if (outputLang !== "eus") {
-                            setOutputLang("eus");
+                          if (outputLang !== "EUS") {
+                            setOutputLang("EUS");
                             clearRight();
                           }
                         }}
@@ -952,14 +954,36 @@ export default function ProSummary() {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
-                          if (outputLang !== "en") {
-                            setOutputLang("en");
+                          if (outputLang !== "ES") {
+                            setOutputLang("ES");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
+                        {LBL_ES}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          if (outputLang !== "EN") {
+                            setOutputLang("EN");
                             clearRight();
                           }
                         }}
                         className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
                       >
                         {LBL_EN}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          if (outputLang !== "FR") {
+                            setOutputLang("FR");
+                            clearRight();
+                          }
+                        }}
+                        className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                      >
+                        {LBL_FR}
                       </DropdownMenuItem>
                       <DropdownMenuArrow className="fill-white" />
                     </DropdownMenuContent>
