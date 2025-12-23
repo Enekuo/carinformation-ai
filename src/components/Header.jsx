@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const languages = [
-  { code: "ES", name: "Español" },
   { code: "EUS", name: "Euskara" },
+  { code: "ES",  name: "Español" },
 ];
 
 export default function Header() {
