@@ -16,17 +16,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { addLibraryDoc } from "@/proLibraryStore";
 
-const OPTIONS = [
-  { value: "EUS", label: "euskera" },
-  { value: "ES", label: "castellano" },
-  { value: "EN", label: "english" },
-  { value: "FR", label: "français" },
-];
+const OPTIONS = ["eus", "es", "en", "fr"]; // ✅ EUS, ES, EN, FR (en este orden)
 
 const MAX_CHARS = 5000;
 
 const directionText = (src, dst) => {
-  if (src === "EUS" && dst === "ES") {
+  if (src === "eus" && dst === "es") {
     return `
 Eres Euskalia, un traductor profesional.
 Traduce SIEMPRE de Euskera a Español.
@@ -34,7 +29,7 @@ Responde SIEMPRE en Español cuando des la TRADUCCIÓN.
 No cambies de idioma en la traducción.
 `.trim();
   }
-  if (src === "ES" && dst === "EUS") {
+  if (src === "es" && dst === "eus") {
     return `
 Eres Euskalia, itzulpen profesionaleko tresna bat.
 Itzuli BETI gaztelaniatik euskarara.
@@ -53,8 +48,22 @@ export default function ProTranslator() {
   const { t, language } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
-  const [src, setSrc] = useState("EUS");
-  const [dst, setDst] = useState("ES");
+  // ✅ mismas claves (summary.output_language_*) para etiquetas de idioma
+  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
+
+  const langLabel = (val) => {
+    if (val === "eus") return LBL_EUS;
+    if (val === "es") return LBL_ES;
+    if (val === "en") return LBL_EN;
+    if (val === "fr") return LBL_FR;
+    return val;
+  };
+
+  const [src, setSrc] = useState("eus");
+  const [dst, setDst] = useState("es");
   const [openLeft, setOpenLeft] = useState(false);
   const [openRight, setOpenRight] = useState(false);
 
@@ -438,12 +447,12 @@ export default function ProTranslator() {
             <path d="M0,10 L10,0 L20,10" className="fill-none stroke-slate-200" />
           </svg>
           <div className="w-48 bg-white rounded-xl shadow-lg border border-slate-200 p-2">
-            {OPTIONS.map((opt) => (
+            {OPTIONS.map((val) => (
               <Item
-                key={opt.value}
-                label={opt.label}
-                active={selected === opt.value}
-                onClick={() => onSelect(opt.value)}
+                key={val}
+                label={langLabel(val)}
+                active={selected === val}
+                onClick={() => onSelect(val)}
               />
             ))}
           </div>
@@ -467,14 +476,8 @@ export default function ProTranslator() {
   const labelAddUrl = tr("summary.add_url", "Añadir URLs");
   const labelSaveUrls = tr("summary.save_urls", "Guardar");
   const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr(
-    "summary.urls_note_visible",
-    "Solo se importará el texto visible."
-  );
-  const labelUrlsNotePaywalled = tr(
-    "summary.urls_note_paywalled",
-    "No se admiten artículos de pago."
-  );
+  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible.");
+  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("summary.remove", "Quitar");
 
   const labelSaveTranslation = tr("save_button_label", "Guardar");
@@ -767,7 +770,8 @@ export default function ProTranslator() {
     setUrlInputOpen(false);
   };
 
-  const removeUrl = (id) => setUrlItems((prev) => prev.filter((u) => u.id !== id));
+  const removeUrl = (id) =>
+    setUrlItems((prev) => prev.filter((u) => u.id !== id));
 
   const canSave = resultStatus === "success" && !!rightText?.trim() && !loading;
 
@@ -856,7 +860,7 @@ export default function ProTranslator() {
                         }}
                         className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
                       >
-                        <span>{OPTIONS.find((o) => o.value === src)?.label}</span>
+                        <span>{langLabel(src)}</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                           <path
                             d="M6 9l6 6 6-6"
@@ -911,7 +915,7 @@ export default function ProTranslator() {
                         }}
                         className="inline-flex items-center gap-2 px-2 py-1 text-[15px] font-medium text-slate-700 hover:text-slate-900 rounded-md"
                       >
-                        <span>{OPTIONS.find((o) => o.value === dst)?.label}</span>
+                        <span>{langLabel(dst)}</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                           <path
                             d="M6 9l6 6 6-6"
