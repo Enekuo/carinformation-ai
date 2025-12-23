@@ -116,7 +116,7 @@ export default function ProSummary() {
   const LBL_EUS = tr("summary.output_language_eus", "Euskara");
   const LBL_ES = tr("summary.output_language_es", "Gaztelania");
   const LBL_EN = tr("summary.output_language_en", "Ingelesa");
-  const LBL_FR = tr("summary.output_language_fr", "Français");
+  const LBL_FR = tr("summary.output_language_fr", "Français"); 
 
   // ✅ Botón guardar + toast (verde)
   const labelSaveSummary = tr("save_button_label", "Gorde");
