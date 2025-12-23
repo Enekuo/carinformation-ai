@@ -56,9 +56,20 @@ export default function Header() {
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
+  // ✅ AHORA CON CLAVES (lo marcado en rojo)
   const tools = [
-    { name: "Traductor", subtitle: "Euskera ↔ Español", icon: <Languages size={16} className="mr-2 text-slate-500" />, path: "/" },
-    { name: "Resumen", subtitle: "Resúmenes con IA", icon: <FileText size={16} className="mr-2 text-slate-500" />, path: "/resumen" },
+    {
+      name: t("toolsMenu.translatorTitle"),
+      subtitle: t("toolsMenu.translatorSubtitle"),
+      icon: <Languages size={16} className="mr-2 text-slate-500" />,
+      path: "/",
+    },
+    {
+      name: t("toolsMenu.summaryTitle"),
+      subtitle: t("toolsMenu.summarySubtitle"),
+      icon: <FileText size={16} className="mr-2 text-slate-500" />,
+      path: "/resumen",
+    },
   ];
 
   const ToolsDropdownContent = ({ inMobileMenu = false }) => (
@@ -93,7 +104,7 @@ export default function Header() {
       name: t("resourcesMenu.aiChat"),
       icon: <MessageSquare size={16} className="mr-2 text-slate-500" />,
       isLink: true,
-      path: "/chat-ia",   // <- la ruta de tu página de chat
+      path: "/chat-ia",
     },
   ];
 
@@ -184,7 +195,7 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Prezioak — misma altura que los demás */}
+            {/* Prezioak */}
             <Link
               to="/pricing"
               className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-900 h-10 px-3 rounded-md"
@@ -221,7 +232,6 @@ export default function Header() {
             {t("header.signIn")}
           </Link>
 
-          {/* Botón azul -> Crear cuenta */}
           <Link to="/crear-cuenta">
             <motion.button
               className="h-9 px-4 bg-blue-600 text-white font-semibold text-sm rounded-full shadow-sm hover:bg-blue-700"
@@ -309,7 +319,6 @@ export default function Header() {
                   {t("header.signIn")}
                 </Link>
 
-                {/* Botón azul móvil -> Crear cuenta */}
                 <Link
                   to="/crear-cuenta"
                   onClick={() => setIsMobileMenuOpen(false)}

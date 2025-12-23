@@ -1,7 +1,15 @@
 import React from "react";
 
-/* ====== DICCIONARIO (solo ES y EUS) ====== */
 export const translations = {
+ 
+                                    // =========================
+                                    // =========================
+                                    //        FREE ACCOUNT
+                                    // ========================= 
+                                    // =========================
+  // =========================
+  //        FREE HEADER
+  // =========================
   header: {
     tools:     { ES: "Herramientas",  EUS: "Tresnak" },
     resources: { ES: "Recursos",      EUS: "Baliabideak" },
@@ -9,7 +17,11 @@ export const translations = {
     signIn:    { ES: "Iniciar sesión", EUS: "Hasi saioa" },
     startFree: { ES: "Crear cuenta", EUS: "Sortu kontua" },
   },
-
+  toolsMenu_translatorTitle:    { ES: "Traductor", EUS: "Itzultzailea" },
+  toolsMenu_translatorSubtitle: { ES: "Euskera ↔ Español", EUS: "Euskara ↔ Gaztelania" },
+  toolsMenu_summaryTitle:       { ES: "Resumen", EUS: "Laburpena" },
+  toolsMenu_summarySubtitle:    { ES: "Resúmenes con IA", EUS: "IArekin laburpenak" },
+  
   resourcesMenu: {
     support: { ES: "Soporte", EUS: "Laguntza" },
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
@@ -1580,12 +1592,16 @@ cookies_last_update: {
 },
   
 
+                                   
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                     // =========================
                                     // =========================
                                     //        PRO ACCOUNT 
                                     // ========================= 
                                     // =========================
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // =========================
   //        Pro Layout
   // ========================= 
