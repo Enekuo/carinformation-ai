@@ -39,8 +39,8 @@ export default function ProGrammarCorrector() {
   // Modo de corrección fijo (ya no hay pestañas)
   const CORRECTION_MODE = "standard"; // "light" | "standard" | "deep"
 
-  // Idioma de referencia para la corrección (ES/EUS/EN)
-  const [outputLang, setOutputLang] = useState("eus");
+  // Idioma de referencia para la corrección (ES/EUS/EN/FR) — por defecto Euskera
+  const [outputLang, setOutputLang] = useState("EUS");
 
   // Track “texto desactualizado”
   const [lastSig, setLastSig] = useState(null);
@@ -84,10 +84,7 @@ export default function ProGrammarCorrector() {
   const labelTabText = tr("grammar.sources_tab_text", "Texto");
   const labelTabDocument = tr("grammar.sources_tab_document", "Documento");
   const labelTabUrl = tr("grammar.sources_tab_url", "URL");
-  const labelEnterText = tr(
-    "grammar.enter_text_here_full",
-    "Escribe o pega aquí el texto que quieres corregir…"
-  );
+  const labelEnterText = tr("grammar.enter_text_here_full", "Escribe o pega aquí el texto que quieres corregir…");
   const labelChooseFileTitle = tr("grammar.choose_file_title", "Elige tu archivo o carpeta");
   const labelAcceptedFormats = tr(
     "grammar.accepted_formats",
@@ -114,10 +111,16 @@ export default function ProGrammarCorrector() {
   const LBL_ES = tr("grammar.language_es", "Español");
   const LBL_EUS = tr("grammar.language_eus", "Euskera");
   const LBL_EN = tr("grammar.language_en", "Inglés");
+  const LBL_FR = tr("grammar.language_fr", "Français");
 
   // Guardar (mismo sistema que Translator)
   const labelSaveTranslation = tr("save_button_label", "Guardar");
   const librarySavedMessage = tr("library_saved_toast", "Guardado en biblioteca");
+
+  // ✅ Tooltips existentes del translator (NO nuevas keys)
+  const tooltipCopy = t("translator.copy") || "Copiar";
+  const tooltipCopied = t("translator.copied") || "Copiado";
+  const tooltipPdf = t("translator.pdf") || "PDF";
 
   // Ayuda izquierda
   const leftRaw = tr(
@@ -145,10 +148,7 @@ export default function ProGrammarCorrector() {
         <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
-          <span
-            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
-            style={{ backgroundColor: BLUE }}
-          />
+          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
         )}
       </button>
       {showDivider && (
@@ -496,7 +496,7 @@ export default function ProGrammarCorrector() {
       return;
     }
     if (!validNow) {
-      setErrorMsg("Añade algo de texto, documentos o URLs antes de pedir la corrección.");
+      setErrorMsg(tr("grammar.error_need_input", "Añade algo de texto, documentos o URLs antes de pedir la corrección."));
       setLoading(false);
       return;
     }
@@ -511,10 +511,12 @@ export default function ProGrammarCorrector() {
       "Haz una corrección ESTÁNDAR: corrige ortografía, gramática, puntuación y mejora un poco la fluidez, manteniendo el mismo tono y estructura general.";
 
     const langInstruction =
-      outputLang === "es"
+      outputLang === "ES"
         ? "Usa ortografía y gramática del español estándar (España). NO traduzcas el texto a otro idioma. Devuelve siempre el texto completo corregido."
-        : outputLang === "en"
+        : outputLang === "EN"
         ? "Use standard English grammar and spelling. Do NOT translate the text into another language. Always return the full corrected text."
+        : outputLang === "FR"
+        ? "Utilise la grammaire et l’orthographe du français standard. Ne traduis pas le texte dans une autre langue. Rends toujours le texte complet corrigé."
         : "Erabili euskara batuaren ortografia eta gramatika. EZ itzuli testua beste hizkuntza batera. Itzuli beti testu osoa zuzenduta.";
 
     const docsInline = documentsText?.length
@@ -576,7 +578,12 @@ export default function ProGrammarCorrector() {
           return;
         }
         if (res.status === 429) {
-          throw new Error("Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium.");
+          throw new Error(
+            tr(
+              "grammar.error_rate_limit",
+              "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
+            )
+          );
         }
         const txt = await res.text();
         throw new Error(`HTTP ${res.status}: ${txt}`);
@@ -591,7 +598,7 @@ export default function ProGrammarCorrector() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error("No se recibió texto de la API.");
+      if (!rawText) throw new Error(tr("grammar.error_no_text", "No se recibió texto de la API."));
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -605,7 +612,7 @@ export default function ProGrammarCorrector() {
       setIsOutdated(false);
       setShowDiff(false);
     } catch (err) {
-      setErrorMsg(err.message || "Error realizando la corrección.");
+      setErrorMsg(err.message || tr("grammar.error_generic", "Error realizando la corrección."));
     } finally {
       setLoading(false);
     }
@@ -641,13 +648,7 @@ export default function ProGrammarCorrector() {
 
             {/* Tabs */}
             <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
-              <TabBtn
-                active={sourceMode === "text"}
-                icon={FileText}
-                label={labelTabText}
-                onClick={() => setSourceMode("text")}
-                showDivider
-              />
+              <TabBtn active={sourceMode === "text"} icon={FileText} label={labelTabText} onClick={() => setSourceMode("text")} showDivider />
               <TabBtn
                 active={sourceMode === "document"}
                 icon={FileIcon}
@@ -655,13 +656,7 @@ export default function ProGrammarCorrector() {
                 onClick={() => setSourceMode("document")}
                 showDivider
               />
-              <TabBtn
-                active={sourceMode === "url"}
-                icon={UrlIcon}
-                label={labelTabUrl}
-                onClick={() => setSourceMode("url")}
-                showDivider={false}
-              />
+              <TabBtn active={sourceMode === "url"} icon={UrlIcon} label={labelTabUrl} onClick={() => setSourceMode("url")} showDivider={false} />
             </div>
 
             {/* Contenido */}
@@ -696,11 +691,7 @@ export default function ProGrammarCorrector() {
                       <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
                     </div>
                     <div className="mt-1 text-right text-xs">
-                      <span
-                        className={
-                          overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"
-                        }
-                      >
+                      <span className={overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"}>
                         {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                       </span>
                     </div>
@@ -753,9 +744,7 @@ export default function ProGrammarCorrector() {
                               </div>
                               <div className="min-w-0 flex-1">
                                 <span className="text-sm font-medium block truncate">{file.name}</span>
-                                <span className="text-xs text-slate-500">
-                                  {(file.size / 1024 / 1024).toFixed(2)} MB
-                                </span>
+                                <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                               </div>
                             </div>
                             <button
@@ -798,10 +787,7 @@ export default function ProGrammarCorrector() {
                       <textarea
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
-                        placeholder={tr(
-                          "grammar.paste_urls_placeholder",
-                          "Introduce aquí una o más URLs (separadas por línea)"
-                        )}
+                        placeholder={tr("grammar.paste_urls_placeholder", "Introduce aquí una o más URLs (separadas por línea)")}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                         spellCheck={false}
@@ -875,12 +861,11 @@ export default function ProGrammarCorrector() {
                   <button
                     type="button"
                     onClick={() => setShowDiff((v) => !v)}
-                    className={`inline-flex items-center gap-1 px-3 h-8 rounded-full text-xs font-medium border shadow-sm transition
-                      ${
-                        showDiff
-                          ? "border-emerald-300 bg-emerald-50 text-emerald-800"
-                          : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-800"
-                      }`}
+                    className={`inline-flex items-center gap-1 px-3 h-8 rounded-full text-xs font-medium border shadow-sm transition ${
+                      showDiff
+                        ? "border-emerald-300 bg-emerald-50 text-emerald-800"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-800"
+                    }`}
                     title={showDiff ? labelHideChanges : labelViewChanges}
                   >
                     <span className="text-sm leading-none">🔍</span>
@@ -895,12 +880,12 @@ export default function ProGrammarCorrector() {
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800
-                                 flex items-center justify-between hover:border-slate-400
-                                 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
+                      className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
                       aria-label="Idioma principal del texto"
                     >
-                      <span className="truncate">{outputLang === "es" ? LBL_ES : outputLang === "en" ? LBL_EN : LBL_EUS}</span>
+                      <span className="truncate">
+                        {outputLang === "ES" ? LBL_ES : outputLang === "EN" ? LBL_EN : outputLang === "FR" ? LBL_FR : LBL_EUS}
+                      </span>
                       <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
@@ -910,19 +895,8 @@ export default function ProGrammarCorrector() {
                   <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
                     <DropdownMenuItem
                       onClick={() => {
-                        if (outputLang !== "es") {
-                          setOutputLang("es");
-                          clearRight();
-                        }
-                      }}
-                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
-                    >
-                      {LBL_ES}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        if (outputLang !== "eus") {
-                          setOutputLang("eus");
+                        if (outputLang !== "EUS") {
+                          setOutputLang("EUS");
                           clearRight();
                         }
                       }}
@@ -932,14 +906,36 @@ export default function ProGrammarCorrector() {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => {
-                        if (outputLang !== "en") {
-                          setOutputLang("en");
+                        if (outputLang !== "ES") {
+                          setOutputLang("ES");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_ES}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "EN") {
+                          setOutputLang("EN");
                           clearRight();
                         }
                       }}
                       className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
                     >
                       {LBL_EN}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        if (outputLang !== "FR") {
+                          setOutputLang("FR");
+                          clearRight();
+                        }
+                      }}
+                      className="cursor-pointer rounded-lg text-[14px] px-3 py-2"
+                    >
+                      {LBL_FR}
                     </DropdownMenuItem>
                     <DropdownMenuArrow className="fill-white" />
                   </DropdownMenuContent>
@@ -949,11 +945,11 @@ export default function ProGrammarCorrector() {
                 <button
                   type="button"
                   onClick={() => handleCopy(true)}
-                  title="Copiar texto corregido"
+                  title={copiedFlash ? tooltipCopied : tooltipCopy}
                   className={`h-8 w-8 flex items-center justify-center ${
                     result ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                   }`}
-                  aria-label="Copiar resultado"
+                  aria-label={copiedFlash ? tooltipCopied : tooltipCopy}
                   disabled={!result}
                 >
                   {copiedFlash ? <Check className="w-4 h-4" style={{ color: BLUE }} /> : <Copy className="w-4 h-4" />}
@@ -963,11 +959,11 @@ export default function ProGrammarCorrector() {
                 <button
                   type="button"
                   onClick={handleClearLeft}
-                  title="Eliminar texto de entrada y resultado"
+                  title={tr("grammar.clear_input", "Eliminar")}
                   className={`h-8 w-8 flex items-center justify-center ${
                     sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                   }`}
-                  aria-label="Eliminar texto de entrada y resultado"
+                  aria-label={tr("grammar.clear_input", "Eliminar")}
                   disabled={!(sourceMode === "text" && textValue)}
                 >
                   <Trash className="w-4 h-4" />
@@ -1047,12 +1043,12 @@ export default function ProGrammarCorrector() {
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
-                    aria-label={t("translator.copy")}
+                    aria-label={copiedFlash ? tooltipCopied : tooltipCopy}
                     className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
-                    {copiedFlash ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                    {copiedFlash ? <Check className="w-5 h-5" style={{ color: BLUE }} /> : <Copy className="w-5 h-5" />}
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {copiedFlash ? t("translator.copied") : t("translator.copy")}
+                      {copiedFlash ? tooltipCopied : tooltipCopy}
                     </span>
                   </button>
 
@@ -1060,24 +1056,27 @@ export default function ProGrammarCorrector() {
                   <button
                     type="button"
                     onClick={handleDownload}
-                    aria-label={t("translator.pdf")}
+                    aria-label={tooltipPdf}
                     className="group relative p-2 rounded-md hover:bg-slate-100"
                   >
                     <FileDown className="w-5 h-5" />
                     <span className="pointer-events-none absolute -top-9 right-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                      {t("translator.pdf")}
+                      {tooltipPdf}
                     </span>
                   </button>
 
                   {/* Botón verde Guardar */}
-                  <button
+                  <motion.button
                     type="button"
                     onClick={handleSaveToLibrary}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
                     className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 active:scale-[0.98] transition-all"
                     style={{ backgroundColor: "#22c55e" }}
                   >
                     {labelSaveTranslation}
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             )}
