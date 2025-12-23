@@ -301,9 +301,21 @@ export default function Translator() {
         setErr("");
 
         const contents = await Promise.all(documents.map(({ file }) => readFileAsText(file)));
-        const combined = contents.join("\n\n---\n\n").slice(0, MAX_CHARS);
+        const combinedFull = contents.join("\n\n---\n\n");
 
-        if (!combined.trim()) {
+        // ✅ NUEVO: si supera el límite, error y NO traducir
+        if (combinedFull.length > MAX_CHARS) {
+          const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
+          setRightText("");
+          setErr(
+            uiLang === "EUS"
+              ? `Gehienezko muga: ${MAX_CHARS.toLocaleString()} karaktere (dokumentuak guztira).`
+              : `Límite máximo: ${MAX_CHARS.toLocaleString()} caracteres (documentos en total).`
+          );
+          return;
+        }
+
+        if (!combinedFull.trim()) {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
           setErr(uiLang === "EUS" ? "Ezin da dokumentuaren edukia irakurri." : "No se ha podido leer el contenido del documento.");
           setRightText("");
@@ -325,10 +337,10 @@ export default function Translator() {
             mode: "translate_text",
             src,
             dst,
-            text: combined,
+            text: combinedFull,
             messages: [
               { role: "system", content: system },
-              { role: "user", content: combined },
+              { role: "user", content: combinedFull },
             ],
           }),
         });
