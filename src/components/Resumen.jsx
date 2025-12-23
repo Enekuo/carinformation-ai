@@ -460,11 +460,20 @@ export default function Resumen() {
     const textOk = trimmed.length >= 20 && words.length >= 5;
     const validNow = textOk || urlItems.length > 0 || documents.length > 0;
 
+    const docsChars = (documentsText || []).reduce((acc, d) => acc + ((d?.text || "").length), 0);
+
     if ((textValue || "").length > MAX_CHARS) {
       setErrorKind("limit");
       setLoading(false);
       return;
     }
+
+    if (docsChars > MAX_CHARS) {
+      setErrorKind("limit");
+      setLoading(false);
+      return;
+    }
+
     if (!validNow) {
       setErrorMsg("Añade texto suficiente, URLs o documentos antes de generar el resumen.");
       setLoading(false);
@@ -504,7 +513,7 @@ export default function Resumen() {
     const docsInline = documentsText?.length
       ? "\nDOCUMENTOS (testu erauzia / texto extraído):\n" +
         documentsText
-          .map(d => `--- ${d.name} ---\n${(d.text || "").slice(0, 12000)}`)
+          .map(d => `--- ${d.name} ---\n${(d.text || "")}`)
           .join("\n\n")
       : "";
 
@@ -833,11 +842,7 @@ export default function Resumen() {
                 <div className="flex items-center gap-2">
                   <LengthTab active={summaryLength === "breve"} label={LBL_SHORT} onClick={() => handleLengthChange("breve")} showDivider />
                   <LengthTab active={summaryLength === "medio"} label={LBL_MED} onClick={() => handleLengthChange("medio")} showDivider />
-                  <LengthTab
-                    active={summaryLength === "detallado"}
-                    label={LBL_LONG}
-                    onClick={() => handleLengthChange("detallado")}
-                  />
+                  <LengthTab active={summaryLength === "detallado"} label={LBL_LONG} onClick={() => handleLengthChange("detallado")} />
                 </div>
 
                 <div className="flex items-center gap-1">
