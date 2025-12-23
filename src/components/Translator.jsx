@@ -1058,7 +1058,7 @@ export default function Translator() {
 
               {/* ====== BLOQUE DERECHO (CORREGIDO: ocupa hasta la línea roja) ====== */}
               <div className="px-5 py-4 md:px-6 md:py-5 relative h-[540px] overflow-hidden flex flex-col">
-                <div className="flex-1 min-h-0 pb-12">
+                <div className="flex-1 min-h-0 pb-6">
                   <textarea
                     ref={rightTA}
                     value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
