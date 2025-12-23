@@ -85,8 +85,10 @@ export default function Header() {
             {item.icon}
           </span>
           <div className="flex flex-col">
-            <span className="font-medium">{item.name}</span>
-            {item.subtitle && <span className="text-xs text-slate-500">{item.subtitle}</span>}
+          <span className="font-semibold text-[15px] leading-5">{item.name}</span>
+            {item.subtitle && (
+          <span className="text-xs text-slate-500 leading-4">{item.subtitle}</span>
+       )}
           </div>
         </Link>
       ))}
