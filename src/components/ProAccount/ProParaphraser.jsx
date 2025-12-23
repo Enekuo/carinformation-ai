@@ -96,9 +96,10 @@ export default function ProParaphraser() {
   const labelUrlsNotePaywalled = tr("proParaphraser_urls_note_paywalled", "No se admiten artículos de pago.");
   const labelRemove = tr("proParaphraser_remove_button", "Quitar");
 
-  const LBL_ES = tr("proParaphraser_language_es", "Castellano");
-  const LBL_EUS = tr("proParaphraser_language_eus", "Euskera");
-  const LBL_EN = tr("proParaphraser_language_en", "Inglés");
+  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
+  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
+  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("summary.output_language_fr", "Français");
 
   const labelGenerateFromSources = tr("proParaphraser_generate_button", "Crear parafraseo");
   const labelHelpRight = tr(
