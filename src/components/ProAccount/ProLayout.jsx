@@ -43,8 +43,10 @@ export default function LayoutPro({ children }) {
   );
 
   const languages = [
-    { code: "ES", name: "Español" },
     { code: "EUS", name: "Euskara" },
+    { code: "ES",  name: "Español" },
+    { code: "EN",  name: "English" },
+    { code: "FR",  name: "Français"},
   ];
 
   const showText = !collapsed;
