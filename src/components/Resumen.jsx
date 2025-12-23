@@ -1,5 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { FileText, File as FileIcon, Link2 as UrlIcon, Plus, X, Copy, Trash, Check } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
@@ -396,13 +397,13 @@ export default function Resumen() {
       <div className="text-sm font-semibold">{tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
       <p className="text-xs text-slate-600 mt-1">{tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}</p>
       <div className="mt-4 flex items-center justify-center gap-3">
-        <a
-          href="/pricing"
+        <Link
+          to="/pricing"
           className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
           style={{ backgroundColor: "#2563eb" }}
         >
           {tr("summary.limit_cta", "Probar plan Premium")}
-        </a>
+        </Link>
         <button onClick={() => setErrorKind(null)} className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white">
           {tr("summary.limit_dismiss", "Seguir con plan Gratis")}
         </button>
@@ -420,13 +421,13 @@ export default function Resumen() {
         )}
       </p>
       <div className="mt-4 flex flex-row items-center gap-3">
-        <a
-          href="/pricing"
+        <Link
+          to="/pricing"
           className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
           style={{ backgroundColor: "#2563eb" }}
         >
           {tr("summary.premium_prompt_cta", "Probar plan Premium")}
-        </a>
+        </Link>
         <button onClick={() => setShowPremiumNote(false)} className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white">
           {tr("summary.premium_prompt_close", "Entendido")}
         </button>
@@ -915,15 +916,15 @@ export default function Resumen() {
                   <button
                     type="button"
                     onClick={handleClearLeft}
-                    title="Eliminar texto de entrada y resultado"
+                    title="Eliminar texto de la izquierda y resultado"
                     className={`h-9 w-9 flex items-center justify-center ${
                       sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label="Eliminar texto de entrada y resultado"
+                    aria-label="Eliminar texto de la izquierda y resultado"
                     disabled={!(sourceMode === "text" && textValue)}
                   >
                     <Trash className="w-4 h-4" />
-                  </button> 
+                  </button>
                 </div>
               </div>
 
