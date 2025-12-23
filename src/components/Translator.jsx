@@ -245,7 +245,9 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo."
+              uiLang === "EUS"
+                ? "Ezin izan dira URLak orain prozesatu."
+                : "No se pudieron procesar las URLs ahora mismo."
             );
           return;
         }
@@ -259,7 +261,9 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS" ? "Ezin izan dira URLak orain prozesatu." : "No se pudieron procesar las URLs ahora mismo."
+              uiLang === "EUS"
+                ? "Ezin izan dira URLak orain prozesatu."
+                : "No se pudieron procesar las URLs ahora mismo."
             );
         }
       } finally {
@@ -317,7 +321,11 @@ export default function Translator() {
 
         if (!combinedFull.trim()) {
           const uiLang = (language || "ES").toString().toUpperCase() === "EUS" ? "EUS" : "ES";
-          setErr(uiLang === "EUS" ? "Ezin da dokumentuaren edukia irakurri." : "No se ha podido leer el contenido del documento.");
+          setErr(
+            uiLang === "EUS"
+              ? "Ezin da dokumentuaren edukia irakurri."
+              : "No se ha podido leer el contenido del documento."
+          );
           setRightText("");
           return;
         }
@@ -352,7 +360,9 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo."
+              uiLang === "EUS"
+                ? "Ezin izan dira dokumentuak orain prozesatu."
+                : "No se han podido procesar los documentos ahora mismo."
             );
           return;
         }
@@ -366,7 +376,9 @@ export default function Translator() {
           const hasPrev = !!(rightText && rightText.trim().length > 0);
           if (!hasPrev)
             setErr(
-              uiLang === "EUS" ? "Ezin izan dira dokumentuak orain prozesatu." : "No se han podido procesar los documentos ahora mismo."
+              uiLang === "EUS"
+                ? "Ezin izan dira dokumentuak orain prozesatu."
+                : "No se han podido procesar los documentos ahora mismo."
             );
         }
       } finally {
@@ -876,7 +888,7 @@ export default function Translator() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
               {/* ====== BLOQUE IZQUIERDO ====== */}
-              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-[540px] overflow-hidden flex flex-col">
+              <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-[540px] overflow-hidden flex flex-col isolate">
                 {sourceMode === "text" && (
                   <>
                     <div className="flex-1 min-h-0">
@@ -1056,13 +1068,13 @@ export default function Translator() {
                 )}
               </div>
 
-              {/* ====== BLOQUE DERECHO (CORREGIDO: ocupa hasta la línea roja) ====== */}
+              {/* ====== BLOQUE DERECHO (CORREGIDO: ocupa hasta la línea roja + NO EDITABLE) ====== */}
               <div className="px-5 py-4 md:px-6 md:py-5 relative h-[540px] overflow-hidden flex flex-col">
                 <div className="flex-1 min-h-0 pb-8">
                   <textarea
                     ref={rightTA}
+                    readOnly
                     value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
-                    onChange={(e) => setRightText(e.target.value)}
                     placeholder={t("translator.right_placeholder")}
                     className={`w-full h-full resize-none bg-transparent outline-none text-[17px] leading-8 text-slate-700 placeholder:text-slate-500 font-medium overflow-y-auto ${
                       loading ? "italic text-slate-500" : ""
