@@ -124,17 +124,15 @@ export default function Translator() {
     return () => window.removeEventListener("mousedown", onDown);
   }, []);
 
-  // auto-resize (solo para modos NO texto; en texto queremos scroll)
+  // auto-resize (solo cuando NO estamos en modo texto; en texto usamos scroll)
   const autoResize = (el) => {
     if (!el) return;
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   };
-
   useEffect(() => {
     if (sourceMode !== "text") autoResize(leftTA.current);
   }, [leftText, sourceMode]);
-
   useEffect(() => {
     if (sourceMode !== "text") autoResize(rightTA.current);
   }, [rightText, sourceMode]);
@@ -877,7 +875,7 @@ export default function Translator() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              {/* ====== BLOQUE IZQUIERDO: FIX + SCROLL PARA TEXTO ====== */}
+              {/* ====== BLOQUE IZQUIERDO ====== */}
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-200 relative h-[540px] overflow-hidden flex flex-col">
                 {sourceMode === "text" && (
                   <>
@@ -913,9 +911,7 @@ export default function Translator() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative min-h-0 ${
-                      dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
-                    }`}
+                    className={`h-full w-full flex flex-col relative min-h-0 ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
                     onDragEnter={onDragEnter}
                     onDragOver={onDragOver}
                     onDragLeave={onDragLeave}
@@ -1060,9 +1056,9 @@ export default function Translator() {
                 )}
               </div>
 
-              {/* ====== BLOQUE DERECHO: MISMA ALTURA + SCROLL (para que no crezca la caja) ====== */}
+              {/* ====== BLOQUE DERECHO (CORREGIDO: ocupa hasta la línea roja) ====== */}
               <div className="p-8 md:p-10 relative h-[540px] overflow-hidden flex flex-col">
-                <div className="flex-1 min-h-0">
+                <div className="flex-1 min-h-0 pb-16">
                   <textarea
                     ref={rightTA}
                     value={loading && document.activeElement !== rightTA.current ? t("translator.loading") : rightText}
