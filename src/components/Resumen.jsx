@@ -641,7 +641,7 @@ export default function Resumen() {
               </div>
 
               {/* Contenido */}
-              <div className="flex-1 overflow-hidden p-3">
+              <div className="flex-1 overflow-hidden p-3 min-h-0">
                 {!sourceMode && (
                   <div className="h-full w-full flex items-center justify-center">
                     <div className="text-center px-2">
@@ -679,7 +679,7 @@ export default function Resumen() {
 
                 {sourceMode === "document" && (
                   <div
-                    className={`h-full w-full flex flex-col relative ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
+                    className={`h-full w-full flex flex-col relative min-h-0 ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
                     onDragEnter={onDragEnter}
                     onDragOver={onDragOver}
                     onDragLeave={onDragLeave}
@@ -709,29 +709,31 @@ export default function Resumen() {
                     </button>
 
                     {documents.length > 0 && (
-                      <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-hidden">
-                        {documents.map(({ id, file }) => (
-                          <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
-                            <div className="min-w-0 flex items-center gap-3 flex-1">
-                              <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
-                                <FileIcon className="w-4 h-4" />
+                      <div className="mt-4 flex-1 min-h-0">
+                        <ul className="h-full overflow-y-auto divide-y divide-slate-200 rounded-xl border border-slate-200 overflow-x-hidden">
+                          {documents.map(({ id, file }) => (
+                            <li key={id} className="flex items-center justify-between gap-3 px-3 py-2 bg-white">
+                              <div className="min-w-0 flex items-center gap-3 flex-1">
+                                <div className="shrink-0 w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center">
+                                  <FileIcon className="w-4 h-4" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm font-medium block truncate">{file.name}</span>
+                                  <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                                </div>
                               </div>
-                              <div className="min-w-0 flex-1">
-                                <span className="text-sm font-medium block truncate">{file.name}</span>
-                                <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => removeDocument(id)}
-                              className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
-                              title={labelRemove}
-                              aria-label={labelRemove}
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                              <button
+                                onClick={() => removeDocument(id)}
+                                className="shrink-0 p-1.5 rounded-md hover:bg-slate-100"
+                                title={labelRemove}
+                                aria-label={labelRemove}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 )}
