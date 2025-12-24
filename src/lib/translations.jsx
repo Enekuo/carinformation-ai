@@ -506,23 +506,21 @@ export const translations = {
 
 
   highlight1_title: {
-    ES: "🧠Procesamiento inteligente del contenido",
-    EUS: "🧠Edukien prozesamendu adimenduna",
-  },
-  highlight1_desc: {
-    ES: "Euskalia analiza cada texto, documento o URL para entender realmente lo que dice. Detecta estructura, contexto y puntos clave para ofrecerte una traducción o resumen mucho más útil y adaptado a lo que necesitas.",
-    EUS: "Euskaliak testu, dokumentu edo URL bakoitza aztertzen du benetan zer esaten duen ulertzeko. Egiturak, testuingurua eta puntu nagusiak detektatzen ditu, eta horri esker itzulpen edo laburpen erabilgarriagoa eskaintzen dizu.",
-  },
-
-  highlight2_title: {
-    ES: "🎯Resultados claros y naturales",
-    EUS: "🎯Emaitza argi eta naturalak",
-  },
-  highlight2_desc: {
-    ES: "El contenido generado por Euskalia está pensado para que lo entiendas rápido. Traducciones limpias, resúmenes estructurados y textos que respetan el sentido original para que estudiar o trabajar sea más fácil y más rápido.",
-    EUS: "Euskaliak sortutako edukia azkar ulertzeko pentsatuta dago. Itzulpen garbiak, egituratutako laburpenak eta jatorrizko esanahia errespetatzen duten testuak eskaintzen ditu, ikastea edo lan egitea errazagoa izan dadin.",
-  },
-
+  ES: "🧠 Procesamiento inteligente del contenido",
+  EUS: "🧠 Edukien prozesamendu adimenduna",
+},
+highlight1_desc: {
+  ES: "Euskalia comprende cada contenido en su contexto para identificar lo que realmente quiere transmitir. De este modo, trabaja la información de forma coherente y genera resultados adaptados al objetivo del usuario.",
+  EUS: "Euskaliak eduki bakoitzaren testuingurua ulertzen du, benetan zer adierazi nahi duen identifikatuz. Horri esker, informazioa modu koherentean lantzen du eta erabiltzailearen helburura egokitutako emaitzak sortzen ditu.",
+},
+highlight2_title: {
+  ES: "🎯 Resultados claros y naturales",
+  EUS: "🎯 Emaitza argi eta naturalak",
+},
+highlight2_desc: {
+  ES: "El contenido generado es claro, natural y fácil de entender. Está pensado para un uso real, tanto en el estudio como en el trabajo.",
+  EUS: "Sortutako edukiak argiak, naturalak eta erraz ulertzeko modukoak dira. Irakurketa arina eskaintzen dute eta erabilera errealerako prestatuta daude, bai ikasteko edo bai lanerako.",
+},
   highlight3_title: {
     ES: "🔒Privacidad garantizada",
     EUS: "🔒Segurtasuna bermatuta",
