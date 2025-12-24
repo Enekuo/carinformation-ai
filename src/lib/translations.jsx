@@ -384,7 +384,7 @@ export const translations = {
 
   benefit1_title: {
     ES: "Ahorra horas de trabajo",
-    EUS: "Aurrez ezazu lan-orduak",
+    EUS: "Aurreztu lan-orduak",
   },
   benefit1_desc: {
     ES: "Trabaja con textos largos en segundos. Procesa, mejora y adapta contenido sin leerlo todo ni perder tiempo innecesario.",
@@ -406,7 +406,7 @@ export const translations = {
   },
   benefit3_desc: {
     ES: "Desde estudiantes hasta profesionales. Euskalia se adapta a tu nivel y a tu forma de trabajar.",
-    EUS: "Ikasleetatik profesionaletara. Euskalia zure mailara eta lan egiteko modura egokitzen da.",
+    EUS: "Ikasleentzako..., profesionalentzako... Euskalia zure mailara eta lan egiteko modura egokitzen da.",
   },
 
   benefit4_title: {
@@ -420,7 +420,7 @@ export const translations = {
 
   benefit5_title: {
     ES: "Fácil de usar, eficaz desde el primer minuto",
-    EUS: "Erabilerraza, lehen minututik eraginkorra",
+    EUS: "Erabilera erraza, lehen minututik eraginkorra",
   },
   benefit5_desc: {
     ES: "Un diseño claro y directo para que te centres en el contenido, no en aprender a usar la herramienta.",
@@ -433,7 +433,7 @@ export const translations = {
   },
   benefit6_desc: {
     ES: "Empieza gratis, sin registros obligatorios ni instalaciones. Entra, usa Euskalia y decide después.",
-    EUS: "Hasi doan, derrigorrezko erregistrorik edo instalaziorik gabe. Sartu, erabili Euskalia eta erabaki gero.",
+    EUS: "Hasi doan, derrigorrezko erregistrorik edo instalaziorik gabe. Sartu, erabili Euskalia eta erabaki ondoren.",
   },
 },
 
