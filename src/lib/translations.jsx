@@ -573,7 +573,7 @@ homeHowItWorks: {
 
   offers_item5: {
     ES: "Ejecuta los procesos en tiempo real o en pocos segundos, incluso con textos largos.",
-    EUS: "Prozesuak denbora errealean edo segundo gutxitan exekutatzen ditu, baita testu luzeekin ere.",
+    EUS: "Prozesuak denbora errealean edo segundo gutxitan sortzen ditu, baita testu luzeekin ere.",
   },
 
   offers_item6: {
