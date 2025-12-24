@@ -630,7 +630,7 @@ homeHowItWorks: {
   },
   faq_item1_answer: {
     ES: "Euskalia es una plataforma de inteligencia artificial diseñada para trabajadores, estudiantes y cualquier persona que necesite traducir o resumir contenido de forma rápida y sencilla. Está centrada en el público vasco o en cualquiera que necesite trabajar con el euskera.\n\nEuskalia está centrada en el euskera como idioma principal. Tanto la traducción como el resto de herramientas funcionan siempre en relación al euskera, utilizando otros idiomas como castellano, inglés o francés únicamente para convertir el contenido hacia el euskera o desde el euskera, según las necesidades.\n\nEuskalia se caracteriza por un diseño claro y una experiencia de uso pensada para trabajar con textos sin fricciones. La interfaz es sencilla, directa y accesible, lo que permite centrarse en el contenido desde el primer momento, sin distracciones ni configuraciones complejas.",
-    EUS: "Euskalia adimen artifizialeko plataforma bat da, langileei, ikasleei eta edukiak modu azkar eta erraz batean itzuli edo laburtu behar dituen edonori zuzendua. Euskal herritarrei eta euskararekin lan egin behar duen edonori laguntzera bideratua dago.\n\nEuskalia euskararekin lotuta lan egiteko pentsatuta dago. Bai itzulpenak bai gainerako tresnek euskararekin lotuta funtzionatzen dute, eta gaztelania, ingelesa edo frantsesa bezalako beste hizkuntzak euskarara edo euskaratik edukia bihurtzeko erabiltzen dira, erabiltzaileen beharren arabera.\n\nEuskalia diseinu argi batek eta testuekin oztoporik gabe lan egiteko pentsatutako erabiltzaile-esperientziak bereizten du. Interfazea sinplea, zuzena eta eskuragarria da, eta horri esker edukiari arreta hasieratik bertatik jarri daiteke, distrakziorik edo konfigurazio ezin ulerturik gabe.",
+    EUS: "Euskalia adimen artifizialeko plataforma bat da, langileei, ikasleei eta edukiak modu azkar eta erraz batean itzuli edo laburtu behar dituen edonori zuzendua. Euskal herritarrei eta euskararekin lan egin behar duen edonori laguntzera bideratua dago.\n\nEuskararekin lotuta lan egiteko pentsatuta dago. Bai itzulpenak bai gainerako tresnek euskararekin lotuta funtzionatzen dute, eta gaztelania, ingelesa edo frantsesa bezalako beste hizkuntzak euskarara edo euskaratik edukia bihurtzeko erabiltzen dira, erabiltzaileen beharren arabera.\n\nEuskalia diseinu argi batek eta testuekin oztoporik gabe lan egiteko pentsatutako erabiltzaile-esperientziak bereizten du. Interfazea sinplea, zuzena eta eskuragarria da, eta horri esker edukiari arreta hasieratik bertatik jarri daiteke, distrakziorik edo konfigurazio ezin ulerturik gabe.",
   },
 
   // 2 — Objetivo de Euskalia
@@ -640,7 +640,7 @@ homeHowItWorks: {
   },
   faq_item2_answer: {
     ES: "El objetivo de Euskalia es impulsar el euskera en el ámbito digital, garantizando que las personas que viven, trabajan o estudian en nuestro entorno puedan usarlo como un idioma moderno, completo y plenamente funcional.\n\nBuscamos evitar la desinformación, las barreras tecnológicas y los problemas derivados de la falta de herramientas en euskera, ofreciendo soluciones de IA que permitan trabajar, aprender y comunicarse sin limitaciones lingüísticas.",
-    EUS: "Euskaliaren helburua euskara eremu digitalean indartzea da, gure inguruan bizi, lan edo ikasten duten pertsonek hizkuntza moderno, oso eta guztiz funtzional gisa erabili ahal izan dezaten.\n\nDesinformazioa, oztopo teknologikoak eta euskarazko tresna faltak sortzen dituzten arazoak saihestu nahi ditugu, hizkuntza-mugarik gabe lan, ikasi eta komunikatzeko aukera emango duten AA soluzioak eskainiz.",
+    EUS: "Euskaliaren helburua euskara eremu digitalean indartzea da, gure inguruan bizi, lan edo ikasten duten pertsonek hizkuntza moderno, oso eta guztiz funtzional gisa erabili ahal izan dezaten.\n\nDesinformazioa, oztopo teknologikoak eta euskarazko tresna faltak sortzen dituzten arazoak saihestu nahi ditugu, hizkuntza-mugarik gabe lan, ikasi eta komunikatzeko aukera emango duten IA soluzioak eskainiz.",
   },
 
   // 3
@@ -669,8 +669,8 @@ homeHowItWorks: {
     EUS: "📏 Ba al dago karaktere edo fitxategi-tamainaren mugarik?",
   },
   faq_item5_answer: {
-    ES: "Sí, existe un límite de texto y tamaño de archivo para asegurar un uso estable del servicio.\n\nSi tu contenido es muy largo, recomendamos dividirlo en partes.",
-    EUS: "Bai, testuaren eta dokumentu-tamainaren muga dago zerbitzua egonkor mantentzeko.\n\nEdukia oso luzea bada, zatika bidaltzea gomendatzen dugu.",
+    ES: "Sí, existen límites de caracteres para garantizar un uso estable del servicio. Actualmente, el límite es de 12.000 caracteres por operación, tanto para texto introducido manualmente como para contenido obtenido a partir de archivos o enlaces..\n\nSi tu contenido es muy largo, recomendamos dividirlo en partes.",
+    EUS: "Bai, karaktere-muga bat dago zerbitzuaren erabilera egonkorra bermatzeko. Une honetan, gehienezko muga 12.000 karaktere da eragiketa bakoitzeko, bai eskuz idatzitako testuentzat bai fitxategietatik edo esteketatik ateratako edukientzat.\n\nEdukia oso luzea bada, zatika bidaltzea gomendatzen dugu.",
   },
 
   // 6
@@ -698,8 +698,8 @@ faq_item7_answer: {
     EUS: "💬 Nola bidal dezaket nire iritzia?",
   },
   faq_item10_answer: {
-    ES: "Puedes escribirnos para sugerencias o mejoras a:\ninfo@euskalia.com",
-    EUS: "Iradokizunak edo hobekuntzak bidali hona:\ninfo@euskalia.com",
+    ES: "Puedes escribirnos para sugerencias o mejoras a:\neuskaliaweb@gmail.com",
+    EUS: "Iradokizunak edo hobekuntzak bidali hona:\neuskaliaweb@gmail.com",
   },
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // =========================
