@@ -383,59 +383,60 @@ export const translations = {
   },
 
   benefit1_title: {
-    ES: "Traduce y resume sin esfuerzo",
-    EUS: "Itzuli eta laburtu ahaleginik gabe",
+    ES: "Ahorra horas de trabajo",
+    EUS: "Aurrez ezazu lan-orduak",
   },
   benefit1_desc: {
-    ES: "Convierte cualquier texto, URL o documento en información clara y entendible en segundos.",
-    EUS: "Edozein testu, URL edo dokumentu segundo gutxitan ulertzeko moduko eduki argi bihurtu.",
+    ES: "Trabaja con textos largos en segundos. Procesa, mejora y adapta contenido sin leerlo todo ni perder tiempo innecesario.",
+    EUS: "Testu luzeekin segundo gutxitan lan egin. Edukia prozesatu, hobetu eta moldatu dena irakurri gabe eta denbora alferrik galdu gabe.",
   },
 
   benefit2_title: {
-    ES: "Ahorra horas de trabajo",
-    EUS: "Orduak aurreztu lanerako",
+    ES: "Experiencia y productividad",
+    EUS: "Esperientzia eta produktibitatea",
   },
   benefit2_desc: {
-    ES: "Procesa contenido largo sin leerlo entero. Traduce y resume mientras haces otras tareas.",
-    EUS: "Eduki luzeak osorik irakurri gabe prozesatu. Itzuli eta laburtu beste zeregin batzuk egiten dituzun bitartean.",
+    ES: "Euskalia está pensada para ofrecer la mejor experiencia de uso mientras aumentas tu productividad.",
+    EUS: "Euskalia erabiltzaile-esperientzia onena eskaintzeko diseinatuta dago, aldi berean zure produktibitatea handitzeko.",
   },
 
   benefit3_title: {
-    ES: "Cuida el euskera cada día",
-    EUS: "Zaindu euskara egunero",
+    ES: "Accesible para cualquiera",
+    EUS: "Edonorentzat eskuragarria",
   },
   benefit3_desc: {
-    ES: "Pequeñas acciones como traducir, leer y escuchar en euskera ayudan a mantener viva nuestra lengua.",
-    EUS: "Itzultzea, irakurtzea eta euskaraz entzutea bezalako keinu txikiek gure hizkuntza bizirik mantentzen laguntzen dute.",
+    ES: "Desde estudiantes hasta profesionales. Euskalia se adapta a tu nivel y a tu forma de trabajar.",
+    EUS: "Ikasleetatik profesionaletara. Euskalia zure mailara eta lan egiteko modura egokitzen da.",
   },
 
   benefit4_title: {
-    ES: "Mejora tu dominio del euskera",
-    EUS: "Hobetu zure euskararen maila",
+    ES: "Fortalece el uso del euskera",
+    EUS: "Euskararen erabilera indartzen du",
   },
   benefit4_desc: {
-    ES: "Lee, traduce y escucha contenido real en euskera para mejorar tu oído, vocabulario y confianza.",
-    EUS: "Euskarazko eduki errealak irakurri, itzuli eta entzun, belarria, hiztegia eta konfiantza lantzeko.",
+    ES: "Usar, leer y escuchar euskera cada día es la mejor forma de mantenerlo vivo. Euskalia te lo pone fácil.",
+    EUS: "Euskara egunero erabiltzea, irakurtzea eta entzutea da bizirik mantentzeko modurik onena. Euskaliak erraz jartzen dizu.",
   },
 
   benefit5_title: {
-    ES: "Importa cualquier formato",
-    EUS: "Formatu mota guztietatik inportatu",
+    ES: "Fácil de usar, eficaz desde el primer minuto",
+    EUS: "Erabilerraza, lehen minututik eraginkorra",
   },
   benefit5_desc: {
-    ES: "PDFs, DOCX, imágenes, páginas web… si tiene texto, Euskalia lo encuentra y lo trabaja por ti.",
-    EUS: "PDFak, DOCX fitxategiak, irudiak, web-orriak… testua badu, Euskaliak aurkitu eta lantzen du.",
+    ES: "Un diseño claro y directo para que te centres en el contenido, no en aprender a usar la herramienta.",
+    EUS: "Diseinu argi eta zuzena, edukiari arreta jartzeko eta ez tresna nola erabili ikasteko.",
   },
 
   benefit6_title: {
-    ES: "Sin registros ni instalaciones",
-    EUS: "Erregistro eta instalaziorik gabe",
+    ES: "Sin fricción, sin complicaciones",
+    EUS: "Trabarik gabe, konplikaziorik gabe",
   },
   benefit6_desc: {
-    ES: "Empieza a usar Euskalia directamente desde el navegador, sin cuentas obligatorias ni descargas.",
-    EUS: "Erabili Euskalia zuzenean nabigatzailetik, konturik sortu gabe eta ezer deskargatu beharrik gabe.",
+    ES: "Empieza gratis, sin registros obligatorios ni instalaciones. Entra, usa Euskalia y decide después.",
+    EUS: "Hasi doan, derrigorrezko erregistrorik edo instalaziorik gabe. Sartu, erabili Euskalia eta erabaki gero.",
   },
 },
+
 
 
 
