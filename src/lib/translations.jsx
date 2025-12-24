@@ -538,50 +538,48 @@ highlight2_desc: {
 homeHowItWorks: {
   title: {
     ES: "¿Cómo funciona Euskalia?",
-    EUS: "Nola funtzionatzen du Euskaliak ? ", 
+    EUS: "Nola funtzionatzen du Euskaliak?",
   },
 
   intro: {
-    ES: "Euskalia es una web de inteligencia artificial que te permite traducir y resumir textos en euskera de forma fácil y rápida. Solo tienes que pegar un texto, subir un documento o introducir una URL, elegir los idiomas y en segundos se obtiene una versión clara, comprensible y lista para usar. Está pensada para ayudarte en tu día a día, tanto si quieres traducir de otro idioma al euskera como del euskera a cualquier otro, y para que puedas utilizar el idioma sin esfuerzo ni complicaciones.",
-    EUS: "Euskalia adimen artifiziala erabiltzen duen webgune bat da, formatu azkar eta errazean testuak euskerara itzuli eta balurtzeko gai dena. Testua itsatsi, dokumentu bat igo edo URL bat sartu besterik ez duzu egin behar. Hizkuntzak aukeratu, eta segundo gutxitan argi ulertzeko moduko bertsio garbi eta erabilgarri bat jasotzen da. Zure beharren arabera laguntzeko pentsatuta dago, bai beste hizkuntza batetik euskarara itzuli nahi baduzu, edo bai euskaratik beste edozein hizkuntzatara, ahalegin eta zailtasunik gabe. ",
+    ES: "Euskalia es una plataforma basada en inteligencia artificial para el procesamiento de textos. El usuario introduce contenido mediante texto, documentos o enlaces web, y el sistema analiza automáticamente la información para identificar su estructura, contexto y significado. A partir de este análisis, el contenido se adapta al objetivo solicitado manteniendo la coherencia y el sentido original, sin necesidad de intervención manual ni configuraciones técnicas.",
+    EUS: "Euskalia adimen artifizialean oinarritutako testu-prozesamendurako plataforma bat da. Erabiltzaileak edukia sartzen du testu, dokumentu edo web-esteken bidez, eta sistemak informazioa automatikoki aztertzen du egitura, testuingurua eta esanahia identifikatzeko. Analisi horretatik abiatuta, edukia eskatutako helburura egokitzen da, jatorrizko koherentzia eta esanahia mantenduz, eskuzko esku-hartzerik edo konfigurazio teknikorik gabe.",
   },
 
   offers_title: {
-    ES: "🔍 ¿Qué ofrece Euskalia?",
-    EUS: "🔍 Zer eskaintzen du Euskaliak?",
+    ES: "🔎 ¿Qué hace exactamente Euskalia?",
+    EUS: "🔎 Zer egiten du zehazki Euskaliak?",
   },
 
   offers_item1: {
-  ES: "Traduce textos largos al euskera o desde el euskera en cuestión de segundos.",
-  EUS: "Itzuli testu luzeak euskarara edo euskaratik segundo gutxitan.",
-},
+    ES: "Analiza automáticamente la estructura y el contexto del contenido introducido.",
+    EUS: "Sartutako edukiaren egitura eta testuingurua automatikoki aztertzen ditu.",
+  },
 
-offers_item2: {
-  ES: "Convierte desde documentos completos o URLs.",
-  EUS: "Bihurtu dokumentu bitartez edo URL bidez.",
-},
+  offers_item2: {
+    ES: "Procesa información procedente de textos, documentos o URLs de forma unificada.",
+    EUS: "Testu, dokumentu edo URLetatik datorren informazioa modu bateratuan prozesatzen du.",
+  },
 
-offers_item3: {
-  ES: "Trabaja con enlaces y páginas web sin tener que copiar todo el contenido a mano.",
-  EUS: "Lan egin esteka edo web-orrien bitartez eduki osoa eskuz kopiatu gabe.",
-},
+  offers_item3: {
+    ES: "Aplica transformaciones manteniendo el significado principal del contenido.",
+    EUS: "Edukiaren esanahi nagusia mantenduz moldaketak aplikatzen ditu.",
+  },
 
-offers_item4: {
-  ES: "Combina información de diferentes fuentes en un único resultado ordenado.",
-  EUS: "Batu iturri desberdinetako informazioa emaitza bakar eta ordenatu batean.",
-},
+  offers_item4: {
+    ES: "Reorganiza la información de manera clara, coherente y estructurada.",
+    EUS: "Informazioa modu argi, koherente eta egituratuan berrantolatzen du.",
+  },
 
-offers_item5: {
-  ES: "Ahorra tiempo en clase, en el trabajo o estudiando por tu cuenta.",
-  EUS: "Aurreztu denbora ikasgelan, lanean edo zure kabuz ikasten ari zarenean.",
-},
+  offers_item5: {
+    ES: "Ejecuta los procesos en tiempo real o en pocos segundos, incluso con textos largos.",
+    EUS: "Prozesuak denbora errealean edo segundo gutxitan exekutatzen ditu, baita testu luzeekin ere.",
+  },
 
-offers_item6: {
-  ES: "Utiliza el euskera con más seguridad, aunque todavía no lo domines al cien por cien.",
-  EUS: "Erabili euskara konfiantza handiagoz, oraindik guztiz menderatzen ez baduzu ere.",
-},
-
-  
+  offers_item6: {
+    ES: "Funciona sin configuraciones avanzadas y responde directamente a las acciones del usuario.",
+    EUS: "Konfigurazio aurreraturik gabe funtzionatzen du eta erabiltzailearen ekintzei zuzenean erantzuten die.",
+  },
 },
 
 
