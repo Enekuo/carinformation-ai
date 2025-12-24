@@ -451,56 +451,59 @@ export const translations = {
     EUS: "Euskalia testuak euskaraz edo euskarara modu adimentsu, eroso eta eraginkorrean lan egitera diseinatutako plataforma bat da. Edukia sakon aztertzen du. Ulertzen, hobetzen eta zure beharren arabera moldatzen laguntzen dizu. Ikasteko, lan egiteko edo edozein motatako edukiak sortzeko. Testu laburretatik hasi eta dokumentu osoetara edo web esteketara arte, Euskaliak informazioa prozesatzen du, testuinguru erreala antzematen du eta emaitza argi, natural eta erabilgarriak sortzen ditu. Sistema osoa ahalegina murrizteko, denbora aurrezteko eta erabilera puntualean zein ingurune profesionalean esperientzia arin eta erosoa eskaintzeko pentsatuta dago. Euskaliak tresna guztiak leku bakarrean biltzen ditu, produktibitatea eta euskararen eguneroko erabilera benetan indartzeko."
   },
   item1_title: {
-    ES: "Generación de contenido",
-    EUS: "Eduki sortzailea",
+    ES: "Ahorra tiempo de trabajo",
+    EUS: "Lan-denbora aurrezten du",
   },
   item1_desc: {
-    ES: "Crea traducciones o resúmenes con IA en segundos.",
-    EUS: "Sortu itzulpenak edo laburpenak IA-rekin segundu gutxitan",
+    ES: "Trabaja más rápido con textos complejos. Euskalia reduce esfuerzo y elimina pasos innecesarios.",
+    EUS: "Testu konplexuekin azkarrago lan egin. Euskaliak lana arintzen dizu eta alferrikako pausuak kentzen ditu.",
   },
+
   item2_title: {
-    ES: "Variedad de fuentes",
-    EUS: "Iturri mota desberdinak",
+    ES: "Fácil de usar, resultados rápidos",
+    EUS: "Erabilera erraza, emaitza azkarrak",
   },
   item2_desc: {
-    ES: "Euskalia funciona con diferentes tipos de entrada: texto, documentos, URLs...",
-    EUS: "Euskaliak mota desberdinetako sarrerak onartzen ditu: testua, dokumentua, URLak...",
+    ES: "No necesitas aprender nada. Entra, usa la plataforma y obtén resultados desde el primer momento.",
+    EUS: "Ez da ikasi behar. Sartu, erabili eta lehen momentutik emaitzak lortu.",
   },
-  
+
   item3_title: {
-    ES: "Traducción inteligente neurorreforzada",
-    EUS: "Itzulpen adimendu neuroindartua",
+    ES: "Pensado para cualquiera",
+    EUS: "Edonorentzat pentsatua",
   },
   item3_desc: {
-    ES: "Euskalia entiende el contexto real y crea traducciones más naturales y precisas.",
-    EUS: "Euskaliak testuingurua ulertu eta itzulpen natural eta zehatzagoak sortzen ditu.",
+    ES: "Desde estudiantes hasta profesionales. Euskalia se adapta a tu ritmo y a tu forma de trabajar.",
+    EUS: "Ikasleentzat zein profesionalentzat. Euskaliak zure erritmoari eta beharrari egokitzen zaio.",
   },
 
   item4_title: {
-    ES: "Control de longitud del texto",
-    EUS: "Testuaren luzeraren kontrola",
+    ES: "Euskera en el día a día",
+    EUS: "Euskara egunerokoan erabiltzeko",
   },
   item4_desc: {
-    ES: "Decide si quieres un resultado breve, medio o detallado.",
-    EUS: "Erabaki emaitza laburra, ertaina edo zehatza nahi duzun.",
+    ES: "Cuando usar euskera es más fácil, se usa más. Euskalia impulsa su uso real cada día.",
+    EUS: "Euskara erabiltzea errazagoa denean, gehiago erabiltzen da. Euskaliak eguneroko erabilera sustatzen du.",
   },
+
   item5_title: {
-    ES: "Velocidad optimizada para el día a día",
-    EUS: "Abiadura optimizatua eguneroko erabilerarako",
+    ES: "Productividad real",
+    EUS: "Benetako produktibitatea",
   },
   item5_desc: {
-    ES: "Todo se procesa en segundos gracias a una arquitectura rápida y ligera.",
-    EUS: "Guztia segundo gutxitan prozesatzen da arkitektura arin eta azkarrari esker.",
+    ES: "Textos más claros, naturales y útiles. Resultados pensados para aplicarlos en estudios o trabajo.",
+    EUS: "Testuak argiagoak, naturalagoak eta erabilgarriagoak. Emaitzak lanean edo ikasketetan aplikatzeko modukoak dira.",
   },
-  
+
   item6_title: {
-    ES: "Privacidad garantizada",
-    EUS: "Pribatutasuna",
+    ES: "Empieza sin fricción",
+    EUS: "Oztoporik gabe hasteko",
   },
   item6_desc: {
-    ES: "Tu contenido se elimina automáticamente. Nadie accede a tus datos.",
-    EUS: "Zure edukia automatikoki ezabatzen da. Inork ez du datuetara sarbiderik.",
+    ES: "Sin instalaciones ni registros obligatorios. Entra, prueba Euskalia y decide después.",
+    EUS: "Ez dago instalaziorik ezta derrigorrezko erregistrorik. Sartu, probatu eta gero erabaki.",
   },
+
 
   highlight1_title: {
     ES: "🧠Procesamiento inteligente del contenido",
