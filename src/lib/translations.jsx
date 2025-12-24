@@ -29,7 +29,7 @@ export const translations = {
     aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
   },
   // =========================
-  //        TRADUCTOR
+  //       FREE TRADUCTOR
   // =========================
   translator: {
     left_placeholder:  { ES: "Escribe o pega el texto aquí.", EUS: "Idatzi edo itsatsi testua hemen." },
@@ -59,7 +59,7 @@ export const translations = {
 
 
   // =========================
-  //        SUMMARY RESUMIDOR
+  //      FREE SUMMARY RESUMIDOR
   // =========================    
   summary: {
     title:                 { ES: "Resumidor", EUS: "Laburtzailea" },
@@ -306,10 +306,13 @@ export const translations = {
 
 
 
+   
 
 
 
-  /* === FOOTER === */
+  // =========================
+  //        FOOTER
+  // =========================
   eusFooterColumnAboutTitle:   { ES: "Sobre Euskalia",            EUS: "Euskaliari buruz" },
   eusFooterColumnLegalTitle:   { ES: "Legal",                     EUS: "Legeak" },
   eusFooterColumnContactTitle: { ES: "Contacto y Comunidad",      EUS: "Kontaktua eta Komunitatea" },
@@ -319,8 +322,6 @@ export const translations = {
   eusFooterCookies:            { ES: "Cookies",                   EUS: "Cookieak" },
   eusFooterContactEmailValue:  { ES: "contacto@euskalia.ai",      EUS: "contacto@euskalia.ai" },
   eusFooterLanguageLabel:      { ES: "Idioma",                    EUS: "Hizkuntza" },
-
-
 
 
   /* ==== SOBRE EUSKALIA ==== */
@@ -369,9 +370,10 @@ export const translations = {
 
 
 
-
-  
-  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // =========================
+  //        LANDING PAGE
+  // =========================
 
      // BENEFITS SECTION //
     homeBenefits: {
@@ -695,10 +697,8 @@ faq_item7_answer: {
     ES: "Puedes escribirnos para sugerencias o mejoras a:\ninfo@euskalia.com",
     EUS: "Iradokizunak edo hobekuntzak bidali hona:\ninfo@euskalia.com",
   },
-
-
-
- // =========================
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // =========================
   //            CTA
   // =========================
   cta: {
@@ -719,9 +719,10 @@ faq_item7_answer: {
 
 
 
-
-  //CREAR CUENTA // 
-
+  //=========================
+  //       CREAR CUENTA
+  // =========================
+  
   registerPage_title: {
   ES: "Crea tu cuenta",
   EUS: "Sortu zure kontua",
@@ -770,8 +771,9 @@ registerPage_login: {
 
 
 
-
-  // INICIAR SESION //
+  // =========================
+  //      INICIAR SESION
+  // =========================
 
   authPage: {
     pageTitle:              { ES: "Iniciar sesión",                       EUS: "Saioa hasi" },
@@ -806,8 +808,9 @@ registerPage_login: {
 
 
 
-
-    // PRICING PAGE //
+  // =========================
+  //       PRICING PAGE
+  // =========================
    
     pricing: {
   title: {
@@ -879,7 +882,7 @@ registerPage_login: {
       EUS: "6Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
     },
 
-    // ===== PLAN PREMIUM+ – puedes cambiar estas frases cuando quieras =====
+    // ===== PLAN PREMIUM+ 
 
     library_premium: {
       ES: "Biblioteca ampliada para uso intensivo y proyectos grandes.",
@@ -912,14 +915,6 @@ registerPage_login: {
 
 
 
-  
-
-
-
-
-
-
-
 
 
   // Toast genérico usado en el Footer (iconos sociales, etc.)
@@ -935,8 +930,11 @@ registerPage_login: {
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // =========================
+  //        LEGAL 
+  // =========================
 
-                                      // ========= LEGAL ========= //
 // AVISO LEGAL //
 legal_notice_title: {
   ES: "Aviso Legal",
@@ -1592,6 +1590,7 @@ cookies_last_update: {
   ES: "Esta Política de Privacidad está actualizada a fecha [__________].",
     EUS: "Pribatutasun-politika hau eguneratuta dago honako data honetan: [__________].",
 },
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
 
                                    
