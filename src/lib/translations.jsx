@@ -1797,8 +1797,84 @@ cookies_last_update: {
     save_button_label:   { ES: "Guardar", EUS: "Gorde", EN: "Save", FR: "Enregistrer" },
     library_saved_toast: { ES: "Guardado en biblioteca", EUS: "Liburutegian gordeta", EN: "Saved to library", FR: "Enregistré dans la bibliothèque" },
   },
+  
 
+  // =========================
+  //        Pro SUMMARY
+  // ========================= 
+  proSummary: {
+  // Panel izquierdo / fuentes
+  sources_title:        { ES: "Fuentes", EUS: "Iturriak", EN: "Sources", FR: "Sources" },
+  sources_tab_text:     { ES: "Texto", EUS: "Testua", EN: "Text", FR: "Texte" },
+  sources_tab_document: { ES: "Documento", EUS: "Dokumentua", EN: "Document", FR: "Document" },
+  sources_tab_url:      { ES: "URL", EUS: "URL", EN: "URL", FR: "URL" },
 
+  enter_text_here_full: { ES: "Escribe o pega tu texto aquí…", EUS: "Idatzi edo itsatsi zure testua hemen…", EN: "Write or paste your text here…", FR: "Écrivez ou collez votre texte ici…" },
+
+  choose_file_title:    { ES: "Elige tu archivo o carpeta", EUS: "Aukeratu zure fitxategia edo karpeta.", EN: "Choose your file or folder", FR: "Choisissez votre fichier ou dossier" },
+  accepted_formats:     { ES: "Puedes añadir archivos PDF, texto copiado, enlaces web…", EUS: "Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…", EN: "You can add PDFs, copied text, web links…", FR: "Vous pouvez ajouter des PDF, du texte copié, des liens web…" },
+  folder_hint:          { ES: "Aquí aparecerán tus textos o documentos subidos.", EUS: "Hemen agertuko dira igo dituzun testuak edo dokumentuak.", EN: "Your uploaded texts or documents will appear here.", FR: "Vos textes ou documents importés apparaîtront ici." },
+
+  paste_urls_label:     { ES: "Pegar URLs*", EUS: "URLak itsatsi*", EN: "Paste URLs*", FR: "Coller des URLs*" },
+  add_url:              { ES: "Añadir URLs", EUS: "URLak gehitu", EN: "Add URLs", FR: "Ajouter des URLs" },
+  save_urls:            { ES: "Guardar", EUS: "Gorde", EN: "Save", FR: "Enregistrer" },
+  cancel:               { ES: "Cancelar", EUS: "Ezeztatu", EN: "Cancel", FR: "Annuler" },
+  urls_note_visible:    { ES: "Solo se importará el texto visible del sitio web.", EUS: "Webguneko testu ikusgarria bakarrik inportatuko da.", EN: "Only visible text from the website will be imported.", FR: "Seul le texte visible du site sera importé." },
+  urls_note_paywalled:  { ES: "No se admiten artículos de pago.", EUS: "Ordainpeko artikuluak ez dira onartzen.", EN: "Paywalled articles are not supported.", FR: "Les articles payants ne sont pas pris en charge." },
+  remove:               { ES: "Quitar", EUS: "Kendu", EN: "Remove", FR: "Retirer" },
+  paste_urls_placeholder:{ ES: "Introduce aquí una o más URLs (separadas por línea)", EUS: "Itsatsi hemen URL bat edo gehiago (lerro bakoitzean bat)", EN: "Paste one or more URLs (one per line)", FR: "Collez une ou plusieurs URLs (une par ligne)" },
+
+  // Ayudas paneles
+  create_help_left: {
+    ES: "Aquí aparecerán tus textos o documentos subidos. Puedes añadir archivos PDF, texto copiado, enlaces web...",
+    EUS:"Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak...",
+    EN: "Your uploaded texts or documents will appear here. You can add PDFs, copied text, web links...",
+    FR: "Vos textes ou documents importés apparaîtront ici. Vous pouvez ajouter des PDF, du texte copié, des liens web..."
+  },
+  create_help_right: {
+    ES: "Elige una fuente (texto, documentos o URLs) y pulsa “Generar resumen”.",
+    EUS:"Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”.",
+    EN: "Choose a source (text, documents or URLs) and click “Generate summary”.",
+    FR: "Choisissez une source (texte, documents ou URLs) puis cliquez sur « Générer le résumé »."
+  },
+
+  // Longitud
+  length_short:  { ES: "Breve", EUS: "Laburra", EN: "Short", FR: "Court" },
+  length_medium: { ES: "Medio", EUS: "Ertaina", EN: "Medium", FR: "Moyen" },
+  length_long:   { ES: "Detallado", EUS: "Zehatza", EN: "Detailed", FR: "Détaillé" },
+
+  // Idioma salida
+  output_language_aria: { ES: "Idioma de salida", EUS: "Irteerako hizkuntza", EN: "Output language", FR: "Langue de sortie" },
+  output_language_eus:  { ES: "Euskera", EUS: "Euskara", EN: "Basque", FR: "Basque" },
+  output_language_es:   { ES: "Castellano", EUS: "Gaztelania", EN: "Spanish", FR: "Espagnol" },
+  output_language_en:   { ES: "Inglés", EUS: "Ingelesa", EN: "English", FR: "Anglais" },
+  output_language_fr:   { ES: "Francés", EUS: "Frantsesa", EN: "French", FR: "Français" },
+
+  // Botones / tooltips
+  generate_from_sources:{ ES: "Generar resumen", EUS: "Laburpena sortu", EN: "Generate summary", FR: "Générer le résumé" },
+  clear_input:          { ES: "Eliminar", EUS: "Ezabatu", EN: "Delete", FR: "Supprimer" },
+
+  copy:                 { ES: "Copiar", EUS: "Kopiatu", EN: "Copy", FR: "Copier" },
+  copied:               { ES: "Copiado", EUS: "Kopiatuta", EN: "Copied", FR: "Copié" },
+  pdf:                  { ES: "PDF", EUS: "PDF", EN: "PDF", FR: "PDF" },
+  pdf_title:            { ES: "Resumen", EUS: "Laburpena", EN: "Summary", FR: "Résumé" },
+
+  // Guardar / toast
+  save_button_label:    { ES: "Guardar", EUS: "Gorde", EN: "Save", FR: "Enregistrer" },
+  library_saved_toast:  { ES: "Guardado en biblioteca", EUS: "Liburutegian gordeta", EN: "Saved to library", FR: "Enregistré dans la bibliothèque" },
+
+  // Límite
+  limit_title:          { ES: "Has alcanzado el límite del plan Gratis", EUS: "Doako planaren muga gainditu duzu", EN: "You’ve reached the Free plan limit", FR: "Vous avez atteint la limite du plan Gratuit" },
+  limit_cta:            { ES: "Probar plan Premium", EUS: "Premium plana probatu", EN: "Try Premium plan", FR: "Essayer le plan Premium" },
+  limit_dismiss:        { ES: "Seguir con plan Gratis", EUS: "Jarraitu doako planarekin", EN: "Continue with Free plan", FR: "Continuer avec le plan Gratuit" },
+  limit_note:           { ES: "Límite actual: 12.000 caracteres por petición.", EUS: "Uneko muga: 12.000 karaktere eskaerako.", EN: "Current limit: 12,000 characters per request.", FR: "Limite actuelle : 12 000 caractères par requête." },
+
+  // Errores
+  error_need_input:     { ES: "Añade texto suficiente, URLs o documentos antes de generar el resumen.", EUS: "Gehitu testu nahikoa, URLak edo dokumentuak laburpena sortu aurretik.", EN: "Add enough text, URLs or documents before generating the summary.", FR: "Ajoutez suffisamment de texte, des URLs ou des documents avant de générer le résumé." },
+  error_rate_limit:     { ES: "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium.", EUS: "Eskaeren muga gainditu duzu. Saiatu geroago edo probatu Premium plana.", EN: "You’ve hit the request limit. Try again later or try Premium.", FR: "Vous avez atteint la limite de requêtes. Réessayez plus tard ou essayez Premium." },
+  error_no_text:        { ES: "No se recibió texto de la API.", EUS: "Ez da testurik jaso API-tik.", EN: "No text was received from the API.", FR: "Aucun texte n’a été reçu de l’API." },
+  error_generic:        { ES: "Error generando el resumen.", EUS: "Errorea laburpena sortzean.", EN: "Error generating the summary.", FR: "Erreur lors de la génération du résumé." },
+},
   // =========================
   //        Pro Grammar Corrector
   // ========================= 

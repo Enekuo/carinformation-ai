@@ -86,50 +86,50 @@ export default function ProSummary() {
   };
 
   // ===== i18n =====
-  const labelSources = tr("summary.sources_title", "Fuentes");
-  const labelTabText = tr("summary.sources_tab_text", "Texto");
-  const labelTabDocument = tr("summary.sources_tab_document", "Documento");
-  const labelTabUrl = tr("summary.sources_tab_url", "URL");
-  const labelEnterText = tr("summary.enter_text_here_full", "Escribe o pega tu texto aquí…");
-  const labelChooseFileTitle = tr("summary.choose_file_title", "Elige tu archivo o carpeta");
-  const labelAcceptedFormats = tr("summary.accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
-  const labelFolderHint = tr("summary.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
-  const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("summary.add_url", "Añadir URLs");
-  const labelSaveUrls = tr("summary.save_urls", "Guardar");
-  const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible del sitio web.");
-  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
-  const labelRemove = tr("summary.remove", "Quitar");
-  const labelGenerateFromSources = tr("summary.generate_from_sources", "Laburpena sortu");
+  const labelSources = tr("proSummary.sources_title", "Fuentes");
+  const labelTabText = tr("proSummary.sources_tab_text", "Texto");
+  const labelTabDocument = tr("proSummary.sources_tab_document", "Documento");
+  const labelTabUrl = tr("proSummary.sources_tab_url", "URL");
+  const labelEnterText = tr("proSummary.enter_text_here_full", "Escribe o pega tu texto aquí…");
+  const labelChooseFileTitle = tr("proSummary.choose_file_title", "Elige tu archivo o carpeta");
+  const labelAcceptedFormats = tr("proSummary.accepted_formats", "Puedes añadir archivos PDF, texto copiado, enlaces web…");
+  const labelFolderHint = tr("proSummary.folder_hint", "Aquí aparecerán tus textos o documentos subidos.");
+  const labelPasteUrls = tr("proSummary.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("proSummary.add_url", "Añadir URLs");
+  const labelSaveUrls = tr("proSummary.save_urls", "Guardar");
+  const labelCancel = tr("proSummary.cancel", "Cancelar");
+  const labelUrlsNoteVisible = tr("proSummary.urls_note_visible", "Solo se importará el texto visible del sitio web.");
+  const labelUrlsNotePaywalled = tr("proSummary.urls_note_paywalled", "No se admiten artículos de pago.");
+  const labelRemove = tr("proSummary.remove", "Quitar");
+  const labelGenerateFromSources = tr("proSummary.generate_from_sources", "Laburpena sortu");
   const labelHelpRight = tr(
-    "summary.create_help_right",
+    "proSummary.create_help_right",
     "Hautatu iturri bat (testua, dokumentuak edo URLak) eta sakatu “Laburpena sortu”."
   );
 
   // Longitud
-  const LBL_SHORT = tr("summary.length_short", "Breve");
-  const LBL_MED = tr("summary.length_medium", "Medio");
-  const LBL_LONG = tr("summary.length_long", "Detallado");
+  const LBL_SHORT = tr("proSummary.length_short", "Breve");
+  const LBL_MED = tr("proSummary.length_medium", "Medio");
+  const LBL_LONG = tr("proSummary.length_long", "Detallado");
 
   // Etiquetas de idioma
-  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
-  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
-  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
-  const LBL_FR = tr("summary.output_language_fr", "Français"); 
+  const LBL_EUS = tr("proSummary.output_language_eus", "Euskara");
+  const LBL_ES = tr("proSummary.output_language_es", "Gaztelania");
+  const LBL_EN = tr("proSummary.output_language_en", "Ingelesa");
+  const LBL_FR = tr("proSummary.output_language_fr", "Français"); 
 
   // ✅ Botón guardar + toast (verde)
-  const labelSaveSummary = tr("save_button_label", "Gorde");
-  const librarySavedMessage = tr("library_saved_toast", "Liburutegian gordeta");
+  const labelSaveSummary = tr("proSummary.save_button_label", "Gorde");
+  const librarySavedMessage = tr("proSummary.library_saved_toast", "Liburutegian gordeta");
 
-  // ✅ Tooltips existentes del translator (NO nuevas keys)
-  const tooltipCopy = t("translator.copy") || "Copiar";
-  const tooltipCopied = t("translator.copied") || "Copiado";
-  const tooltipPdf = t("translator.pdf") || "PDF";
+  // ✅ Tooltips (ahora con claves nuevas)
+  const tooltipCopy = tr("proSummary.copy", "Copiar");
+  const tooltipCopied = tr("proSummary.copied", "Copiado");
+  const tooltipPdf = tr("proSummary.pdf", "PDF");
 
   // Ayuda izquierda
   const leftRaw = tr(
-    "summary.create_help_left",
+    "proSummary.create_help_left",
     "Hemen agertuko dira igo dituzun testuak edo dokumentuak. Gehitu ditzakezu PDF fitxategiak, testu kopiatua, web estekak…"
   );
   const [leftTitle, leftBody] = useMemo(() => {
@@ -415,7 +415,7 @@ export default function ProSummary() {
     win.document.write(`
       <html>
         <head>
-          <title>${tr("summary.pdf_title", "Resumen")}</title>
+          <title>${tr("proSummary.pdf_title", "Resumen")}</title>
           <meta charset="utf-8" />
           <style>
             body { font-family: Arial, sans-serif; padding: 32px; line-height: 1.55; }
@@ -467,9 +467,9 @@ export default function ProSummary() {
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold">{tr("summary.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
+      <div className="text-sm font-semibold">{tr("proSummary.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
       <p className="text-xs text-slate-600 mt-1">
-        {tr("summary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
+        {tr("proSummary.limit_note", "Límite actual: 12.000 caracteres por petición.")}
       </p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
@@ -477,13 +477,13 @@ export default function ProSummary() {
           className="inline-flex items-center justify-center rounded-full px-5 h-9 text-white text-sm font-medium shadow-sm hover:brightness-95"
           style={{ backgroundColor: "#2563eb" }}
         >
-          {tr("summary.limit_cta", "Probar plan Premium")}
+          {tr("proSummary.limit_cta", "Probar plan Premium")}
         </a>
         <button
           onClick={() => setErrorKind(null)}
           className="h-9 px-4 rounded-full border border-slate-300 text-sm hover:bg-white"
         >
-          {tr("summary.limit_dismiss", "Seguir con plan Gratis")}
+          {tr("proSummary.limit_dismiss", "Seguir con plan Gratis")}
         </button>
       </div>
     </div>
@@ -522,7 +522,7 @@ export default function ProSummary() {
     }
     if (!validNow) {
       setErrorMsg(
-        tr("summary.error_need_input", "Añade texto suficiente, URLs o documentos antes de generar el resumen.")
+        tr("proSummary.error_need_input", "Añade texto suficiente, URLs o documentos antes de generar el resumen.")
       );
       setLoading(false);
       return;
@@ -632,7 +632,7 @@ export default function ProSummary() {
         if (res.status === 429) {
           throw new Error(
             tr(
-              "summary.error_rate_limit",
+              "proSummary.error_rate_limit",
               "Has alcanzado el límite de peticiones. Inténtalo más tarde o prueba el plan Premium."
             )
           );
@@ -650,7 +650,7 @@ export default function ProSummary() {
         data?.message?.content ??
         "";
 
-      if (!rawText) throw new Error(tr("summary.error_no_text", "No se recibió texto de la API."));
+      if (!rawText) throw new Error(tr("proSummary.error_no_text", "No se recibió texto de la API."));
 
       const cleaned = rawText
         .replace(/^\s*[-–—•]\s+/gm, "")
@@ -676,7 +676,7 @@ export default function ProSummary() {
       setLastSummarySig(canonicalize(textValue));
       setIsOutdated(false);
     } catch (err) {
-      setErrorMsg(err.message || tr("summary.error_generic", "Error generando el resumen."));
+      setErrorMsg(err.message || tr("proSummary.error_generic", "Error generando el resumen."));
     } finally {
       setLoading(false);
     }
@@ -843,7 +843,7 @@ export default function ProSummary() {
                         <textarea
                           value={urlsTextarea}
                           onChange={(e) => setUrlsTextarea(e.target.value)}
-                          placeholder={tr("summary.paste_urls_placeholder", "Introduce aquí una o más URLs (separadas por línea)")}
+                          placeholder={tr("proSummary.paste_urls_placeholder", "Introduce aquí una o más URLs (separadas por línea)")}
                           className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                           aria-label={labelPasteUrls}
                         />
@@ -923,7 +923,7 @@ export default function ProSummary() {
                       <button
                         type="button"
                         className="h-9 min-w-[150px] px-3 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 flex items-center justify-between hover:border-slate-400 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.02)]"
-                        aria-label={tr("summary.output_language_aria", "Idioma de salida")}
+                        aria-label={tr("proSummary.output_language_aria", "Idioma de salida")}
                       >
                         <span className="truncate">
                           {outputLang === "ES"
@@ -1007,11 +1007,11 @@ export default function ProSummary() {
                   <button
                     type="button"
                     onClick={handleClearLeft}
-                    title={tr("summary.clear_input", "Eliminar")}
+                    title={tr("proSummary.clear_input", "Eliminar")}
                     className={`h-9 w-9 flex items-center justify-center ${
                       sourceMode === "text" && textValue ? "text-slate-600 hover:text-slate-800" : "text-slate-300 cursor-not-allowed"
                     }`}
-                    aria-label={tr("summary.clear_input", "Eliminar")}
+                    aria-label={tr("proSummary.clear_input", "Eliminar")}
                     disabled={!(sourceMode === "text" && textValue)}
                   >
                     <Trash className="w-4 h-4" />
