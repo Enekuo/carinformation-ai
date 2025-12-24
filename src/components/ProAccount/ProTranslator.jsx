@@ -48,11 +48,11 @@ export default function ProTranslator() {
   const { t, language } = useTranslation();
   const tr = (k, f) => t(k) || f;
 
-  // ✅ mismas claves (summary.output_language_*) para etiquetas de idioma
-  const LBL_EUS = tr("summary.output_language_eus", "Euskara");
-  const LBL_ES = tr("summary.output_language_es", "Gaztelania");
-  const LBL_EN = tr("summary.output_language_en", "Ingelesa");
-  const LBL_FR = tr("summary.output_language_fr", "Français");
+  // ✅ NUEVAS claves proTranslator.output_language_* para etiquetas de idioma
+  const LBL_EUS = tr("proTranslator.output_language_eus", "Euskara");
+  const LBL_ES = tr("proTranslator.output_language_es", "Gaztelania");
+  const LBL_EN = tr("proTranslator.output_language_en", "Ingelesa");
+  const LBL_FR = tr("proTranslator.output_language_fr", "Français");
 
   const langLabel = (val) => {
     if (val === "eus") return LBL_EUS;
@@ -461,27 +461,28 @@ export default function ProTranslator() {
     );
   };
 
-  const labelTabText = tr("summary.sources_tab_text", "Testua");
-  const labelTabDocument = tr("summary.sources_tab_document", "Dokumentua");
-  const labelTabUrl = tr("summary.sources_tab_url", "URLa");
+  // ✅ NUEVAS claves proTranslator.sources_tab_* (en vez de summary.*)
+  const labelTabText = tr("proTranslator.sources_tab_text", "Testua");
+  const labelTabDocument = tr("proTranslator.sources_tab_document", "Dokumentua");
+  const labelTabUrl = tr("proTranslator.sources_tab_url", "URLa");
 
   const labelChooseFileTitle = tr(
-    "summary.choose_file_title",
+    "proTranslator.choose_file_title",
     "Elige tu archivo o carpeta"
   );
-  const labelAcceptedFormats = tr("summary.accepted_formats", "Formatos admitidos");
-  const labelFolderHint = tr("summary.folder_hint", "Puedes arrastrar varios archivos.");
+  const labelAcceptedFormats = tr("proTranslator.accepted_formats", "Formatos admitidos");
+  const labelFolderHint = tr("proTranslator.folder_hint", "Puedes arrastrar varios archivos.");
 
-  const labelPasteUrls = tr("summary.paste_urls_label", "Pegar URLs*");
-  const labelAddUrl = tr("summary.add_url", "Añadir URLs");
-  const labelSaveUrls = tr("summary.save_urls", "Guardar");
-  const labelCancel = tr("summary.cancel", "Cancelar");
-  const labelUrlsNoteVisible = tr("summary.urls_note_visible", "Solo se importará el texto visible.");
-  const labelUrlsNotePaywalled = tr("summary.urls_note_paywalled", "No se admiten artículos de pago.");
-  const labelRemove = tr("summary.remove", "Quitar");
+  const labelPasteUrls = tr("proTranslator.paste_urls_label", "Pegar URLs*");
+  const labelAddUrl = tr("proTranslator.add_url", "Añadir URLs");
+  const labelSaveUrls = tr("proTranslator.save_urls", "Guardar");
+  const labelCancel = tr("proTranslator.cancel", "Cancelar");
+  const labelUrlsNoteVisible = tr("proTranslator.urls_note_visible", "Solo se importará el texto visible.");
+  const labelUrlsNotePaywalled = tr("proTranslator.urls_note_paywalled", "No se admiten artículos de pago.");
+  const labelRemove = tr("proTranslator.remove", "Quitar");
 
-  const labelSaveTranslation = tr("save_button_label", "Guardar");
-  const librarySavedMessage = tr("library_saved_toast", "Guardado en biblioteca");
+  const labelSaveTranslation = tr("proTranslator.save_button_label", "Guardar");
+  const librarySavedMessage = tr("proTranslator.library_saved_toast", "Guardado en biblioteca");
 
   const stopPlayback = () => {
     if (speaking && ttsAbortRef.current) {
@@ -1100,7 +1101,7 @@ export default function ProTranslator() {
                           value={urlsTextarea}
                           onChange={(e) => setUrlsTextarea(e.target.value)}
                           placeholder={tr(
-                            "summary.paste_urls_placeholder",
+                            "proTranslator.paste_urls_placeholder",
                             "Introduce URLs separadas por línea"
                           )}
                           className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"

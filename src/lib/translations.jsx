@@ -1760,10 +1760,45 @@ cookies_last_update: {
     ES: "",
     EUS: "",
   },
-
-
   },
- 
+  
+
+  // =========================
+  //        Pro TRANSLATOR
+  // ========================= 
+  proTranslator: {
+    // Idiomas (labels)
+    output_language_eus: { ES: "Euskera",    EUS: "Euskara",    EN: "Basque",   FR: "Basque" },
+    output_language_es:  { ES: "Castellano", EUS: "Gaztelania", EN: "Spanish",  FR: "Espagnol" },
+    output_language_en:  { ES: "Inglés",     EUS: "Ingelesa",   EN: "English",  FR: "Anglais" },
+    output_language_fr:  { ES: "Francés",    EUS: "Frantsesa",  EN: "French",   FR: "Français" },
+
+    // Tabs
+    sources_tab_text:     { ES: "Texto",      EUS: "Testua",      EN: "Text",      FR: "Texte" },
+    sources_tab_document: { ES: "Documento",  EUS: "Dokumentua",  EN: "Document",  FR: "Document" },
+    sources_tab_url:      { ES: "URL",        EUS: "URL",         EN: "URL",       FR: "URL" },
+
+    // Documentos
+    choose_file_title: { ES: "Elige tu archivo o carpeta", EUS: "Aukeratu zure fitxategia edo karpeta", EN: "Choose your file or folder", FR: "Choisis ton fichier ou dossier" },
+    accepted_formats:  { ES: "Formatos admitidos",         EUS: "Onartutako formatuak",                 EN: "Accepted formats",           FR: "Formats acceptés" },
+    folder_hint:       { ES: "Puedes arrastrar varios archivos.", EUS: "Fitxategi bat baino gehiago arrasta ditzakezu.", EN: "You can drag multiple files.", FR: "Tu peux glisser plusieurs fichiers." },
+    remove:            { ES: "Quitar", EUS: "Kendu", EN: "Remove", FR: "Retirer" },
+
+    // URLs
+    paste_urls_label:        { ES: "Pegar URLs*",   EUS: "URLak itsatsi*", EN: "Paste URLs*",  FR: "Coller des URLs*" },
+    add_url:                 { ES: "Añadir URLs",   EUS: "URLak gehitu",   EN: "Add URLs",     FR: "Ajouter des URLs" },
+    save_urls:               { ES: "Guardar",       EUS: "Gorde",          EN: "Save",         FR: "Enregistrer" },
+    cancel:                  { ES: "Cancelar",      EUS: "Ezeztatu",       EN: "Cancel",       FR: "Annuler" },
+    urls_note_visible:       { ES: "Solo se importará el texto visible del sitio web.", EUS: "Webguneko testu ikusgarria bakarrik inportatuko da.", EN: "Only the visible text from the website will be imported.", FR: "Seul le texte visible du site sera importé." },
+    urls_note_paywalled:     { ES: "No se admiten artículos de pago.", EUS: "Ordainpeko artikuluak ez dira onartzen.", EN: "Paywalled articles are not supported.", FR: "Les articles payants ne sont pas pris en charge." },
+    paste_urls_placeholder:  { ES: "Introduce URLs separadas por línea", EUS: "Itsatsi URLak lerroka bereizita", EN: "Enter one or more URLs (one per line)", FR: "Saisis une ou plusieurs URLs (une par ligne)" },
+
+    // Guardar
+    save_button_label:   { ES: "Guardar", EUS: "Gorde", EN: "Save", FR: "Enregistrer" },
+    library_saved_toast: { ES: "Guardado en biblioteca", EUS: "Liburutegian gordeta", EN: "Saved to library", FR: "Enregistré dans la bibliothèque" },
+  },
+
+
   // =========================
   //        Pro Grammar Corrector
   // ========================= 
