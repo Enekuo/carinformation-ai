@@ -28,7 +28,7 @@ function FlagUS() {
   return (
     <svg viewBox="0 0 16 12" width="24" height="18" aria-hidden="true">
       <rect width="16" height="12" fill="#B22234" rx="2" />
-      {[1,3,5,7,9,11].map((y)=>(
+      {[1, 3, 5, 7, 9, 11].map((y) => (
         <rect key={y} x="0" y={y} width="16" height="1" fill="#fff" />
       ))}
       <rect x="0" y="0" width="7" height="7" fill="#3C3B6E" rx="1" />
@@ -78,18 +78,17 @@ export default function Footer() {
   );
 
   const aboutItems = [
-    { id: "what-is",        titleKey: "eusFooterAboutTitle1", contentKey: "eusFooterAboutContent1" },
-    { id: "how-works",      titleKey: "eusFooterAboutTitle2", contentKey: "eusFooterAboutContent2" },
-    { id: "tools",          titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" },
-    { id: "plans",          titleKey: "eusFooterAboutTitle5", contentKey: "eusFooterAboutContent5" },
-    { id: "languages",      titleKey: "eusFooterAboutTitle6", contentKey: "eusFooterAboutContent6" },
+    { id: "what-is", titleKey: "eusFooterAboutTitle1", contentKey: "eusFooterAboutContent1" },
+    { id: "how-works", titleKey: "eusFooterAboutTitle2", contentKey: "eusFooterAboutContent2" },
+    { id: "tools", titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" },
+    { id: "plans", titleKey: "eusFooterAboutTitle5", contentKey: "eusFooterAboutContent5" },
+    { id: "languages", titleKey: "eusFooterAboutTitle6", contentKey: "eusFooterAboutContent6" },
   ];
 
   const legalItems = [
     { titleKey: "eusFooterLegalTitle1", path: "/aviso-legal" },
     { titleKey: "eusFooterLegalTitle2", path: "/politica-de-privacidad" },
     { titleKey: "eusFooterLegalTitle3", path: "/terminos-condiciones" },
-    // 🔧 actualizado para la nueva página:
     { titleKey: "eusFooterLegalTitle4", path: "/uso-de-ia" },
     { titleKey: "eusFooterLegalTitle5", path: "/cookies" },
   ];
@@ -97,7 +96,10 @@ export default function Footer() {
   const handleClick = () => {
     toast({
       title: tr("eusToastFeatureNotImplementedTitle", "🚧 Funcionalidad no implementada"),
-      description: tr("eusToastFeatureNotImplementedDescription", "Esta función aún no está implementada. ¡Pídela en tu próximo mensaje! 🚀"),
+      description: tr(
+        "eusToastFeatureNotImplementedDescription",
+        "Esta función aún no está implementada. ¡Pídela en tu próximo mensaje! 🚀"
+      ),
       variant: "default",
     });
   };
@@ -127,25 +129,39 @@ export default function Footer() {
                     {tr(item.contentKey, "")
                       .split("\n")
                       .map((line, i) => {
-                        const parts = line.split(":");
-                        const hasColon = parts.length > 1;
-                        const title = hasColon ? parts.shift() : null;
-                        const rest = hasColon ? parts.join(":") : line;
+                        const trimmed = (line || "").trim();
+
+                        // ✅ SOLO si empieza con "n-" (1-, 2-, 3-...)
+                        const isNumbered = /^[0-9]+\s*-\s*/.test(trimmed);
+
+                        if (!isNumbered) {
+                          return (
+                            <div key={`${idx}-${i}`} className="mb-1">
+                              {line}
+                            </div>
+                          );
+                        }
+
+                        // Para líneas numeradas: negrita solo "1- Xxxx:" (lo previo a :)
+                        const colonIndex = trimmed.indexOf(":");
+                        if (colonIndex === -1) {
+                          // Si no hay ":", no aplicamos negrita especial
+                          return (
+                            <div key={`${idx}-${i}`} className="mb-1">
+                              {line}
+                            </div>
+                          );
+                        }
+
+                        const left = trimmed.slice(0, colonIndex); // "1- Itzultzailea"
+                        const right = trimmed.slice(colonIndex + 1); // " ..."
 
                         return (
                           <div key={`${idx}-${i}`} className="mb-1">
-                            {hasColon ? (
-                              <>
-                                <strong className="font-semibold text-slate-800 dark:text-slate-200">
-                                  {title}:
-                                </strong>{" "}
-                                <span>{rest}</span>
-                              </>
-                            ) : (
-                              <>
-                                {line}
-                              </>
-                            )}
+                            <strong className="font-semibold text-slate-800 dark:text-slate-200">
+                              {left}:
+                            </strong>{" "}
+                            <span>{right}</span>
                           </div>
                         );
                       })}
@@ -191,7 +207,10 @@ export default function Footer() {
               <div className="flex space-x-3">
                 <a
                   href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClick();
+                  }}
                   aria-label="Instagram"
                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
@@ -199,7 +218,10 @@ export default function Footer() {
                 </a>
                 <a
                   href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClick();
+                  }}
                   aria-label="Twitter"
                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
@@ -207,7 +229,10 @@ export default function Footer() {
                 </a>
                 <a
                   href="#"
-                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClick();
+                  }}
                   aria-label="LinkedIn"
                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
@@ -225,7 +250,7 @@ export default function Footer() {
             <div className="relative mb-6">
               <button
                 ref={langBtnRef}
-                onClick={() => setOpenLang(v => !v)}
+                onClick={() => setOpenLang((v) => !v)}
                 onBlur={handleBlur}
                 type="button"
                 className="inline-flex items-center justify-center h-10 w-10 rounded-lg
@@ -246,16 +271,16 @@ export default function Footer() {
                              shadow-xl ring-1 ring-black/5 p-2
                              dark:bg-slate-900 dark:border-slate-700"
                 >
-                  <LangItem active={language==="EUS"} onClick={() => chooseLang("EUS")}>
+                  <LangItem active={language === "EUS"} onClick={() => chooseLang("EUS")}>
                     <FlagEUS /> <span className="ml-2 text-[13px]">EUS</span>
                   </LangItem>
-                  <LangItem active={language==="ES"} onClick={() => chooseLang("ES")}>
+                  <LangItem active={language === "ES"} onClick={() => chooseLang("ES")}>
                     <FlagES /> <span className="ml-2 text-[13px]">ES</span>
                   </LangItem>
-                  <LangItem active={language==="EN"} onClick={() => chooseLang("EN")}>
+                  <LangItem active={language === "EN"} onClick={() => chooseLang("EN")}>
                     <FlagUS /> <span className="ml-2 text-[13px]">EN</span>
                   </LangItem>
-                  <LangItem active={language==="FR"} onClick={() => chooseLang("FR")}>
+                  <LangItem active={language === "FR"} onClick={() => chooseLang("FR")}>
                     <FlagFR /> <span className="ml-2 text-[13px]">FR</span>
                   </LangItem>
                 </div>
@@ -280,9 +305,15 @@ export default function Footer() {
               © {new Date().getFullYear()} Euskalia — {tr("eusFooterRights", "Eskubide guztiak erreserbatuta")}
             </div>
             <div className="flex justify-end gap-4">
-              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterCookies", "Cookieak")}</Link>
-              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle1", "Lege-oharra")}</Link>
-              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">{tr("eusFooterLegalTitle2", "Pribatutasun politika")}</Link>
+              <Link to="/cookies" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterCookies", "Cookieak")}
+              </Link>
+              <Link to="/aviso-legal" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterLegalTitle1", "Lege-oharra")}
+              </Link>
+              <Link to="/politica-de-privacidad" className="hover:text-primary dark:hover:text-primary">
+                {tr("eusFooterLegalTitle2", "Pribatutasun politika")}
+              </Link>
             </div>
           </div>
         </div>
