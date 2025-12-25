@@ -277,7 +277,7 @@ export const translations = {
   // === CHAT IA / ASSISTANT === //
  assistant_title: {
   ES: "¿Cómo puedo ayudarte?",
-  EUS: "Nola lagundu diezazaket?",
+  EUS: "Nola lagundu dezaket?",
  },
  assistant_new_chat: {
   ES: "Nuevo chat",
