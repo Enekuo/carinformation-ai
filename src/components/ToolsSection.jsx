@@ -1,72 +1,40 @@
 import React from "react";
+import { useTranslation } from "@/lib/translations";
+import { Play } from "lucide-react";
 
-export default function ToolsSection({ videoSrc = "", posterSrc = "" }) {
+export default function ToolsSection() {
+  const { t } = useTranslation();
+  const tr = (key, fallback) => t(key) || fallback;
+
   return (
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto w-full px-6 py-16 md:py-20">
-        {/* Header (opcional, puedes quitarlo si ya tienes título arriba en otra sección) */}
-        <div className="mb-10 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
-            Herramientas de Euskalia
-          </h2>
-          <p className="mt-3 max-w-2xl text-base md:text-lg text-slate-600">
-            Vista rápida del entorno Pro (video en bucle). La parte derecha la dejamos en blanco por ahora.
-          </p>
-        </div>
+        {/* Título centrado */}
+        <h2 className="text-center text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+          {tr("tools_title", "Herramientas de Euskalia")}
+        </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-          {/* Izquierda: Marco azul + vídeo */}
-          <div className="w-full">
-            <div
-              className="relative w-full rounded-3xl bg-white shadow-sm border border-slate-200 overflow-hidden"
-              style={{ aspectRatio: "16 / 10" }}
-            >
-              {/* Marco azul Euskalia */}
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 ring-1 ring-inset ring-blue-200/70" />
-                <div className="absolute -inset-2 bg-blue-600/10 blur-2xl" />
-              </div>
+        <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-start">
+          {/* IZQUIERDA: Cuadro vídeo (placeholder) */}
+          <div className="relative">
+            {/* Esquina azul */}
+            <div className="absolute -top-2 -left-2 w-16 h-16 rounded-3xl bg-blue-600" />
 
-              {/* Contenido (video o placeholder) */}
-              <div className="relative w-full h-full p-4 md:p-5">
-                <div className="w-full h-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
-                  {videoSrc ? (
-                    <video
-                      className="w-full h-full object-cover"
-                      src={videoSrc}
-                      poster={posterSrc || undefined}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center px-6">
-                        <div className="mx-auto mb-3 h-12 w-12 rounded-2xl bg-white/70 border border-slate-200 flex items-center justify-center">
-                          <span className="text-slate-700 text-xl">▶</span>
-                        </div>
-                        <div className="text-sm md:text-[15px] text-slate-700 font-medium">
-                          Aquí irá el video en bucle
-                        </div>
-                        <div className="mt-1 text-xs md:text-sm text-slate-500">
-                          (pásale <code className="px-1 py-0.5 bg-white/70 rounded">videoSrc</code> cuando lo tengas)
-                        </div>
-                      </div>
-                    </div>
-                  )}
+            <div className="relative rounded-3xl border border-blue-200 bg-blue-50/60 shadow-sm p-6 md:p-7">
+              <div className="rounded-2xl border border-slate-200 bg-slate-100/60 h-[320px] md:h-[380px] flex flex-col items-center justify-center text-center px-6">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center shadow-sm">
+                  <Play className="text-blue-600" size={22} />
+                </div>
+
+                <div className="mt-4 text-sm md:text-[15px] font-medium text-slate-700">
+                  {tr("tools_video_placeholder_title", "Aquí irá el video en bucle")}
                 </div>
               </div>
             </div>
-
-            {/* Nota opcional debajo (puedes borrar si no la quieres) */}
-            <div className="mt-4 text-xs md:text-sm text-slate-500">
-              Recomendación: exporta el video a <span className="font-medium">MP4 (H.264)</span>, 10–18s, en bucle.
-            </div>
           </div>
 
-          {/* Derecha: en blanco por ahora */}
-          <div className="w-full min-h-[220px] lg:min-h-[420px] rounded-3xl border border-dashed border-slate-200 bg-white/40" />
+          {/* DERECHA: En blanco por ahora */}
+          <div className="rounded-3xl border border-dashed border-slate-200 bg-white h-[380px] md:h-[440px]" />
         </div>
       </div>
     </section>
