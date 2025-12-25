@@ -122,13 +122,33 @@ export default function Footer() {
                       <span className="hidden group-open:inline">−</span>
                     </span>
                   </summary>
+
                   <div className="pt-1 pb-4 text-[13px] leading-relaxed text-slate-600 dark:text-slate-400">
-                    {tr(item.contentKey, "").split("\n").map((line, i) => (
-                      <React.Fragment key={`${idx}-${i}`}>
-                        {line}
-                        <br />
-                      </React.Fragment>
-                    ))}
+                    {tr(item.contentKey, "")
+                      .split("\n")
+                      .map((line, i) => {
+                        const parts = line.split(":");
+                        const hasColon = parts.length > 1;
+                        const title = hasColon ? parts.shift() : null;
+                        const rest = hasColon ? parts.join(":") : line;
+
+                        return (
+                          <div key={`${idx}-${i}`} className="mb-1">
+                            {hasColon ? (
+                              <>
+                                <strong className="font-semibold text-slate-800 dark:text-slate-200">
+                                  {title}:
+                                </strong>{" "}
+                                <span>{rest}</span>
+                              </>
+                            ) : (
+                              <>
+                                {line}
+                              </>
+                            )}
+                          </div>
+                        );
+                      })}
                   </div>
                 </details>
               ))}
@@ -169,16 +189,28 @@ export default function Footer() {
                 {tr("eusFooterContactEmailValue", "contacto@euskalia.ai")}
               </a>
               <div className="flex space-x-3">
-                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Instagram"
-                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  aria-label="Instagram"
+                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                >
                   <Instagram size={20} />
                 </a>
-                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="Twitter"
-                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  aria-label="Twitter"
+                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                >
                   <Twitter size={20} />
                 </a>
-                <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }} aria-label="LinkedIn"
-                   className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleClick(); }}
+                  aria-label="LinkedIn"
+                  className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                >
                   <Linkedin size={20} />
                 </a>
               </div>
