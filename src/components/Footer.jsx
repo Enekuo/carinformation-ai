@@ -80,7 +80,7 @@ export default function Footer() {
   const aboutItems = [
     { id: "what-is",        titleKey: "eusFooterAboutTitle1", contentKey: "eusFooterAboutContent1" },
     { id: "how-works",      titleKey: "eusFooterAboutTitle2", contentKey: "eusFooterAboutContent2" },
-    { id: "translator",     titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" },
+    { id: "tools",          titleKey: "eusFooterAboutTitle3", contentKey: "eusFooterAboutContent3" },
     { id: "plans",          titleKey: "eusFooterAboutTitle5", contentKey: "eusFooterAboutContent5" },
     { id: "languages",      titleKey: "eusFooterAboutTitle6", contentKey: "eusFooterAboutContent6" },
   ];

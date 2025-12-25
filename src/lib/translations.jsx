@@ -687,8 +687,20 @@ faq_item7_answer: {
   },
   eusFooterAboutTitle3: { ES: "Herramientas Plan Pro", EUS: " Pro planeko tresnak" },
   eusFooterAboutContent3: { 
-    ES:  "Euskalia reúne un conjunto de herramientas pensadas para trabajar con textos de forma completa y coherente en torno al euskera. Permite traducir contenidos entre distintos idiomas con el euskera como eje central, resumir textos largos para extraer la información relevante, reformular y parafrasear contenidos para adaptarlos a distintos contextos, mejorar la naturalidad y fluidez del texto mediante procesos de humanización, corregir errores gramaticales y de estilo, y analizar textos para detectar indicios de contenido generado por inteligencia artificial. Todas estas funciones están integradas en una misma plataforma y comparten una lógica común de uso, lo que facilita combinar varias herramientas en un mismo flujo de trabajo.",
-    EUS: "Euskaliak testuekin lan egiteko pentsatutako tresna multzo bat biltzen du, betiere euskara ardatz nagusi gisa hartuta. Edukiak hizkuntza desberdinen artean itzultzeko aukera ematen du, testu luzeak laburtuz informazio garrantzitsua azpimarratzeko, edukiak berridatzi edo parafraseatzeko testuinguru desberdinetara egokitzeko, testuen naturaltasuna eta jariakortasuna hobetzeko humanizazio prozesuen bidez, akats gramatikalak eta estilozkoak zuzentzeko, eta testu baten jatorria aztertzeko adimen artifizialak sortutako edukiaren zantzuak detektatzeko. Funtzio horiek guztiak plataforma baten barruan daude eta erabilera-logika bera partekatzen dute, hainbat tresna lan-fluxu berean modu errazean konbinatzea ahalbidetuz."
+    ES: 
+    "1- Traductor: traduce palabras, frases o textos completos al instante entre euskera y otros idiomas, manteniendo el contexto y la naturalidad.\n" +
+    "2- Resumidor: reduce textos largos a versiones claras y estructuradas, extrayendo la información más relevante.\n" +
+    "3- Corrector: detecta y corrige errores gramaticales, ortográficos y de estilo en textos en euskera.\n" +
+    "4- Parafraseador: reescribe textos con otras palabras sin cambiar el significado, adaptándolos a distintos contextos.\n" +
+    "5- Humanizador: mejora la fluidez y naturalidad del texto para que suene más humano y menos artificial.\n" +
+    "6- Detector de IA: analiza textos para identificar posibles indicios de contenido generado por inteligencia artificial.",
+    EUS: 
+    "1- Itzultzailea: hitzak, esaldiak edo testu osoak berehala itzultzen ditu euskararen eta beste hizkuntzen artean, testuingurua eta naturaltasuna errespetatuz.\n" +
+    "2- Laburtzailea: testu luzeak bertsio argi eta egituratuetan laburtzen ditu, informazio garrantzitsuena ateratzeko.\n" +
+    "3- Zuzentzailea: euskarazko testuetan akats gramatikalak, ortografikoak eta estilozkoak zuzentzen ditu.\n" +
+    "4- Parafraseatzailea: testuak beste modu batean berridazten ditu, esanahia aldatu gabe, testuinguru desberdinetara egokitzeko.\n" +
+    "5- Humanizatzailea: testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen.\n" +
+    "6- IA detektagailua: testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko.",
   },
 
   eusFooterAboutTitle4: { ES: "Resumidor", EUS: "Laburtzailea" },
