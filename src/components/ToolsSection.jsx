@@ -3,78 +3,83 @@ import {
   Languages,
   FileText,
   CheckCircle2,
-  Repeat2,
-  ScanSearch,
+  Shuffle,
   Sparkles,
+  Search,
+  Play,
 } from "lucide-react";
 
 export default function ToolsSection() {
-  const tools = [
+  const cards = [
     {
       title: "Itzultzailea",
       desc: "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa.",
-      Icon: Languages,
-      badgeBg: "bg-amber-100",
-      iconColor: "text-amber-700",
+      icon: Languages,
+      iconBg: "bg-amber-50",
+      iconColor: "text-amber-600",
     },
     {
       title: "Laburtzailea",
-      desc: "Testu luzeak segundo gutxitan laburtu eta ideiarik garrantzitsuenak atera.",
-      Icon: FileText,
-      badgeBg: "bg-blue-100",
-      iconColor: "text-blue-700",
+      desc: "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz.",
+      icon: FileText,
+      iconBg: "bg-blue-50",
+      iconColor: "text-blue-600",
     },
     {
-      title: "Zuzentzailea",
-      desc: "Akats gramatikalak, ortografia eta estiloa zuzendu testua argiago uzteko.",
-      Icon: CheckCircle2,
-      badgeBg: "bg-emerald-100",
-      iconColor: "text-emerald-700",
+      title: "Zuzenketa gramatikala",
+      desc: "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu.",
+      icon: CheckCircle2,
+      iconBg: "bg-emerald-50",
+      iconColor: "text-emerald-600",
     },
     {
       title: "Parafrasatzailea",
-      desc: "Esanahia mantenduta, testua berridatzi estilo desberdinetan eta testuingurura egokitu.",
-      Icon: Repeat2,
-      badgeBg: "bg-orange-100",
-      iconColor: "text-orange-700",
+      desc: "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan.",
+      icon: Shuffle,
+      iconBg: "bg-orange-50",
+      iconColor: "text-orange-600",
     },
     {
       title: "IA-detektorea",
-      desc: "Testua aztertu eta IA bidez sortua izan den probabilitatearen estimazioa eman.",
-      Icon: ScanSearch,
-      badgeBg: "bg-indigo-100",
-      iconColor: "text-indigo-700",
+      desc: "Testua aztertzen du eta IA bidez sortua izateko probabilitatea estimatzen du.",
+      icon: Search,
+      iconBg: "bg-indigo-50",
+      iconColor: "text-indigo-600",
     },
     {
       title: "Humanizatzailea",
-      desc: "Testua naturalago, fluidoago eta gizatiarrago bihurtu, irakurtzeko errazago.",
-      Icon: Sparkles,
-      badgeBg: "bg-teal-100",
-      iconColor: "text-teal-700",
+      desc: "Testuari naturalago, argiago eta fluidoago irakurtzeko itxura ematen dio.",
+      icon: Sparkles,
+      iconBg: "bg-teal-50",
+      iconColor: "text-teal-600",
     },
   ];
 
   return (
     <section className="w-full bg-slate-50">
-      <div className="max-w-7xl mx-auto w-full px-6 py-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
         {/* Título centrado */}
-        <h2 className="text-center text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-          Herramientas de Euskalia
-        </h2>
+        <div className="mb-10 md:mb-12 text-center">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+            Herramientas de Euskalia
+          </h2>
+        </div>
 
-        {/* Layout 2 columnas */}
-        <div className="mt-10 md:mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start">
-          {/* IZQUIERDA: Video frame */}
-          <div className="w-full">
-            <div className="relative w-full rounded-[28px] bg-blue-600 p-6 md:p-7">
-              <div className="rounded-[22px] bg-slate-50 border border-blue-200/60 p-5 md:p-6">
-                <div className="rounded-[18px] bg-slate-100 border border-slate-200 h-[300px] md:h-[340px] flex items-center justify-center">
-                  <div className="flex flex-col items-center justify-center text-center px-6">
-                    <div className="h-14 w-14 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
-                      <div className="h-0 w-0 border-y-[10px] border-y-transparent border-l-[16px] border-l-blue-600 ml-1" />
-                    </div>
-                    <div className="mt-5 text-slate-900 font-semibold">
-                      Aquí irá el video en bucle
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start">
+          {/* IZQUIERDA: marco azul estilo "Algor" */}
+          <div className="flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-[560px]">
+              {/* Marco azul completo */}
+              <div className="rounded-[28px] bg-blue-600 p-5 md:p-6 shadow-sm">
+                <div className="rounded-[22px] bg-slate-50 p-5 md:p-6">
+                  <div className="rounded-[18px] bg-slate-100 border border-slate-200 h-[280px] md:h-[320px] flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="h-14 w-14 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center">
+                        <Play className="text-blue-600" size={22} />
+                      </div>
+                      <div className="text-slate-700 font-medium">
+                        Aquí irá el video en bucle
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -82,33 +87,37 @@ export default function ToolsSection() {
             </div>
           </div>
 
-          {/* DERECHA: 6 tarjetas (compactas para que quepan) */}
+          {/* DERECHA: 6 tarjetas (más pequeñas para que quepan) */}
           <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
-              {tools.map(({ title, desc, Icon, badgeBg, iconColor }) => (
-                <div
-                  key={title}
-                  className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"
-                >
+              {cards.map((c) => {
+                const Icon = c.icon;
+                return (
                   <div
-                    className={`h-12 w-12 rounded-2xl ${badgeBg} flex items-center justify-center`}
+                    key={c.title}
+                    className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4 md:p-5"
                   >
-                    <Icon className={`h-6 w-6 ${iconColor}`} />
-                  </div>
+                    {/* icono arriba */}
+                    <div
+                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center`}
+                    >
+                      <Icon className={c.iconColor} size={22} />
+                    </div>
 
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold text-slate-900 leading-snug">
-                      {title}
+                    {/* TITULO SUBIDO (menos margen) */}
+                    <h3 className="mt-2 text-[18px] md:text-[19px] font-extrabold leading-tight text-slate-900">
+                      {c.title}
                     </h3>
-                    <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-                      {desc}
+
+                    <p className="mt-2 text-[13px] md:text-[13.5px] leading-relaxed text-slate-600">
+                      {c.desc}
                     </p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* (Opcional) Si ves que queda demasiado abajo en móvil, lo ajustamos luego */}
+            {/* (sin texto extra abajo, para que no se “desborde”) */}
           </div>
         </div>
       </div>
