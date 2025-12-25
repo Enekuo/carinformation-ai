@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BenefitsSection from "@/components/BenefitsSection";
+import ToolsSection from "@/components/ToolsSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorks from "@/components/HowItWorks";
 import FaqSection from "@/components/FaqSection";
@@ -1039,6 +1040,7 @@ Responde SIEMPRE en el idioma de destino cuando des la TRADUCCIÓN.
       </section>
 
       <BenefitsSection />
+      <ToolsSection />
       <FeaturesSection />
       <HowItWorks />
       <FaqSection />
