@@ -6,7 +6,6 @@ import {
   Shuffle,
   Sparkles,
   Search,
-  Play,
 } from "lucide-react";
 
 export default function ToolsSection() {
@@ -14,111 +13,105 @@ export default function ToolsSection() {
     {
       title: "Itzultzailea",
       desc: "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa.",
-      icon: Languages,
+      Icon: Languages,
       iconBg: "bg-amber-50",
       iconColor: "text-amber-600",
     },
     {
       title: "Laburtzailea",
       desc: "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz.",
-      icon: FileText,
+      Icon: FileText,
       iconBg: "bg-blue-50",
       iconColor: "text-blue-600",
     },
     {
       title: "Zuzenketa gramatikala",
       desc: "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu.",
-      icon: CheckCircle2,
+      Icon: CheckCircle2,
       iconBg: "bg-emerald-50",
       iconColor: "text-emerald-600",
     },
     {
       title: "Parafrasatzailea",
       desc: "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan.",
-      icon: Shuffle,
+      Icon: Shuffle,
       iconBg: "bg-orange-50",
       iconColor: "text-orange-600",
     },
     {
-      title: "IA-detektorea",
-      desc: "Testua aztertzen du eta IA bidez sortua izateko probabilitatea estimatzen du.",
-      icon: Search,
-      iconBg: "bg-indigo-50",
-      iconColor: "text-indigo-600",
-    },
-    {
       title: "Humanizatzailea",
-      desc: "Testuari naturalago, argiago eta fluidoago irakurtzeko itxura ematen dio.",
-      icon: Sparkles,
+      desc: "Testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen.",
+      Icon: Sparkles,
       iconBg: "bg-teal-50",
       iconColor: "text-teal-600",
+    },
+    {
+      title: "IA-detektorea",
+      desc: "Testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko.",
+      Icon: Search,
+      iconBg: "bg-violet-50",
+      iconColor: "text-violet-600",
     },
   ];
 
   return (
     <section className="w-full bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-6 py-20">
         {/* Título centrado */}
-        <div className="mb-10 md:mb-12 text-center">
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-            Herramientas de Euskalia
-          </h2>
-        </div>
+        <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
+          Herramientas de Euskalia
+        </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start">
-          {/* IZQUIERDA: marco azul estilo "Algor" */}
-          <div className="flex justify-center lg:justify-start">
-            <div className="relative w-full max-w-[560px]">
-              {/* Marco azul completo */}
-              <div className="rounded-[28px] bg-blue-600 p-5 md:p-6 shadow-sm">
-                <div className="rounded-[22px] bg-slate-50 p-5 md:p-6">
-                  <div className="rounded-[18px] bg-slate-100 border border-slate-200 h-[280px] md:h-[320px] flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="h-14 w-14 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center">
-                        <Play className="text-blue-600" size={22} />
-                      </div>
-                      <div className="text-slate-700 font-medium">
-                        Aquí irá el video en bucle
-                      </div>
-                    </div>
+        <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          {/* IZQUIERDA: cuadro video (azul estilo algor) */}
+          <div className="relative w-full">
+            <div className="rounded-[34px] bg-blue-600 p-4">
+              <div className="rounded-[26px] bg-blue-50/40 p-4">
+                <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10] flex items-center justify-center">
+                  <div className="h-12 w-12 rounded-2xl bg-white shadow flex items-center justify-center">
+                    <div className="h-0 w-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-blue-600 ml-1" />
+                  </div>
+
+                  <div className="absolute left-0 right-0 top-1/2 translate-y-8 text-center text-slate-700 font-medium">
+                    Aquí irá el video en bucle
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* DERECHA: tarjetas en fila (icono izquierda, texto derecha) */}
+          {/* DERECHA: 6 tarjetas compactas */}
           <div className="w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
-              {cards.map((c) => {
-                const Icon = c.icon;
-                return (
-                  <div
-                    key={c.title}
-                    className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4 md:p-5"
-                  >
-                    <div className="flex items-start gap-4">
-                      {/* icono */}
-                      <div
-                        className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center shrink-0`}
-                      >
-                        <Icon className={c.iconColor} size={22} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {cards.map((c) => (
+                <div
+                  key={c.title}
+                  className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
+                >
+                  {/* icono izquierda, texto a la derecha */}
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
+                    >
+                      <c.Icon className={`h-6 w-6 ${c.iconColor}`} />
+                    </div>
+
+                    {/* IMPORTANTE: min-w-0 + truncate para que el párrafo sea 1 línea */}
+                    <div className="min-w-0">
+                      <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
+                        {c.title}
                       </div>
 
-                      {/* texto a la derecha */}
-                      <div className="min-w-0">
-                        <h3 className="text-[18px] md:text-[19px] font-extrabold leading-tight text-slate-900">
-                          {c.title}
-                        </h3>
-                        <p className="mt-2 text-[13px] md:text-[13.5px] leading-relaxed text-slate-600">
-                          {c.desc}
-                        </p>
-                      </div>
+                      <p className="mt-1 text-[13px] text-slate-600 truncate">
+                        {c.desc}
+                      </p>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
+
+            {/* (si quieres, aquí luego metemos texto/accordion a la derecha, pero por ahora son solo tarjetas) */}
           </div>
         </div>
       </div>
