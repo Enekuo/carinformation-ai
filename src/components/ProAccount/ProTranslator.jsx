@@ -973,27 +973,6 @@ export default function ProTranslator() {
                       {leftText.length.toLocaleString()} /{" "}
                       {MAX_CHARS.toLocaleString()}
                     </div>
-                    <div className="absolute bottom-4 left-6">
-                      <button
-                        type="button"
-                        onClick={handleToggleMic}
-                        aria-label={t("translator.dictate")}
-                        className={`group relative p-2 rounded-md hover:bg-slate-100 ${
-                          listening ? "ring-2 ring-blue-400" : ""
-                        }`}
-                      >
-                        <Mic
-                          className={`w-5 h-5 ${
-                            listening ? "text-blue-600" : "text-slate-600"
-                          }`}
-                        />
-                        <span className="pointer-events-none absolute -top-9 left-1 px-2 py-1 rounded bg-slate-800 text-white text-xs opacity-0 group-hover:opacity-100 transition">
-                          {listening
-                            ? t("translator.listening")
-                            : t("translator.dictate")}
-                        </span>
-                      </button>
-                    </div>
                   </>
                 )}
 
