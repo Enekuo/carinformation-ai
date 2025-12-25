@@ -327,7 +327,7 @@ export const translations = {
   },
 
   eusFooterAboutTitle3: { ES: "Herramientas Plan Pro", EUS: " Pro planeko tresnak" },
-  eusFooterAboutContent3: {
+  eusFooterAboutContent3: { 
     ES:  "Euskalia reúne un conjunto de herramientas pensadas para trabajar con textos de forma completa y coherente en torno al euskera. Permite traducir contenidos entre distintos idiomas con el euskera como eje central, resumir textos largos para extraer la información relevante, reformular y parafrasear contenidos para adaptarlos a distintos contextos, mejorar la naturalidad y fluidez del texto mediante procesos de humanización, corregir errores gramaticales y de estilo, y analizar textos para detectar indicios de contenido generado por inteligencia artificial. Todas estas funciones están integradas en una misma plataforma y comparten una lógica común de uso, lo que facilita combinar varias herramientas en un mismo flujo de trabajo.",
     EUS: "Euskaliak testuekin lan egiteko pentsatutako tresna multzo bat biltzen du, betiere euskara ardatz nagusi gisa hartuta. Edukiak hizkuntza desberdinen artean itzultzeko aukera ematen du, testu luzeak laburtuz informazio garrantzitsua azpimarratzeko, edukiak berridatzi edo parafraseatzeko testuinguru desberdinetara egokitzeko, testuen naturaltasuna eta jariakortasuna hobetzeko humanizazio prozesuen bidez, akats gramatikalak eta estilozkoak zuzentzeko, eta testu baten jatorria aztertzeko adimen artifizialak sortutako edukiaren zantzuak detektatzeko. Funtzio horiek guztiak plataforma baten barruan daude eta erabilera-logika bera partekatzen dute, hainbat tresna lan-fluxu berean modu errazean konbinatzea ahalbidetuz."
   },
