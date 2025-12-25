@@ -712,8 +712,8 @@ faq_item7_answer: {
 
   eusFooterAboutTitle5: { ES: "Planes", EUS: "Planak" },
   eusFooterAboutContent5: {
-    ES:  "La versión gratuita ofrece lo esencial: traducir y resumir textos de forma rápida y sencilla. El plan de pago, además de eliminar los anuncios, permitirá disfrutar de menos limitaciones y acceder a una cuenta personal de Euskalia, donde podrás guardar tus textos, resúmenes y traducciones en una biblioteca privada para consultarlos cuando quieras.",
-    EUS: "Doako bertsioak funtzio hauek eskaintzen ditu: testuak azkar eta erraz itzuli eta laburtzea. Ordainpeko planak, iragarkiak ezabatzeaz gain, murrizketa gutxiago izango ditu eta Euskaliako kontu pertsonal batera sartzeko aukera emango du, non zure testuak, laburpenak eta itzulpenak gordeko dituzun liburutegi pribatu batean, nahi duzunean berrikusteko."
+    ES:  "Euskalia ofrece un plan gratuito con acceso a las funciones básicas, traductor y resumidor. Los planes de pago amplían estas capacidades con herramientas avanzadas, mayores límites de uso y funciones pensadas para un trabajo más intensivo, manteniendo siempre la misma experiencia simple y directa.",
+    EUS: "Euskaliak doako plana eskaintzen du oinarrizko funtzioekin, itzultzailea eta laburtzailea. Ordainpeko planek aukera horiek zabaltzen dituzte, tresna aurreratuak, erabilera-muga handiagoak eta lan intentsiborako pentsatutako funtzioak gehituz, betiere erabilera-esperientzia sinple eta zuzena mantenduz."
   },
 
   eusFooterAboutTitle6: { ES: "Idiomas", EUS: "Hizkuntzak" },
