@@ -87,7 +87,7 @@ export default function ToolsSection() {
             </div>
           </div>
 
-          {/* DERECHA: 6 tarjetas (más pequeñas para que quepan) */}
+          {/* DERECHA: tarjetas en fila (icono izquierda, texto derecha) */}
           <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
               {cards.map((c) => {
@@ -97,27 +97,28 @@ export default function ToolsSection() {
                     key={c.title}
                     className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4 md:p-5"
                   >
-                    {/* icono arriba */}
-                    <div
-                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center`}
-                    >
-                      <Icon className={c.iconColor} size={22} />
+                    <div className="flex items-start gap-4">
+                      {/* icono */}
+                      <div
+                        className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center shrink-0`}
+                      >
+                        <Icon className={c.iconColor} size={22} />
+                      </div>
+
+                      {/* texto a la derecha */}
+                      <div className="min-w-0">
+                        <h3 className="text-[18px] md:text-[19px] font-extrabold leading-tight text-slate-900">
+                          {c.title}
+                        </h3>
+                        <p className="mt-2 text-[13px] md:text-[13.5px] leading-relaxed text-slate-600">
+                          {c.desc}
+                        </p>
+                      </div>
                     </div>
-
-                    {/* TITULO SUBIDO (menos margen) */}
-                    <h3 className="mt-2 text-[18px] md:text-[19px] font-extrabold leading-tight text-slate-900">
-                      {c.title}
-                    </h3>
-
-                    <p className="mt-2 text-[13px] md:text-[13.5px] leading-relaxed text-slate-600">
-                      {c.desc}
-                    </p>
                   </div>
                 );
               })}
             </div>
-
-            {/* (sin texto extra abajo, para que no se “desborde”) */}
           </div>
         </div>
       </div>
