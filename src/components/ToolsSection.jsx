@@ -13,13 +13,13 @@ export default function ToolsSection() {
 
         {/* 2 columnas */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-          {/* IZQUIERDA: cuadro video (con esquina azul integrada) */}
-          <div
-            className="relative rounded-[28px] border border-blue-200 bg-blue-50/60 p-6 md:p-7 shadow-sm
-                       before:content-[''] before:absolute before:-top-[1px] before:-left-[1px]
-                       before:w-20 before:h-20 before:rounded-[22px] before:bg-blue-600"
-          >
-            <div className="relative z-10 rounded-2xl border border-blue-100 bg-slate-100 overflow-hidden">
+          {/* IZQUIERDA: cuadro video (esquina azul integrada en el cuadro) */}
+          <div className="relative rounded-[28px] border border-blue-200 bg-blue-50/60 p-6 md:p-7 shadow-sm overflow-hidden">
+            {/* Esquina azul INTEGRADA (dentro del cuadro grande) */}
+            <div className="absolute top-0 left-0 w-[92px] h-[92px] bg-blue-600 rounded-br-[26px]" />
+
+            {/* Contenido */}
+            <div className="relative rounded-2xl border border-blue-100 bg-slate-100 overflow-hidden">
               <div className="w-full aspect-[16/10] flex items-center justify-center">
                 <div className="flex flex-col items-center justify-center text-center px-6">
                   <div className="h-14 w-14 rounded-2xl bg-white shadow-sm flex items-center justify-center">
