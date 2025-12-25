@@ -158,6 +158,14 @@ export default function ProTranslator() {
       "ezin dut",
       "barkatu",
       "ez naiz gai",
+
+      // ✅ NUEVO: mensajes típicos de “no traducción”
+      "no se puede traducir",
+      "no puedo traducir",
+      "no es una palabra",
+      "no es una palabra en",
+      "no existe en euskera",
+      "no tiene traducción",
     ];
 
     if (patterns.some((p) => low.includes(p))) return true;
@@ -1239,3 +1247,4 @@ export default function ProTranslator() {
     </>
   );
 }
+ 
