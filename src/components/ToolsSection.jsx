@@ -78,6 +78,9 @@ export default function ToolsSection() {
                   className="w-full h-full object-contain"
                 />
               </div>
+              
+             {/* PALO IZQUIERDO */}
+              <div className="absolute top-0 left-0 h-full w-[12px] -translate-x-[0px] rounded-full bg-blue-600" />
 
               {/* ✅ PALO AZUL: pegado al borde derecho del video */}
               <div className="absolute top-0 right-0 h-full w-[12px] translate-x-[5px] rounded-full bg-blue-600" />
