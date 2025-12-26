@@ -67,9 +67,9 @@ export default function ToolsSection() {
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           {/* VIDEO */}
-          <div className="relative w-full mt-10">
+          <div className="relative w-full">
             {/* MARCO AZUL */}
-            <div className="bg-blue-600 rounded-[34px] p-4">
+            <div className="bg-blue-600 rounded-[34px] p-4 pt-10">
               {/* CAJA DEL VIDEO */}
               <div className="relative bg-slate-50 rounded-[22px] overflow-hidden aspect-[16/10]">
                 <video
