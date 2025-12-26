@@ -80,7 +80,7 @@ export default function ToolsSection() {
               </div>
 
               {/* ✅ PALO AZUL: pegado al borde derecho del video */}
-              <div className="absolute top-0 right-0 h-full w-[12px] translate-x-[8px] rounded-full bg-blue-600" />
+              <div className="absolute top-0 right-0 h-full w-[12px] translate-x-[6px] rounded-full bg-blue-600" />
             </div>
           </div>
 
