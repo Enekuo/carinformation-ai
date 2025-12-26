@@ -74,8 +74,11 @@ export default function ToolsSection() {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full h-full object-cover"
-                    style={{ transform: "translateY(-10px)" }}
+                    className="w-full h-full object-fill"
+                    style={{
+                      transform: "scaleY(1.14)",
+                      transformOrigin: "center",
+                    }}
                   />
                 </div>
               </div>
@@ -101,6 +104,7 @@ export default function ToolsSection() {
                       <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
                         {c.title}
                       </div>
+
                       <p className="mt-1 text-[13px] text-slate-600 truncate">
                         {c.desc}
                       </p>
