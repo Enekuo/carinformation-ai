@@ -62,12 +62,12 @@ export default function ToolsSection() {
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: VIDEO "metido hacia dentro" (recorta bordes negros) */}
+          {/* IZQUIERDA: recorte SOLO arriba/abajo */}
           <div className="relative w-full">
             <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
-              {/* viewport interno más pequeño */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[92%] h-[88%] overflow-hidden rounded-[18px]">
+                {/* ✅ ancho completo, alto menor => recorta SOLO vertical */}
+                <div className="w-full h-[86%] overflow-hidden rounded-[18px]">
                   <video
                     src="/demo-euskalia.mp4"
                     autoPlay
@@ -75,7 +75,7 @@ export default function ToolsSection() {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full h-full object-cover scale-[1.06]"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>
