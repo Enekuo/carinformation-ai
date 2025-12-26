@@ -57,28 +57,36 @@ export default function ToolsSection() {
   return (
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-20">
-        {/* Título centrado */}
         <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
           Herramientas de Euskalia
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: SOLO video */}
+          {/* VIDEO */}
           <div className="relative w-full">
-            <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
-              <video
-                src="/demo-euskalia.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="w-full h-full object-contain"
-              />
+            {/* MARCO AZUL */}
+            <div className="bg-blue-600 rounded-[34px] p-4">
+              {/* CONTENIDO */}
+              <div className="relative bg-slate-50 rounded-[22px] overflow-hidden aspect-[16/10]">
+                <video
+                  src="/demo-euskalia.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-contain"
+                />
+
+                {/* TAPAR NEGRO ARRIBA */}
+                <div className="absolute top-0 left-0 right-0 h-14 bg-blue-600" />
+
+                {/* TAPAR NEGRO ABAJO */}
+                <div className="absolute bottom-0 left-0 right-0 h-14 bg-blue-600" />
+              </div>
             </div>
           </div>
 
-          {/* DERECHA: 6 tarjetas compactas */}
+          {/* TARJETAS */}
           <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
@@ -87,18 +95,15 @@ export default function ToolsSection() {
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
                   <div className="flex items-start gap-4">
-                    <div
-                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
-                    >
+                    <div className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center`}>
                       <c.Icon className={`h-6 w-6 ${c.iconColor}`} />
                     </div>
 
-                    <div className="min-w-0">
-                      <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
+                    <div>
+                      <div className="text-[18px] font-extrabold text-slate-900">
                         {c.title}
                       </div>
-
-                      <p className="mt-1 text-[13px] text-slate-600 truncate">
+                      <p className="text-[13px] text-slate-600 truncate">
                         {c.desc}
                       </p>
                     </div>
@@ -106,9 +111,8 @@ export default function ToolsSection() {
                 </div>
               ))}
             </div>
-
-            {/* (si quieres, aquí luego metemos texto/accordion a la derecha) */}
           </div>
+
         </div>
       </div>
     </section>
