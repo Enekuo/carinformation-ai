@@ -57,6 +57,7 @@ export default function ToolsSection() {
   return (
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-20">
+        {/* Título centrado */}
         <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
           Herramientas de Euskalia
         </h2>
@@ -64,11 +65,10 @@ export default function ToolsSection() {
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           {/* IZQUIERDA: cuadro video */}
           <div className="relative w-full">
-            {/* borde azul */}
-            <div className="rounded-[34px] bg-blue-600 p-2">
-              {/* ✅ gutter azul (sin zona blanca visible) */}
-              <div className="rounded-[28px] bg-blue-600 p-3">
-                {/* caja del video */}
+            {/* borde azul (ajuste de azul abajo) */}
+            <div className="rounded-[34px] bg-blue-600 pt-4 pr-4 pl-4 pb-2">
+              {/* gutter azul (sin extra azul abajo) */}
+              <div className="rounded-[28px] bg-blue-600 pt-3 pr-3 pl-3 pb-0">
                 <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
                   <video
                     src="/demo-euskalia.mp4"
@@ -84,7 +84,7 @@ export default function ToolsSection() {
             </div>
           </div>
 
-          {/* DERECHA: tarjetas */}
+          {/* DERECHA: 6 tarjetas compactas */}
           <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
@@ -92,6 +92,7 @@ export default function ToolsSection() {
                   key={c.title}
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
+                  {/* icono izquierda, texto a la derecha */}
                   <div className="flex items-start gap-4">
                     <div
                       className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
@@ -99,6 +100,7 @@ export default function ToolsSection() {
                       <c.Icon className={`h-6 w-6 ${c.iconColor}`} />
                     </div>
 
+                    {/* IMPORTANTE: min-w-0 + truncate para que el párrafo sea 1 línea */}
                     <div className="min-w-0">
                       <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
                         {c.title}
@@ -112,6 +114,8 @@ export default function ToolsSection() {
                 </div>
               ))}
             </div>
+
+            {/* (si quieres, aquí luego metemos texto/accordion a la derecha, pero por ahora son solo tarjetas) */}
           </div>
         </div>
       </div>
