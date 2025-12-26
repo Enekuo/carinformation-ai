@@ -54,6 +54,10 @@ export default function ToolsSection() {
     },
   ];
 
+  // 👉 ESTE ES EL ÚNICO NÚMERO QUE TOCAS SI HACE FALTA
+  // (sube si aún se ve negro, baja si tapa contenido)
+  const MASK_PX = 34;
+
   return (
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-20">
@@ -66,7 +70,7 @@ export default function ToolsSection() {
           <div className="relative w-full">
             {/* MARCO AZUL */}
             <div className="bg-blue-600 rounded-[34px] p-4">
-              {/* CONTENIDO */}
+              {/* CAJA DEL VIDEO */}
               <div className="relative bg-slate-50 rounded-[22px] overflow-hidden aspect-[16/10]">
                 <video
                   src="/demo-euskalia.mp4"
@@ -74,14 +78,19 @@ export default function ToolsSection() {
                   loop
                   muted
                   playsInline
+                  preload="auto"
                   className="w-full h-full object-contain"
                 />
 
-                {/* TAPAR NEGRO ARRIBA */}
-                <div className="absolute top-0 left-0 right-0 h-14 bg-blue-600" />
-
-                {/* TAPAR NEGRO ABAJO */}
-                <div className="absolute bottom-0 left-0 right-0 h-14 bg-blue-600" />
+                {/* TAPAR SOLO LO NEGRO (arriba/abajo) */}
+                <div
+                  className="absolute top-0 left-0 right-0 bg-blue-600"
+                  style={{ height: MASK_PX }}
+                />
+                <div
+                  className="absolute bottom-0 left-0 right-0 bg-blue-600"
+                  style={{ height: MASK_PX }}
+                />
               </div>
             </div>
           </div>
@@ -95,15 +104,18 @@ export default function ToolsSection() {
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center`}>
+                    <div
+                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
+                    >
                       <c.Icon className={`h-6 w-6 ${c.iconColor}`} />
                     </div>
 
-                    <div>
-                      <div className="text-[18px] font-extrabold text-slate-900">
+                    <div className="min-w-0">
+                      <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
                         {c.title}
                       </div>
-                      <p className="text-[13px] text-slate-600 truncate">
+
+                      <p className="mt-1 text-[13px] text-slate-600 truncate">
                         {c.desc}
                       </p>
                     </div>
