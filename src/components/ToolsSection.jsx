@@ -1,124 +1,133 @@
 import React from "react";
-import {
-  Languages,
-  FileText,
-  CheckCircle2,
-  Shuffle,
-  Sparkles,
-  Search,
-} from "lucide-react";
 
-export default function ToolsSection() {
-  const cards = [
-    {
-      title: "Itzultzailea",
-      desc: "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa.",
-      Icon: Languages,
-      iconBg: "bg-amber-50",
-      iconColor: "text-amber-600",
-    },
-    {
-      title: "Laburtzailea",
-      desc: "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz.",
-      Icon: FileText,
-      iconBg: "bg-blue-50",
-      iconColor: "text-blue-600",
-    },
-    {
-      title: "Zuzenketa gramatikala",
-      desc: "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu.",
-      Icon: CheckCircle2,
-      iconBg: "bg-emerald-50",
-      iconColor: "text-emerald-600",
-    },
-    {
-      title: "Parafrasatzailea",
-      desc: "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan.",
-      Icon: Shuffle,
-      iconBg: "bg-orange-50",
-      iconColor: "text-orange-600",
-    },
-    {
-      title: "Humanizatzailea",
-      desc: "Testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen.",
-      Icon: Sparkles,
-      iconBg: "bg-teal-50",
-      iconColor: "text-teal-600",
-    },
-    {
-      title: "IA-detektorea",
-      desc: "Testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko.",
-      Icon: Search,
-      iconBg: "bg-violet-50",
-      iconColor: "text-violet-600",
-    },
-  ];
+/**
+ * FramedPanel
+ * - Marco externo (color/frameThickness/frameRadius)
+ * - Interior blanco (innerRadius/padding)
+ * - Tamaño controlable (width/height/maxWidth)
+ * - Totalmente manipulable por props
+ */
+export function FramedPanel({
+  children,
+  frameColor = "#FF5A1F",   // naranja tipo Algor
+  frameThickness = 18,      // grosor del marco
+  frameRadius = 22,         // radio del marco
+  innerRadius = 12,         // radio interior
+  padding = 20,             // padding interior
+  width = "100%",
+  maxWidth = 980,
+  height = "auto",
+  shadow = "0 12px 30px rgba(15, 23, 42, 0.10)",
+  className = "",
+  style = {},
+}) {
+  return (
+    <div
+      className={`relative ${className}`}
+      style={{
+        width,
+        maxWidth,
+        height,
+        borderRadius: frameRadius,
+        background: frameColor,
+        padding: frameThickness,
+        boxShadow: shadow,
+        ...style,
+      }}
+    >
+      <div
+        className="bg-white w-full h-full"
+        style={{
+          borderRadius: innerRadius,
+          padding,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
+/**
+ * Ejemplo de uso (puedes borrar esto si solo quieres el componente)
+ */
+export default function DemoFrame() {
   return (
     <section className="w-full bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
-          Herramientas de Euskalia
-        </h2>
+      <div className="max-w-7xl mx-auto px-6 py-16 flex justify-center">
+        <FramedPanel
+          frameColor="#FF5A1F"
+          frameThickness={22}
+          frameRadius={24}
+          innerRadius={14}
+          padding={18}
+          maxWidth={980}
+        >
+          <div className="w-full">
+            {/* Header falso como en la imagen */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="text-sm font-semibold text-slate-900">
+                  Create a Card
+                </div>
+                <div className="text-xs text-slate-500">Algor Card</div>
+              </div>
+              <button className="h-8 w-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500">
+                ✕
+              </button>
+            </div>
 
-        <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: recorte SOLO arriba/abajo SIN blur */}
-          <div className="relative w-full">
-            <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
-              {/* "marco" interno */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                {/* ✅ recortamos verticalmente el área visible */}
-                <div className="relative w-full h-[86%] overflow-hidden rounded-[18px]">
-                  {/* ✅ el vídeo NO se fuerza con cover: se mantiene nítido */}
-                  <video
-                    src="/demo-euskalia.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className="absolute left-0 top-1/2 w-full h-auto -translate-y-1/2"
-                    style={{
-                      imageRendering: "auto",
-                      transform: "translateY(-50%)",
-                      backfaceVisibility: "hidden",
-                    }}
-                  />
+            {/* Body falso */}
+            <div className="mt-5 grid grid-cols-1 md:grid-cols-5 gap-6">
+              <div className="md:col-span-1">
+                <div className="text-xs font-semibold text-slate-700 mb-2">
+                  Steps
+                </div>
+                <div className="space-y-3 text-sm text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-orange-500" />
+                    Step 1
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-orange-500" />
+                    Step 2
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-orange-500" />
+                    Step 3
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-4">
+                <div className="text-base font-semibold text-slate-900">
+                  Insert content
+                </div>
+                <p className="mt-1 text-sm text-slate-600">
+                  Upload your material and click on Create Card.
+                </p>
+
+                {/* zona “preview” */}
+                <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 h-[360px]" />
+
+                {/* footer */}
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="text-xs text-slate-500">
+                    0/100000 characters
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button className="h-9 px-3 rounded-lg border border-slate-200 text-sm text-slate-700 hover:bg-slate-50">
+                      Previous step
+                    </button>
+                    <button className="h-9 px-4 rounded-lg bg-slate-200 text-sm text-slate-500 cursor-not-allowed">
+                      Create Card
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* DERECHA: tarjetas */}
-          <div className="w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {cards.map((c) => (
-                <div
-                  key={c.title}
-                  className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
-                    >
-                      <c.Icon className={`h-6 w-6 ${c.iconColor}`} />
-                    </div>
-
-                    <div className="min-w-0">
-                      <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
-                        {c.title}
-                      </div>
-                      <p className="mt-1 text-[13px] text-slate-600 truncate">
-                        {c.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
+        </FramedPanel>
       </div>
     </section>
   );
