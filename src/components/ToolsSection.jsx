@@ -67,19 +67,18 @@ export default function ToolsSection() {
             <div className="rounded-[34px] bg-blue-600 pt-4 pr-4 pl-4 pb-2">
               <div className="rounded-[28px] bg-blue-600 pt-3 pr-3 pl-3 pb-0">
                 <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
-                  <video
-                    src="/demo-euskalia.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className="w-full h-full object-fill"
-                    style={{
-                      transform: "scaleY(1.14)",
-                      transformOrigin: "center",
-                    }}
-                  />
+                  {/* ✅ viewport interno: recorta SOLO arriba/abajo */}
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[86%] overflow-hidden">
+                    <video
+                      src="/demo-euskalia.mp4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
