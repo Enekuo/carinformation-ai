@@ -67,14 +67,16 @@ export default function ToolsSection() {
           <div className="relative w-full">
             <div className="rounded-[34px] bg-blue-600 p-4">
               <div className="rounded-[26px] bg-blue-50/40 p-4">
-                <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10] flex items-center justify-center">
-                  <div className="h-12 w-12 rounded-2xl bg-white shadow flex items-center justify-center">
-                    <div className="h-0 w-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-blue-600 ml-1" />
-                  </div>
-
-                  <div className="absolute left-0 right-0 top-1/2 translate-y-8 text-center text-slate-700 font-medium">
-                    Aquí irá el video en bucle
-                  </div>
+                <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
+                  <video
+                    src="/euskalia-demo.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
