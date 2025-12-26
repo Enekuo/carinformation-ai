@@ -64,22 +64,24 @@ export default function ToolsSection() {
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           {/* IZQUIERDA: cuadro video */}
           <div className="relative w-full">
-            <div className="rounded-[34px] bg-blue-600 pt-4 pr-4 pl-4 pb-2">
-              <div className="rounded-[28px] bg-blue-600 pt-3 pr-3 pl-3 pb-0">
-                <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
-                  {/* ✅ viewport interno: recorta SOLO arriba/abajo */}
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[86%] overflow-hidden">
-                    <video
-                      src="/demo-euskalia.mp4"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                </div>
+            {/* Marco azul */}
+            <div className="rounded-[34px] bg-blue-600 p-4">
+              {/* Caja blanca interior */}
+              <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
+                {/* Video (NO recorta laterales) */}
+                <video
+                  src="/demo-euskalia.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full object-contain"
+                />
+
+                {/* ✅ Máscaras azules para tapar SOLO bandas negras arriba/abajo */}
+                <div className="pointer-events-none absolute left-0 right-0 top-0 h-12 bg-blue-600 rounded-t-[22px]" />
+                <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-12 bg-blue-600 rounded-b-[22px]" />
               </div>
             </div>
           </div>
@@ -112,6 +114,8 @@ export default function ToolsSection() {
                 </div>
               ))}
             </div>
+
+            {/* (si quieres, aquí luego metemos texto/accordion a la derecha) */}
           </div>
         </div>
       </div>
