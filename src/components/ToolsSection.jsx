@@ -64,11 +64,8 @@ export default function ToolsSection() {
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           {/* IZQUIERDA: cuadro video */}
           <div className="relative w-full">
-            {/* Marco azul */}
             <div className="rounded-[34px] bg-blue-600 p-4">
-              {/* Caja blanca interior */}
               <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
-                {/* Video (NO recorta laterales) */}
                 <video
                   src="/demo-euskalia.mp4"
                   autoPlay
@@ -79,14 +76,14 @@ export default function ToolsSection() {
                   className="w-full h-full object-contain"
                 />
 
-                {/* ✅ Máscaras azules para tapar SOLO bandas negras arriba/abajo */}
-                <div className="pointer-events-none absolute left-0 right-0 top-0 h-12 bg-blue-600 rounded-t-[22px]" />
-                <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-12 bg-blue-600 rounded-b-[22px]" />
+                {/* Tapa SOLO las bandas negras (arriba/abajo) */}
+                <div className="pointer-events-none absolute left-0 right-0 top-0 h-12 bg-blue-600" />
+                <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-12 bg-blue-600" />
               </div>
             </div>
           </div>
 
-          {/* DERECHA: tarjetas */}
+          {/* DERECHA: 6 tarjetas compactas */}
           <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
