@@ -66,8 +66,8 @@ export default function ToolsSection() {
           <div className="relative w-full">
             {/* borde azul */}
             <div className="rounded-[34px] bg-blue-600 p-4">
-              {/* ✅ gutter interno para que el azul NO toque el video */}
-              <div className="rounded-[28px] bg-slate-50 p-3">
+              {/* ✅ gutter azul (sin zona blanca visible) */}
+              <div className="rounded-[28px] bg-blue-600 p-3">
                 {/* caja del video */}
                 <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
                   <video
