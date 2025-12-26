@@ -65,7 +65,7 @@ export default function ToolsSection() {
           {/* IZQUIERDA: VIDEO + CUADRO AZUL */}
           <div className="relative w-full">
             {/* ✅ CUADRO AZUL (MARCO) */}
-            <div className="mt-10 rounded-[26px] bg-blue-600 p-[16px]">
+            <div className="rounded-[26px] bg-blue-600 px-[16px] pt-[28px] pb-[4px]">
               <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative w-full h-[86%] overflow-hidden rounded-[18px]">
