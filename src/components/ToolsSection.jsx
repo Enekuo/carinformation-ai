@@ -57,29 +57,24 @@ export default function ToolsSection() {
   return (
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-20">
+        {/* Título centrado */}
         <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
           Herramientas de Euskalia
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: cuadro video */}
+          {/* IZQUIERDA: SOLO video */}
           <div className="relative w-full">
-            <div className="rounded-[34px] bg-blue-600 p-4">
-              <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
-                <video
-                  src="/demo-euskalia.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  className="w-full h-full object-contain"
-                />
-
-                {/* Tapa SOLO las bandas negras (arriba/abajo) */}
-                <div className="pointer-events-none absolute left-0 right-0 top-0 h-12 bg-blue-600" />
-                <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-12 bg-blue-600" />
-              </div>
+            <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
+              <video
+                src="/demo-euskalia.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
 
