@@ -62,21 +62,25 @@ export default function ToolsSection() {
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: VIDEO */}
+          {/* IZQUIERDA: VIDEO + PALO AZUL JUSTO A LA DERECHA */}
           <div className="relative w-full">
-            <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
-              <video
-                src="/demo-euskalia.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="w-full h-full object-contain"
-              />
+            {/* ✅ WRAPPER con overflow visible para que el palo no se recorte */}
+            <div className="relative overflow-visible">
+              {/* tu caja del video (igual que antes) */}
+              <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
+                <video
+                  src="/demo-euskalia.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full object-contain"
+                />
+              </div>
 
-              {/* ✅ PALO AZUL al lado derecho del video */}
-              <div className="absolute top-0 right-[-14px] h-full w-[12px] rounded-full bg-blue-600" />
+              {/* ✅ PALO AZUL: pegado al borde derecho del video */}
+              <div className="absolute top-0 right-0 h-full w-[12px] translate-x-[14px] rounded-full bg-blue-600" />
             </div>
           </div>
 
