@@ -57,30 +57,34 @@ export default function ToolsSection() {
   return (
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-20">
-        {/* Título centrado */}
         <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
           Herramientas de Euskalia
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: cuadro video (sin el cap azul interior) */}
+          {/* IZQUIERDA: cuadro video */}
           <div className="relative w-full">
+            {/* borde azul */}
             <div className="rounded-[34px] bg-blue-600 p-4">
-              <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
-                <video
-                  src="/demo-euskalia.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  className="w-full h-full object-cover"
-                />
+              {/* ✅ gutter interno para que el azul NO toque el video */}
+              <div className="rounded-[28px] bg-slate-50 p-3">
+                {/* caja del video */}
+                <div className="relative rounded-[22px] bg-slate-50 border border-slate-200 overflow-hidden aspect-[16/10]">
+                  <video
+                    src="/demo-euskalia.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* DERECHA: 6 tarjetas compactas */}
+          {/* DERECHA: tarjetas */}
           <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
@@ -88,7 +92,6 @@ export default function ToolsSection() {
                   key={c.title}
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
-                  {/* icono izquierda, texto a la derecha */}
                   <div className="flex items-start gap-4">
                     <div
                       className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
@@ -109,8 +112,6 @@ export default function ToolsSection() {
                 </div>
               ))}
             </div>
-
-            {/* (si quieres, aquí luego metemos texto/accordion a la derecha, pero por ahora son solo tarjetas) */}
           </div>
         </div>
       </div>
