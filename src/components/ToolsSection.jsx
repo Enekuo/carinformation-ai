@@ -64,7 +64,6 @@ export default function ToolsSection() {
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           {/* IZQUIERDA: VIDEO + CUADRO AZUL */}
           <div className="relative w-full">
-            {/* ✅ CUADRO AZUL (MARCO) */}
             <div className="relative rounded-[26px] bg-blue-600 p-[16px] -top-[22px] pb-[38px]">
               <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -76,12 +75,7 @@ export default function ToolsSection() {
                       muted
                       playsInline
                       preload="auto"
-                      className="absolute left-0 top-1/2 w-full h-auto -translate-y-1/2"
-                      style={{
-                        imageRendering: "auto",
-                        transform: "translateY(-50%)",
-                        backfaceVisibility: "hidden",
-                      }}
+                      className="absolute left-0 top-[-24px] w-full h-auto"
                     />
                   </div>
                 </div>
