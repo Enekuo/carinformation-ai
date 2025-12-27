@@ -83,7 +83,7 @@ export default function ToolsSection() {
     <section className="w-full bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-20">
         <h2 className="text-center text-4xl md:text-5xl font-extrabold text-slate-900">
-          Herramientas de Euskalia
+          {tr("toolsSection_title", "Herramientas de Euskalia")}
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">

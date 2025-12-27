@@ -377,7 +377,12 @@ export const translations = {
 },
 
 // HERRAMIENTAS EUSKALIA
-
+toolsSection_title: {
+  ES: "Herramientas de Euskalia",
+  EUS: "Euskaliaren tresnak",
+  EN: "Euskalia tools",
+  FR: "Outils d’Euskalia",
+},
 toolsSection_cardTranslator_title: {
   ES: "Traductor",
   EUS: "Itzultzailea",
