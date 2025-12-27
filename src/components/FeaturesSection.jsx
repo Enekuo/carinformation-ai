@@ -54,7 +54,7 @@ export default function FeaturesSection() {
               <img
                 src="/Caracteristicas.png"
                 alt="Euskalia"
-                className="w-full max-w-[360px]"
+                className="w-full max-w-[480px]"
               />
             </div>
           </div>
