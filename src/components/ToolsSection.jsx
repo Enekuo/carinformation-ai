@@ -11,9 +11,9 @@ import { useTranslation } from "@/lib/translations";
 
 export default function ToolsSection() {
   const { t } = useTranslation();
-  const tr = (key, fallback) => {
-    const v = t(key);
-    return !v || v === key ? fallback : v;
+  const tr = (k, f) => {
+    const v = t(k);
+    return !v || v === k ? f : v;
   };
 
   const cards = [
@@ -133,11 +133,14 @@ export default function ToolsSection() {
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
                   <div className="flex items-start gap-5">
-                    {/* ✅ ICONO como en la captura (más grande y limpio) */}
+                    {/* ✅ ICONO como en la captura */}
                     <div
-                      className={`h-14 w-14 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
+                      className={`h-[56px] w-[56px] rounded-[18px] ${c.iconBg} flex items-center justify-center flex-shrink-0`}
                     >
-                      <c.Icon className={`h-7 w-7 ${c.iconColor}`} />
+                      <c.Icon
+                        className={`h-[26px] w-[26px] ${c.iconColor}`}
+                        strokeWidth={2.2}
+                      />
                     </div>
 
                     <div className="min-w-0">
