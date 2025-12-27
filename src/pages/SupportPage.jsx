@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/translations";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
-const NAVBAR_H = 88; // ajusta si tu navbar tiene otra altura real
+const NAVBAR_H = 88; // altura del header FREE
 
 const SupportPage = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  const isPro = location.pathname.startsWith("/cuenta-pro");
 
   const [form, setForm] = useState({
     name: "",
@@ -27,19 +31,29 @@ const SupportPage = () => {
     );
     const body = encodeURIComponent(
       `${t("support_form_name_label")}: ${form.name}\n` +
-      `${t("support_form_email_label")}: ${form.email}\n\n` +
-      `${t("support_form_message_label")}:\n${form.message}`
+        `${t("support_form_email_label")}: ${form.email}\n\n` +
+        `${t("support_form_message_label")}:\n${form.message}`
     );
     window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
   };
 
   return (
-    <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900">
+    <div
+      className={
+        isPro
+          ? "w-full bg-gradient-to-b from-[#F6FAFF] to-white"
+          : "h-screen w-full overflow-hidden bg-gradient-to-b from-[#F6FAFF] to-white dark:from-slate-900 dark:to-slate-900"
+      }
+    >
       <div
         className="mx-auto max-w-7xl px-5 lg:px-8"
-        style={{ height: `calc(100vh - ${NAVBAR_H}px)` }}
+        style={
+          isPro
+            ? undefined
+            : { height: `calc(100vh - ${NAVBAR_H}px)` }
+        }
       >
-        <div className="grid h-full gap-8 md:grid-cols-2 items-start py-5">
+        <div className={isPro ? "grid gap-8 md:grid-cols-2 items-start py-8" : "grid h-full gap-8 md:grid-cols-2 items-start py-5"}>
           {/* ===== Columna izquierda ===== */}
           <div className="relative min-h-0">
             <section className="mb-6 rounded-2xl border border-slate-200 bg-[#F7F8FC] p-6 dark:bg-slate-800 dark:border-slate-700">
@@ -67,7 +81,6 @@ const SupportPage = () => {
               {t("support_subtitle")}
             </p>
 
-            {/* Imagen — MISMO TAMAÑO QUE INDICASTE */}
             <div className="mt-6 inline-block">
               <img
                 src="/olondo.mascota.png"
@@ -77,10 +90,9 @@ const SupportPage = () => {
               />
             </div>
 
-            {/* ===== Burbuja sin piquito, más a la izquierda ===== */}
+            {/* Burbuja */}
             <div
               className="absolute hidden md:block -translate-y-1/2"
-              // ajusta estos porcentajes si quieres afinar posición
               style={{ left: "40%", top: "62%" }}
             >
               <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-600 dark:bg-slate-700">
@@ -96,10 +108,9 @@ const SupportPage = () => {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             className="rounded-2xl border bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-slate-200 dark:bg-slate-800 dark:border-slate-700"
-            style={{ height: "100%" }}
+            style={isPro ? undefined : { height: "100%" }}
           >
             <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
-              {/* Honeypot */}
               <input
                 type="text"
                 name="honey"
@@ -166,7 +177,7 @@ const SupportPage = () => {
                     placeholder={t("support_form_message_placeholder")}
                     required
                     rows={5}
-                    className="h-[calc(100%-2.5rem)] min-h-[120px] max-h-[220px] w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 resize-none"
+                    className="min-h-[140px] w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none ring-0 focus:border-blue-500 text-slate-900 placeholder-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 resize-none"
                   />
                 </div>
               </div>
@@ -179,7 +190,7 @@ const SupportPage = () => {
 
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {t("support_form_privacy_hint")}{" "}
-                <a href="/privacidad" className="underline underline-offset-2">
+                <a href="/politica-de-privacidad" className="underline underline-offset-2">
                   {t("support_form_privacy_link")}
                 </a>
                 .
