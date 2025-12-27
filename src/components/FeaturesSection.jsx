@@ -52,7 +52,7 @@ export default function FeaturesSection() {
               "
             >
               <img
-                src="/caracteristicas.png"
+                src="/Caracteristicas.png"
                 alt="Euskalia"
                 className="w-full max-w-[360px]"
               />
