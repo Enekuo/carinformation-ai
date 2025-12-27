@@ -92,7 +92,7 @@ function App() {
             <Route path="/cuenta-pro/humanizador" element={<ProLayout><ProHumanizer /></ProLayout>} />
             
              {/* ✅ MISMA PÁGINA SOPORTE pero con layout PRO */}
-            <Route path="/cuenta-pro/soporte" element={<ProLayout><SupportPage /></ProLayout>} />
+            
          
           </Routes>
         </main>
