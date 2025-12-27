@@ -327,12 +327,12 @@ export default function LayoutPro({ children }) {
 
             {/* ✅ ÚNICO CAMBIO: antes era /cuenta-pro/ayuda */}
             <button
-              onClick={() => navigate("/cuenta-pro/soporte")}
+              onClick={() => navigate("/cuenta-pro/ayuda")}
               className={`
                 w-full flex items-center gap-2 px-3 h-10 rounded-lg
                 ${collapsed ? "justify-center" : ""}
                 ${
-                  isActive("/cuenta-pro/soporte")
+                  isActive("/cuenta-pro/ayuda")
                     ? "bg-slate-900 text-white font-medium"
                     : "hover:bg-slate-100 text-slate-700"
                 }
