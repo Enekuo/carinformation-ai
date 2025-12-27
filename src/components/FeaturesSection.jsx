@@ -41,20 +41,20 @@ export default function FeaturesSection() {
           </div>
 
           {/* IMAGEN */}
-          <div className="w-full lg:basis-6/12 flex justify-center lg:justify-end">
+          <div className="w-full lg:basis-6/12 flex justify-center lg:justify-center lg:-ml-6">
             <div
               className="
                 bg-white rounded-3xl border border-slate-100
                 shadow-[0_18px_60px_rgba(15,23,42,0.08)]
-                px-6 py-6 md:px-10 md:py-8
+                px-4 py-4 md:px-5 md:py-5
                 flex items-center justify-center
-                w-full max-w-[420px]
+                w-full max-w-[520px]
               "
             >
               <img
                 src="/Caracteristicas.png"
                 alt="Euskalia"
-                className="w-full max-w-[480px]"
+                className="w-full max-w-[490px]"
               />
             </div>
           </div>
