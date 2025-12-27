@@ -77,7 +77,7 @@ export default function ToolsSection() {
                   preload="auto"
                   className="w-full h-full object-contain"
                 />
-              </div>
+              </div> 
               
              {/* PALO IZQUIERDO */}
               <div className="absolute left-[-10px] top-[120px] bottom-[120px] w-[14px] rounded-full bg-blue-600" />
