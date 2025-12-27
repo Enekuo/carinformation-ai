@@ -405,10 +405,10 @@ toolsSection_cardSummary_desc: {
 },
 
 toolsSection_cardCorrector_title: {
-  ES: "Corrector gramatical",
-  EUS: "Zuzenketa gramatikala",
-  EN: "Grammar corrector",
-  FR: "Correcteur grammatical",
+  ES: "Corrector",
+  EUS: "Zuzentzailea",
+  EN: "Corrector",
+  FR: "Correcteur",
 },
 toolsSection_cardCorrector_desc: {
   ES: "Mejora tu texto corrigiendo gramática, claridad y fluidez.",
