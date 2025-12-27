@@ -7,47 +7,72 @@ import {
   Sparkles,
   Search,
 } from "lucide-react";
+import { useTranslation } from "@/lib/translations";
 
 export default function ToolsSection() {
+  const { t } = useTranslation();
+  const tr = (key, fallback) => {
+    const v = t(key);
+    return !v || v === key ? fallback : v;
+  };
+
   const cards = [
     {
-      title: "Itzultzailea",
-      desc: "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa.",
+      title: tr("tools_translator_title", "Itzultzailea"),
+      desc: tr(
+        "tools_translator_desc",
+        "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa."
+      ),
       Icon: Languages,
       iconBg: "bg-amber-50",
       iconColor: "text-amber-600",
     },
     {
-      title: "Laburtzailea",
-      desc: "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz.",
+      title: tr("tools_summarizer_title", "Laburtzailea"),
+      desc: tr(
+        "tools_summarizer_desc",
+        "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz."
+      ),
       Icon: FileText,
       iconBg: "bg-blue-50",
       iconColor: "text-blue-600",
     },
     {
-      title: "Zuzenketa gramatikala",
-      desc: "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu.",
+      title: tr("tools_grammar_title", "Zuzenketa gramatikala"),
+      desc: tr(
+        "tools_grammar_desc",
+        "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu."
+      ),
       Icon: CheckCircle2,
       iconBg: "bg-emerald-50",
       iconColor: "text-emerald-600",
     },
     {
-      title: "Parafrasatzailea",
-      desc: "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan.",
+      title: tr("tools_paraphraser_title", "Parafrasatzailea"),
+      desc: tr(
+        "tools_paraphraser_desc",
+        "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan."
+      ),
       Icon: Shuffle,
       iconBg: "bg-orange-50",
       iconColor: "text-orange-600",
     },
     {
-      title: "Humanizatzailea",
-      desc: "Testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen.",
+      title: tr("tools_humanizer_title", "Humanizatzailea"),
+      desc: tr(
+        "tools_humanizer_desc",
+        "Testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen."
+      ),
       Icon: Sparkles,
       iconBg: "bg-teal-50",
       iconColor: "text-teal-600",
     },
     {
-      title: "IA-detektorea",
-      desc: "Testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko.",
+      title: tr("tools_ai_detector_title", "IA-detektorea"),
+      desc: tr(
+        "tools_ai_detector_desc",
+        "Testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko."
+      ),
       Icon: Search,
       iconBg: "bg-violet-50",
       iconColor: "text-violet-600",
@@ -77,29 +102,29 @@ export default function ToolsSection() {
                   preload="auto"
                   className="w-full h-full object-contain"
                 />
-              </div> 
-              
+              </div>
+
               {/* PALO IZQUIERDO */}
               <div className="absolute left-[-10px] top-[40px] bottom-[30px] w-[14px] rounded-full bg-blue-600" />
 
               {/* ✅ PALO AZUL: pegado al borde derecho del video */}
               <div className="absolute right-[-7px] top-[40px] bottom-[30px] w-[14px] rounded-full bg-blue-600" />
-              
+
               {/* PALO HORIZONTAL ARRIBA */}
               <div className="absolute left-[-10px] right-[-5px] top-[39px] h-[14px] rounded-full bg-blue-600" />
 
               {/* PALO HORIZONTAL ABAJO */}
               <div className="absolute left-[-10px] right-[-7px] bottom-[26px] h-[14px] rounded-full bg-blue-600" />
-            
+
               {/* PALO HORIZONTAL GRIS ARRIBA */}
               <div className="absolute left-[0px] right-[0px] top-[0px] h-[39px] rounded-none bg-slate-50" />
 
               {/* PALO HORIZONTAL GRIS ABAJO */}
-              <div className="absolute left-[0px] right-[0px] bottom-[-4px] h-[30px] rounded-none bg-slate-50" />  
+              <div className="absolute left-[0px] right-[0px] bottom-[-4px] h-[30px] rounded-none bg-slate-50" />
             </div>
           </div>
 
-          {/* DERECHA: tarjetas */} 
+          {/* DERECHA: tarjetas */}
           <div className="w-full mt-[35px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
@@ -107,11 +132,12 @@ export default function ToolsSection() {
                   key={c.title}
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-5">
+                    {/* ✅ ICONO como en la captura (más grande y limpio) */}
                     <div
-                      className={`h-12 w-12 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
+                      className={`h-14 w-14 rounded-2xl ${c.iconBg} flex items-center justify-center flex-shrink-0`}
                     >
-                      <c.Icon className={`h-6 w-6 ${c.iconColor}`} />
+                      <c.Icon className={`h-7 w-7 ${c.iconColor}`} />
                     </div>
 
                     <div className="min-w-0">

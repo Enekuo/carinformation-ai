@@ -1741,8 +1741,8 @@ cookies_last_update: {
   },
 
   cardCorrector_title: {
-    ES: "Corrector gramatical",
-    EUS: "Zuzenketa gramatikala",
+    ES: "Corrector",
+    EUS: "Zuzentzailea",
   },
 
   cardCorrector_desc: {
