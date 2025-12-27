@@ -1,37 +1,48 @@
 import React from "react";
-import {
-  Languages,
-  FileText,
-  CheckCircle2,
-  Sparkles,
-  Search,
-  Globe,
-  Brain,
-} from "lucide-react";
+import { useTranslation } from "@/lib/translations";
+import { FileText, CheckCircle2, Sparkles, Search, Globe, Brain } from "lucide-react";
 
 export default function ToolsSection() {
+  const { t } = useTranslation();
+  const tr = (key, fallback) => {
+    const v = t(key);
+    return !v || v === key ? fallback : v;
+  };
+
   const cards = [
     {
-      title: "Itzultzailea",
-      desc: "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa.",
+      title: tr("toolsSection_cardTranslator_title", "Traductor"),
+      desc: tr(
+        "toolsSection_cardTranslator_desc",
+        "Traduce entre euskera, español, inglés y francés con calidad profesional."
+      ),
       logoBg: "bg-[#FEF3C7]",
       logo: <Globe className="h-7 w-7 text-yellow-600" />,
     },
     {
-      title: "Laburtzailea",
-      desc: "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz.",
+      title: tr("toolsSection_cardSummary_title", "Resumidor"),
+      desc: tr(
+        "toolsSection_cardSummary_desc",
+        "Sintetiza textos largos en segundos manteniendo claridad y fidelidad."
+      ),
       logoBg: "bg-[#E0EAFF]",
       logo: <FileText className="h-6 w-6 text-blue-500" />,
     },
     {
-      title: "Zuzenketa gramatikala",
-      desc: "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu.",
+      title: tr("toolsSection_cardCorrector_title", "Corrector gramatical"),
+      desc: tr(
+        "toolsSection_cardCorrector_desc",
+        "Mejora tu texto corrigiendo gramática, claridad y fluidez."
+      ),
       logoBg: "bg-[#ECFDF3]",
       logo: <CheckCircle2 className="h-6 w-6 text-green-600" />,
     },
     {
-      title: "Parafrasatzailea",
-      desc: "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan.",
+      title: tr("toolsSection_cardParaphraser_title", "Parafraseador"),
+      desc: tr(
+        "toolsSection_cardParaphraser_desc",
+        "Reescribe tu texto con distintos estilos manteniendo el significado."
+      ),
       logoBg: "bg-[#FED7AA]",
       logo: (
         <svg
@@ -49,14 +60,20 @@ export default function ToolsSection() {
       ),
     },
     {
-      title: "Humanizatzailea",
-      desc: "Testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen.",
+      title: tr("toolsSection_cardHumanizer_title", "Humanizador"),
+      desc: tr(
+        "toolsSection_cardHumanizer_desc",
+        "Haz que tu texto suene más natural, claro y fluido."
+      ),
       logoBg: "bg-[#DCFCE7]",
       logo: <Brain className="h-7 w-7 text-emerald-600" />,
     },
     {
-      title: "IA-detektorea",
-      desc: "Testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko.",
+      title: tr("toolsSection_cardAiDetector_title", "Detector IA"),
+      desc: tr(
+        "toolsSection_cardAiDetector_desc",
+        "Analiza el texto y estima la probabilidad de que haya sido generado por IA."
+      ),
       logoBg: "bg-[#C7D2FE]",
       logo: <Search className="h-6 w-6 text-blue-700 -rotate-6" />,
     },
@@ -70,7 +87,7 @@ export default function ToolsSection() {
         </h2>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* IZQUIERDA: VIDEO + PALO AZUL JUSTO A LA DERECHA */}
+          {/* IZQUIERDA: VIDEO + PALOS (sin tocar nada) */}
           <div className="relative w-full">
             <div className="relative overflow-visible">
               <div className="relative bg-slate-50 rounded-[22px] border border-slate-200 overflow-hidden aspect-[16/10]">
@@ -94,7 +111,7 @@ export default function ToolsSection() {
             </div>
           </div>
 
-          {/* DERECHA: tarjetas (IGUAL QUE ANTES) */}
+          {/* DERECHA: tarjetas (exactamente como antes) */}
           <div className="w-full mt-[35px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
@@ -103,10 +120,8 @@ export default function ToolsSection() {
                   className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
                 >
                   <div className="flex items-start gap-4">
-                    {/* ✅ SOLO LOGO cambiado (mismo tamaño de caja que antes: h-12 w-12) */}
-                    <div
-                      className={`h-12 w-12 rounded-2xl ${c.logoBg} flex items-center justify-center flex-shrink-0`}
-                    >
+                    {/* SOLO LOGO como en Home */}
+                    <div className={`h-12 w-12 rounded-2xl ${c.logoBg} flex items-center justify-center flex-shrink-0`}>
                       {c.logo}
                     </div>
 
