@@ -100,7 +100,7 @@ export default function ToolsSection() {
           </div>
 
           {/* DERECHA: tarjetas */} 
-          <div className="w-full">
+          <div className="w-full mt-[40px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
                 <div
