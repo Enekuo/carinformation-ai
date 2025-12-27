@@ -92,10 +92,10 @@ export default function ToolsSection() {
               <div className="absolute left-[-10px] right-[-7px] bottom-[26px] h-[14px] rounded-full bg-blue-600" />
             
               {/* PALO HORIZONTAL GRIS ARRIBA */}
-              <div className="absolute left-[0px] right-[0px] top-[0px] h-[39px] rounded-none bg-slate-300" />
+              <div className="absolute left-[0px] right-[0px] top-[0px] h-[39px] rounded-none bg-slate-50" />
 
               {/* PALO HORIZONTAL GRIS ABAJO */}
-              <div className="absolute left-[0px] right-[0px] bottom-[-4px] h-[30px] rounded-none bg-slate-300" />  
+              <div className="absolute left-[0px] right-[0px] bottom-[-4px] h-[30px] rounded-none bg-slate-50" />  
             </div>
           </div>
 
