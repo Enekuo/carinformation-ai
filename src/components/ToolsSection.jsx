@@ -6,76 +6,97 @@ import {
   Shuffle,
   Sparkles,
   Search,
+  Globe,
+  Brain,
 } from "lucide-react";
 import { useTranslation } from "@/lib/translations";
 
 export default function ToolsSection() {
   const { t } = useTranslation();
-  const tr = (k, f) => {
-    const v = t(k);
-    return !v || v === k ? f : v;
+  const tr = (key, fallback) => {
+    const v = t(key);
+    return !v || v === key ? fallback : v;
   };
 
   const cards = [
     {
-      title: tr("tools_translator_title", "Itzultzailea"),
+      key: "translator",
+      title: tr("toolsSection.cardTranslator_title", "Traductor"),
       desc: tr(
-        "tools_translator_desc",
-        "Itzuli hitzak, esaldiak edo testu osoak berehala, euskara ardatz nagusi gisa."
+        "toolsSection.cardTranslator_desc",
+        "Traduce entre euskera, español, inglés y francés con calidad profesional."
       ),
-      Icon: Languages,
-      iconBg: "bg-amber-50",
-      iconColor: "text-amber-600",
+      hover: "hover:bg-[#FFFBEB] hover:border-2 hover:border-[#FEF3C7]",
+      iconBox: "bg-[#FEF3C7]",
+      icon: <Globe className="h-7 w-7 text-yellow-600" />,
     },
     {
-      title: tr("tools_summarizer_title", "Laburtzailea"),
+      key: "summary",
+      title: tr("toolsSection.cardSummary_title", "Resumidor"),
       desc: tr(
-        "tools_summarizer_desc",
-        "Testu luzeak segundo gutxitan laburtzen ditu argitasuna eta zehaztasuna zainduz."
+        "toolsSection.cardSummary_desc",
+        "Sintetiza textos largos en segundos manteniendo claridad y fidelidad."
       ),
-      Icon: FileText,
-      iconBg: "bg-blue-50",
-      iconColor: "text-blue-600",
+      hover: "hover:bg-[#E0EAFF] hover:border-2 hover:border-[#93C5FD]",
+      iconBox: "bg-[#E0EAFF]",
+      icon: <FileText className="h-6 w-6 text-blue-500" />,
     },
     {
-      title: tr("tools_grammar_title", "Zuzenketa gramatikala"),
+      key: "corrector",
+      title: tr("toolsSection.cardCorrector_title", "Corrector gramatical"),
       desc: tr(
-        "tools_grammar_desc",
-        "Testua berrikusi eta akats gramatikoak, ortografikoak eta estilozkoak zuzentzen ditu."
+        "toolsSection.cardCorrector_desc",
+        "Mejora tu texto corrigiendo gramática, claridad y fluidez."
       ),
-      Icon: CheckCircle2,
-      iconBg: "bg-emerald-50",
-      iconColor: "text-emerald-600",
+      hover: "hover:bg-[#DCFCE7] hover:border-2 hover:border-[#4ADE80]",
+      iconBox: "bg-[#ECFDF3]",
+      icon: <CheckCircle2 className="h-6 w-6 text-green-600" />,
     },
     {
-      title: tr("tools_paraphraser_title", "Parafrasatzailea"),
+      key: "paraphraser",
+      title: tr("toolsSection.cardParaphraser_title", "Parafraseador"),
       desc: tr(
-        "tools_paraphraser_desc",
-        "Esanahia mantenduz, testua beste modu batean berridazten du estilo ezberdinetan."
+        "toolsSection.cardParaphraser_desc",
+        "Reescribe tu texto con distintos estilos manteniendo el significado."
       ),
-      Icon: Shuffle,
-      iconBg: "bg-orange-50",
-      iconColor: "text-orange-600",
+      hover: "hover:bg-[#FFF7ED] hover:border-2 hover:border-[#FED7AA]",
+      iconBox: "bg-[#FED7AA]",
+      icon: (
+        <svg
+          viewBox="0 0 24 24"
+          className="w-7 h-7 text-orange-500"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M7 7h10M17 7l-3-3M17 7l-3 3" />
+          <path d="M17 17H7M7 17l3 3M7 17l3-3" />
+        </svg>
+      ),
     },
     {
-      title: tr("tools_humanizer_title", "Humanizatzailea"),
+      key: "aiDetector",
+      title: tr("toolsSection.cardAiDetector_title", "Detector IA"),
       desc: tr(
-        "tools_humanizer_desc",
-        "Testuen jariakortasuna eta naturaltasuna hobetzen ditu, gizatiarragoak izan daitezen."
+        "toolsSection.cardAiDetector_desc",
+        "Analiza el texto y estima la probabilidad de que haya sido generado por IA."
       ),
-      Icon: Sparkles,
-      iconBg: "bg-teal-50",
-      iconColor: "text-teal-600",
+      hover: "hover:bg-[#EEF2FF] hover:border-2 hover:border-[#C7D2FE]",
+      iconBox: "bg-[#C7D2FE]",
+      icon: <Search className="h-6 w-6 text-blue-700 -rotate-6" />,
     },
     {
-      title: tr("tools_ai_detector_title", "IA-detektorea"),
+      key: "humanizer",
+      title: tr("toolsSection.cardHumanizer_title", "Humanizador"),
       desc: tr(
-        "tools_ai_detector_desc",
-        "Testuak aztertzen ditu adimen artifizialak sortutako edukiaren zantzuak identifikatzeko."
+        "toolsSection.cardHumanizer_desc",
+        "Haz que tu texto suene más natural, claro y fluido."
       ),
-      Icon: Search,
-      iconBg: "bg-violet-50",
-      iconColor: "text-violet-600",
+      hover: "hover:bg-[#F0FDF4] hover:border-2 hover:border-[#86EFAC]",
+      iconBox: "bg-[#DCFCE7]",
+      icon: <Brain className="h-7 w-7 text-emerald-600" />,
     },
   ];
 
@@ -129,29 +150,24 @@ export default function ToolsSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {cards.map((c) => (
                 <div
-                  key={c.title}
-                  className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"
+                  key={c.key}
+                  className={`
+                    bg-white rounded-2xl shadow-sm border border-slate-200 p-6 min-h-[190px]
+                    transform transition
+                    hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300
+                    ${c.hover}
+                  `}
                 >
-                  <div className="flex items-start gap-5">
-                    {/* ✅ ICONO como en la captura */}
-                    <div
-                      className={`h-[56px] w-[56px] rounded-[18px] ${c.iconBg} flex items-center justify-center flex-shrink-0`}
-                    >
-                      <c.Icon
-                        className={`h-[26px] w-[26px] ${c.iconColor}`}
-                        strokeWidth={2.2}
-                      />
-                    </div>
-
-                    <div className="min-w-0">
-                      <div className="text-[18px] font-extrabold text-slate-900 leading-tight">
-                        {c.title}
-                      </div>
-                      <p className="mt-1 text-[13px] text-slate-600 truncate">
-                        {c.desc}
-                      </p>
-                    </div>
+                  <div className={`w-12 h-12 rounded-xl ${c.iconBox} flex items-center justify-center mb-4`}>
+                    {c.icon}
                   </div>
+
+                  <h3 className="text-lg font-semibold text-slate-800 mb-1">
+                    {c.title}
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    {c.desc}
+                  </p>
                 </div>
               ))}
             </div>
