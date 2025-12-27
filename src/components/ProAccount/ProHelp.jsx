@@ -281,7 +281,7 @@ export default function ProHelp() {
 
                 {/* BOTÓN SOPORTE – ESTÉTICA NUEVA */}
                 <Link
-                  to="/soporte"
+                  to="/cuenta-pro/soporte"
                   className="
                     mt-4
                     self-center
