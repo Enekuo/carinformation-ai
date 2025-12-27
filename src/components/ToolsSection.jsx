@@ -80,10 +80,10 @@ export default function ToolsSection() {
               </div>
               
              {/* PALO IZQUIERDO */}
-              <div className="absolute left-[-10px] top-1/2 -translate-y-1/2 h-full w-[14px] origin-center scale-y-[0.80] rounded-full bg-blue-600" />
+              <div className="absolute left-[-10px] top-1/2 -translate-y-1/2 translate-y-[18px] h-full w-[14px] origin-center scale-y-[0.80] rounded-full bg-blue-600" />
 
               {/* ✅ PALO AZUL: pegado al borde derecho del video */}
-              <div className="absolute right-[-7px] top-1/2 -translate-y-1/2 h-full w-[14px] origin-center scale-y-[0.85] rounded-full bg-blue-600" />
+              <div className="absolute right-[-7px] top-1/2 -translate-y-1/2 translate-y-[18px] h-full w-[14px] origin-center scale-y-[0.85] rounded-full bg-blue-600" />
             </div>
           </div>
 
