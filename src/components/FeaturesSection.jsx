@@ -1,13 +1,10 @@
 import React from "react";
 import { useTranslation } from "@/lib/translations";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function FeaturesSection() {
   const { t } = useTranslation();
   const tr = (key, fallback) => t(key) || fallback;
-
-  const topControls = useAnimation();
-  const bottomControls = useAnimation();
 
   const cardVariants = {
     hidden: { opacity: 0, y: 28 },
@@ -29,10 +26,8 @@ export default function FeaturesSection() {
           className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14"
           variants={cardVariants}
           initial="hidden"
-          animate={topControls}
           whileInView="show"
           viewport={{ once: false, amount: 0.25 }}
-          onViewportLeave={() => topControls.set("hidden")}
         >
           {/* TEXTO */}
           <div className="w-full lg:basis-6/12 text-left">
@@ -58,7 +53,7 @@ export default function FeaturesSection() {
             >
               <img
                 src="/features-euskalia.png"
-                alt=""
+                alt="Euskalia"
                 className="w-full max-w-[360px]"
               />
             </div>
@@ -75,10 +70,8 @@ export default function FeaturesSection() {
           "
           variants={cardVariants}
           initial="hidden"
-          animate={bottomControls}
           whileInView="show"
           viewport={{ once: false, amount: 0.25 }}
-          onViewportLeave={() => bottomControls.set("hidden")}
         >
           <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-10">
             {/* Columna izquierda: 6 filas pequeñas (más ancha) */}
