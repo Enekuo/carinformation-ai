@@ -1139,7 +1139,7 @@ export default function ProGrammarCorrector() {
                 {savedToLibrary && <p className="text-xs text-emerald-600 mb-1">{librarySavedMessage}</p>}
 
                 <div className="flex items-center gap-4">
-                  {/* Copiar */}
+                  {/* Copiar */} 
                   <button
                     type="button"
                     onClick={() => handleCopy(true)}
