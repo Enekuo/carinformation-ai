@@ -1058,29 +1058,29 @@ registerPage_login: {
 
     // ===== PLAN PREMIUM+ 
 
-    library_premium: { 
-      ES: "Biblioteca ampliada para uso intensivo y proyectos grandes.",
-      EUS: "Liburutegi handitua erabilera intentsiborako eta proiektu handietarako.",
+    premium1: {
+    ES: "Límites de caracteres casi ilimitados.",
+    EUS: "Ia mugarik gabeko karaktere-kopurua.",
+  },
+  premium2: {
+    ES: "Herramientas premium añadidas.",
+    EUS: "Premium tresnak gehituta.",
+  },
+  premium3: {
+    ES: "Prompts activos integrados en las herramientas.",
+    EUS: "Prompt aktiboak tresnetan integratuta.",
+  },
+  premium4: {
+    ES: "Chat de IA + asistente personal.",
+    EUS: "IA txata + laguntzaile pertsonala.",
+  },
+  premium5: {
+    ES: "Prioridad en la cola y velocidad máxima, incluso en horas punta.",
+    EUS: "Lehentasuna ilaran eta abiadura maximoa, puntako orduetan ere.",
     },
-    export_premium: {
-      ES: "Exportaciones avanzadas y más formatos profesionales (laster).",
-      EUS: "Esportazio aurreratuak eta formatu profesional gehiago (laster).",
-    },
-    audio_premium: {
-      ES: "Audio premium de mayor calidad y opción de escucha continua tipo podcast (laster).",
-      EUS: "Kalitate handiagoko audio premiuma eta jarraian entzuteko aukera, podcast moduan (laster).",
-    },
-    ai_premium: {
-      ES: "IA más potente y límites mucho más altos para un uso intensivo en euskera.",
-      EUS: "IA indartsuagoa eta muga askoz handiagoak euskarazko erabilera intentsiborako.",
-    },
-    file_premium: {
-      ES: "Soporte para documentos más grandes y complejos sin interrupciones.",
-      EUS: "Dokumentu handiago eta konplexuagoak etenik gabe lantzeko euskarria.",
-    },
-    speed_premium: {
-      ES: "Prioridad en la cola y velocidad máxima incluso en horas punta.",
-      EUS: "Lehentasuna ilaran eta abiadura handiena puntako orduetan ere.",
+    premium6: {
+    ES: "",
+    EUS: "",
     },
   },
 },
