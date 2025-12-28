@@ -86,7 +86,7 @@ function App() {
             <Route path="/cuenta-pro/corrector" element={<ProLayout><ProGrammarCorrector /></ProLayout>} />
             <Route path="/cuenta-pro/biblioteca" element={<ProLayout><ProLibrary /></ProLayout>} />
             <Route path="/cuenta-pro/chat-ia" element={<ProLayout><ProChat /></ProLayout>} />
-            <Route path="/cuenta-pro/sugerencias" element={<ProLayout><ProSuggestions /></ProLayout>} />
+            <Route path="/cuenta-pro/sugerencias" element={<ProLayout><Suggestions /></ProLayout>} />
             <Route path="/cuenta-pro/ayuda" element={<ProLayout><ProHelp /></ProLayout>} />
             <Route path="/cuenta-pro/ajustes" element={<ProLayout><ProSettings /></ProLayout>} />
             <Route path="/cuenta-pro/biblioteca/:id" element={<ProLibraryDetail />} />
