@@ -132,8 +132,8 @@ export default function Header() {
       path: "/soporte",
     },
     {
-      name: t("resourcesMenu.suggestions"),
-      icon: <HelpBulbIcon size={20} className="-ml-1 mr-2 text-slate-500" />,
+      name: t("resourcesMenu.suggestions"), 
+      icon: <HelpBulbIcon size={20} className="-ml-1 mr-1,5 text-slate-500" />,
       isLink: true,
       path: "/sugerencias",
     },
