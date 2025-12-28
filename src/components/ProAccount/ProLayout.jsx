@@ -388,7 +388,11 @@ export default function LayoutPro({ children }) {
           collapsed ? "ml-16" : "ml-48"
         }`}
       >
-        <header className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200">
+        {/* ✅ HEADER FIJO (estático) */}
+        <header
+          className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200 fixed top-0 right-0 z-40"
+          style={{ left: collapsed ? 64 : 192 }}
+        >
           {/* IZQUIERDA (fijo para no mover el centro) */}
           <div className="w-[180px]" />
 
@@ -462,8 +466,8 @@ export default function LayoutPro({ children }) {
           </div>
         </header>
 
-        {/* Aquí ponemos el borde vertical, solo bajo el header */}
-        <main className="flex-1 px-8 py-8 border-l border-slate-200">
+        {/* ✅ Empujamos el contenido para que no quede debajo del header fijo */}
+        <main className="flex-1 mt-16 px-8 py-8 border-l border-slate-200">
           {children}
         </main>
       </div>
