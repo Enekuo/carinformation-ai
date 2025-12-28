@@ -1060,7 +1060,7 @@ registerPage_login: {
 
     premium1: {
     ES: "Límites de caracteres casi ilimitados.",
-    EUS: "Ia mugarik gabeko karaktere-kopurua.",
+    EUS: "Karaktere-kopurua ia mugarik gabe",
   },
   premium2: {
     ES: "Herramientas premium añadidas.",
@@ -1068,7 +1068,7 @@ registerPage_login: {
   },
   premium3: {
     ES: "Prompts activos integrados en las herramientas.",
-    EUS: "Prompt aktiboak tresnetan integratuta.",
+    EUS: "Prompt-ak aktibatuta tresnetan.",
   },
   premium4: {
     ES: "Chat de IA + asistente personal.",
