@@ -133,7 +133,7 @@ export default function Header() {
     },
     {
       name: t("resourcesMenu.suggestions"),
-      icon: <HelpBulbIcon size={20} className="-ml-1,25 mr-1 text-slate-500" />,
+      icon: <HelpBulbIcon size={20} className="-ml-1,25 mr-2 text-slate-500" />,
       isLink: true,
       path: "/sugerencias",
     },
