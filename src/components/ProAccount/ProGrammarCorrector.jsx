@@ -21,6 +21,7 @@ import {
   DropdownMenuArrow,
 } from "@/components/ui/dropdown-menu";
 import { addLibraryDoc } from "@/proLibraryStore";
+import { diff_match_patch } from "diff-match-patch";
 
 export default function ProGrammarCorrector() {
   const { t } = useTranslation();
@@ -84,7 +85,10 @@ export default function ProGrammarCorrector() {
   const labelTabText = tr("grammar.sources_tab_text", "Texto");
   const labelTabDocument = tr("grammar.sources_tab_document", "Documento");
   const labelTabUrl = tr("grammar.sources_tab_url", "URL");
-  const labelEnterText = tr("grammar.enter_text_here_full", "Escribe o pega aquí el texto que quieres corregir…");
+  const labelEnterText = tr(
+    "grammar.enter_text_here_full",
+    "Escribe o pega aquí el texto que quieres corregir…"
+  );
   const labelChooseFileTitle = tr("grammar.choose_file_title", "Elige tu archivo o carpeta");
   const labelAcceptedFormats = tr(
     "grammar.accepted_formats",
@@ -147,7 +151,10 @@ export default function ProGrammarCorrector() {
         <Icon className="w-[18px] h-[18px] shrink-0" style={{ color: active ? BLUE : GRAY_ICON }} />
         <span className="truncate">{label}</span>
         {active && (
-          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full" style={{ backgroundColor: BLUE }} />
+          <span
+            className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full"
+            style={{ backgroundColor: BLUE }}
+          />
         )}
       </button>
       {showDivider && (
@@ -181,21 +188,16 @@ export default function ProGrammarCorrector() {
       .replace(/\s+/g, " ")
       .trim();
 
-  // Diff palabra a palabra (simple) para resaltar cambios
-  const diffWords = (original, corrected) => {
-    const o = (original || "").split(/\s+/).filter(Boolean);
-    const c = (corrected || "").split(/\s+/).filter(Boolean);
-    const len = Math.max(o.length, c.length);
-    const segments = [];
+  // ✅ Diff REAL (solo verde lo que la API “ha cambiado/añadido” en el resultado)
+  const diffSegments = (original, corrected) => {
+    const dmp = new diff_match_patch();
+    const diffs = dmp.diff_main(original || "", corrected || "");
+    dmp.diff_cleanupSemantic(diffs);
 
-    for (let i = 0; i < len; i++) {
-      const word = c[i];
-      if (!word) continue;
-      const changed = o[i] !== word;
-      segments.push({ text: word, changed });
-    }
-
-    return segments;
+    return diffs.map(([op, text]) => ({
+      text,
+      changed: op === 1, // ✅ SOLO lo que se añade en el resultado
+    }));
   };
 
   const hasDiff = useMemo(() => {
@@ -272,7 +274,7 @@ export default function ProGrammarCorrector() {
       return <p className="whitespace-pre-wrap">{result}</p>;
     }
 
-    const segments = diffWords(textValue, result);
+    const segments = diffSegments(textValue, result);
 
     return (
       <p className="whitespace-pre-wrap">
@@ -282,7 +284,6 @@ export default function ProGrammarCorrector() {
             className={seg.changed ? "bg-emerald-100 text-emerald-900 rounded px-[2px]" : undefined}
           >
             {seg.text}
-            {index < segments.length - 1 ? " " : ""}
           </span>
         ))}
       </p>
@@ -504,8 +505,12 @@ export default function ProGrammarCorrector() {
   // ===== Tarjetas =====
   const LimitCard = () => (
     <div className="rounded-xl border border-sky-200 bg-sky-50 px-6 py-5 text-sky-900 text-center">
-      <div className="text-sm font-semibold">{tr("grammar.limit_title", "Has alcanzado el límite del plan Gratis")}</div>
-      <p className="text-xs text-slate-600 mt-1">{tr("grammar.limit_note", "Límite actual: 12.000 caracteres por petición.")}</p>
+      <div className="text-sm font-semibold">
+        {tr("grammar.limit_title", "Has alcanzado el límite del plan Gratis")}
+      </div>
+      <p className="text-xs text-slate-600 mt-1">
+        {tr("grammar.limit_note", "Límite actual: 12.000 caracteres por petición.")}
+      </p>
       <div className="mt-4 flex items-center justify-center gap-3">
         <a
           href="/pricing"
@@ -556,7 +561,9 @@ export default function ProGrammarCorrector() {
       return;
     }
     if (!validNow) {
-      setErrorMsg(tr("grammar.error_need_input", "Añade algo de texto, documentos o URLs antes de pedir la corrección."));
+      setErrorMsg(
+        tr("grammar.error_need_input", "Añade algo de texto, documentos o URLs antes de pedir la corrección.")
+      );
       setLoading(false);
       return;
     }
@@ -663,10 +670,7 @@ export default function ProGrammarCorrector() {
       if (!rawText) throw new Error(tr("grammar.error_no_text", "No se recibió texto de la API."));
 
       // ✅ NO borrar números/viñetas: así una lista pegada se puede mostrar como lista
-      const cleaned = rawText
-        .replace(/\r/g, "")
-        .replace(/\n{3,}/g, "\n\n")
-        .trim();
+      const cleaned = rawText.replace(/\r/g, "").replace(/\n{3,}/g, "\n\n").trim();
 
       setResult(cleaned);
       setLastSig(canonicalize(textValue));
@@ -709,7 +713,13 @@ export default function ProGrammarCorrector() {
 
             {/* Tabs */}
             <div className="flex items-center px-2 border-b" style={{ borderColor: DIVIDER }}>
-              <TabBtn active={sourceMode === "text"} icon={FileText} label={labelTabText} onClick={() => setSourceMode("text")} showDivider />
+              <TabBtn
+                active={sourceMode === "text"}
+                icon={FileText}
+                label={labelTabText}
+                onClick={() => setSourceMode("text")}
+                showDivider
+              />
               <TabBtn
                 active={sourceMode === "document"}
                 icon={FileIcon}
@@ -717,7 +727,13 @@ export default function ProGrammarCorrector() {
                 onClick={() => setSourceMode("document")}
                 showDivider
               />
-              <TabBtn active={sourceMode === "url"} icon={UrlIcon} label={labelTabUrl} onClick={() => setSourceMode("url")} showDivider={false} />
+              <TabBtn
+                active={sourceMode === "url"}
+                icon={UrlIcon}
+                label={labelTabUrl}
+                onClick={() => setSourceMode("url")}
+                showDivider={false}
+              />
             </div>
 
             {/* Contenido */}
@@ -752,7 +768,9 @@ export default function ProGrammarCorrector() {
                       <div className={`h-1 ${barClass}`} style={{ width: `${pct}%` }} />
                     </div>
                     <div className="mt-1 text-right text-xs">
-                      <span className={overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"}>
+                      <span
+                        className={overLimit ? "text-red-600" : nearLimit ? "text-amber-600" : "text-slate-500"}
+                      >
                         {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
                       </span>
                     </div>
@@ -762,7 +780,9 @@ export default function ProGrammarCorrector() {
 
               {sourceMode === "document" && (
                 <div
-                  className={`h-full w-full flex flex-col relative ${dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""}`}
+                  className={`h-full w-full flex flex-col relative ${
+                    dragActive ? "ring-2 ring-sky-400 rounded-2xl" : ""
+                  }`}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -805,7 +825,9 @@ export default function ProGrammarCorrector() {
                               </div>
                               <div className="min-w-0 flex-1">
                                 <span className="text-sm font-medium block truncate">{file.name}</span>
-                                <span className="text-xs text-slate-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                                <span className="text-xs text-slate-500">
+                                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                                </span>
                               </div>
                             </div>
                             <button
@@ -848,7 +870,10 @@ export default function ProGrammarCorrector() {
                       <textarea
                         value={urlsTextarea}
                         onChange={(e) => setUrlsTextarea(e.target.value)}
-                        placeholder={tr("grammar.paste_urls_placeholder", "Introduce aquí una o más URLs (separadas por línea)")}
+                        placeholder={tr(
+                          "grammar.paste_urls_placeholder",
+                          "Introduce aquí una o más URLs (separadas por línea)"
+                        )}
                         className="w-full min-h-[140px] rounded-md border border-slate-200 bg-transparent p-2 outline-none text-[15px] leading-6 placeholder:text-slate-400"
                         aria-label={labelPasteUrls}
                         spellCheck={false}
@@ -945,15 +970,29 @@ export default function ProGrammarCorrector() {
                       aria-label="Idioma principal del texto"
                     >
                       <span className="truncate">
-                        {outputLang === "ES" ? LBL_ES : outputLang === "EN" ? LBL_EN : outputLang === "FR" ? LBL_FR : LBL_EUS}
+                        {outputLang === "ES"
+                          ? LBL_ES
+                          : outputLang === "EN"
+                          ? LBL_EN
+                          : outputLang === "FR"
+                          ? LBL_FR
+                          : LBL_EUS}
                       </span>
-                      <svg className="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <svg
+                        className="w-4 h-4 text-slate-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
                         <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
                       </svg>
                     </button>
                   </DropdownMenuTrigger>
 
-                  <DropdownMenuContent align="end" className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]">
+                  <DropdownMenuContent
+                    align="end"
+                    className="rounded-xl border border-slate-200 shadow-lg bg-white p-1 w-[200px]"
+                  >
                     <DropdownMenuItem
                       onClick={() => {
                         if (outputLang !== "EUS") {
