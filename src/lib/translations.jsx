@@ -1025,29 +1025,35 @@ registerPage_login: {
   features: {
     // ===== PLAN PRO – TUS FRASES =====
 
-    limits_pro: {
-      ES: "Limites mas extensos Traducciones y resúmenes con sin preocuparte por los límites básicos",
-      EUS: "Muga zabalagoak, itzulpen eta laburpen gehiago oinarrizko mugak kezkatu gabe egiteko.",
+    pro1: {
+      ES: "Límites más amplios: 5.000 caracteres por petición para el traductor.",
+      EUS: "Muga zabalagoak: 5.000 karaktere eskaera bakoitzeko itzultzailearentzat.",
+      EN: "Higher limits: 5,000 characters per request for the translator.",
     },
-    account_pro: {
-      ES: "Cuenta personal Tu proia cuenta con diferentes moduz y guardados",
-      EUS: "Kontu pertsonala Zure kontua modu eta gordeketa desberdinekin.",
+    pro2: {
+      ES: "Límites más amplios: 12.000 caracteres por petición para el resumidor.",
+      EUS: "Muga zabalagoak: 12.000 karaktere eskaera bakoitzeko laburtzailearentzat.",
+      EN: "Higher limits: 12,000 characters per request for the summarizer.",
     },
-    library_pro: {
-      ES: "Biblioteca personal Guarda tus traducciones y resúmenes más importantes.",
-      EUS: "Liburutegi pertsonala Zure itzulpen eta laburpen garrantzitsuenak gordetzeko.",
+    pro3: {
+      ES: "Límite diario: 150.000 caracteres al día.",
+      EUS: "Eguneko muga: 150.000 karaktere eguneko.",
+      EN: "Daily limit: 150,000 characters per day.",
     },
-    export_pro: {
-      ES: "Opciones cómodas para copiar y descargar Copia o descarga el contenido generado y sigue trabajando fuera de Euskalia.",
-      EUS: "Kopiatzeko eta deskargatzeko aukera erosoak Sortutako edukia kopiatu edo deskargatu eta Euskaliatik kanpo lanean jarraitu.",
+    pro4: {
+      ES: "Acceso a las 6 herramientas (hasta 12.000 caracteres por petición).",
+      EUS: "6 tresnetarako sarbidea (gehienez 12.000 karaktere eskaera bakoitzeko).",
+      EN: "Access to the 6 tools (up to 12,000 characters per request).",
     },
-    upload_pro: {
-      ES: "Subida de documentos de tamaño medio Trabaja con archivos cómodamente en euskera y otros idiomas.",
-      EUS: "Tamaina ertaineko dokumentuak igotzea Euskaraz eta beste hizkuntzatan eroso lan egiteko.",
+    pro5: {
+      ES: "Mejor calidad de API para un uso más fiable de la inteligencia artificial.",
+      EUS: "API kalitate hobea, adimen artifiziala fidagarriago erabiltzeko.",
+      EN: "Higher-quality API for more reliable AI usage.",
     },
-    speed_pro: {
-      ES: "Procesamiento más rápido y estable Pensado para estudiar y trabajar cada día con fluidez.",
-      EUS: "Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
+    pro6: {
+      ES: "Cuenta propia con diferentes modos y biblioteca inteligente con más opciones.",
+      EUS: "Kontu propioa, hainbat modurekin, eta liburutegi adimentsua aukera gehiagorekin.",
+      EN: "Personal account with different modes and a smart library with more options.",
     },
 
     // ===== PLAN PREMIUM+ 
