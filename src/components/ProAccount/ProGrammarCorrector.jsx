@@ -203,11 +203,72 @@ export default function ProGrammarCorrector() {
     return canonicalize(textValue) !== canonicalize(result);
   }, [textValue, result]);
 
+  // ✅ Detectar listas pegadas (numeradas o con viñetas)
+  const parseList = (text) => {
+    if (!text) return null;
+
+    const lines = text
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    // 1) Lista numerada: "1.", "2)", "3-" ...
+    const numbered = lines
+      .map((l) => {
+        const m = l.match(/^(\d+)([.\)\-])\s+(.+)$/);
+        return m ? m[3].trim() : null;
+      })
+      .filter(Boolean);
+
+    if (numbered.length >= 2) {
+      return { type: "ol", items: numbered };
+    }
+
+    // 2) Lista con bullets: "- ", "• ", "* "
+    const bulleted = lines
+      .map((l) => {
+        const m = l.match(/^[-•*]\s+(.+)$/);
+        return m ? m[1].trim() : null;
+      })
+      .filter(Boolean);
+
+    if (bulleted.length >= 2) {
+      return { type: "ul", items: bulleted };
+    }
+
+    return null;
+  };
+
   const renderResult = () => {
     if (!result) return null;
 
-    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal
+    // Si no se ha activado la vista de cambios o no hay diff, mostrar normal (pero si es lista, renderizar lista)
     if (!showDiff || !textValue || !hasDiff) {
+      const parsed = parseList(result);
+
+      if (parsed) {
+        if (parsed.type === "ol") {
+          return (
+            <ol className="list-decimal pl-6 space-y-2">
+              {parsed.items.map((item, idx) => (
+                <li key={idx} className="whitespace-pre-wrap">
+                  {item}
+                </li>
+              ))}
+            </ol>
+          );
+        }
+        return (
+          <ul className="list-disc pl-6 space-y-2">
+            {parsed.items.map((item, idx) => (
+              <li key={idx} className="whitespace-pre-wrap">
+                {item}
+              </li>
+            ))}
+          </ul>
+        );
+      }
+
       return <p className="whitespace-pre-wrap">{result}</p>;
     }
 
@@ -540,7 +601,7 @@ export default function ProGrammarCorrector() {
 
     const systemBase =
       "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
-      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque, sin listas ni viñetas. " +
+      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque. " +
       "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.\n\n" +
       langInstruction;
 
@@ -599,9 +660,8 @@ export default function ProGrammarCorrector() {
 
       if (!rawText) throw new Error(tr("grammar.error_no_text", "No se recibió texto de la API."));
 
+      // ✅ NO borrar números/viñetas: así una lista pegada se puede mostrar como lista
       const cleaned = rawText
-        .replace(/^\s*[-–—•]\s+/gm, "")
-        .replace(/^\s*\d+\.\s+/gm, "")
         .replace(/\r/g, "")
         .replace(/\n{3,}/g, "\n\n")
         .trim();

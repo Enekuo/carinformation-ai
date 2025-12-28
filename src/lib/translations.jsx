@@ -1047,12 +1047,12 @@ registerPage_login: {
     },
     speed_pro: {
       ES: "Procesamiento más rápido y estable Pensado para estudiar y trabajar cada día con fluidez.",
-      EUS: "6Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
+      EUS: "Prozesatze azkarragoa eta egonkorragoa Egunero ikasi eta lan egiteko pentsatua, arintasunez.",
     },
 
     // ===== PLAN PREMIUM+ 
 
-    library_premium: {
+    library_premium: { 
       ES: "Biblioteca ampliada para uso intensivo y proyectos grandes.",
       EUS: "Liburutegi handitua erabilera intentsiborako eta proiektu handietarako.",
     },
