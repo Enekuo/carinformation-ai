@@ -90,8 +90,6 @@ function App() {
             <Route path="/cuenta-pro/parafraseador" element={<ProLayout><ProParaphraser /></ProLayout>} />
             <Route path="/cuenta-pro/detector-ia" element={<ProLayout><ProAiDetector /></ProLayout>} />
             <Route path="/cuenta-pro/humanizador" element={<ProLayout><ProHumanizer /></ProLayout>} />
-            
-             {/* ✅ MISMA PÁGINA SOPORTE pero con layout PRO */}
             <Route path="/cuenta-pro/soporte" element={<ProLayout><SupportPage /></ProLayout>} />
          
           </Routes>
