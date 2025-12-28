@@ -25,8 +25,10 @@ export const translations = {
   },
 
   resourcesMenu: {
-    support: { ES: "Soporte", EUS: "Laguntza" }, 
-    aiChat:  { ES: "Chat de IA", EUS: "IA txata" },
+    support:     { ES: "Soporte",     EUS: "Laguntza" }, 
+    aiChat:      { ES: "Chat de IA",  EUS: "IA txata" },
+    suggestions: { ES: "Sugerencias", EUS: "Iradokizunak" },
+
   },
   // =========================
   //       FREE TRADUCTOR
