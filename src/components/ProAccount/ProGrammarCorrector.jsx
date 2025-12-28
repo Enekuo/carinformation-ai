@@ -601,7 +601,9 @@ export default function ProGrammarCorrector() {
 
     const systemBase =
       "Eres Euskalia Pro, un corrector gramatical y de estilo. " +
-      "Tu salida debe ser SIEMPRE el texto completo corregido, en un solo bloque. " +
+      "Devuelve SIEMPRE el texto completo corregido. " +
+      "Si el texto original contiene una lista (numerada o con viñetas), conserva el mismo formato de lista (números/viñetas y saltos de línea). " +
+      "Si NO es una lista, devuélvelo como texto normal. " +
       "Respeta el significado original y no añadas explicaciones ni comentarios, solo el texto corregido.\n\n" +
       langInstruction;
 
