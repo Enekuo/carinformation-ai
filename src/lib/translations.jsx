@@ -1015,7 +1015,7 @@ registerPage_login: {
 
   badge_popular: {
     ES: "Más popular",
-    EUS: "Ezagunenak",
+    EUS: "Ezagunena",
   },
   badge_soon: {
     ES: "Próximamente",
