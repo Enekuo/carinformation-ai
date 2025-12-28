@@ -270,9 +270,79 @@ export const translations = {
   support_form_privacy_link:        { ES: "Política de privacidad", EUS: "Pribatutasun-politika" },
 
 
+  suggestions: {
+  zone_badge: {
+    ES: "Zona de ideas y sugerencias de Euskalia",
+    EUS: "Euskaliaren ideien eta iradokizunen gunea",
+    EN: "Euskalia ideas & suggestions space",
+  },
 
+  title: {
+    ES: "Ayuda a decidir las próximas mejoras de Euskalia",
+    EUS: "Lagundu Euskaliaren hurrengo hobekuntzak erabakitzen",
+    EN: "Help decide the next improvements for Euskalia",
+  },
 
+  form_description: {
+    ES: "¿Qué te gustaría añadir o mejorar en Euskalia? Nuevas herramientas, cambios de diseño, nuevos límites, mejores ideas para aprender… cualquier sugerencia es bienvenida.",
+    EUS: "Zer gustatuko litzaizuke Euskalian gehitu edo hobetzea: tresna berriak, diseinu aldaketak, muga berriak, ikasteko ideiak hobeak… edozein iradokizun ongi etorria da.",
+    EN: "What would you like to add or improve in Euskalia? New tools, design changes, new limits, better learning ideas… any suggestion is welcome.",
+  },
 
+  textarea_label: {
+    ES: "Escribe aquí tu sugerencia",
+    EUS: "Idatzi hemen zure iradokizuna",
+    EN: "Write your suggestion here",
+  },
+
+  textarea_placeholder: {
+    ES: "Cuéntanos qué herramienta, cambio o mejora te gustaría ver en Euskalia y por qué sería útil para ti u otras personas.",
+    EUS: "Esan zein tresna, aldaketa edo hobekuntza gustatuko litzaizukeen Euskalian, eta zergatik izango litzatekeen erabilgarria zuretzat edo besteentzat.",
+    EN: "Tell us which tool, change, or improvement you’d like to see in Euskalia and why it would be useful for you or others.",
+  },
+
+  email_label: {
+    ES: "Correo electrónico (opcional)",
+    EUS: "Helbide elektronikoa (aukerakoa)",
+    EN: "Email address (optional)",
+  },
+
+  email_placeholder: {
+    ES: "Solo lo usaremos si necesitamos contactar contigo.",
+    EUS: "Zurekin harremanetan jartzeko bakarrik erabiliko dugu.",
+    EN: "We’ll only use it if we need to contact you.",
+  },
+
+  characters_suffix: {
+    ES: "caracteres",
+    EUS: "karaktere",
+    EN: "characters",
+  },
+
+  button_label: {
+    ES: "Enviar sugerencia",
+    EUS: "Bidali iradokizuna",
+    EN: "Send suggestion",
+  },
+
+  error_required: {
+    ES: "Por favor, escribe una sugerencia.",
+    EUS: "Mesedez, idatzi iradokizun bat.",
+    EN: "Please write a suggestion.",
+  },
+
+  error_min_length: {
+    ES: "Por favor, explica un poco más (mínimo 20 caracteres).",
+    EUS: "Mesedez, azaldu pixka bat gehiago (gutxienez 20 karaktere).",
+    EN: "Please explain a bit more (minimum 20 characters).",
+  },
+
+  success_message: {
+    ES: "¡Gracias! Hemos recibido tu sugerencia.",
+    EUS: "Eskerrik asko! Zure iradokizuna jaso dugu.",
+    EN: "Thank you! We’ve received your suggestion.",
+  },
+},
 
 
 
