@@ -15,6 +15,7 @@ import TermsConditionsPage from "@/components/Legal/TermsConditionsPage";
 import CookiesPolicyPage from "@/components/Legal/CookiesPolicyPage";
 import UseAIPage from "@/components/Legal/UseAIPage";
 import PricingPage from "@/pages/PricingPage";
+import Suggestions from "@/pages/Suggestions";
 
 // Pro-Account //
 import ProLayout from "@/components/ProAccount/ProLayout";
@@ -75,6 +76,8 @@ function App() {
             <Route path="/cookies" element={<CookiesPolicyPage />} />
             <Route path="/uso-de-ia" element={<UseAIPage />} />
             <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/sugerencias" element={<Suggestions />} />
+
 
             {/* Pro-Account */}
             <Route path="/cuenta-pro" element={<ProLayout><ProHome /></ProLayout>} />
