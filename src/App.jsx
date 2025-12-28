@@ -25,7 +25,6 @@ import ProSummary from "@/components/ProAccount/ProSummary";
 import ProGrammarCorrector from "@/components/ProAccount/ProGrammarCorrector";
 import ProLibrary from "@/components/ProAccount/ProLibrary";
 import ProChat from "@/components/ProAccount/ProChat";
-import ProSuggestions from "@/components/ProAccount/ProSuggestions";
 import ProHelp from "@/components/ProAccount/ProHelp";
 import ProSettings from "@/components/ProAccount/ProSettings";
 import ProLibraryDetail from "@/components/ProAccount/ProLibraryDetail";
