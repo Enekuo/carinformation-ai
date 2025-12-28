@@ -10,6 +10,7 @@ import {
   FileText,
   LifeBuoy,
   MessageSquare,
+  Lightbulb,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "@/lib/translations";
@@ -103,6 +104,12 @@ export default function Header() {
       icon: <LifeBuoy size={16} className="mr-2 text-slate-500" />,
       isLink: true,
       path: "/soporte",
+    },
+    {
+      name: t("resourcesMenu.suggestions"),
+      icon: <Lightbulb size={16} className="mr-2 text-slate-500" />,
+      isLink: true,
+      path: "/sugerencias",
     },
     {
       name: t("resourcesMenu.aiChat"),
