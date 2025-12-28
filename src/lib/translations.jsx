@@ -2831,7 +2831,7 @@ proHelp: {
   // SECCIÓN: EMPEZAR A USAR EUSKALIA
   section_getting_started_title: {
     ES: "Empezar a usar Euskalia",
-    EUS: "Euskalia erabiltzen hasten",
+    EUS: "Euskalia erabiltzen hasi",
   },
 
   section_getting_started_q1_title: {
@@ -2839,8 +2839,8 @@ proHelp: {
     EUS: "Zer da Euskalia eta zertarako balio du?",
   },
   section_getting_started_q1_body: {
-    ES: "Euskalia es una herramienta de inteligencia artificial centrada en el euskera. Permite traducir y resumir textos, documentos y páginas web entre euskera, castellano, inglés y francés.",
-    EUS: "Euskalia adimen artifizialean oinarritutako tresna bat da, euskara ardatz duena. Testuak, dokumentuak eta webguneak euskararen, gaztelaniaren, ingelesaren eta frantsesaren artean itzuli eta laburtzeko aukera ematen du.",
+    ES: "Euskalia es una plataforma de inteligencia artificial diseñada para trabajadores, estudiantes y cualquier persona que necesite traducir o resumir contenido de forma rápida y sencilla. Está centrada en el público vasco o en cualquiera que necesite trabajar con el euskera.\n\nEuskalia está centrada en el euskera como idioma principal. Tanto la traducción como el resto de herramientas funcionan siempre en relación al euskera, utilizando otros idiomas como castellano, inglés o francés únicamente para convertir el contenido hacia el euskera o desde el euskera, según las necesidades.\n\nEuskalia se caracteriza por un diseño claro y una experiencia de uso pensada para trabajar con textos sin fricciones. La interfaz es sencilla, directa y accesible, lo que permite centrarse en el contenido desde el primer momento, sin distracciones ni configuraciones complejas.",
+    EUS: "Euskalia adimen artifizialeko plataforma bat da, langileei, ikasleei eta edukiak modu azkar eta erraz batean itzuli edo laburtu behar dituen edonori zuzendua. Euskal herritarrei eta euskararekin lan egin behar duen edonori laguntzera bideratua dago.\n\nEuskararekin lotuta lan egiteko pentsatuta dago. Bai itzulpenak bai gainerako tresnek euskararekin lotuta funtzionatzen dute, eta gaztelania, ingelesa edo frantsesa bezalako beste hizkuntzak euskarara edo euskaratik edukia bihurtzeko erabiltzen dira, erabiltzaileen beharren arabera.\n\nEuskalia diseinu argi batek eta testuekin oztoporik gabe lan egiteko pentsatutako erabiltzaile-esperientziak bereizten du. Interfazea sinplea, zuzena eta eskuragarria da, eta horri esker edukiari arreta hasieratik bertatik jarri daiteke, distrakziorik edo konfigurazio ezin ulerturik gabe.",
   },
 
   section_getting_started_q2_title: {
@@ -2848,8 +2848,8 @@ proHelp: {
     EUS: "Lehen urratsak: nola hasi webgunea erabiltzen?",
   },
   section_getting_started_q2_body: {
-    ES: "No necesitas cuenta. En la página principal puedes elegir entre Traductor o Crear resumen, pegar texto, subir un documento o añadir una URL, seleccionar idiomas y generar el resultado.",
-    EUS: "Ez duzu konturik behar. Hasierako orrian Itzultzailea edo Laburpena sortzea aukera dezakezu, testua itsatsi, dokumentu bat igo edo URL bat gehitu, hizkuntzak aukeratu eta emaitza sortu.",
+    ES: "En la página principal eliges la herramienta que quieras usar. Puedes introducir el contenido pegando texto, subiendo un documento o añadiendo una URL, seleccionar el idioma y generar el resultado al instante. Después, puedes copiar el resultado o guardarlo en tu biblioteca para usarlo más tarde.",
+    EUS: "Hasierako orrian erabili nahi duzun tresna aukeratzen duzu. Testua itsatsiz, dokumentu bat igota edo URL bat gehituta edukia sartu dezakezu, hizkuntza hautatu eta emaitza berehala sortu. Ondoren, emaitza kopiatu edo liburutegian gorde dezakezu geroago erabiltzeko.",
   },
 
   section_getting_started_q3_title: {
