@@ -3139,7 +3139,7 @@ settings_plan_row_plan: {
 },
 settings_plan_status_active: {
   ES: "Activo",
-  EUS: "Aktibo",
+  EUS: "Aktibatuta",
   EN: "Active",
   FR: "Actif",
 },
