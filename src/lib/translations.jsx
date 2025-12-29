@@ -3013,7 +3013,9 @@ proHelp: {
 
 
 
-  //  PRO ACCOUNT – SETTINGS PAGE //
+  // =========================
+  //        PRO SETTINGS
+  // ========================= 
 
  settings_title: {
     ES: "Ajustes",
@@ -3117,6 +3119,60 @@ proHelp: {
     ES: "Guardar cambios",
     EUS: "Aldaketak gorde",
   },
+  settings_plan_title: {
+  ES: "Plan y suscripción",
+  EUS: "Plana eta harpidetza",
+  EN: "Plan & subscription",
+  FR: "Forfait et abonnement",
+},
+settings_plan_desc: {
+  ES: "Tu cuenta seguirá activa aunque canceles la suscripción.",
+  EUS: "Zure kontua aktibo jarraituko du harpidetza bertan behera utzita ere.",
+  EN: "Your account will stay active even if you cancel your subscription.",
+  FR: "Votre compte restera actif même si vous annulez l’abonnement.",
+},
+settings_plan_row_plan: {
+  ES: "Plan",
+  EUS: "Plana",
+  EN: "Plan",
+  FR: "Forfait",
+},
+settings_plan_status_active: {
+  ES: "Activo",
+  EUS: "Aktibo",
+  EN: "Active",
+  FR: "Actif",
+},
+settings_plan_value_pro: {
+  ES: "Pro",
+  EUS: "Pro",
+  EN: "Pro",
+  FR: "Pro",
+},
+settings_plan_row_renews: {
+  ES: "Renovación",
+  EUS: "Berritzea",
+  EN: "Renews",
+  FR: "Renouvellement",
+},
+settings_plan_renews_value: {
+  ES: "—",
+  EUS: "—",
+  EN: "—",
+  FR: "—",
+},
+settings_plan_cancel_btn: {
+  ES: "Cancelar suscripción",
+  EUS: "Harpidetza bertan behera utzi",
+  EN: "Cancel subscription",
+  FR: "Annuler l’abonnement",
+},
+settings_plan_demo_alert: {
+  ES: "Esto es una demo. La cancelación aún no está disponible.",
+  EUS: "Hau demo bat da. Ezin da oraindik bertan behera utzi.",
+  EN: "This is a demo. Cancellation isn't available yet.",
+  FR: "Ceci est une démo. L’annulation n’est pas encore disponible.",
+},
 }
 
 

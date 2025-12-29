@@ -229,21 +229,23 @@ export default function ProSettings() {
           </div>
         </section>
 
-        {/* PLAN Y SUSCRIPCIÓN (NUEVO - SIN CLAVES) */}
+        {/* PLAN Y SUSCRIPCIÓN (CON CLAVES) */}
         <section className="rounded-2xl border border-slate-200 bg-white p-6">
           <div className="mb-4">
             <h2 className="font-semibold text-lg text-slate-900">
-              Plan y suscripción
+              {t("settings_plan_title")}
             </h2>
             <p className="text-slate-600 text-sm mt-1">
-              Tu cuenta seguirá activa aunque canceles la suscripción.
+              {t("settings_plan_desc")}
             </p>
           </div>
 
           <div className="rounded-xl border border-slate-200 overflow-hidden">
             {/* Row: Plan */}
             <div className="flex items-center justify-between px-4 py-3">
-              <div className="text-sm text-slate-600">Plan</div>
+              <div className="text-sm text-slate-600">
+                {t("settings_plan_row_plan")}
+              </div>
 
               <div className="flex-1 flex justify-center">
                 <span
@@ -261,40 +263,40 @@ export default function ProSettings() {
                   >
                     ✓
                   </span>
-                  Activo
+                  {t("settings_plan_status_active")}
                 </span>
               </div>
 
-              <div className="text-sm font-semibold text-slate-900">Pro</div>
+              <div className="text-sm font-semibold text-slate-900">
+                {t("settings_plan_value_pro")}
+              </div>
             </div>
 
             <div className="h-px bg-slate-100" />
 
             {/* Row: Renews + button */}
             <div className="flex items-center justify-between px-4 py-3">
-              <div className="text-sm text-slate-600">Renovación</div>
+              <div className="text-sm text-slate-600">
+                {t("settings_plan_row_renews")}
+              </div>
 
               <div className="flex items-center gap-3">
-                <div className="text-sm text-slate-700">—</div>
+                <div className="text-sm text-slate-700">
+                  {t("settings_plan_renews_value")}
+                </div>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    alert("Esto es una demo. La cancelación aún no está disponible.")
-                  }
+                  onClick={() => alert(t("settings_plan_demo_alert"))}
                   className="
                     rounded-md border border-slate-300 bg-white px-3 py-2
                     text-sm font-medium text-slate-700 hover:bg-slate-50
                   "
                 >
-                  Cancelar suscripción
+                  {t("settings_plan_cancel_btn")}
                 </button>
               </div>
             </div>
-          </div>
-
-          <div className="text-xs text-slate-500 mt-3">
-            De momento es una opción de demostración. Más adelante podrás gestionarlo con pagos.
           </div>
         </section>
 
