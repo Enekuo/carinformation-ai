@@ -244,6 +244,27 @@ export default function ProSettings() {
             {/* Row: Plan */}
             <div className="flex items-center justify-between px-4 py-3">
               <div className="text-sm text-slate-600">Plan</div>
+
+              <div className="flex-1 flex justify-center">
+                <span
+                  className="
+                    inline-flex items-center gap-2 rounded-full
+                    border border-emerald-200 bg-emerald-50
+                    px-3 py-1 text-xs font-semibold text-emerald-700
+                  "
+                >
+                  <span
+                    className="
+                      inline-flex h-4 w-4 items-center justify-center
+                      rounded-full bg-emerald-600 text-white text-[10px]
+                    "
+                  >
+                    ✓
+                  </span>
+                  Activo
+                </span>
+              </div>
+
               <div className="text-sm font-semibold text-slate-900">Pro</div>
             </div>
 
