@@ -2862,64 +2862,101 @@ proHelp: {
   },
   // SECCIÓN: TRADUCTOR
   section_translator_title: {
-    ES: "Traductor",
-    EUS: "Itzultzailea",
+    ES: "Traductor, resumidor y corrector",
+    EUS: "Itzultzailea, laburtzailea eta zuzentzailea",
+    EN: "Translator, summarizer and corrector",
+    FR: "Traducteur, résumeur et correcteur",
   },
 
-  section_translator_q1_title: {
-    ES: "¿Cómo traduzco un texto?",
-    EUS: "Nola itzul dezaket testu bat?",
-  },
-  section_translator_q1_body: {
-    ES: "Escribe o pega un texto en el cuadro principal, selecciona idioma de origen y destino, y pulsa Generar.",
-    EUS: "Idatzi edo itsatsi testua kutxa nagusian, aukeratu jatorri- eta helburu-hizkuntzak, eta sakatu Sortu.",
+  section_paraphraser_title: {
+    ES: "Parafraseador, detector de IA y humanizador",
+    EUS: "Parafraseatzailea, IA detektagailua eta humanizatzailea",
+    EN: "Paraphraser, AI detector and humanizer",
+    FR: "Paraphraseur, détecteur d’IA et humaniseur",
   },
 
-  section_translator_q2_title: {
-    ES: "¿Puedo traducir documentos?",
-    EUS: "Dokumentuak itzul ditzaket?",
+  /* ===== SECCIÓN 1 ===== */
+  section_1: {
+    ES: "¿Cómo funciona el Traductor?",
+    EUS: "Nola funtzionatzen du itzultzaileak?",
+    EN: "How does the Translator work?",
+    FR: "Comment fonctionne le traducteur ?",
   },
-  section_translator_q2_body: {
-    ES: "Sí. Puedes subir archivos PDF, DOCX o TXT pulsando el botón de Documentos en el Traductor.",
-    EUS: "Bai. PDF, DOCX edo TXT fitxategiak igo ditzakezu Itzultzailean Dokumentuak botoia sakatuta.",
+  section_11: {
+    ES: "El Traductor de Euskalia permite traducir textos, documentos o páginas web entre distintos idiomas, usando el euskera como eje principal. Solo introduce el contenido, elige el idioma de origen y destino y genera la traducción al instante.",
+    EUS: "Euskaliako itzultzaileak testuak, dokumentuak edo webguneak hainbat hizkuntzatan itzultzeko aukera ematen du, euskara ardatz nagusi gisa erabiliz. Edukia sartu, hizkuntzak aukeratu eta berehala sortu itzulpena.",
+    EN: "Euskalia’s Translator allows you to translate texts, documents, or web pages between different languages, using Basque as the main reference. Just add the content, choose source and target languages, and generate the translation instantly.",
+    FR: "Le traducteur d’Euskalia permet de traduire des textes, documents ou pages web entre différentes langues, avec le basque comme langue de référence. Il suffit d’ajouter le contenu, choisir les langues et générer la traduction.",
   },
 
-  section_translator_q3_title: {
-    ES: "¿Puedo traducir páginas web o URLs?",
-    EUS: "Webguneak edo URLak itzul ditzaket?",
+  /* ===== SECCIÓN 2 ===== */
+  section_2: {
+    ES: "¿Para qué sirve el Resumidor?",
+    EUS: "Zertarako balio du laburtzaileak?",
+    EN: "What is the Summarizer for?",
+    FR: "À quoi sert le résumeur ?",
   },
-  section_translator_q3_body: {
-    ES: "Sí. Copia la URL en la opción de traducir desde enlace. Euskalia obtendrá el contenido y lo convertirá al idioma deseado.",
-    EUS: "Bai. Kopiatu URL helbidea loturatik itzultzeko aukeran. Euskalik edukia eskuratuko du eta nahi duzun hizkuntzara bihurtuko du.",
+  section_22: {
+    ES: "El Resumidor transforma textos largos, documentos o artículos en resúmenes claros y concisos. Euskalia identifica las ideas más importantes para que puedas entender el contenido en menos tiempo.",
+    EUS: "Laburtzaileak testu luzeak, dokumentuak edo artikuluak laburpen argi eta zehatzetan bihurtzen ditu. Euskaliak ideia garrantzitsuenak identifikatzen ditu denbora aurrezteko.",
+    EN: "The Summarizer turns long texts, documents, or articles into clear and concise summaries. Euskalia extracts the key ideas so you can understand the content faster.",
+    FR: "Le résumeur transforme des textes longs, documents ou articles en résumés clairs et concis. Euskalia identifie les idées essentielles pour gagner du temps.",
   },
-  // SECCIÓN: RESUMEN
-  section_summary_title: {
-    ES: "Crear resumen",
-    EUS: "Laburpena sortu",
+
+  /* ===== SECCIÓN 3 ===== */
+  section_3: {
+    ES: "¿Qué hace el Corrector?",
+    EUS: "Zer egiten du zuzentzaileak?",
+    EN: "What does the Corrector do?",
+    FR: "Que fait le correcteur ?",
   },
-  section_summary_q1_title: {
-    ES: "¿Cómo crear un resumen?",
-    EUS: "Nola sortu laburpen bat?",
+  section_33: {
+    ES: "El Corrector revisa textos para detectar errores gramaticales, ortográficos y de estilo. Además de corregir fallos, mejora la claridad y coherencia del texto.",
+    EUS: "Zuzentzaileak testuak berrikusten ditu akats gramatikalak, ortografikoak eta estilokoak detektatzeko, eta testuaren argitasuna hobetzen du.",
+    EN: "The Corrector reviews texts to detect grammatical, spelling, and style errors, improving clarity and coherence.",
+    FR: "Le correcteur analyse les textes pour détecter les fautes grammaticales, orthographiques et de style, et améliore leur clarté.",
   },
-  section_summary_q1_body: {
-    ES: "Pega un texto, sube un documento o introduce una URL. Elige el idioma del resumen y pulsa Generar.",
-    EUS: "Itsatsi testu bat, igo dokumentu bat edo sartu URL bat. Aukeratu laburpenaren hizkuntza eta sakatu Sortu.",
+
+  /* ===== SECCIÓN 4 ===== */
+  section_4: {
+    ES: "¿Para qué sirve el Parafraseador?",
+    EUS: "Zertarako balio du parafraseatzaileak?",
+    EN: "What is the Paraphraser for?",
+    FR: "À quoi sert le paraphraseur ?",
   },
-  section_summary_q2_title: {
-    ES: "¿Qué tipo de contenidos puedo resumir?",
-    EUS: "Zein edukiren laburpenak sor ditzaket?",
+  section_44: {
+    ES: "El Parafraseador reescribe un texto manteniendo su significado original, pero usando una redacción y estructura diferentes. Es útil para mejorar la originalidad o adaptar el tono.",
+    EUS: "Parafraseatzaileak testu bat berridazten du esanahia mantenduz, baina egitura eta idazkera desberdina erabiliz.",
+    EN: "The Paraphraser rewrites a text while keeping its original meaning, using different wording and structure.",
+    FR: "Le paraphraseur réécrit un texte en conservant son sens, avec une formulation et une structure différentes.",
   },
-  section_summary_q2_body: {
-    ES: "Puedes resumir artículos, PDFs, textos largos, trabajos, correos, apuntes y páginas web.",
-    EUS: "Artikuluak, PDFak, testu luzeak, lanak, mezuak, apunteak eta webguneak labur ditzakezu.",
+
+  /* ===== SECCIÓN 5 ===== */
+  section_5: {
+    ES: "¿Cómo funciona el Detector de IA?",
+    EUS: "Nola funtzionatzen du IA detektagailuak?",
+    EN: "How does the AI Detector work?",
+    FR: "Comment fonctionne le détecteur d’IA ?",
   },
-  section_summary_q3_title: {
-    ES: "¿Se mantienen los detalles importantes?",
-    EUS: "Xehetasun garrantzitsuak mantentzen dira?",
+  section_55: {
+    ES: "El Detector de IA analiza un texto y estima la probabilidad de que haya sido generado por inteligencia artificial. Es una ayuda orientativa para contextos académicos o profesionales.",
+    EUS: "IA detektagailuak testu bat aztertzen du eta adimen artifizialak sortua izan den probabilitatea kalkulatzen du.",
+    EN: "The AI Detector analyzes a text and estimates the likelihood that it was generated by artificial intelligence.",
+    FR: "Le détecteur d’IA analyse un texte et estime la probabilité qu’il ait été généré par une intelligence artificielle.",
   },
-  section_summary_q3_body: {
-    ES: "Sí. Euskalia prioriza ideas clave, estructura lógica y contexto importante para mantener la coherencia del contenido.",
-    EUS: "Bai. Euskalik ideia nagusiak, egitura logikoa eta testuinguru garrantzitsua lehenesten ditu edukiaren koherentzia mantentzeko.",
+
+  /* ===== SECCIÓN 6 ===== */
+  section_6: {
+    ES: "¿Qué es el Humanizador?",
+    EUS: "Zer da humanizatzailea?",
+    EN: "What is the Humanizer?",
+    FR: "Qu’est-ce que l’humaniseur ?",
+  },
+  section_66: {
+    ES: "El Humanizador convierte textos generados por IA en un lenguaje más natural y humano, ajustando el tono y la fluidez para que suenen escritos por una persona.",
+    EUS: "Humanizatzaileak IA bidez sortutako testuak hizkera naturalago eta gizatiarrago bihurtzen ditu.",
+    EN: "The Humanizer transforms AI-generated text into more natural, human-like language by improving tone and flow.",
+    FR: "L’humaniseur transforme les textes générés par l’IA en un langage plus naturel et humain.",
   },
   // SECCIÓN: FACTURACIÓN Y PLANES
   section_billing_title: {

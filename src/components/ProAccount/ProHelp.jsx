@@ -35,34 +35,34 @@ export default function ProHelp() {
       titleKey: "proHelp.section_translator_title",
       items: [
         {
-          titleKey: "proHelp.section_translator_q1_title",
-          bodyKey: "proHelp.section_translator_q1_body",
+          titleKey: "proHelp.section_1",
+          bodyKey: "proHelp.section_11",
         },
         {
-          titleKey: "proHelp.section_translator_q2_title",
-          bodyKey: "proHelp.section_translator_q2_body",
+          titleKey: "proHelp.section_2",
+          bodyKey: "proHelp.section_22",
         },
         {
-          titleKey: "proHelp.section_translator_q3_title",
-          bodyKey: "proHelp.section_translator_q3_body",
+          titleKey: "proHelp.section_3",
+          bodyKey: "proHelp.section_33",
         },
       ],
     },
     {
-      id: "summary",
-      titleKey: "proHelp.section_summary_title",
+      id: "paraphraser",
+      titleKey: "proHelp.section_paraphraser_title",
       items: [
         {
-          titleKey: "proHelp.section_summary_q1_title",
-          bodyKey: "proHelp.section_summary_q1_body",
+          titleKey: "proHelp.section_4",
+          bodyKey: "proHelp.section_44",
         },
         {
-          titleKey: "proHelp.section_summary_q2_title",
-          bodyKey: "proHelp.section_summary_q2_body",
+          titleKey: "proHelp.section_5",
+          bodyKey: "proHelp.section_55",
         },
         {
-          titleKey: "proHelp.section_summary_q3_title",
-          bodyKey: "proHelp.section_summary_q3_body",
+          titleKey: "proHelp.section_6",
+          bodyKey: "proHelp.section_66",
         },
       ],
     },
